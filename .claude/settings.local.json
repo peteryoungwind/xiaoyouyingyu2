@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(for f:*)",
+      "Bash(do echo:*)",
+      "Read(//Users/xiyou/code/xiaoyouyingyu/**)",
+      "Bash(done)",
+      "Bash(cd frontend:*)",
+      "Bash(node -v && npm -v)",
+      "Bash(npm install:*)"
+    ]
+  }
+}

@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    url: jdbc:mysql://139.196.43.133:3306/xiaoyouyingyu?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai&autoReconnect=true&connectTimeout=5000&socketTimeout=30000
+    username: root
+    password: pzq18217074393
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      connection-timeout: 10000
+      validation-timeout: 3000
+      keepalive-time: 60000
+      max-lifetime: 580000
+      connection-test-query: SELECT 1
+      minimum-idle: 2
+      maximum-pool-size: 10
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+
+app:
+  jwt:
+    secret: your-256-bit-secret-key-change-in-production-please
+    expiration-ms: 86400000
+  ai:
+    api-key: your-api-key
+    api-url: https://api.openai.com/v1/chat/completions
+    model: gpt-4o
