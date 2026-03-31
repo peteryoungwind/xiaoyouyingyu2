@@ -45,6 +45,11 @@ export default function AdminPage() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-users'] }),
   });
 
+  const updateRole = useMutation({
+    mutationFn: ({ id, role }: { id: number; role: string }) => api.updateUserRole(id, role),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-users'] }),
+  });
+
   if (!isAdmin) {
     return <div className="text-center py-12 text-gray-400">无权限访问</div>;
   }
@@ -251,9 +256,15 @@ export default function AdminPage() {
         <div className="space-y-3">
           {(users || []).map((user: any) => (
             <div key={user.id} className="bg-white rounded-apple-lg p-4 shadow-sm flex items-center justify-between">
-              <div>
+              <div className="flex items-center gap-3">
                 <span className="text-sm font-medium">{user.username}</span>
-                <span className="text-xs text-gray-400 ml-2">{user.role}</span>
+                <select value={user.role}
+                  onChange={e => updateRole.mutate({ id: user.id, role: e.target.value })}
+                  disabled={user.role === 'ADMIN' && (users || []).filter((x: any) => x.role === 'ADMIN').length <= 1}
+                  className="text-xs px-2 py-1 rounded-lg border border-gray-200 bg-white outline-none focus:ring-2 focus:ring-gray-200">
+                  <option value="USER">普通用户</option>
+                  <option value="ADMIN">管理员</option>
+                </select>
               </div>
               {user.role !== 'ADMIN' && (
                 <button onClick={() => deleteUser.mutate(user.id)}

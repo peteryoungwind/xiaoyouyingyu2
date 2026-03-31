@@ -57,6 +57,23 @@ public class AdminController {
         return ResponseEntity.ok(Map.of("message", "用户已删除"));
     }
 
+    @PutMapping("/users/{id}/role")
+    public ResponseEntity<?> updateUserRole(@PathVariable Long id, @RequestBody Map<String, String> body) {
+        String newRole = body.get("role");
+        if (!"ADMIN".equals(newRole) && !"USER".equals(newRole)) {
+            return ResponseEntity.badRequest().body(Map.of("error", "无效的角色"));
+        }
+        return userRepository.findById(id).map(user -> {
+            if (user.getRole() == User.Role.ADMIN && "USER".equals(newRole)
+                    && userRepository.countByRole(User.Role.ADMIN) <= 1) {
+                return ResponseEntity.badRequest().body(Map.of("error", "无法降级唯一的管理员"));
+            }
+            user.setRole(User.Role.valueOf(newRole));
+            userRepository.save(user);
+            return ResponseEntity.ok(Map.of("message", "角色更新成功"));
+        }).orElse(ResponseEntity.notFound().build());
+    }
+
     @PostMapping("/ai/generate")
     public ResponseEntity<?> aiGenerate(@RequestBody Map<String, Object> body) {
         String prompt = (String) body.get("prompt");

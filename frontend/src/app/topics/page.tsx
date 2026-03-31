@@ -33,6 +33,10 @@ export default function TopicsPage() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) {
+      setShowAuth(true);
+      return;
+    }
     setKeyword(searchInput);
     setPage(0);
   };

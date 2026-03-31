@@ -43,4 +43,6 @@ export const api = {
     request(`/admin/users/${id}`, { method: 'DELETE' }),
   aiGenerate: (prompt: string, history?: any[]) =>
     request('/admin/ai/generate', { method: 'POST', body: JSON.stringify({ prompt, history }) }),
+  updateUserRole: (id: number, role: string) =>
+    request(`/admin/users/${id}/role`, { method: 'PUT', body: JSON.stringify({ role }) }),
 };

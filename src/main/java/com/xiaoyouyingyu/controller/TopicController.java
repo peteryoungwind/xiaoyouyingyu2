@@ -30,10 +30,16 @@ public class TopicController {
             @RequestParam(required = false) LocalDate startDate,
             @RequestParam(required = false) LocalDate endDate,
             Authentication auth) {
+        boolean isGuest = (auth == null);
+
+        // 游客不允许搜索
+        if (isGuest && keyword != null && !keyword.isBlank()) {
+            return ResponseEntity.status(401).body(Map.of("error", "请登录后使用搜索功能"));
+        }
+
         Page<Topic> topics = topicRepository.search(keyword, tag, startDate, endDate,
                 PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "eventDate")));
 
-        boolean isGuest = (auth == null);
         if (isGuest) {
             // Guest only sees titles
             var simplified = topics.map(t -> Map.of(

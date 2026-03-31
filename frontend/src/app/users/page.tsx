@@ -18,6 +18,11 @@ export default function UsersPage() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-users'] }),
   });
 
+  const updateRole = useMutation({
+    mutationFn: ({ id, role }: { id: number; role: string }) => api.updateUserRole(id, role),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-users'] }),
+  });
+
   if (!isAdmin) return <div className="text-center py-12 text-gray-400">无权限访问</div>;
 
   return (
@@ -37,9 +42,13 @@ export default function UsersPage() {
               <tr key={u.id}>
                 <td className="px-6 py-4 text-gray-900">{u.username}</td>
                 <td className="px-6 py-4">
-                  <span className={`text-xs px-2 py-1 rounded-full ${u.role === 'ADMIN' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600'}`}>
-                    {u.role}
-                  </span>
+                  <select value={u.role}
+                    onChange={e => updateRole.mutate({ id: u.id, role: e.target.value })}
+                    disabled={u.role === 'ADMIN' && (users || []).filter((x: any) => x.role === 'ADMIN').length <= 1}
+                    className="text-xs px-2 py-1 rounded-lg border border-gray-200 bg-white outline-none focus:ring-2 focus:ring-blue-100">
+                    <option value="USER">普通用户</option>
+                    <option value="ADMIN">管理员</option>
+                  </select>
                 </td>
                 <td className="px-6 py-4">
                   {u.role !== 'ADMIN' && (

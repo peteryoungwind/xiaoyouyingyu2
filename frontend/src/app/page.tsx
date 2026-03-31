@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { getTagColor } from '@/lib/tag-colors';
 
 export default function Home() {
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
 
   const { data: topicsData } = useQuery({
     queryKey: ['topics', 0],
@@ -41,11 +41,13 @@ export default function Home() {
               Welcome back! {user ? user.username : 'Guest'}
             </p>
           </div>
-          <Link href="/admin"
-            className="flex items-center gap-2 px-5 py-2.5 bg-gray-900 text-white rounded-xl text-sm hover:bg-gray-800 transition-colors">
-            <Plus size={16} />
-            Create Topic
-          </Link>
+          {isAdmin && (
+            <Link href="/admin"
+              className="flex items-center gap-2 px-5 py-2.5 bg-gray-900 text-white rounded-xl text-sm hover:bg-gray-800 transition-colors">
+              <Plus size={16} />
+              Create Topic
+            </Link>
+          )}
         </div>
 
         {/* Stats Cards */}
