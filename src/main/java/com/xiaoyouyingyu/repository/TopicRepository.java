@@ -15,6 +15,12 @@ public interface TopicRepository extends JpaRepository<Topic, Long> {
     @Query("SELECT MIN(t.eventDate) FROM Topic t")
     Optional<LocalDate> findEarliestEventDate();
 
+    @Query("SELECT t.titleZh FROM Topic t WHERE t.titleZh IS NOT NULL AND t.eventDate >= :since")
+    List<String> findRecentTitleZhSince(@Param("since") LocalDate since);
+
+    @Query("SELECT t.titleZh FROM Topic t WHERE t.titleZh IS NOT NULL")
+    List<String> findAllTitleZh();
+
     @Query("SELECT t FROM Topic t WHERE t.eventDate BETWEEN :start AND :end ORDER BY t.eventDate")
     List<Topic> findByEventDateBetween(@Param("start") LocalDate start, @Param("end") LocalDate end);
 

@@ -2,12 +2,13 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/lib/auth';
-import { LayoutDashboard, BookOpen, CalendarDays, Users, Settings } from 'lucide-react';
+import { LayoutDashboard, BookOpen, CalendarDays, Users, Settings, ShieldCheck } from 'lucide-react';
 
 const navItems = [
   { href: '/', label: '主页', icon: LayoutDashboard },
   { href: '/topics', label: '主题', icon: BookOpen },
   { href: '/calendar', label: '日历', icon: CalendarDays },
+  { href: '/admin', label: '管理后台', icon: ShieldCheck, adminOnly: true },
   { href: '/users', label: '用户管理', icon: Users, adminOnly: true },
 ];
 

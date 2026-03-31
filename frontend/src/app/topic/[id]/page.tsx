@@ -1,16 +1,32 @@
 'use client';
-import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api';
+import { useAuth } from '@/lib/auth';
 import { getTagColor } from '@/lib/tag-colors';
 import { useParams, useRouter } from 'next/navigation';
+import { Pencil, Check, X, Plus } from 'lucide-react';
 
 export default function TopicDetail() {
   const { id } = useParams();
   const router = useRouter();
+  const { isAdmin } = useAuth();
+  const queryClient = useQueryClient();
+
+  const [editing, setEditing] = useState(false);
+  const [form, setForm] = useState<any>(null);
 
   const { data: topic, isLoading } = useQuery({
     queryKey: ['topic', id],
     queryFn: () => api.getTopic(Number(id)),
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: (data: any) => api.updateTopic(Number(id), data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['topic', id] });
+      setEditing(false);
+    },
   });
 
   if (isLoading) return <div className="text-center py-12 text-gray-400">加载中...</div>;
@@ -19,6 +35,92 @@ export default function TopicDetail() {
   const questions = typeof topic.questions === 'string' ? JSON.parse(topic.questions) : topic.questions;
   const tags = topic.tags ? topic.tags.split(',').filter(Boolean) : [];
 
+  const startEdit = () => {
+    setForm({
+      title: topic.title,
+      titleZh: topic.titleZh || '',
+      tags: topic.tags || '',
+      eventDate: topic.eventDate,
+      questions: [...questions],
+    });
+    setEditing(true);
+  };
+
+  const handleSave = () => {
+    updateMutation.mutate({
+      title: form.title,
+      titleZh: form.titleZh,
+      tags: form.tags,
+      eventDate: form.eventDate,
+      questions: JSON.stringify(form.questions.filter((q: any) => q.en)),
+    });
+  };
+
+  // Edit mode
+  if (editing && form) {
+    return (
+      <div className="space-y-6">
+        <button onClick={() => setEditing(false)} className="text-sm text-gray-500 hover:text-gray-900 press-effect">
+          &larr; 取消编辑
+        </button>
+
+        <div className="bg-white rounded-apple-lg p-6 shadow-sm space-y-4">
+          <input type="text" placeholder="英文标题 *" value={form.title}
+            onChange={e => setForm((f: any) => ({ ...f, title: e.target.value }))}
+            className="w-full px-4 py-2.5 rounded-apple bg-gray-100 border-0 outline-none focus:ring-2 focus:ring-gray-200 text-sm" />
+          <input type="text" placeholder="中文标题" value={form.titleZh}
+            onChange={e => setForm((f: any) => ({ ...f, titleZh: e.target.value }))}
+            className="w-full px-4 py-2.5 rounded-apple bg-gray-100 border-0 outline-none focus:ring-2 focus:ring-gray-200 text-sm" />
+          <div className="flex gap-3">
+            <input type="text" placeholder="标签（逗号分隔）" value={form.tags}
+              onChange={e => setForm((f: any) => ({ ...f, tags: e.target.value }))}
+              className="flex-1 px-4 py-2.5 rounded-apple bg-gray-100 border-0 outline-none focus:ring-2 focus:ring-gray-200 text-sm" />
+            <input type="date" value={form.eventDate}
+              onChange={e => setForm((f: any) => ({ ...f, eventDate: e.target.value }))}
+              className="px-3 py-2 rounded-apple bg-gray-100 text-sm outline-none" />
+          </div>
+
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-gray-700">问题列表</p>
+            {form.questions.map((q: any, i: number) => (
+              <div key={i} className="flex gap-2 items-start">
+                <div className="flex-1 space-y-1">
+                  <input type="text" placeholder={`Q${i + 1} English *`} value={q.en}
+                    onChange={e => setForm((f: any) => ({ ...f, questions: f.questions.map((x: any, j: number) => j === i ? { ...x, en: e.target.value } : x) }))}
+                    className="w-full px-3 py-2 rounded-apple bg-gray-100 border-0 outline-none focus:ring-2 focus:ring-gray-200 text-sm" />
+                  <input type="text" placeholder="中文对应" value={q.zh}
+                    onChange={e => setForm((f: any) => ({ ...f, questions: f.questions.map((x: any, j: number) => j === i ? { ...x, zh: e.target.value } : x) }))}
+                    className="w-full px-3 py-2 rounded-apple bg-gray-100 border-0 outline-none focus:ring-2 focus:ring-gray-200 text-sm" />
+                </div>
+                {form.questions.length > 1 && (
+                  <button onClick={() => setForm((f: any) => ({ ...f, questions: f.questions.filter((_: any, j: number) => j !== i) }))}
+                    className="text-gray-300 hover:text-red-400 text-lg leading-none mt-2">×</button>
+                )}
+              </div>
+            ))}
+            <button onClick={() => setForm((f: any) => ({ ...f, questions: [...f.questions, { en: '', zh: '' }] }))}
+              className="text-sm text-blue-500 hover:text-blue-600 flex items-center gap-1">
+              <Plus size={14} /> 添加问题
+            </button>
+          </div>
+
+          <div className="flex justify-end gap-2 pt-2 border-t border-gray-100">
+            <button onClick={() => setEditing(false)}
+              className="px-4 py-2 text-sm text-gray-500 hover:bg-gray-100 rounded-apple flex items-center gap-1">
+              <X size={14} /> 取消
+            </button>
+            <button onClick={handleSave}
+              disabled={updateMutation.isPending || !form.title}
+              className="px-5 py-2 bg-gray-900 text-white rounded-apple text-sm press-effect hover:bg-gray-800 disabled:opacity-50 flex items-center gap-1">
+              <Check size={14} /> {updateMutation.isPending ? '保存中...' : '保存'}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // View mode
   return (
     <div className="space-y-6">
       <button onClick={() => router.back()} className="text-sm text-gray-500 hover:text-gray-900 press-effect">
@@ -31,7 +133,15 @@ export default function TopicDetail() {
             <h1 className="text-xl font-semibold text-gray-900">{topic.title}</h1>
             {topic.titleZh && <p className="text-base text-gray-500 mt-1">{topic.titleZh}</p>}
           </div>
-          <span className="text-xs text-gray-400 whitespace-nowrap ml-4">{topic.eventDate}</span>
+          <div className="flex items-center gap-3 ml-4">
+            <span className="text-xs text-gray-400 whitespace-nowrap">{topic.eventDate}</span>
+            {isAdmin && (
+              <button onClick={startEdit}
+                className="text-xs text-gray-400 hover:text-gray-600 flex items-center gap-1 press-effect">
+                <Pencil size={14} /> 编辑
+              </button>
+            )}
+          </div>
         </div>
 
         {tags.length > 0 && (

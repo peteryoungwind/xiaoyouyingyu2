@@ -20,11 +20,15 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
 
+server:
+  tomcat:
+    connection-timeout: 180000
+
 app:
   jwt:
     secret: your-256-bit-secret-key-change-in-production-please
     expiration-ms: 86400000
   ai:
-    api-key: your-api-key
-    api-url: https://api.openai.com/v1/chat/completions
+    api-key: sk-Z6mBSV3LAK2yp1T67ThtU1PBJFvXy50m8zEJMMuVYALEG8af
+    api-url: https://api.gptgod.online/v1/chat/completions
     model: gpt-4o
