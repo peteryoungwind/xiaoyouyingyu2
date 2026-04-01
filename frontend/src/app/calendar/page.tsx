@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { Calendar } from '@/components/calendar';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
-import Link from 'next/link';
 
 export default function CalendarPage() {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
@@ -32,14 +31,27 @@ export default function CalendarPage() {
             topics.length > 0 ? (
               <div className="space-y-3">
                 <h2 className="text-sm font-medium text-gray-500">{selectedDate} 的主题</h2>
-                {topics.map((t: any) => (
-                  <Link key={t.id} href={`/topic/${t.id}`}
-                    className="block bg-white rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow">
-                    <h3 className="font-medium text-gray-900">{t.title}</h3>
-                    {t.titleZh && <p className="text-sm text-gray-500 mt-0.5">{t.titleZh}</p>}
-                    <p className="text-xs text-gray-400 mt-1">{t.eventDate}</p>
-                  </Link>
-                ))}
+                {topics.map((t: any) => {
+                  const questions = t.questions ? (typeof t.questions === 'string' ? JSON.parse(t.questions) : t.questions) : [];
+                  return (
+                    <div key={t.id} className="bg-white rounded-2xl p-4 shadow-sm">
+                      <h3 className="font-medium text-gray-900">{t.title}</h3>
+                      {t.titleZh && <p className="text-sm text-gray-500 mt-0.5">{t.titleZh}</p>}
+                      {questions.length > 0 && (
+                        <div className="mt-3 space-y-2">
+                          {questions.map((q: { en: string; zh: string }, i: number) => (
+                            <div key={i} className="p-3 bg-gray-50 rounded-xl">
+                              <p className="text-sm font-medium text-gray-900">
+                                <span className="text-gray-400 mr-2">Q{i + 1}</span>{q.en}
+                              </p>
+                              <p className="text-sm text-gray-500">{q.zh}</p>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             ) : (
               <p className="text-gray-400 text-sm">该日期暂无主题</p>

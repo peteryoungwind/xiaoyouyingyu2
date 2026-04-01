@@ -1,26 +1,17 @@
 'use client';
-import { useAuth } from '@/lib/auth';
 import { getTagColor } from '@/lib/tag-colors';
 import Link from 'next/link';
 
 interface Props {
   topic: any;
-  onRequireAuth: () => void;
+  onRequireAuth?: () => void;
 }
 
-export function TopicCard({ topic, onRequireAuth }: Props) {
-  const { user } = useAuth();
+export function TopicCard({ topic }: Props) {
   const tags = topic.tags ? topic.tags.split(',').filter(Boolean) : [];
 
-  const handleClick = (e: React.MouseEvent) => {
-    if (!user) {
-      e.preventDefault();
-      onRequireAuth();
-    }
-  };
-
   return (
-    <Link href={`/topic/${topic.id}`} onClick={handleClick}
+    <Link href={`/topic/${topic.id}`}
       className="block bg-white rounded-apple-lg p-5 shadow-sm hover:shadow-md transition-shadow press-effect">
       <div className="flex items-start justify-between">
         <div className="flex-1">

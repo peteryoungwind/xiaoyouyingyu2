@@ -47,6 +47,7 @@ export default function UsersPage() {
                     disabled={u.role === 'ADMIN' && (users || []).filter((x: any) => x.role === 'ADMIN').length <= 1}
                     className="text-xs px-2 py-1 rounded-lg border border-gray-200 bg-white outline-none focus:ring-2 focus:ring-blue-100">
                     <option value="USER">普通用户</option>
+                    <option value="PREMIUM_USER">高级用户</option>
                     <option value="ADMIN">管理员</option>
                   </select>
                 </td>

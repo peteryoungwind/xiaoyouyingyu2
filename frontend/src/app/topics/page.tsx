@@ -41,9 +41,6 @@ export default function TopicsPage() {
     setPage(0);
   };
 
-  const handleClick = (e: React.MouseEvent) => {
-    if (!user) { e.preventDefault(); setShowAuth(true); }
-  };
 
   useEffect(() => {
     setJumpInput(String(page + 1));
@@ -79,7 +76,7 @@ export default function TopicsPage() {
           {topics.map((topic: any) => {
             const tags = topic.tags ? topic.tags.split(',').filter(Boolean) : [];
             return (
-              <Link key={topic.id} href={`/topic/${topic.id}`} onClick={handleClick}
+              <Link key={topic.id} href={`/topic/${topic.id}`}
                 className="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
                 <div className="flex gap-1.5 mb-2">
                   {tags.map((t: string) => (

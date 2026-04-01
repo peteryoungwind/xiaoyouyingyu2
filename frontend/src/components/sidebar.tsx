@@ -2,19 +2,20 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/lib/auth';
-import { LayoutDashboard, BookOpen, CalendarDays, Users, Settings, ShieldCheck } from 'lucide-react';
+import { LayoutDashboard, BookOpen, CalendarDays, Users, Settings, ShieldCheck, GraduationCap } from 'lucide-react';
 
 const navItems = [
   { href: '/', label: '主页', icon: LayoutDashboard },
   { href: '/topics', label: '主题', icon: BookOpen },
   { href: '/calendar', label: '日历', icon: CalendarDays },
+  { href: '/learning-center', label: '学习中心', icon: GraduationCap, premiumOnly: true },
   { href: '/admin', label: '管理后台', icon: ShieldCheck, adminOnly: true },
   { href: '/users', label: '用户管理', icon: Users, adminOnly: true },
 ];
 
 export function Sidebar() {
   const pathname = usePathname();
-  const { isAdmin } = useAuth();
+  const { isAdmin, isPremium } = useAuth();
 
   return (
     <aside className="fixed left-0 top-0 bottom-0 w-56 bg-white border-r border-gray-100 flex flex-col z-40">
@@ -28,6 +29,7 @@ export function Sidebar() {
       <nav className="flex-1 px-3 py-2 space-y-1">
         {navItems.map(item => {
           if (item.adminOnly && !isAdmin) return null;
+          if (item.premiumOnly && !isPremium) return null;
           const active = item.href === '/' ? pathname === '/' : pathname.startsWith(item.href);
           return (
             <Link key={item.href} href={item.href}

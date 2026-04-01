@@ -150,6 +150,178 @@ public class AiService {
         return callAi(modelId, systemPrompt, userPrompt, null);
     }
 
+    // ===================== 学习中心：生成词汇 =====================
+
+    public String generateVocabulary(Long modelId, String titleEn, String titleZh, String mode) {
+        boolean beginner = "beginner".equals(mode);
+        String systemPrompt = """
+                你是一位专业英语教育专家。根据给定的口语练习主题，生成主题相关词汇表。
+
+                ## 模式：%s
+
+                ## 要求
+                - 生成 12-15 个与主题紧密相关的词汇/短语
+                - 按分类组织：基础词汇、高频短语、观点表达词、连接词
+                %s
+
+                ## 输出格式
+                必须返回严格的 JSON：
+                {
+                  "vocabulary": [
+                    {
+                      "word": "英文单词或短语",
+                      "zh": "中文释义",
+                      "example": "英文例句",
+                      "exampleZh": "例句中文翻译",
+                      "category": "分类名",
+                      "difficulty": "basic/intermediate/advanced"
+                    }
+                  ]
+                }
+                只返回 JSON，不要其他内容。
+                """.formatted(
+                beginner ? "初级" : "进阶",
+                beginner ? "- 词汇偏基础，例句简短\n- 中文释义清晰明确" : "- 增加地道表达和同义替换\n- 增加高阶词汇"
+        );
+        return callAi(modelId, systemPrompt, "主题：%s（%s）".formatted(titleEn, titleZh), null);
+    }
+
+    // ===================== 学习中心：生成表达工具箱 =====================
+
+    public String generateExpressions(Long modelId, String titleEn, String titleZh, String mode) {
+        boolean beginner = "beginner".equals(mode);
+        String systemPrompt = """
+                你是一位专业英语教育专家。根据给定的口语练习主题，生成实用表达模板。
+
+                ## 模式：%s
+
+                ## 要求
+                按功能分类生成表达模板：表达观点、说明原因、举例说明、对比比较、补充展开、总结结尾
+                每个分类 2-3 个表达
+                %s
+
+                ## 输出格式
+                必须返回严格的 JSON：
+                {
+                  "expressions": [
+                    {
+                      "category": "分类名（如：表达观点）",
+                      "template": "I think ___ is important because ___.",
+                      "zh": "中文说明",
+                      "example": "完整例句",
+                      "exampleZh": "例句中文翻译"
+                    }
+                  ]
+                }
+                只返回 JSON，不要其他内容。
+                """.formatted(
+                beginner ? "初级" : "进阶",
+                beginner ? "- 句型简单，带中文提示槽位" : "- 增加自然衔接表达和高阶替换句型"
+        );
+        return callAi(modelId, systemPrompt, "主题：%s（%s）".formatted(titleEn, titleZh), null);
+    }
+
+    // ===================== 学习中心：生成练习任务 =====================
+
+    public String generateTasks(Long modelId, String titleEn, String titleZh, String mode) {
+        boolean beginner = "beginner".equals(mode);
+        String systemPrompt = """
+                你是一位专业英语教育专家。根据给定的口语练习主题，生成练习任务。
+
+                ## 模式：%s
+
+                ## 任务类型
+                %s
+
+                ## 输出格式
+                必须返回严格的 JSON：
+                {
+                  "tasks": [
+                    {
+                      "title": "任务标题",
+                      "titleZh": "中文标题",
+                      "type": "任务类型",
+                      "description": "英文任务描述",
+                      "descriptionZh": "中文任务描述",
+                      "hints": ["提示1", "提示2"],
+                      "estimatedMinutes": 3,
+                      "difficulty": "easy/medium/hard"
+                    }
+                  ]
+                }
+                生成 4-5 个任务，难度递进。只返回 JSON，不要其他内容。
+                """.formatted(
+                beginner ? "初级" : "进阶",
+                beginner ?
+                    "- 关键词开口：给关键词说2-3句话\n- 句型填充：补充句型框架\n- 短回答：15-30秒简短回答\n- 模仿替换：看参考答案后替换自己信息\n- 看提示复述：根据要点组织语言" :
+                    "- 限时表达：30/60/90秒表达\n- 观点展开：观点+原因+例子\n- 立场转换：先支持再反对\n- 追问挑战：回答后接受追问\n- 双角度分析：个人和社会角度"
+        );
+        return callAi(modelId, systemPrompt, "主题：%s（%s）".formatted(titleEn, titleZh), null);
+    }
+
+    // ===================== 学习中心：AI 点评 =====================
+
+    public String reviewAnswer(Long modelId, String titleEn, String titleZh, String taskTitle, String userAnswer, String mode) {
+        boolean beginner = "beginner".equals(mode);
+        String systemPrompt = """
+                你是一位专业英语口语教练。请对用户的口语练习回答进行点评。
+
+                ## 模式：%s
+
+                ## 点评要求
+                %s
+
+                ## 输出格式
+                必须返回严格的 JSON：
+                {
+                  "score": 85,
+                  "strengths": ["优点1", "优点2"],
+                  "improvements": ["改进建议1", "改进建议2"],
+                  "corrections": [
+                    { "original": "用户原句", "corrected": "更自然的表达", "explanation": "说明" }
+                  ],
+                  "encouragement": "鼓励性总结"
+                }
+                只返回 JSON，不要其他内容。
+                """.formatted(
+                beginner ? "初级" : "进阶",
+                beginner ? "- 聚焦最关键的错误\n- 语气鼓励\n- 建议具体直接" : "- 关注地道性、逻辑性、简洁性\n- 提供高阶表达替换\n- 评估思维深度"
+        );
+        String userPrompt = "主题：%s（%s）\n任务：%s\n\n用户回答：\n%s".formatted(titleEn, titleZh, taskTitle, userAnswer);
+        return callAi(modelId, systemPrompt, userPrompt, null);
+    }
+
+    // ===================== 学习中心：生成热身内容 =====================
+
+    public String generateWarmup(Long modelId, String titleEn, String titleZh, String mode) {
+        boolean beginner = "beginner".equals(mode);
+        String systemPrompt = """
+                你是一位专业英语教育专家。根据给定的口语练习主题，生成热身内容帮助用户进入语境。
+
+                ## 模式：%s
+
+                ## 输出格式
+                必须返回严格的 JSON：
+                {
+                  "introduction": "主题简介（英文）",
+                  "introductionZh": "主题简介（中文）",
+                  "warmupQuestions": [
+                    { "en": "简单热身问题?", "zh": "中文翻译?" }
+                  ],
+                  "keywords": [
+                    { "word": "关键词", "zh": "中文" }
+                  ],
+                  "speakingTips": ["角度提示1", "角度提示2"]
+                }
+                热身问题 3 个，关键词 5-6 个，角度提示 3-4 个。%s
+                只返回 JSON，不要其他内容。
+                """.formatted(
+                beginner ? "初级" : "进阶",
+                beginner ? "简介和提示要简短，附中文辅助。" : "简介用自然英文，提示更深入。"
+        );
+        return callAi(modelId, systemPrompt, "主题：%s（%s）".formatted(titleEn, titleZh), null);
+    }
+
     // ===================== 统一 AI 调用方法 =====================
 
     private String callAi(Long modelId, String systemPrompt, String userPrompt, List<Map<String, String>> history) {

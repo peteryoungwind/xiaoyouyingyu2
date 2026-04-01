@@ -19,11 +19,11 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "VARCHAR(10) DEFAULT 'USER'")
+    @Column(columnDefinition = "VARCHAR(20) DEFAULT 'USER'")
     private Role role = Role.USER;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    public enum Role { ADMIN, USER }
+    public enum Role { ADMIN, PREMIUM_USER, USER }
 }

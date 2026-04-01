@@ -68,7 +68,7 @@ public class AdminController {
     @PutMapping("/users/{id}/role")
     public ResponseEntity<?> updateUserRole(@PathVariable Long id, @RequestBody Map<String, String> body) {
         String newRole = body.get("role");
-        if (!"ADMIN".equals(newRole) && !"USER".equals(newRole)) {
+        if (!"ADMIN".equals(newRole) && !"PREMIUM_USER".equals(newRole) && !"USER".equals(newRole)) {
             return ResponseEntity.badRequest().body(Map.of("error", "无效的角色"));
         }
         return userRepository.findById(id).map(user -> {

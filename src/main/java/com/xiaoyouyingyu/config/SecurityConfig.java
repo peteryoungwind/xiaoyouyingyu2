@@ -41,6 +41,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/topics/stats").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/topics/{id}").permitAll()
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                .requestMatchers("/api/learning/**").hasAnyRole("PREMIUM_USER", "ADMIN")
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

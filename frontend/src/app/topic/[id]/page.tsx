@@ -5,12 +5,13 @@ import { api } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
 import { getTagColor } from '@/lib/tag-colors';
 import { useParams, useRouter } from 'next/navigation';
-import { Pencil, Check, X, Plus } from 'lucide-react';
+import { Pencil, Check, X, Plus, GraduationCap } from 'lucide-react';
+import Link from 'next/link';
 
 export default function TopicDetail() {
   const { id } = useParams();
   const router = useRouter();
-  const { isAdmin } = useAuth();
+  const { isAdmin, isPremium } = useAuth();
   const queryClient = useQueryClient();
 
   const [editing, setEditing] = useState(false);
@@ -166,6 +167,24 @@ export default function TopicDetail() {
           ))}
         </div>
       </div>
+
+      {isPremium && (
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 shadow-sm">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="font-semibold text-gray-900 flex items-center gap-2">
+                <GraduationCap size={20} className="text-blue-500" />
+                学习中心
+              </h3>
+              <p className="text-sm text-gray-500 mt-1">围绕本主题进行词汇积累、表达训练、AI口语练习</p>
+            </div>
+            <Link href={`/learning-center/topic/${id}`}
+              className="px-5 py-2.5 bg-blue-500 text-white rounded-xl text-sm hover:bg-blue-600 transition-colors press-effect whitespace-nowrap">
+              进入学习中心
+            </Link>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 # 小柚英语 (xiaoyouyingyu) — 系统开发文档
 
-> 版本：1.0-SNAPSHOT | 最后更新：2026-03-31
+> 版本：1.0-SNAPSHOT | 最后更新：2026-04-01
 
 ---
 
@@ -27,10 +27,11 @@
 
 - 中英双语话题管理（标题、讨论问题均包含中英文）
 - 基于 OpenAI GPT-4o 的 AI 智能话题生成（支持多轮对话）
-- 用户注册/登录/权限管理（管理员 & 普通用户）
+- 用户注册/登录/权限管理（管理员 & 高级用户 & 普通用户）
 - 话题按日期、标签分类浏览
 - 日历视图查看话题分布
 - 坚持天数统计
+- 学习中心：围绕主题的口语练习闭环（热身、词汇、表达、任务、AI 点评）
 
 ---
 
@@ -78,7 +79,8 @@ xiaoyouyingyu2/
 │   │   ├── controller/
 │   │   │   ├── AuthController.java         # 认证接口 (注册/登录/改密)
 │   │   │   ├── TopicController.java        # 话题接口 (列表/搜索/详情/标签/统计/日历)
-│   │   │   └── AdminController.java        # 管理接口 (话题CRUD/用户管理/AI生成)
+│   │   │   ├── AdminController.java        # 管理接口 (话题CRUD/用户管理/AI生成)
+│   │   │   └── LearningController.java     # 学习中心接口 (热身/词汇/表达/任务/AI点评)
 │   │   ├── entity/
 │   │   │   ├── User.java                   # 用户实体
 │   │   │   └── Topic.java                  # 话题实体
@@ -86,7 +88,7 @@ xiaoyouyingyu2/
 │   │   │   ├── UserRepository.java         # 用户数据访问
 │   │   │   └── TopicRepository.java        # 话题数据访问 (含自定义搜索查询)
 │   │   ├── service/
-│   │   │   └── AiService.java              # OpenAI API 对接服务
+│   │   │   └── AiService.java              # OpenAI API 对接服务 (话题生成 + 学习中心AI)
 │   │   ├── security/
 │   │   │   ├── JwtUtils.java               # JWT 工具类 (生成/解析/验证)
 │   │   │   └── JwtFilter.java              # JWT 请求过滤器
@@ -111,6 +113,9 @@ xiaoyouyingyu2/
         │   ├── topic/[id]/page.tsx         # 话题详情页
         │   ├── admin/page.tsx              # 管理后台页
         │   ├── calendar/page.tsx           # 日历视图页
+        │   ├── learning-center/
+        │   │   ├── page.tsx                # 学习中心首页 (主题列表)
+        │   │   └── topic/[id]/page.tsx     # 主题学习中心 (热身/词汇/表达/任务/AI点评)
         │   ├── users/page.tsx              # 用户管理页
         │   ├── settings/page.tsx           # 设置页 (改密)
         │   └── globals.css                 # 全局样式
@@ -147,7 +152,7 @@ xiaoyouyingyu2/
 | `id` | BIGINT | PK, AUTO_INCREMENT | 用户 ID |
 | `username` | VARCHAR(50) | UNIQUE, NOT NULL | 用户名 |
 | `password` | VARCHAR(255) | NOT NULL | 密码（BCrypt 哈希） |
-| `role` | VARCHAR(10) | DEFAULT 'USER' | 角色：`ADMIN` / `USER` |
+| `role` | VARCHAR(20) | DEFAULT 'USER' | 角色：`ADMIN` / `PREMIUM_USER` / `USER` |
 | `created_at` | DATETIME | 不可更新 | 创建时间 |
 
 ### 4.3 topics 表
@@ -247,10 +252,12 @@ localStorage 存储 → AuthContext 更新 → UI 重渲染
 |------|------|------|
 | 首页 | `/` | 统计仪表盘（总话题数、坚持天数、标签数）、标签分类、日历预览、最新话题 |
 | 话题列表 | `/topics` | 关键词搜索、标签筛选、分页、话题卡片网格 |
-| 话题详情 | `/topic/[id]` | 查看话题完整信息、中英文讨论问题 |
+| 话题详情 | `/topic/[id]` | 查看话题完整信息、中英文讨论问题、进入学习中心入口 |
 | 管理后台 | `/admin` | AI 生成话题、手动创建话题、话题管理（编辑/删除） |
 | 日历视图 | `/calendar` | 按月查看话题分布，交互式日期选择 |
-| 用户管理 | `/users` | 查看用户列表、修改角色、删除用户（仅管理员） |
+| 学习中心 | `/learning-center` | 可学习主题列表，搜索/标签筛选，进入具体主题学习 |
+| 主题学习 | `/learning-center/topic/[id]` | 模式切换、热身、词汇、表达工具箱、练习任务、AI 点评 |
+| 用户管理 | `/users` | 查看用户列表、修改角色（含高级用户）、删除用户（仅管理员） |
 | 设置 | `/settings` | 修改密码 |
 
 ### 6.5 权限控制（前端）
@@ -259,7 +266,8 @@ localStorage 存储 → AuthContext 更新 → UI 重渲染
 |------|----------|
 | **游客** | 浏览话题列表（仅标题）、查看标签/统计/日历 |
 | **普通用户 (USER)** | 游客权限 + 搜索功能 + 查看话题详情 + 修改密码 |
-| **管理员 (ADMIN)** | 全部功能：创建/编辑/删除话题、用户管理、AI 生成 |
+| **高级用户 (PREMIUM_USER)** | 普通用户权限 + 学习中心全部功能（热身、词汇、表达、练习任务、AI 点评） |
+| **管理员 (ADMIN)** | 全部功能：创建/编辑/删除话题、用户管理、AI 生成、学习中心 |
 
 ---
 
