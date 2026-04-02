@@ -152,8 +152,11 @@ public class AiService {
 
     // ===================== 学习中心：生成词汇 =====================
 
-    public String generateVocabulary(Long modelId, String titleEn, String titleZh, String mode) {
+    public String generateVocabulary(Long modelId, String titleEn, String titleZh, String mode, String exclude) {
         boolean beginner = "beginner".equals(mode);
+        String excludeRule = (exclude != null && !exclude.isBlank())
+                ? "\n\n## 去重规则（非常重要！）\n以下词汇/短语已经生成过，本次绝对不能再出现这些内容，必须生成全新的词汇：\n【已有内容】" + exclude
+                : "";
         String systemPrompt = """
                 你是一位专业英语教育专家。根据给定的口语练习主题，生成主题相关词汇表。
 
@@ -162,7 +165,7 @@ public class AiService {
                 ## 要求
                 - 生成 12-15 个与主题紧密相关的词汇/短语
                 - 按分类组织：基础词汇、高频短语、观点表达词、连接词
-                %s
+                %s%s
 
                 ## 输出格式
                 必须返回严格的 JSON：
@@ -181,15 +184,19 @@ public class AiService {
                 只返回 JSON，不要其他内容。
                 """.formatted(
                 beginner ? "初级" : "进阶",
-                beginner ? "- 词汇偏基础，例句简短\n- 中文释义清晰明确" : "- 增加地道表达和同义替换\n- 增加高阶词汇"
+                beginner ? "- 不要生成太基础的词汇（如 like, good, big, happy 等小学水平的词），要生成实用但有一定含金量的词汇和短语\n- 优先选择日常口语中高频使用、但中国学生不太熟悉的地道表达和短语\n- 例句简短，中文释义清晰明确" : "- 增加地道表达和同义替换\n- 增加高阶词汇",
+                excludeRule
         );
         return callAi(modelId, systemPrompt, "主题：%s（%s）".formatted(titleEn, titleZh), null);
     }
 
     // ===================== 学习中心：生成表达工具箱 =====================
 
-    public String generateExpressions(Long modelId, String titleEn, String titleZh, String mode) {
+    public String generateExpressions(Long modelId, String titleEn, String titleZh, String mode, String exclude) {
         boolean beginner = "beginner".equals(mode);
+        String excludeRule = (exclude != null && !exclude.isBlank())
+                ? "\n\n## 去重规则（非常重要！）\n以下表达模板已经生成过，本次绝对不能再出现这些内容，必须生成全新的表达：\n【已有内容】" + exclude
+                : "";
         String systemPrompt = """
                 你是一位专业英语教育专家。根据给定的口语练习主题，生成实用表达模板。
 
@@ -198,7 +205,7 @@ public class AiService {
                 ## 要求
                 按功能分类生成表达模板：表达观点、说明原因、举例说明、对比比较、补充展开、总结结尾
                 每个分类 2-3 个表达
-                %s
+                %s%s
 
                 ## 输出格式
                 必须返回严格的 JSON：
@@ -216,22 +223,26 @@ public class AiService {
                 只返回 JSON，不要其他内容。
                 """.formatted(
                 beginner ? "初级" : "进阶",
-                beginner ? "- 句型简单，带中文提示槽位" : "- 增加自然衔接表达和高阶替换句型"
+                beginner ? "- 句型简单，带中文提示槽位" : "- 增加自然衔接表达和高阶替换句型",
+                excludeRule
         );
         return callAi(modelId, systemPrompt, "主题：%s（%s）".formatted(titleEn, titleZh), null);
     }
 
     // ===================== 学习中心：生成练习任务 =====================
 
-    public String generateTasks(Long modelId, String titleEn, String titleZh, String mode) {
+    public String generateTasks(Long modelId, String titleEn, String titleZh, String mode, String exclude) {
         boolean beginner = "beginner".equals(mode);
+        String excludeRule = (exclude != null && !exclude.isBlank())
+                ? "\n\n## 去重规则（非常重要！）\n以下练习任务已经生成过，本次绝对不能再出现相同或高度相似的任务，必须生成全新的任务：\n【已有内容】" + exclude
+                : "";
         String systemPrompt = """
                 你是一位专业英语教育专家。根据给定的口语练习主题，生成练习任务。
 
                 ## 模式：%s
 
                 ## 任务类型
-                %s
+                %s%s
 
                 ## 输出格式
                 必须返回严格的 JSON：
@@ -254,7 +265,8 @@ public class AiService {
                 beginner ? "初级" : "进阶",
                 beginner ?
                     "- 关键词开口：给关键词说2-3句话\n- 句型填充：补充句型框架\n- 短回答：15-30秒简短回答\n- 模仿替换：看参考答案后替换自己信息\n- 看提示复述：根据要点组织语言" :
-                    "- 限时表达：30/60/90秒表达\n- 观点展开：观点+原因+例子\n- 立场转换：先支持再反对\n- 追问挑战：回答后接受追问\n- 双角度分析：个人和社会角度"
+                    "- 限时表达：30/60/90秒表达\n- 观点展开：观点+原因+例子\n- 立场转换：先支持再反对\n- 追问挑战：回答后接受追问\n- 双角度分析：个人和社会角度",
+                excludeRule
         );
         return callAi(modelId, systemPrompt, "主题：%s（%s）".formatted(titleEn, titleZh), null);
     }
@@ -293,8 +305,11 @@ public class AiService {
 
     // ===================== 学习中心：生成热身内容 =====================
 
-    public String generateWarmup(Long modelId, String titleEn, String titleZh, String mode) {
+    public String generateWarmup(Long modelId, String titleEn, String titleZh, String mode, String exclude) {
         boolean beginner = "beginner".equals(mode);
+        String excludeRule = (exclude != null && !exclude.isBlank())
+                ? "\n\n## 去重规则（非常重要！）\n以下热身内容已经生成过，本次绝对不能再出现相同或高度相似的内容，必须生成全新的热身内容：\n【已有内容】" + exclude
+                : "";
         String systemPrompt = """
                 你是一位专业英语教育专家。根据给定的口语练习主题，生成热身内容帮助用户进入语境。
 
@@ -313,11 +328,12 @@ public class AiService {
                   ],
                   "speakingTips": ["角度提示1", "角度提示2"]
                 }
-                热身问题 3 个，关键词 5-6 个，角度提示 3-4 个。%s
+                热身问题 3 个，关键词 5-6 个，角度提示 3-4 个。%s%s
                 只返回 JSON，不要其他内容。
                 """.formatted(
                 beginner ? "初级" : "进阶",
-                beginner ? "简介和提示要简短，附中文辅助。" : "简介用自然英文，提示更深入。"
+                beginner ? "简介和提示要简短，附中文辅助。" : "简介用自然英文，提示更深入。",
+                excludeRule
         );
         return callAi(modelId, systemPrompt, "主题：%s（%s）".formatted(titleEn, titleZh), null);
     }

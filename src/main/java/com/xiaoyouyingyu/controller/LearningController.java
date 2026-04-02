@@ -24,25 +24,25 @@ public class LearningController {
     @PostMapping("/warmup")
     public ResponseEntity<?> generateWarmup(@RequestBody Map<String, String> body) {
         return ResponseEntity.ok(Map.of("content",
-                aiService.generateWarmup(null, body.get("titleEn"), body.get("titleZh"), body.get("mode"))));
+                aiService.generateWarmup(null, body.get("titleEn"), body.get("titleZh"), body.get("mode"), body.get("exclude"))));
     }
 
     @PostMapping("/vocabulary")
     public ResponseEntity<?> generateVocabulary(@RequestBody Map<String, String> body) {
         return ResponseEntity.ok(Map.of("content",
-                aiService.generateVocabulary(null, body.get("titleEn"), body.get("titleZh"), body.get("mode"))));
+                aiService.generateVocabulary(null, body.get("titleEn"), body.get("titleZh"), body.get("mode"), body.get("exclude"))));
     }
 
     @PostMapping("/expressions")
     public ResponseEntity<?> generateExpressions(@RequestBody Map<String, String> body) {
         return ResponseEntity.ok(Map.of("content",
-                aiService.generateExpressions(null, body.get("titleEn"), body.get("titleZh"), body.get("mode"))));
+                aiService.generateExpressions(null, body.get("titleEn"), body.get("titleZh"), body.get("mode"), body.get("exclude"))));
     }
 
     @PostMapping("/tasks")
     public ResponseEntity<?> generateTasks(@RequestBody Map<String, String> body) {
         return ResponseEntity.ok(Map.of("content",
-                aiService.generateTasks(null, body.get("titleEn"), body.get("titleZh"), body.get("mode"))));
+                aiService.generateTasks(null, body.get("titleEn"), body.get("titleZh"), body.get("mode"), body.get("exclude"))));
     }
 
     @PostMapping("/review")

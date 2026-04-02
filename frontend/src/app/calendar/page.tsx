@@ -3,8 +3,12 @@ import { useState } from 'react';
 import { Calendar } from '@/components/calendar';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
+import { useAuth } from '@/lib/auth';
+import Link from 'next/link';
+import { GraduationCap } from 'lucide-react';
 
 export default function CalendarPage() {
+  const { isPremium } = useAuth();
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
   const { data } = useQuery({
@@ -37,6 +41,12 @@ export default function CalendarPage() {
                     <div key={t.id} className="bg-white rounded-2xl p-4 shadow-sm">
                       <h3 className="font-medium text-gray-900">{t.title}</h3>
                       {t.titleZh && <p className="text-sm text-gray-500 mt-0.5">{t.titleZh}</p>}
+                      {isPremium && (
+                        <Link href={`/learning-center/topic/${t.id}`}
+                          className="flex items-center gap-1.5 mt-3 px-3 py-2 bg-blue-50 text-blue-600 rounded-xl text-xs font-medium hover:bg-blue-100 transition-colors w-fit">
+                          <GraduationCap size={14} /> 进入学习中心
+                        </Link>
+                      )}
                       {questions.length > 0 && (
                         <div className="mt-3 space-y-2">
                           {questions.map((q: { en: string; zh: string }, i: number) => (

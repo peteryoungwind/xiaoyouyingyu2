@@ -78,14 +78,14 @@ export const api = {
 
   // Learning Center
   getLearningTopic: (id: number) => request(`/learning/topic/${id}`, { direct: true }),
-  generateWarmup: (titleEn: string, titleZh: string, mode: string) =>
-    request('/learning/warmup', { method: 'POST', body: JSON.stringify({ titleEn, titleZh, mode }), direct: true }),
-  generateVocabulary: (titleEn: string, titleZh: string, mode: string) =>
-    request('/learning/vocabulary', { method: 'POST', body: JSON.stringify({ titleEn, titleZh, mode }), direct: true }),
-  generateExpressions: (titleEn: string, titleZh: string, mode: string) =>
-    request('/learning/expressions', { method: 'POST', body: JSON.stringify({ titleEn, titleZh, mode }), direct: true }),
-  generateTasks: (titleEn: string, titleZh: string, mode: string) =>
-    request('/learning/tasks', { method: 'POST', body: JSON.stringify({ titleEn, titleZh, mode }), direct: true }),
+  generateWarmup: (titleEn: string, titleZh: string, mode: string, exclude?: string) =>
+    request('/learning/warmup', { method: 'POST', body: JSON.stringify({ titleEn, titleZh, mode, exclude }), direct: true }),
+  generateVocabulary: (titleEn: string, titleZh: string, mode: string, exclude?: string) =>
+    request('/learning/vocabulary', { method: 'POST', body: JSON.stringify({ titleEn, titleZh, mode, exclude }), direct: true }),
+  generateExpressions: (titleEn: string, titleZh: string, mode: string, exclude?: string) =>
+    request('/learning/expressions', { method: 'POST', body: JSON.stringify({ titleEn, titleZh, mode, exclude }), direct: true }),
+  generateTasks: (titleEn: string, titleZh: string, mode: string, exclude?: string) =>
+    request('/learning/tasks', { method: 'POST', body: JSON.stringify({ titleEn, titleZh, mode, exclude }), direct: true }),
   reviewAnswer: (titleEn: string, titleZh: string, taskTitle: string, answer: string, mode: string) =>
     request('/learning/review', { method: 'POST', body: JSON.stringify({ titleEn, titleZh, taskTitle, answer, mode }), direct: true }),
 };

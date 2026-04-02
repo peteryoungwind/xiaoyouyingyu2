@@ -7,9 +7,10 @@ import { getTagColor } from '@/lib/tag-colors';
 import { AuthModal } from '@/components/auth-modal';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { GraduationCap } from 'lucide-react';
 
 export default function TopicsPage() {
-  const { user } = useAuth();
+  const { user, isPremium } = useAuth();
   const searchParams = useSearchParams();
   const [showAuth, setShowAuth] = useState(false);
   const [keyword, setKeyword] = useState('');
@@ -76,19 +77,26 @@ export default function TopicsPage() {
           {topics.map((topic: any) => {
             const tags = topic.tags ? topic.tags.split(',').filter(Boolean) : [];
             return (
-              <Link key={topic.id} href={`/topic/${topic.id}`}
-                className="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
-                <div className="flex gap-1.5 mb-2">
-                  {tags.map((t: string) => (
-                    <span key={t} className={`text-xs px-2.5 py-1 rounded-full font-medium ${getTagColor(t.trim())}`}>
-                      {t.trim()}
-                    </span>
-                  ))}
-                </div>
-                <h3 className="font-medium text-gray-900">{topic.title}</h3>
-                {topic.titleZh && <p className="text-sm text-gray-500 mt-0.5">{topic.titleZh}</p>}
-                <p className="text-xs text-gray-400 mt-1">{topic.eventDate}</p>
-              </Link>
+              <div key={topic.id} className="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
+                <Link href={`/topic/${topic.id}`}>
+                  <div className="flex gap-1.5 mb-2">
+                    {tags.map((t: string) => (
+                      <span key={t} className={`text-xs px-2.5 py-1 rounded-full font-medium ${getTagColor(t.trim())}`}>
+                        {t.trim()}
+                      </span>
+                    ))}
+                  </div>
+                  <h3 className="font-medium text-gray-900">{topic.title}</h3>
+                  {topic.titleZh && <p className="text-sm text-gray-500 mt-0.5">{topic.titleZh}</p>}
+                  <p className="text-xs text-gray-400 mt-1">{topic.eventDate}</p>
+                </Link>
+                {isPremium && (
+                  <Link href={`/learning-center/topic/${topic.id}`}
+                    className="flex items-center gap-1.5 mt-3 px-3 py-2 bg-blue-50 text-blue-600 rounded-xl text-xs font-medium hover:bg-blue-100 transition-colors w-fit">
+                    <GraduationCap size={14} /> 进入学习中心
+                  </Link>
+                )}
+              </div>
             );
           })}
         </div>
