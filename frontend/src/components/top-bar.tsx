@@ -2,11 +2,17 @@
 import { useState } from 'react';
 import { useAuth } from '@/lib/auth';
 import { AuthModal } from './auth-modal';
-import { Bell } from 'lucide-react';
+import { Bell, Crown } from 'lucide-react';
 
 export function TopBar() {
-  const { user, logout } = useAuth();
+  const { user, logout, isAdmin, isPremium, membershipExpireAt } = useAuth();
   const [showAuth, setShowAuth] = useState(false);
+
+  const getMembershipLabel = () => {
+    if (isAdmin) return '管理员';
+    if (isPremium) return '会员中';
+    return '普通用户';
+  };
 
   return (
     <>
@@ -17,6 +23,14 @@ export function TopBar() {
           </button>
           {user ? (
             <div className="flex items-center gap-3">
+              {!isAdmin && (
+                <span className={`text-xs px-2.5 py-1 rounded-full flex items-center gap-1 ${
+                  isPremium ? 'bg-amber-50 text-amber-600' : 'bg-gray-100 text-gray-500'
+                }`}>
+                  {isPremium && <Crown size={12} />}
+                  {getMembershipLabel()}
+                </span>
+              )}
               <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-medium">
                 {user.username.charAt(0).toUpperCase()}
               </div>

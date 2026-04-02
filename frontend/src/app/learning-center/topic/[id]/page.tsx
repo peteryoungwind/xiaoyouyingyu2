@@ -9,6 +9,7 @@ import {
   GraduationCap, BookOpen, MessageSquare, Lightbulb, ClipboardList,
   Sparkles, ChevronDown, ChevronUp, Send, ArrowLeft, Loader2, RefreshCw
 } from 'lucide-react';
+import Link from 'next/link';
 
 type Mode = 'beginner' | 'advanced';
 type Section = 'warmup' | 'vocabulary' | 'expressions' | 'tasks' | 'review';
@@ -115,7 +116,10 @@ export default function TopicLearningCenter() {
     return (
       <div className="flex flex-col items-center justify-center py-24 text-center">
         <GraduationCap size={48} className="text-gray-300 mb-4" />
-        <p className="text-gray-500">该功能仅对高级用户开放</p>
+        <p className="text-gray-500 mb-4">该功能仅对高级用户开放</p>
+        <Link href="/settings" className="px-5 py-2.5 bg-amber-50 text-amber-600 rounded-xl text-sm hover:bg-amber-100">
+          开通会员 / 兑换卡密
+        </Link>
       </div>
     );
   }

@@ -1,6 +1,6 @@
 # 小柚英语 (xiaoyouyingyu) — 系统开发文档
 
-> 版本：1.0-SNAPSHOT | 最后更新：2026-04-01
+> 版本：1.0-SNAPSHOT | 最后更新：2026-04-02
 
 ---
 
@@ -83,10 +83,12 @@ xiaoyouyingyu2/
 │   │   │   └── LearningController.java     # 学习中心接口 (热身/词汇/表达/任务/AI点评)
 │   │   ├── entity/
 │   │   │   ├── User.java                   # 用户实体
-│   │   │   └── Topic.java                  # 话题实体
+│   │   │   ├── Topic.java                  # 话题实体
+│   │   │   └── AiModel.java                # AI 模型配置实体
 │   │   ├── repository/
 │   │   │   ├── UserRepository.java         # 用户数据访问
-│   │   │   └── TopicRepository.java        # 话题数据访问 (含自定义搜索查询)
+│   │   │   ├── TopicRepository.java        # 话题数据访问 (含自定义搜索查询)
+│   │   │   └── AiModelRepository.java      # AI 模型数据访问
 │   │   ├── service/
 │   │   │   └── AiService.java              # OpenAI API 对接服务 (话题生成 + 学习中心AI)
 │   │   ├── security/
@@ -168,7 +170,19 @@ xiaoyouyingyu2/
 | `creator_id` | BIGINT | 可空 | 创建者用户 ID |
 | `created_at` | DATETIME | 不可更新 | 创建时间 |
 
-### 4.4 questions 字段 JSON 格式
+### 4.4 ai_models 表
+
+| 字段 | 类型 | 约束 | 说明 |
+|------|------|------|------|
+| `id` | BIGINT | PK, AUTO_INCREMENT | 模型 ID |
+| `name` | VARCHAR(100) | NOT NULL | 模型显示名称 |
+| `api_url` | VARCHAR(500) | NOT NULL | API 地址 |
+| `api_key` | VARCHAR(500) | NOT NULL | API Key |
+| `model_name` | VARCHAR(200) | NOT NULL | 模型名称（如 gpt-4o） |
+| `is_default` | BOOLEAN | DEFAULT FALSE | 是否为默认模型 |
+| `created_at` | DATETIME | 不可更新 | 创建时间 |
+
+### 4.5 questions 字段 JSON 格式
 
 ```json
 [
@@ -544,7 +558,7 @@ localStorage 存储 → AuthContext 更新 → UI 重渲染
 
 ---
 
-#### POST `/api/admin/ai/generate` — AI 生成话题
+#### POST `/api/admin/ai/generate` — AI 生成话题（旧接口）
 
 **请求体**：
 ```json
@@ -565,6 +579,216 @@ localStorage 存储 → AuthContext 更新 → UI 重渲染
 ```
 
 > AI 返回的 `content` 为 JSON 字符串，前端需解析后展示
+
+---
+
+#### POST `/api/admin/ai/generate-titles` — 批量生成主题标题
+
+**请求体**：
+```json
+{
+  "prompt": "生成关于日常生活的话题",
+  "modelId": 1
+}
+```
+
+**响应** `200`：
+```json
+{
+  "content": "{\"titles\":[{\"en\":\"Weekend Plans\",\"zh\":\"周末计划\"}]}"
+}
+```
+
+---
+
+#### POST `/api/admin/ai/generate-questions` — 根据主题生成问题
+
+**请求体**：
+```json
+{
+  "titleEn": "Travel Experiences",
+  "titleZh": "旅行经历",
+  "modelId": 1
+}
+```
+
+**响应** `200`：
+```json
+{
+  "content": "{\"questions\":[{\"en\":\"Where did you travel last?\",\"zh\":\"你上次去哪里旅行了？\"}]}"
+}
+```
+
+---
+
+#### GET `/api/admin/ai/models` — AI 模型列表
+
+**响应** `200`：
+```json
+[
+  {
+    "id": 1,
+    "name": "GPT-4o",
+    "apiUrl": "https://api.gptgod.online/v1/chat/completions",
+    "apiKey": "sk-...",
+    "modelName": "gpt-4o",
+    "isDefault": true,
+    "createdAt": "2026-04-01T10:00:00"
+  }
+]
+```
+
+---
+
+#### POST `/api/admin/ai/models` — 创建 AI 模型
+
+**请求体**：
+```json
+{
+  "name": "GPT-4o",
+  "apiUrl": "https://api.gptgod.online/v1/chat/completions",
+  "apiKey": "sk-...",
+  "modelName": "gpt-4o",
+  "isDefault": true
+}
+```
+
+**响应** `200`：创建后的模型对象
+
+---
+
+#### PUT `/api/admin/ai/models/{id}` — 更新 AI 模型
+
+**请求体**：同创建模型
+
+**响应** `200`：更新后的模型对象
+
+---
+
+#### DELETE `/api/admin/ai/models/{id}` — 删除 AI 模型
+
+**响应** `200`：
+```json
+{ "message": "模型已删除" }
+```
+
+---
+
+### 7.4 学习中心接口
+
+#### GET `/api/learning/topic/{id}` — 获取学习主题
+
+**权限**：已登录用户
+
+**响应** `200`：完整 Topic 对象
+
+---
+
+#### POST `/api/learning/warmup` — 生成热身内容
+
+**权限**：已登录用户
+
+**请求体**：
+```json
+{
+  "titleEn": "Travel Experiences",
+  "titleZh": "旅行经历",
+  "mode": "beginner",
+  "exclude": "已有内容"
+}
+```
+
+**响应** `200`：
+```json
+{
+  "content": "{\"introduction\":\"...\",\"warmupQuestions\":[...],\"keywords\":[...],\"speakingTips\":[...]}"
+}
+```
+
+---
+
+#### POST `/api/learning/vocabulary` — 生成词汇表
+
+**请求体**：
+```json
+{
+  "titleEn": "Travel Experiences",
+  "titleZh": "旅行经历",
+  "mode": "beginner",
+  "exclude": "已有词汇"
+}
+```
+
+**响应** `200`：
+```json
+{
+  "content": "{\"vocabulary\":[{\"word\":\"...\",\"zh\":\"...\",\"example\":\"...\",\"category\":\"...\",\"difficulty\":\"basic\"}]}"
+}
+```
+
+---
+
+#### POST `/api/learning/expressions` — 生成表达模板
+
+**请求体**：
+```json
+{
+  "titleEn": "Travel Experiences",
+  "titleZh": "旅行经历",
+  "mode": "beginner",
+  "exclude": "已有表达"
+}
+```
+
+**响应** `200`：
+```json
+{
+  "content": "{\"expressions\":[{\"category\":\"表达观点\",\"template\":\"...\",\"zh\":\"...\",\"example\":\"...\"}]}"
+}
+```
+
+---
+
+#### POST `/api/learning/tasks` — 生成练习任务
+
+**请求体**：
+```json
+{
+  "titleEn": "Travel Experiences",
+  "titleZh": "旅行经历",
+  "mode": "beginner",
+  "exclude": "已有任务"
+}
+```
+
+**响应** `200`：
+```json
+{
+  "content": "{\"tasks\":[{\"title\":\"...\",\"titleZh\":\"...\",\"type\":\"...\",\"description\":\"...\",\"difficulty\":\"easy\"}]}"
+}
+```
+
+---
+
+#### POST `/api/learning/review` — AI 点评用户答案
+
+**请求体**：
+```json
+{
+  "titleEn": "Travel Experiences",
+  "titleZh": "旅行经历",
+  "taskTitle": "限时表达",
+  "answer": "用户的口语回答",
+  "mode": "beginner"
+}
+```
+
+**响应** `200`：
+```json
+{
+  "content": "{\"score\":85,\"strengths\":[...],\"improvements\":[...],\"corrections\":[...],\"encouragement\":\"...\"}"
+}
+```
 
 ---
 
@@ -624,33 +848,158 @@ localStorage 存储 → AuthContext 更新 → UI 重渲染
 
 | 配置项 | 值 |
 |--------|-----|
-| API 地址 | `https://api.openai.com/v1/chat/completions` |
+| API 地址 | `https://api.gptgod.online/v1/chat/completions` |
 | 模型 | `gpt-4o` |
 | API Key | 配置文件 `app.ai.api-key` |
+| 支持多模型 | 是（通过 `ai_models` 表管理） |
 
-### 9.2 System Prompt
+### 9.2 AI 模型管理
 
-```
-你是一位专业英语教育专家。根据用户输入生成一个结构化的英语口语练习主题。
-必须返回严格的 JSON 格式：
+系统支持多个 AI 模型配置，存储在 `ai_models` 表中：
+
+- **GET `/api/admin/ai/models`** — 获取所有模型列表
+- **POST `/api/admin/ai/models`** — 创建新模型配置
+- **PUT `/api/admin/ai/models/{id}`** — 更新模型配置
+- **DELETE `/api/admin/ai/models/{id}`** — 删除模型配置
+
+每个模型配置包含：`name`（显示名称）、`apiUrl`、`apiKey`、`modelName`、`isDefault`（是否默认）
+
+### 9.3 AI 生成流程（旧接口 - 兼容）
+
+#### POST `/api/admin/ai/generate` — 生成话题
+
+支持多轮对话，用于快速生成话题。
+
+**请求体**：
+```json
 {
-  "title": "主题标题",
-  "tags": ["标签1", "标签2"],
-  "questions": [
-    { "en": "English Question?", "zh": "中文对应问题？" }
+  "prompt": "生成一个关于旅行的英语口语话题",
+  "history": [
+    { "role": "user", "content": "之前的提问" },
+    { "role": "assistant", "content": "之前的回复" }
   ]
 }
-生成 5-8 个讨论问题，每个问题必须包含英文和中文。只返回 JSON，不要其他内容。
 ```
 
-### 9.3 多轮对话支持
+**响应** `200`：
+```json
+{
+  "content": "{\"title\":\"Travel Adventures\",\"tags\":[\"travel\",\"culture\"],\"questions\":[{\"en\":\"...\",\"zh\":\"...\"}]}"
+}
+```
+
+### 9.4 AI 生成流程（新接口 - 推荐）
+
+#### POST `/api/admin/ai/generate-titles` — 批量生成主题标题
+
+生成 5 个主题标题，自动避免与近一年主题重复。
+
+**请求体**：
+```json
+{
+  "prompt": "生成关于日常生活的话题",
+  "modelId": 1
+}
+```
+
+**响应** `200`：
+```json
+{
+  "content": "{\"titles\":[{\"en\":\"Weekend Plans\",\"zh\":\"周末计划\"},{\"en\":\"Daily Habits\",\"zh\":\"日常习惯\"}]}"
+}
+```
+
+#### POST `/api/admin/ai/generate-questions` — 根据主题生成问题
+
+根据选中的主题标题生成 10 个讨论问题。
+
+**请求体**：
+```json
+{
+  "titleEn": "Travel Experiences",
+  "titleZh": "旅行经历",
+  "modelId": 1
+}
+```
+
+**响应** `200`：
+```json
+{
+  "content": "{\"questions\":[{\"en\":\"Where did you travel last?\",\"zh\":\"你上次去哪里旅行了？\"}]}"
+}
+```
+
+### 9.5 学习中心 AI 接口
+
+#### POST `/api/learning/warmup` — 生成热身内容
+
+**请求体**：
+```json
+{
+  "titleEn": "Travel Experiences",
+  "titleZh": "旅行经历",
+  "mode": "beginner",
+  "exclude": "已有内容"
+}
+```
+
+**响应** `200`：
+```json
+{
+  "content": "{\"introduction\":\"...\",\"warmupQuestions\":[...],\"keywords\":[...],\"speakingTips\":[...]}"
+}
+```
+
+#### POST `/api/learning/vocabulary` — 生成词汇表
+
+#### POST `/api/learning/expressions` — 生成表达模板
+
+#### POST `/api/learning/tasks` — 生成练习任务
+
+#### POST `/api/learning/review` — AI 点评用户答案
+
+**请求体**：
+```json
+{
+  "titleEn": "Travel Experiences",
+  "titleZh": "旅行经历",
+  "taskTitle": "限时表达",
+  "answer": "用户的口语回答",
+  "mode": "beginner"
+}
+```
+
+**响应** `200`：
+```json
+{
+  "content": "{\"score\":85,\"strengths\":[...],\"improvements\":[...],\"corrections\":[...],\"encouragement\":\"...\"}"
+}
+```
+
+### 9.6 System Prompt 设计
+
+系统为不同的 AI 生成任务设计了专门的 System Prompt：
+
+| 任务 | 特点 |
+|------|------|
+| **生成标题** | 避免与近一年主题重复，提示标题要宽泛 |
+| **生成问题** | 由浅入深，前 2-3 个简单，中间 4-5 个中等，最后 2-3 个有深度 |
+| **生成词汇** | 区分初级/进阶，初级避免过基础词汇，进阶增加地道表达 |
+| **生成表达** | 按功能分类（表达观点、说明原因、举例说明等），提供模板 |
+| **生成任务** | 初级：关键词开口、句型填充、短回答等；进阶：限时表达、观点展开、立场转换等 |
+| **热身内容** | 简介、热身问题、关键词、角度提示 |
+| **AI 点评** | 初级聚焦关键错误，进阶关注地道性和逻辑性 |
+
+### 9.7 去重机制
+
+- **标题去重**：生成标题时自动排除近一年内已有的主题
+- **内容去重**：学习中心各模块支持 `exclude` 参数，传入已有内容避免重复生成
+
+### 9.8 多轮对话支持
 
 - 前端维护 `history` 数组，包含之前的 user/assistant 消息
 - 每次请求携带完整对话历史，支持基于上下文的追问和修改
-
-### 9.4 返回值处理
-
-AI 返回的 JSON 字符串由前端解析，管理员可预览后决定是否保存为话题。
+- 仅旧接口 `/api/admin/ai/generate` 支持多轮对话
 
 ---
 
@@ -735,6 +1084,7 @@ npm start
 - [ ] 默认管理员密码 (`admin123`) 应在首次登录后强制修改
 - [ ] JWT 密钥 (`your-256-bit-secret-key-change-in-production-please`) 须更换为安全密钥
 - [ ] CORS 允许来源应根据部署环境动态配置
+- [ ] AI API Key 不应硬编码在配置文件中
 
 ### 功能增强
 
@@ -743,6 +1093,8 @@ npm start
 - [ ] 话题评论/讨论功能
 - [ ] 数据导入/导出功能
 - [ ] 话题分享功能
+- [ ] 学习中心进度追踪（记录用户完成的热身、词汇、任务等）
+- [ ] 学习中心成就系统（徽章、等级等）
 
 ### 工程化
 
@@ -753,6 +1105,21 @@ npm start
 - [ ] 使用 Flyway 管理数据库迁移
 - [ ] 前端添加 ESLint / Prettier 配置
 - [ ] 添加 API 限流和防刷机制
+- [ ] 添加请求日志和性能监控
+
+### 性能优化
+
+- [ ] 添加数据库查询缓存（Redis）
+- [ ] 优化 AI 生成接口的超时时间和重试机制
+- [ ] 添加分页查询的性能优化
+- [ ] 前端添加虚拟滚动优化长列表渲染
+
+### 用户体验
+
+- [ ] 学习中心支持离线模式
+- [ ] 添加学习进度同步功能
+- [ ] 优化移动端适配
+- [ ] 添加深色模式支持
 
 ---
 
@@ -760,11 +1127,80 @@ npm start
 
 | 变量 | 说明 | 默认值 |
 |------|------|--------|
-| `spring.datasource.url` | 数据库连接 URL | `jdbc:mysql://139.196.43.133:3306/xiaoyouyingyu` |
+| `spring.datasource.url` | 数据库连接 URL | `jdbc:mysql://139.196.43.133:3306/xiaoyouyingyu?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai` |
 | `spring.datasource.username` | 数据库用户名 | `root` |
 | `spring.datasource.password` | 数据库密码 | *(见配置文件)* |
-| `app.jwt.secret` | JWT 签名密钥 | *(需更换)* |
+| `app.jwt.secret` | JWT 签名密钥 | `your-256-bit-secret-key-change-in-production-please` |
 | `app.jwt.expiration-ms` | JWT 过期时间 (ms) | `86400000` (24h) |
-| `app.ai.api-key` | OpenAI API Key | *(需配置)* |
-| `app.ai.api-url` | AI 接口地址 | `https://api.openai.com/v1/chat/completions` |
+| `app.ai.api-key` | AI API Key | *(需配置)* |
+| `app.ai.api-url` | AI 接口地址 | `https://api.gptgod.online/v1/chat/completions` |
 | `app.ai.model` | AI 模型名称 | `gpt-4o` |
+
+## 附录：核心类说明
+
+### 后端核心类
+
+| 类 | 位置 | 职责 |
+|------|------|------|
+| `AiService` | `service/` | 统一的 AI 调用服务，支持多个 AI 生成任务 |
+| `AiModel` | `entity/` | AI 模型配置实体，支持多模型管理 |
+| `AiModelRepository` | `repository/` | AI 模型数据访问 |
+| `TopicRepository` | `repository/` | 话题数据访问，包含自定义查询方法 |
+| `LearningController` | `controller/` | 学习中心接口，调用 AiService 生成各类内容 |
+| `AdminController` | `controller/` | 管理接口，包含话题/用户/AI 模型管理 |
+
+### 前端核心方法
+
+| 方法 | 位置 | 功能 |
+|------|------|------|
+| `aiGenerateTitles()` | `lib/api.ts` | 批量生成主题标题 |
+| `aiGenerateQuestions()` | `lib/api.ts` | 根据主题生成讨论问题 |
+| `generateWarmup()` | `lib/api.ts` | 生成热身内容 |
+| `generateVocabulary()` | `lib/api.ts` | 生成词汇表 |
+| `generateExpressions()` | `lib/api.ts` | 生成表达模板 |
+| `generateTasks()` | `lib/api.ts` | 生成练习任务 |
+| `reviewAnswer()` | `lib/api.ts` | AI 点评用户答案 |
+
+## 附录：数据流示例
+
+### 学习中心热身流程
+
+```
+用户进入学习中心 → 选择主题 → 点击"热身"
+     ↓
+前端调用 generateWarmup(titleEn, titleZh, mode)
+     ↓
+后端 LearningController.generateWarmup()
+     ↓
+AiService.generateWarmup() 构建 System Prompt
+     ↓
+HttpClient 调用 AI API（支持自定义模型）
+     ↓
+解析 AI 返回的 JSON
+     ↓
+前端解析并展示热身内容（简介、热身问题、关键词、角度提示）
+```
+
+### AI 生成话题流程（新接口）
+
+```
+管理员进入后台 → 点击"生成话题"
+     ↓
+前端调用 aiGenerateTitles(prompt)
+     ↓
+后端 AdminController.aiGenerateTitles()
+     ↓
+AiService.generateTitles() 获取近一年主题标题进行去重
+     ↓
+HttpClient 调用 AI API
+     ↓
+前端展示 5 个生成的标题供选择
+     ↓
+用户选择标题 → 前端调用 aiGenerateQuestions(titleEn, titleZh)
+     ↓
+后端生成 10 个讨论问题
+     ↓
+前端展示完整话题预览
+     ↓
+管理员确认保存 → 调用 createTopic() 保存到数据库
+```

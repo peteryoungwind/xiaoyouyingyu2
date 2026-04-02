@@ -5,6 +5,7 @@ import com.xiaoyouyingyu.dto.AuthResponse;
 import com.xiaoyouyingyu.entity.User;
 import com.xiaoyouyingyu.repository.UserRepository;
 import com.xiaoyouyingyu.security.JwtUtils;
+import com.xiaoyouyingyu.service.MembershipService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,13 @@ public class AuthController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
+    private final MembershipService membershipService;
+
+    private AuthResponse buildAuthResponse(User user) {
+        String token = jwtUtils.generateToken(user.getUsername(), user.getRole().name());
+        String expireAt = user.getMembershipExpireAt() != null ? user.getMembershipExpireAt().toString() : "";
+        return new AuthResponse(token, user.getUsername(), user.getRole().name(), expireAt, user.isMembershipActive());
+    }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody AuthRequest req) {
@@ -29,18 +37,15 @@ public class AuthController {
         user.setUsername(req.getUsername());
         user.setPassword(passwordEncoder.encode(req.getPassword()));
         userRepository.save(user);
-        String token = jwtUtils.generateToken(user.getUsername(), user.getRole().name());
-        return ResponseEntity.ok(new AuthResponse(token, user.getUsername(), user.getRole().name()));
+        membershipService.grantRegistrationGift(user);
+        return ResponseEntity.ok(buildAuthResponse(user));
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody AuthRequest req) {
         return userRepository.findByUsername(req.getUsername())
                 .filter(u -> passwordEncoder.matches(req.getPassword(), u.getPassword()))
-                .map(u -> {
-                    String token = jwtUtils.generateToken(u.getUsername(), u.getRole().name());
-                    return ResponseEntity.ok(new AuthResponse(token, u.getUsername(), u.getRole().name()));
-                })
+                .map(u -> ResponseEntity.ok(buildAuthResponse(u)))
                 .orElse(ResponseEntity.badRequest().body(null));
     }
 

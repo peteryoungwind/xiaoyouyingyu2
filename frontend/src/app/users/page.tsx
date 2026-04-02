@@ -1,4 +1,5 @@
 'use client';
+import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
@@ -6,6 +7,11 @@ import { useAuth } from '@/lib/auth';
 export default function UsersPage() {
   const { isAdmin } = useAuth();
   const queryClient = useQueryClient();
+  const [membershipModal, setMembershipModal] = useState<any>(null);
+  const [addDays, setAddDays] = useState(30);
+  const [expireAt, setExpireAt] = useState('');
+  const [remark, setRemark] = useState('');
+  const [membershipMsg, setMembershipMsg] = useState('');
 
   const { data: users } = useQuery({
     queryKey: ['admin-users'],
@@ -23,7 +29,44 @@ export default function UsersPage() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-users'] }),
   });
 
+  const handleAddDays = async () => {
+    if (!membershipModal) return;
+    try {
+      await api.addMembershipDays(membershipModal.id, addDays, remark);
+      setMembershipMsg(`成功追加 ${addDays} 天`);
+      queryClient.invalidateQueries({ queryKey: ['admin-users'] });
+    } catch (err: any) {
+      setMembershipMsg(err.message || '操作失败');
+    }
+  };
+
+  const handleSetExpire = async () => {
+    if (!membershipModal || !expireAt) return;
+    try {
+      await api.setMembershipExpireAt(membershipModal.id, expireAt, remark);
+      setMembershipMsg('到期时间已更新');
+      queryClient.invalidateQueries({ queryKey: ['admin-users'] });
+    } catch (err: any) {
+      setMembershipMsg(err.message || '操作失败');
+    }
+  };
+
+  const openMembershipModal = (user: any) => {
+    setMembershipModal(user);
+    setAddDays(30);
+    setExpireAt(user.membershipExpireAt ? user.membershipExpireAt.substring(0, 16) : '');
+    setRemark('');
+    setMembershipMsg('');
+  };
+
   if (!isAdmin) return <div className="text-center py-12 text-gray-400">无权限访问</div>;
+
+  const getMembershipStatus = (u: any) => {
+    if (u.role === 'ADMIN') return { label: '管理员', color: 'text-blue-600' };
+    if (u.membershipExpireAt && new Date(u.membershipExpireAt) > new Date()) return { label: '会员中', color: 'text-amber-600' };
+    if (u.membershipExpireAt) return { label: '已过期', color: 'text-gray-400' };
+    return { label: '未开通', color: 'text-gray-400' };
+  };
 
   return (
     <div className="space-y-6">
@@ -32,36 +75,94 @@ export default function UsersPage() {
         <table className="w-full text-sm">
           <thead className="bg-gray-50 text-gray-500 text-left">
             <tr>
-              <th className="px-6 py-3 font-medium">用户名</th>
-              <th className="px-6 py-3 font-medium">角色</th>
-              <th className="px-6 py-3 font-medium">操作</th>
+              <th className="px-4 py-3 font-medium">用户名</th>
+              <th className="px-4 py-3 font-medium">角色</th>
+              <th className="px-4 py-3 font-medium">会员状态</th>
+              <th className="px-4 py-3 font-medium">到期时间</th>
+              <th className="px-4 py-3 font-medium">操作</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-50">
-            {(users || []).map((u: any) => (
-              <tr key={u.id}>
-                <td className="px-6 py-4 text-gray-900">{u.username}</td>
-                <td className="px-6 py-4">
-                  <select value={u.role}
-                    onChange={e => updateRole.mutate({ id: u.id, role: e.target.value })}
-                    disabled={u.role === 'ADMIN' && (users || []).filter((x: any) => x.role === 'ADMIN').length <= 1}
-                    className="text-xs px-2 py-1 rounded-lg border border-gray-200 bg-white outline-none focus:ring-2 focus:ring-blue-100">
-                    <option value="USER">普通用户</option>
-                    <option value="PREMIUM_USER">高级用户</option>
-                    <option value="ADMIN">管理员</option>
-                  </select>
-                </td>
-                <td className="px-6 py-4">
-                  {u.role !== 'ADMIN' && (
-                    <button onClick={() => deleteUser.mutate(u.id)}
-                      className="text-xs text-red-500 hover:text-red-700">删除</button>
-                  )}
-                </td>
-              </tr>
-            ))}
+            {(users || []).map((u: any) => {
+              const ms = getMembershipStatus(u);
+              return (
+                <tr key={u.id}>
+                  <td className="px-4 py-4 text-gray-900">{u.username}</td>
+                  <td className="px-4 py-4">
+                    <select value={u.role}
+                      onChange={e => updateRole.mutate({ id: u.id, role: e.target.value })}
+                      disabled={u.role === 'ADMIN' && (users || []).filter((x: any) => x.role === 'ADMIN').length <= 1}
+                      className="text-xs px-2 py-1 rounded-lg border border-gray-200 bg-white outline-none focus:ring-2 focus:ring-blue-100">
+                      <option value="USER">普通用户</option>
+                      <option value="PREMIUM_USER">高级用户</option>
+                      <option value="ADMIN">管理员</option>
+                    </select>
+                  </td>
+                  <td className={`px-4 py-4 text-xs font-medium ${ms.color}`}>{ms.label}</td>
+                  <td className="px-4 py-4 text-xs text-gray-500">
+                    {u.membershipExpireAt ? u.membershipExpireAt.replace('T', ' ').substring(0, 19) : '-'}
+                  </td>
+                  <td className="px-4 py-4 flex gap-2">
+                    {u.role !== 'ADMIN' && (
+                      <>
+                        <button onClick={() => openMembershipModal(u)}
+                          className="text-xs text-blue-500 hover:text-blue-700">会员设置</button>
+                        <button onClick={() => deleteUser.mutate(u.id)}
+                          className="text-xs text-red-500 hover:text-red-700">删除</button>
+                      </>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
+
+      {/* Membership Modal */}
+      {membershipModal && (
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50" onClick={() => setMembershipModal(null)}>
+          <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-xl space-y-4" onClick={e => e.stopPropagation()}>
+            <h3 className="font-semibold text-gray-900">会员设置 - {membershipModal.username}</h3>
+            <div className="text-sm text-gray-500">
+              当前到期时间：{membershipModal.membershipExpireAt ? membershipModal.membershipExpireAt.replace('T', ' ').substring(0, 19) : '未设置'}
+            </div>
+
+            <div className="space-y-3">
+              <div>
+                <label className="text-xs text-gray-500 mb-1 block">追加天数</label>
+                <div className="flex gap-2">
+                  <input type="number" value={addDays} onChange={e => setAddDays(Number(e.target.value))} min={1}
+                    className="flex-1 px-3 py-2 rounded-xl bg-gray-50 text-sm outline-none focus:ring-2 focus:ring-blue-100" />
+                  <button onClick={handleAddDays}
+                    className="px-4 py-2 bg-blue-500 text-white rounded-xl text-sm hover:bg-blue-600">追加</button>
+                </div>
+              </div>
+
+              <div>
+                <label className="text-xs text-gray-500 mb-1 block">直接设置到期时间</label>
+                <div className="flex gap-2">
+                  <input type="datetime-local" value={expireAt} onChange={e => setExpireAt(e.target.value)}
+                    className="flex-1 px-3 py-2 rounded-xl bg-gray-50 text-sm outline-none focus:ring-2 focus:ring-blue-100" />
+                  <button onClick={handleSetExpire}
+                    className="px-4 py-2 bg-gray-900 text-white rounded-xl text-sm hover:bg-gray-800">设置</button>
+                </div>
+              </div>
+
+              <div>
+                <label className="text-xs text-gray-500 mb-1 block">备注</label>
+                <input type="text" value={remark} onChange={e => setRemark(e.target.value)} placeholder="操作原因"
+                  className="w-full px-3 py-2 rounded-xl bg-gray-50 text-sm outline-none focus:ring-2 focus:ring-blue-100" />
+              </div>
+            </div>
+
+            {membershipMsg && <p className="text-sm text-green-600">{membershipMsg}</p>}
+
+            <button onClick={() => setMembershipModal(null)}
+              className="w-full py-2.5 text-sm rounded-xl bg-gray-100 text-gray-600 hover:bg-gray-200">关闭</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

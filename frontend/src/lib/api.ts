@@ -88,4 +88,26 @@ export const api = {
     request('/learning/tasks', { method: 'POST', body: JSON.stringify({ titleEn, titleZh, mode, exclude }), direct: true }),
   reviewAnswer: (titleEn: string, titleZh: string, taskTitle: string, answer: string, mode: string) =>
     request('/learning/review', { method: 'POST', body: JSON.stringify({ titleEn, titleZh, taskTitle, answer, mode }), direct: true }),
+
+  // Membership
+  getMembership: () => request('/user/membership', { direct: true }),
+  getMembershipContact: () => request('/user/membership-contact', { direct: true }),
+  redeemCode: (code: string) =>
+    request('/redeem-codes/redeem', { method: 'POST', body: JSON.stringify({ code }), direct: true }),
+
+  // Admin - Redeem Codes
+  generateRedeemCodes: (data: { name: string; count: number; days: number; expireAt?: string; remark?: string }) =>
+    request('/admin/redeem-codes', { method: 'POST', body: JSON.stringify(data) }),
+  getRedeemCodes: (params: Record<string, string>) =>
+    request(`/admin/redeem-codes?${new URLSearchParams(params)}`),
+  disableRedeemCode: (id: number) =>
+    request(`/admin/redeem-codes/${id}/disable`, { method: 'PATCH' }),
+
+  // Admin - Membership
+  setMembershipExpireAt: (userId: number, expireAt: string, remark?: string) =>
+    request(`/admin/users/${userId}/membership-expire-at`, { method: 'PATCH', body: JSON.stringify({ expireAt, remark }) }),
+  addMembershipDays: (userId: number, days: number, remark?: string) =>
+    request(`/admin/users/${userId}/membership-add-days`, { method: 'POST', body: JSON.stringify({ days, remark }) }),
+  getMembershipRecords: (userId: number) =>
+    request(`/admin/users/${userId}/membership-records`),
 };

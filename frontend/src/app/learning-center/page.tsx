@@ -7,12 +7,34 @@ import { getTagColor } from '@/lib/tag-colors';
 import Link from 'next/link';
 import { GraduationCap, Search } from 'lucide-react';
 
+function ContactModal({ onClose }: { onClose: () => void }) {
+  const { data: contact } = useQuery({ queryKey: ['membership-contact'], queryFn: () => api.getMembershipContact() });
+  const { membershipExpireAt } = useAuth();
+  const expired = membershipExpireAt && new Date(membershipExpireAt) <= new Date();
+  return (
+    <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50" onClick={onClose}>
+      <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-xl space-y-4" onClick={e => e.stopPropagation()}>
+        <h3 className="font-semibold text-gray-900 text-center">
+          {expired ? '你的高级会员已过期，请联系管理员开通高级功能' : '请联系管理员开通高级功能'}
+        </h3>
+        <p className="text-sm text-gray-500 text-center">开通或续费后即可继续使用学习中心等高级功能</p>
+        {contact?.wechat && <div className="text-sm text-center text-gray-700">微信：{contact.wechat}</div>}
+        <div className="flex gap-2">
+          <Link href="/settings" className="flex-1 py-2.5 text-sm rounded-xl bg-blue-50 text-blue-600 hover:bg-blue-100 text-center">兑换卡密</Link>
+          <button onClick={onClose} className="flex-1 py-2.5 text-sm rounded-xl bg-gray-100 text-gray-600 hover:bg-gray-200">关闭</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function LearningCenterPage() {
-  const { isPremium } = useAuth();
+  const { isPremium, user } = useAuth();
   const [keyword, setKeyword] = useState('');
   const [searchInput, setSearchInput] = useState('');
   const [tag, setTag] = useState('');
   const [page, setPage] = useState(0);
+  const [showContact, setShowContact] = useState(false);
 
   const { data, isLoading } = useQuery({
     queryKey: ['lc-topics', page, keyword, tag],
@@ -32,11 +54,20 @@ export default function LearningCenterPage() {
 
   if (!isPremium) {
     return (
-      <div className="flex flex-col items-center justify-center py-24 text-center">
-        <GraduationCap size={48} className="text-gray-300 mb-4" />
-        <h2 className="text-xl font-semibold text-gray-900 mb-2">学习中心</h2>
-        <p className="text-gray-500">该功能仅对高级用户开放</p>
-      </div>
+      <>
+        <div className="flex flex-col items-center justify-center py-24 text-center">
+          <GraduationCap size={48} className="text-gray-300 mb-4" />
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">学习中心</h2>
+          <p className="text-gray-500 mb-4">{user ? '该功能仅对高级用户开放' : '请先登录'}</p>
+          {user && (
+            <button onClick={() => setShowContact(true)}
+              className="px-5 py-2.5 bg-amber-50 text-amber-600 rounded-xl text-sm hover:bg-amber-100">
+              开通会员
+            </button>
+          )}
+        </div>
+        {showContact && <ContactModal onClose={() => setShowContact(false)} />}
+      </>
     );
   }
 

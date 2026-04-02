@@ -40,8 +40,9 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/topics/tags").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/topics/stats").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/topics/{id}").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/user/membership-contact").permitAll()
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                .requestMatchers("/api/learning/**").hasAnyRole("PREMIUM_USER", "ADMIN")
+                .requestMatchers("/api/learning/**").hasAnyRole("PREMIUM_USER", "ADMIN", "MEMBER")
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
