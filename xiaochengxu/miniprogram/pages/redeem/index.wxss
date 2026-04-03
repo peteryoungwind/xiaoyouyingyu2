@@ -1,0 +1,120 @@
+/* Explanation */
+.explain-text {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-top: 12rpx;
+}
+
+/* Membership card */
+.membership-card {
+  border: 2rpx solid var(--border);
+}
+
+.membership-active {
+  border-color: var(--accent-gold);
+  background: linear-gradient(135deg, #FFFFFF, var(--accent-gold-light));
+}
+
+.membership-status {
+  font-size: 24rpx;
+  font-weight: 500;
+  padding: 6rpx 16rpx;
+  border-radius: 16rpx;
+}
+
+.status-active {
+  background: #E8FAE6;
+  color: var(--success);
+}
+
+.status-expired {
+  background: #FFF0F0;
+  color: var(--error);
+}
+
+.status-none {
+  background: var(--bg-input);
+  color: var(--text-hint);
+}
+
+.detail-label {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+}
+
+.detail-value {
+  font-size: 26rpx;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.remain-days {
+  color: var(--accent-gold);
+  font-weight: 600;
+}
+
+.expired-text {
+  color: var(--error);
+}
+
+/* Code input */
+.code-input-wrapper {
+  height: 96rpx;
+}
+
+.code-input-wrapper input {
+  font-size: 32rpx;
+  letter-spacing: 4rpx;
+}
+
+/* Result card */
+.result-card {
+  text-align: center;
+  border: 2rpx solid transparent;
+}
+
+.result-success {
+  border-color: var(--success);
+  background: linear-gradient(135deg, #FFFFFF, #E8FAE6);
+}
+
+.result-error {
+  border-color: var(--error);
+  background: linear-gradient(135deg, #FFFFFF, #FFF0F0);
+}
+
+.result-icon {
+  font-size: 72rpx;
+  margin-bottom: 16rpx;
+}
+
+.result-message {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.result-detail {
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 12rpx;
+  padding: 16rpx 24rpx;
+}
+
+.result-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8rpx 0;
+}
+
+.result-label {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+}
+
+.result-value {
+  font-size: 26rpx;
+  color: var(--text-primary);
+  font-weight: 600;
+}

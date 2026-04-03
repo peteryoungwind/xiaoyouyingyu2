@@ -1,0 +1,38 @@
+<view class="modal-overlay" wx:if="{{visible}}" bindtap="onClose">
+  <view class="modal-content" catchtap="">
+    <!-- Header -->
+    <view class="modal-header">
+      <text class="modal-title" wx:if="{{expired}}">你的高级会员已过期</text>
+      <text class="modal-title" wx:else>请联系管理员开通高级功能</text>
+      <view class="modal-close" bindtap="onClose">
+        <text class="close-icon">X</text>
+      </view>
+    </view>
+
+    <!-- Body -->
+    <view class="modal-body">
+      <text class="modal-desc" wx:if="{{expired}}">你的高级会员已到期，续费后可继续使用学习中心全部功能。</text>
+      <text class="modal-desc" wx:else>开通高级会员后，可使用学习中心全部功能，包括热身、词汇、表达工具箱、练习任务和 AI 点评。</text>
+
+      <!-- Contact info -->
+      <view class="contact-section" wx:if="{{contactInfo}}">
+        <text class="contact-label">联系方式</text>
+        <view class="contact-row" bindtap="onCopyContact">
+          <text class="contact-value">{{contactInfo.contact || '请联系管理员'}}</text>
+          <text class="copy-hint">点击复制</text>
+        </view>
+        <text class="contact-note" wx:if="{{contactInfo.note}}">{{contactInfo.note}}</text>
+      </view>
+
+      <view class="loading-hint" wx:if="{{loadingContact}}">
+        <text>加载联系信息中...</text>
+      </view>
+    </view>
+
+    <!-- Footer -->
+    <view class="modal-footer">
+      <button class="btn btn-gold btn-block" bindtap="onRedeem">兑换卡密</button>
+      <button class="btn btn-secondary btn-block mt-16" bindtap="onClose">关闭</button>
+    </view>
+  </view>
+</view>

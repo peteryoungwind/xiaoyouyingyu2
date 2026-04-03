@@ -1,0 +1,73 @@
+<view class="page-container safe-bottom">
+  <!-- Banner -->
+  <view class="banner-card card">
+    <view class="banner-title">小柚英语</view>
+    <view class="banner-subtitle">每日口语练习，轻松提升表达力</view>
+  </view>
+
+  <!-- 数据概览 -->
+  <view class="stats-row">
+    <view class="stat-card card">
+      <view class="stat-number">{{totalTopics}}</view>
+      <view class="stat-label">话题总数</view>
+    </view>
+    <view class="stat-card card">
+      <view class="stat-number">{{stats.days}}</view>
+      <view class="stat-label">坚持天数</view>
+    </view>
+    <view class="stat-card card">
+      <view class="stat-number">{{hotTags.length}}</view>
+      <view class="stat-label">话题标签</view>
+    </view>
+  </view>
+
+  <!-- 最新主题 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">最新主题</text>
+      <text class="section-more" bindtap="goToTopics">查看全部</text>
+    </view>
+    <view wx:for="{{latestTopics}}" wx:key="id" class="topic-card card" bindtap="goToTopicDetail" data-id="{{item.id}}">
+      <view class="topic-title">{{item.title}}</view>
+      <view class="topic-meta" wx:if="{{item.titleZh}}">
+        <text class="topic-title-zh">{{item.titleZh}}</text>
+      </view>
+      <view class="topic-bottom">
+        <text class="topic-date">{{item.eventDate}}</text>
+        <view class="topic-tags" wx:if="{{item.tags}}">
+          <text wx:for="{{item.tags.split(',')}}" wx:for-item="tag" wx:key="*this" class="tag">{{tag}}</text>
+        </view>
+      </view>
+    </view>
+    <view wx:if="{{latestTopics.length === 0 && !loading}}" class="empty-hint">暂无主题</view>
+  </view>
+
+  <!-- 热门标签 -->
+  <view class="section" wx:if="{{hotTags.length > 0}}">
+    <view class="section-header">
+      <text class="section-title">热门标签</text>
+    </view>
+    <view class="tags-grid">
+      <view wx:for="{{hotTags}}" wx:key="name" class="hot-tag" style="background:{{item.bg}};color:{{item.color}}" bindtap="filterByTag" data-tag="{{item.name}}">
+        {{item.name}}
+        <text class="hot-tag-count">{{item.count}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 学习入口 -->
+  <view class="card learning-entry" bindtap="goToLearning">
+    <view class="learning-entry-icon">📖</view>
+    <view class="learning-entry-content">
+      <view class="learning-entry-title">学习中心</view>
+      <view class="learning-entry-desc">口语热身 · 词汇积累 · AI点评</view>
+    </view>
+    <view class="learning-entry-arrow">›</view>
+  </view>
+
+  <!-- 登录引导 -->
+  <view class="card login-guide" wx:if="{{!isLoggedIn}}" bindtap="goToLogin">
+    <view class="login-guide-text">登录后解锁搜索和学习功能</view>
+    <view class="btn btn-primary btn-sm">立即登录</view>
+  </view>
+</view>

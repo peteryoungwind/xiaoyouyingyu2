@@ -1,0 +1,42 @@
+.empty-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 48rpx;
+}
+
+.empty-icon {
+  width: 160rpx;
+  height: 160rpx;
+  margin-bottom: 32rpx;
+  opacity: 0.6;
+}
+
+.empty-icon-default {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  background: #F5F7FA;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32rpx;
+}
+
+.empty-icon-text {
+  font-size: 48rpx;
+  color: #B0B8C4;
+  font-weight: 600;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #6C7A8D;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.empty-btn {
+  margin-top: 32rpx;
+}

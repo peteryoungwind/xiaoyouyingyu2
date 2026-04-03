@@ -1,0 +1,10 @@
+<view class="card topic-card" bindtap="onCardTap">
+  <view class="topic-card-header">
+    <text class="topic-title">{{topic.title}}</text>
+    <text class="topic-date">{{topic.eventDate}}</text>
+  </view>
+  <text class="topic-title-zh" wx:if="{{topic.titleZh}}">{{topic.titleZh}}</text>
+  <view class="topic-tags flex flex-wrap" wx:if="{{tagList.length > 0}}">
+    <text class="tag" wx:for="{{tagList}}" wx:key="index">{{item}}</text>
+  </view>
+</view>

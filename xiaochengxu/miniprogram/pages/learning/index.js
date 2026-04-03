@@ -1,0 +1,146 @@
+const app = getApp();
+const api = require('../../utils/api');
+
+Page({
+  data: {
+    isLoggedIn: false,
+    isMember: false,
+    keyword: '',
+    tags: [],
+    selectedTag: '',
+    topics: [],
+    page: 0,
+    size: 10,
+    totalPages: 0,
+    loading: false,
+    loadingMore: false,
+    hasMore: true,
+    contactInfo: null,
+    showMembershipModal: false
+  },
+
+  onLoad() {
+    this.refreshState();
+  },
+
+  onShow() {
+    this.refreshState();
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setData({ selected: 2 });
+    }
+  },
+
+  refreshState() {
+    const isLoggedIn = app.globalData.isLoggedIn;
+    const isMember = app.isMember();
+    this.setData({ isLoggedIn, isMember });
+
+    if (isLoggedIn && isMember) {
+      this.loadTags();
+      this.loadTopics(true);
+    } else if (isLoggedIn && !isMember) {
+      this.loadContactInfo();
+    }
+  },
+
+  loadContactInfo() {
+    api.getMembershipContact().then(res => {
+      this.setData({ contactInfo: res });
+    }).catch(err => {
+      console.error('Get contact info failed:', err);
+    });
+  },
+
+  loadTags() {
+    api.getTagStats().then(res => {
+      const tags = Object.keys(res || {});
+      this.setData({ tags });
+    }).catch(err => {
+      console.error('Load tags failed:', err);
+    });
+  },
+
+  loadTopics(reset) {
+    if (this.data.loading || this.data.loadingMore) return;
+
+    const page = reset ? 0 : this.data.page;
+    this.setData(reset ? { loading: true } : { loadingMore: true });
+
+    const params = {
+      page: page,
+      size: this.data.size
+    };
+    if (this.data.keyword) params.keyword = this.data.keyword;
+    if (this.data.selectedTag) params.tag = this.data.selectedTag;
+
+    api.getTopics(params).then(res => {
+      const content = res.content || [];
+      const topics = content.map(t => {
+        return {
+          ...t,
+          tagList: t.tags ? t.tags.split(',').map(s => s.trim()).filter(Boolean) : []
+        };
+      });
+
+      this.setData({
+        topics: reset ? topics : this.data.topics.concat(topics),
+        page: page + 1,
+        totalPages: res.totalPages || 0,
+        hasMore: (page + 1) < (res.totalPages || 0),
+        loading: false,
+        loadingMore: false
+      });
+    }).catch(err => {
+      console.error('Load topics failed:', err);
+      this.setData({ loading: false, loadingMore: false });
+      wx.showToast({ title: '加载失败', icon: 'none' });
+    });
+  },
+
+  onInputKeyword(e) {
+    this.setData({ keyword: e.detail.value });
+  },
+
+  onSearch() {
+    this.loadTopics(true);
+  },
+
+  onClearKeyword() {
+    this.setData({ keyword: '' });
+    this.loadTopics(true);
+  },
+
+  onSelectTag(e) {
+    const tag = e.currentTarget.dataset.tag;
+    this.setData({
+      selectedTag: this.data.selectedTag === tag ? '' : tag
+    });
+    this.loadTopics(true);
+  },
+
+  onTopicTap(e) {
+    const id = e.currentTarget.dataset.id;
+    wx.navigateTo({
+      url: '/pages/learningTopic/index?id=' + id
+    });
+  },
+
+  goToLogin() {
+    wx.navigateTo({ url: '/pages/login/index' });
+  },
+
+  goToRedeem() {
+    wx.navigateTo({ url: '/pages/redeem/index' });
+  },
+
+  onPullDownRefresh() {
+    this.refreshState();
+    wx.stopPullDownRefresh();
+  },
+
+  onReachBottom() {
+    if (this.data.hasMore && !this.data.loadingMore) {
+      this.loadTopics(false);
+    }
+  }
+});

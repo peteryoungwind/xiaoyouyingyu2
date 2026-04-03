@@ -1,0 +1,106 @@
+<view class="page-container safe-bottom">
+
+  <!-- Membership info card -->
+  <view class="card membership-card {{membershipActive ? 'membership-active' : ''}}">
+    <view class="card-title">会员信息</view>
+    <view class="flex justify-between items-center mt-16">
+      <text class="detail-label">状态</text>
+      <view class="membership-status status-{{membershipStatus}}">{{membershipStatusLabel || '未开通'}}</view>
+    </view>
+    <view wx:if="{{membershipExpireAt}}" class="flex justify-between items-center mt-16">
+      <text class="detail-label">{{membershipActive ? '到期时间' : '过期时间'}}</text>
+      <text class="detail-value {{!membershipActive ? 'expired-text' : ''}}">{{membershipExpireAt}}</text>
+    </view>
+    <view wx:if="{{membershipActive && remainingDays > 0}}" class="flex justify-between items-center mt-16">
+      <text class="detail-label">剩余天数</text>
+      <text class="detail-value remain-days">{{remainingDays}} 天</text>
+    </view>
+  </view>
+
+  <!-- Not member: contact info -->
+  <view wx:if="{{!isMember}}" class="card">
+    <view class="card-title">开通会员</view>
+    <view class="member-promo">
+      <text class="promo-text">开通会员即可使用学习中心全部功能，包括AI热身、词汇、表达模板、练习任务和AI点评。</text>
+    </view>
+
+    <view wx:if="{{contactInfo}}" class="contact-section mt-24">
+      <view class="contact-item" wx:if="{{contactInfo.message}}">
+        <text class="contact-label">说明</text>
+        <text class="contact-value">{{contactInfo.message}}</text>
+      </view>
+      <view class="contact-item" wx:if="{{contactInfo.contactName}}">
+        <text class="contact-label">联系人</text>
+        <text class="contact-value">{{contactInfo.contactName}}</text>
+      </view>
+      <view class="contact-item" wx:if="{{contactInfo.wechat}}">
+        <text class="contact-label">微信</text>
+        <text class="contact-value selectable" selectable="true">{{contactInfo.wechat}}</text>
+      </view>
+      <view class="contact-item" wx:if="{{contactInfo.phone}}">
+        <text class="contact-label">电话</text>
+        <text class="contact-value selectable" selectable="true">{{contactInfo.phone}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Redeem entry -->
+  <view class="card menu-card">
+    <view class="menu-item" bindtap="goToRedeem">
+      <view class="menu-icon">🎫</view>
+      <view class="menu-text">卡密兑换</view>
+      <view class="menu-arrow">›</view>
+    </view>
+  </view>
+
+  <!-- Change password -->
+  <view class="card">
+    <view class="card-title">修改密码</view>
+
+    <view class="form-group mt-24">
+      <view class="form-label">原密码</view>
+      <view class="input-wrapper">
+        <input
+          type="text"
+          password
+          placeholder="请输入原密码"
+          value="{{oldPassword}}"
+          bindinput="onOldPasswordInput"
+        />
+      </view>
+    </view>
+
+    <view class="form-group">
+      <view class="form-label">新密码</view>
+      <view class="input-wrapper">
+        <input
+          type="text"
+          password
+          placeholder="至少6位"
+          value="{{newPassword}}"
+          bindinput="onNewPasswordInput"
+        />
+      </view>
+    </view>
+
+    <view class="form-group">
+      <view class="form-label">确认新密码</view>
+      <view class="input-wrapper">
+        <input
+          type="text"
+          password
+          placeholder="再次输入新密码"
+          value="{{confirmPassword}}"
+          bindinput="onConfirmPasswordInput"
+        />
+      </view>
+    </view>
+
+    <button
+      class="btn btn-primary btn-block mt-32"
+      bindtap="onChangePassword"
+      disabled="{{submitting}}"
+    >{{submitting ? '提交中...' : '修改密码'}}</button>
+  </view>
+
+</view>

@@ -1,0 +1,48 @@
+<view class="page-container safe-bottom">
+  <!-- 搜索 -->
+  <view class="search-bar">
+    <view class="search-input-wrap">
+      <input placeholder="搜索主题..." value="{{keyword}}" bindinput="onSearchInput" bindconfirm="onSearch" />
+    </view>
+    <view class="search-btn" bindtap="onSearch">搜索</view>
+    <view class="calendar-btn" bindtap="goToCalendar">📅</view>
+  </view>
+
+  <!-- 标签筛选 -->
+  <scroll-view scroll-x class="tags-scroll" wx:if="{{tags.length > 0}}">
+    <view class="tags-row">
+      <view wx:for="{{tags}}" wx:key="name"
+        class="tag {{selectedTag === item.name ? 'tag-active' : ''}}"
+        bindtap="onTagTap" data-tag="{{item.name}}">
+        {{item.name}}
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 话题列表 -->
+  <view wx:if="{{loading}}" class="loading-wrap">
+    <view class="loading-text">加载中...</view>
+  </view>
+
+  <view wx:elif="{{topics.length === 0}}" class="empty-wrap">
+    <view class="empty-text">暂无主题</view>
+  </view>
+
+  <view wx:else>
+    <view wx:for="{{topics}}" wx:key="id" class="topic-card card" bindtap="goToDetail" data-id="{{item.id}}">
+      <view class="topic-title">{{item.title}}</view>
+      <view class="topic-title-zh" wx:if="{{item.titleZh}}">{{item.titleZh}}</view>
+      <view class="topic-bottom">
+        <text class="topic-date">{{item.eventDate}}</text>
+        <view class="topic-tags" wx:if="{{item.tags}}">
+          <text wx:for="{{item.tags.split(',')}}" wx:for-item="tag" wx:key="*this" class="tag" wx:if="{{tag}}">{{tag}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{loadingMore}}" class="loading-wrap"><view class="loading-text">加载更多...</view></view>
+  <view wx:if="{{!loading && !loadingMore && page >= totalPages && topics.length > 0}}" class="loading-wrap">
+    <view class="loading-text end-text">已加载全部</view>
+  </view>
+</view>

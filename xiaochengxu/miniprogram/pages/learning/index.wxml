@@ -1,0 +1,112 @@
+<view class="page-container safe-bottom">
+
+  <!-- Not logged in -->
+  <view wx:if="{{!isLoggedIn}}" class="empty-state">
+    <view class="empty-icon">📚</view>
+    <view class="empty-title">登录后开启学习之旅</view>
+    <view class="empty-desc">学习中心提供热身、词汇、表达、练习任务等丰富内容</view>
+    <button class="btn btn-primary btn-block mt-32" bindtap="goToLogin">去登录</button>
+  </view>
+
+  <!-- Logged in but not member -->
+  <view wx:elif="{{!isMember}}" class="empty-state">
+    <view class="empty-icon">🔒</view>
+    <view class="empty-title">开通会员，解锁学习中心</view>
+    <view class="empty-desc">会员可使用AI驱动的热身、词汇、表达模板、练习任务和AI点评功能</view>
+
+    <view class="card membership-card mt-32" wx:if="{{contactInfo}}">
+      <view class="card-title">开通方式</view>
+      <view class="contact-item" wx:if="{{contactInfo.message}}">
+        <text class="contact-label">说明</text>
+        <text class="contact-value">{{contactInfo.message}}</text>
+      </view>
+      <view class="contact-item" wx:if="{{contactInfo.contactName}}">
+        <text class="contact-label">联系人</text>
+        <text class="contact-value">{{contactInfo.contactName}}</text>
+      </view>
+      <view class="contact-item" wx:if="{{contactInfo.wechat}}">
+        <text class="contact-label">微信</text>
+        <text class="contact-value selectable" selectable="true">{{contactInfo.wechat}}</text>
+      </view>
+      <view class="contact-item" wx:if="{{contactInfo.phone}}">
+        <text class="contact-label">电话</text>
+        <text class="contact-value selectable" selectable="true">{{contactInfo.phone}}</text>
+      </view>
+    </view>
+
+    <button class="btn btn-gold btn-block mt-24" bindtap="goToRedeem">卡密兑换</button>
+  </view>
+
+  <!-- Member content -->
+  <view wx:else>
+    <!-- Search bar -->
+    <view class="search-bar">
+      <view class="input-wrapper search-input-wrapper">
+        <input
+          placeholder="搜索学习主题"
+          value="{{keyword}}"
+          bindinput="onInputKeyword"
+          bindconfirm="onSearch"
+          confirm-type="search"
+        />
+        <view wx:if="{{keyword}}" class="clear-btn" bindtap="onClearKeyword">✕</view>
+      </view>
+    </view>
+
+    <!-- Tag filter -->
+    <scroll-view scroll-x class="tag-scroll" wx:if="{{tags.length > 0}}">
+      <view class="tag-list">
+        <view
+          wx:for="{{tags}}"
+          wx:key="*this"
+          class="tag {{selectedTag === item ? 'tag-active' : ''}}"
+          bindtap="onSelectTag"
+          data-tag="{{item}}"
+        >{{item}}</view>
+      </view>
+    </scroll-view>
+
+    <!-- Loading -->
+    <view wx:if="{{loading}}" class="loading-container">
+      <view class="loading-spinner"></view>
+      <text class="loading-text">加载中...</text>
+    </view>
+
+    <!-- Topic list -->
+    <view wx:elif="{{topics.length > 0}}" class="topic-list">
+      <view
+        wx:for="{{topics}}"
+        wx:key="id"
+        class="card topic-card"
+        bindtap="onTopicTap"
+        data-id="{{item.id}}"
+      >
+        <view class="topic-title">{{item.title}}</view>
+        <view class="topic-title-zh" wx:if="{{item.titleZh}}">{{item.titleZh}}</view>
+        <view class="topic-meta">
+          <text class="topic-date">{{item.eventDate}}</text>
+        </view>
+        <view class="topic-tags" wx:if="{{item.tagList.length > 0}}">
+          <text wx:for="{{item.tagList}}" wx:for-item="tag" wx:key="*this" class="tag">{{tag}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- Empty state -->
+    <view wx:elif="{{!loading}}" class="empty-state">
+      <view class="empty-icon">📭</view>
+      <view class="empty-title">暂无学习主题</view>
+      <view class="empty-desc">请稍后再来看看</view>
+    </view>
+
+    <!-- Load more -->
+    <view wx:if="{{loadingMore}}" class="loading-more">
+      <view class="loading-spinner-sm"></view>
+      <text>加载更多...</text>
+    </view>
+    <view wx:elif="{{!hasMore && topics.length > 0}}" class="no-more">
+      <text>没有更多了</text>
+    </view>
+  </view>
+
+</view>

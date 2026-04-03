@@ -1,0 +1,57 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/topics/index",
+    "pages/learning/index",
+    "pages/profile/index",
+    "pages/topicDetail/index",
+    "pages/learningTopic/index",
+    "pages/login/index",
+    "pages/register/index",
+    "pages/settings/index",
+    "pages/redeem/index",
+    "pages/calendar/index"
+  ],
+  "window": {
+    "backgroundColor": "#F5F7FA",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "navigationBarTitleText": "小柚英语",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#4A90D9",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "首页",
+        "iconPath": "images/icons/home.png",
+        "selectedIconPath": "images/icons/home-active.png"
+      },
+      {
+        "pagePath": "pages/topics/index",
+        "text": "主题",
+        "iconPath": "images/icons/goods.png",
+        "selectedIconPath": "images/icons/goods-active.png"
+      },
+      {
+        "pagePath": "pages/learning/index",
+        "text": "学习",
+        "iconPath": "images/icons/examples.png",
+        "selectedIconPath": "images/icons/examples-active.png"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的",
+        "iconPath": "images/icons/usercenter.png",
+        "selectedIconPath": "images/icons/usercenter-active.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents"
+}

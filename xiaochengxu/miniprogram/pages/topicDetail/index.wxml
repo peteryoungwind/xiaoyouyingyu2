@@ -1,0 +1,35 @@
+<view class="page-container safe-bottom">
+  <view wx:if="{{loading}}" class="loading-wrap"><view class="loading-text">加载中...</view></view>
+
+  <block wx:elif="{{topic}}">
+    <!-- 主题信息 -->
+    <view class="card info-card">
+      <view class="info-title">{{topic.title}}</view>
+      <view class="info-title-zh" wx:if="{{topic.titleZh}}">{{topic.titleZh}}</view>
+      <view class="info-meta">
+        <text class="info-date">{{topic.eventDate}}</text>
+      </view>
+      <view class="info-tags" wx:if="{{topic.tags}}">
+        <text wx:for="{{topic.tags.split(',')}}" wx:for-item="tag" wx:key="*this" class="tag">{{tag}}</text>
+      </view>
+    </view>
+
+    <!-- 讨论问题 -->
+    <view class="card questions-card">
+      <view class="card-title">讨论问题</view>
+      <view wx:for="{{questions}}" wx:key="index" class="question-item">
+        <view class="question-number">{{index + 1}}</view>
+        <view class="question-content">
+          <view class="question-en">{{item.en}}</view>
+          <view class="question-zh">{{item.zh}}</view>
+        </view>
+      </view>
+      <view wx:if="{{questions.length === 0}}" class="empty-text">暂无讨论问题</view>
+    </view>
+
+    <!-- 学习入口 -->
+    <view class="action-bar">
+      <button class="btn btn-primary btn-block" bindtap="goToLearning">开始练习</button>
+    </view>
+  </block>
+</view>

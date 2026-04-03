@@ -1,0 +1,64 @@
+.logo-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80rpx 0 60rpx;
+}
+
+.logo-icon {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 36rpx;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24rpx;
+  box-shadow: 0 8rpx 24rpx rgba(74, 144, 217, 0.3);
+}
+
+.logo-emoji {
+  font-size: 64rpx;
+}
+
+.logo-title {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8rpx;
+}
+
+.logo-subtitle {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+}
+
+.form-area {
+  padding: 20rpx 0;
+}
+
+.input-icon {
+  width: 36rpx;
+  height: 36rpx;
+  margin-right: 16rpx;
+  opacity: 0.5;
+}
+
+.input-placeholder {
+  color: var(--text-hint);
+  font-size: 28rpx;
+}
+
+.text-hint {
+  color: var(--text-hint);
+  font-size: 24rpx;
+}
+
+.wechat-note {
+  margin-top: -16rpx;
+}
+
+.link-text {
+  color: var(--primary);
+  font-size: 28rpx;
+}
