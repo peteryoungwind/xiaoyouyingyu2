@@ -1,54 +1,55 @@
-<view class="page-container safe-bottom">
-  <!-- Logo Area -->
+<view class="login-page">
+  <!-- Logo 区 -->
   <view class="logo-area">
     <view class="logo-icon">
-      <text class="logo-emoji">🍊</text>
+      <text class="logo-emoji">📖</text>
+      <view class="logo-badge">
+        <text class="badge-emoji">✨</text>
+      </view>
     </view>
     <text class="logo-title">小柚英语</text>
-    <text class="logo-subtitle">让英语口语练习更简单</text>
+    <text class="logo-subtitle">地道口语，AI 轻松陪练</text>
   </view>
 
-  <!-- Login Form -->
-  <view class="form-area">
-    <view class="input-wrapper {{usernameFocus ? 'input-wrapper-focus' : ''}} mb-24">
-      <image class="input-icon" src="/images/icon-user.png" mode="aspectFit" />
-      <input
-        placeholder="请输入用户名"
-        placeholder-class="input-placeholder"
-        value="{{username}}"
-        bindinput="onUsernameInput"
-        bindfocus="onUsernameFocus"
-        bindblur="onUsernameBlur"
-      />
+  <!-- 登录操作区 -->
+  <view class="login-action">
+    <!-- 气泡提示 -->
+    <view class="tip-bubble {{showTip ? 'tip-show' : ''}}">
+      <text>请先勾选同意协议</text>
+      <view class="tip-arrow"></view>
     </view>
 
-    <view class="input-wrapper {{passwordFocus ? 'input-wrapper-focus' : ''}} mb-32">
-      <image class="input-icon" src="/images/icon-lock.png" mode="aspectFit" />
-      <input
-        type="password"
-        placeholder="请输入密码"
-        placeholder-class="input-placeholder"
-        value="{{password}}"
-        bindinput="onPasswordInput"
-        bindfocus="onPasswordFocus"
-        bindblur="onPasswordBlur"
-      />
-    </view>
-
-    <button class="btn btn-primary btn-block mb-24 {{loading ? 'btn-disabled' : ''}}" bindtap="handleLogin" disabled="{{loading}}">
-      登录
+    <!-- 微信一键登录按钮 -->
+    <button
+      class="wechat-btn {{agree ? 'wechat-btn-active' : ''}} {{loading ? 'btn-disabled' : ''}}"
+      bindtap="handleWechatLogin"
+      disabled="{{loading}}"
+    >
+      <text class="wechat-icon">💬</text>
+      <text>{{loading ? '登录中...' : '微信一键登录'}}</text>
     </button>
 
-    <button class="btn btn-gold btn-block mb-32" bindtap="handleWechatLogin">
-      微信一键登录
-    </button>
-
-    <view class="wechat-note text-center mb-24">
-      <text class="text-hint">首次微信登录将自动注册</text>
+    <!-- 协议勾选 -->
+    <view class="agreement" bindtap="toggleAgree">
+      <view class="checkbox {{agree ? 'checkbox-checked' : ''}}">
+        <text wx:if="{{agree}}" class="check-mark">✓</text>
+      </view>
+      <view class="agreement-text">
+        <text>我已阅读并同意 </text>
+        <text class="link">《用户服务协议》</text>
+        <text> 与 </text>
+        <text class="link">《隐私政策》</text>
+        <view class="agreement-hint">
+          <text>首次登录将为您自动创建账号并开通试用会员</text>
+        </view>
+      </view>
     </view>
+  </view>
 
-    <view class="text-center">
-      <text class="link-text" bindtap="goToRegister">没有账号？立即注册</text>
-    </view>
+  <!-- 底部装饰 -->
+  <view class="footer">
+    <view class="footer-line"></view>
+    <text class="footer-text">Powered by GPT-4o</text>
+    <view class="footer-line"></view>
   </view>
 </view>

@@ -13,15 +13,15 @@
     "pages/calendar/index"
   ],
   "window": {
-    "backgroundColor": "#F5F7FA",
+    "backgroundColor": "#F2F2F7",
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#FFFFFF",
     "navigationBarTitleText": "小柚英语",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
-    "color": "#999999",
-    "selectedColor": "#4A90D9",
+    "color": "#8E8E93",
+    "selectedColor": "#007AFF",
     "backgroundColor": "#FFFFFF",
     "borderStyle": "white",
     "list": [

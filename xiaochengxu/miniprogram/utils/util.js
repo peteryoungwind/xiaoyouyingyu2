@@ -39,14 +39,14 @@ function getRemainingDays(expireAt) {
 }
 
 const TAG_COLORS = [
-  { bg: '#E8F0FE', color: '#4A90D9' },
-  { bg: '#FFF3E0', color: '#F5A623' },
-  { bg: '#E8F5E9', color: '#4CAF50' },
-  { bg: '#FCE4EC', color: '#E91E63' },
-  { bg: '#F3E5F5', color: '#9C27B0' },
-  { bg: '#E0F7FA', color: '#00BCD4' },
-  { bg: '#FFF8E1', color: '#FF8F00' },
-  { bg: '#E8EAF6', color: '#3F51B5' }
+  { bg: '#E5F1FF', color: '#007AFF' },
+  { bg: '#FFF3E0', color: '#FF9500' },
+  { bg: '#E8F5E9', color: '#34C759' },
+  { bg: '#FCE4EC', color: '#FF3B30' },
+  { bg: '#EDE7F6', color: '#5856D6' },
+  { bg: '#E0F7FA', color: '#5AC8FA' },
+  { bg: '#FFF8E1', color: '#FF9500' },
+  { bg: '#E8EAF6', color: '#007AFF' }
 ];
 
 function getTagColor(index) {

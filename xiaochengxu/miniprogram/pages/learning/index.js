@@ -12,16 +12,15 @@ Page({
     page: 0,
     size: 10,
     totalPages: 0,
+    totalTopics: 0,
     loading: false,
     loadingMore: false,
     hasMore: true,
     contactInfo: null,
-    showMembershipModal: false
+    stats: { days: 0 }
   },
 
-  onLoad() {
-    this.refreshState();
-  },
+  onLoad() { this.refreshState(); },
 
   onShow() {
     this.refreshState();
@@ -38,57 +37,52 @@ Page({
     if (isLoggedIn && isMember) {
       this.loadTags();
       this.loadTopics(true);
+      this.loadStats();
     } else if (isLoggedIn && !isMember) {
       this.loadContactInfo();
     }
   },
 
+  loadStats() {
+    api.getStats().then(res => {
+      this.setData({ stats: res || { days: 0 } });
+    }).catch(() => {});
+    api.getTopics({ page: 0, size: 1 }).then(res => {
+      this.setData({ totalTopics: res.totalElements || 0 });
+    }).catch(() => {});
+  },
+
   loadContactInfo() {
     api.getMembershipContact().then(res => {
       this.setData({ contactInfo: res });
-    }).catch(err => {
-      console.error('Get contact info failed:', err);
-    });
+    }).catch(err => console.error('Get contact info failed:', err));
   },
 
   loadTags() {
     api.getTagStats().then(res => {
-      const tags = Object.keys(res || {});
-      this.setData({ tags });
-    }).catch(err => {
-      console.error('Load tags failed:', err);
-    });
+      this.setData({ tags: Object.keys(res || {}) });
+    }).catch(err => console.error('Load tags failed:', err));
   },
 
   loadTopics(reset) {
     if (this.data.loading || this.data.loadingMore) return;
-
     const page = reset ? 0 : this.data.page;
     this.setData(reset ? { loading: true } : { loadingMore: true });
 
-    const params = {
-      page: page,
-      size: this.data.size
-    };
+    const params = { page, size: this.data.size };
     if (this.data.keyword) params.keyword = this.data.keyword;
     if (this.data.selectedTag) params.tag = this.data.selectedTag;
 
     api.getTopics(params).then(res => {
-      const content = res.content || [];
-      const topics = content.map(t => {
-        return {
-          ...t,
-          tagList: t.tags ? t.tags.split(',').map(s => s.trim()).filter(Boolean) : []
-        };
-      });
-
+      const topics = (res.content || []).map(t => ({
+        ...t, tagList: t.tags ? t.tags.split(',').map(s => s.trim()).filter(Boolean) : []
+      }));
       this.setData({
         topics: reset ? topics : this.data.topics.concat(topics),
         page: page + 1,
         totalPages: res.totalPages || 0,
         hasMore: (page + 1) < (res.totalPages || 0),
-        loading: false,
-        loadingMore: false
+        loading: false, loadingMore: false
       });
     }).catch(err => {
       console.error('Load topics failed:', err);
@@ -97,50 +91,26 @@ Page({
     });
   },
 
-  onInputKeyword(e) {
-    this.setData({ keyword: e.detail.value });
-  },
-
-  onSearch() {
-    this.loadTopics(true);
-  },
-
-  onClearKeyword() {
-    this.setData({ keyword: '' });
-    this.loadTopics(true);
-  },
+  onInputKeyword(e) { this.setData({ keyword: e.detail.value }); },
+  onSearch() { this.loadTopics(true); },
+  onClearKeyword() { this.setData({ keyword: '' }); this.loadTopics(true); },
 
   onSelectTag(e) {
     const tag = e.currentTarget.dataset.tag;
-    this.setData({
-      selectedTag: this.data.selectedTag === tag ? '' : tag
-    });
+    this.setData({ selectedTag: this.data.selectedTag === tag ? '' : tag });
     this.loadTopics(true);
   },
 
   onTopicTap(e) {
-    const id = e.currentTarget.dataset.id;
-    wx.navigateTo({
-      url: '/pages/learningTopic/index?id=' + id
-    });
+    wx.navigateTo({ url: '/pages/learningTopic/index?id=' + e.currentTarget.dataset.id });
   },
 
-  goToLogin() {
-    wx.navigateTo({ url: '/pages/login/index' });
-  },
+  goToLogin() { wx.navigateTo({ url: '/pages/login/index' }); },
+  goToRedeem() { wx.navigateTo({ url: '/pages/redeem/index' }); },
 
-  goToRedeem() {
-    wx.navigateTo({ url: '/pages/redeem/index' });
-  },
-
-  onPullDownRefresh() {
-    this.refreshState();
-    wx.stopPullDownRefresh();
-  },
+  onPullDownRefresh() { this.refreshState(); wx.stopPullDownRefresh(); },
 
   onReachBottom() {
-    if (this.data.hasMore && !this.data.loadingMore) {
-      this.loadTopics(false);
-    }
+    if (this.data.hasMore && !this.data.loadingMore) this.loadTopics(false);
   }
 });

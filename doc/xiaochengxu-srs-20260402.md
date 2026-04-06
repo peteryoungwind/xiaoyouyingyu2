@@ -5,9 +5,8 @@
 > 项目：小柚英语微信小程序
 > 本版调整重点：
 > 1. 前端页面风格统一
-> 2. 小程序配套独立后端实现全部业务
-> 3. 独立后端继续使用现有 MySQL 表结构与历史数据
-> 4. 新增微信号一键登录，未注册用户自动注册
+> 2. 小程序前端直接复用现有 Java 后端接口，不另建独立后端
+> 3. 新增微信号一键登录，未注册用户自动注册（需后端新增接口）
 
 ---
 
@@ -27,12 +26,11 @@
 
 ### 1.2 项目背景
 
-当前小柚英语已具备一套 Web 系统与既有 MySQL 数据资产。微信小程序版本不再依赖现有 Java 服务，而要建设：
+当前小柚英语已具备一套 Web 系统与完整的 Java 后端接口。微信小程序版本直接复用现有 Java 后端接口，只需建设：
 
 - 独立小程序前端
-- 独立小程序后端
-- 继续连接现有 MySQL 数据库
-- 兼容既有表结构与历史数据
+- 对接现有 Java 后端接口
+- 仅需后端配合新增微信登录接口
 
 ### 1.3 术语定义
 
@@ -40,7 +38,7 @@
 - **学习中心**：围绕主题生成并组织练习内容的模块。
 - **会员**：具有学习中心权限的用户状态。
 - **卡密**：可兑换会员时长的唯一兑换码。
-- **独立后端**：指不依赖当前 Java 服务、单独部署的小程序业务服务。
+- **独立后端**：指不依赖当前 Java 服务、单独部署的小程序业务服务。（本项目不采用此方案）
 - **账号合并**：指用户名密码账号与微信账号最终归并到同一个 `users` 用户主体下。
 - **微信绑定表**：建议新增 `user_wechat_auth`，用于维护微信身份与系统用户的绑定关系。
 
@@ -54,13 +52,13 @@
 
 1. 为用户提供移动端英语口语练习入口。
 2. 提供统一且一致的页面视觉与交互体验。
-3. 通过独立后端完整承接主题、学习、会员、卡密等业务。
-4. 保持对现有 MySQL 数据结构的兼容，复用现有数据资产。
+3. 通过对接现有 Java 后端接口完整承接主题、学习、会员、卡密等业务。
+4. 仅需后端配合新增微信登录接口，其余接口直接复用。
 
 ### 2.2 产品范围
 
 #### 一期范围
-- 微信号一键注册/登录
+- 微信号一键注册/登录（需后端新增 `/api/auth/wechat-login` 接口）
 - 用户注册/登录
 - 首页
 - 主题列表与详情
@@ -70,8 +68,6 @@
 - 设置页与个人中心
 - 日历页
 - 会员开通引导
-- 独立后端搭建
-- MySQL 数据兼容接入
 
 #### 非一期范围
 - 小程序完整运营后台
@@ -107,9 +103,8 @@
 ### 2.4 设计约束
 
 1. 小程序前端必须形成统一 UI 风格。
-2. 小程序后端必须独立实现全部业务，不依赖 Java 服务。
-3. 独立后端必须兼容现有 MySQL 表结构。
-4. 后端权限校验必须独立实现。
+2. 小程序前端直接调用现有 Java 后端接口，不另建独立后端。
+3. 后端权限校验由现有 Java 服务负责，前端只需正确传递 token。
 
 ---
 
@@ -333,118 +328,96 @@
 
 ---
 
-## 6. 独立后端需求
+## 6. 后端接口对接说明
 
-## 6.1 后端总体要求
+## 6.1 总体要求
 
-### BR-API-001 独立实现要求
-小程序后端必须独立实现以下业务能力：
-- 账号体系
-- 用户名密码登录与注册
-- 微信号一键登录与自动注册
-- 鉴权体系
-- 主题查询体系
-- 学习中心体系
-- 会员体系
-- 卡密体系
-- AI 调用体系
+### BR-API-001 复用现有接口
+小程序前端直接调用现有 Java 后端接口，不另建独立后端。
 
-### BR-API-002 不依赖 Java 服务
-新后端不得将当前 Java 服务作为业务运行时依赖。
-
-### BR-API-003 可独立部署
-新后端应支持独立部署、独立配置、独立日志与监控。
+### BR-API-002 微信登录接口扩展
+微信号一键登录需在现有 Java 后端新增 `POST /api/auth/wechat-login` 接口。
 
 ---
 
-## 6.2 数据兼容需求
+## 6.2 接口复用清单
 
-### DR-001 数据库继续使用 MySQL
-新后端必须继续使用现有 MySQL 数据库。
+| 接口 | 路径 | 状态 |
+|------|------|------|
+| 注册 | `POST /api/auth/register` | 直接复用 |
+| 登录 | `POST /api/auth/login` | 直接复用 |
+| 微信登录 | `POST /api/auth/wechat-login` | 需后端新增 |
+| 改密 | `PUT /api/auth/password` | 直接复用 |
+| 话题列表 | `GET /api/topics` | 直接复用 |
+| 话题详情 | `GET /api/topics/{id}` | 直接复用 |
+| 标签统计 | `GET /api/topics/tags` | 直接复用 |
+| 坚持天数 | `GET /api/topics/stats` | 直接复用 |
+| 日历视图 | `GET /api/topics/calendar` | 直接复用 |
+| 学习主题 | `GET /api/learning/topic/{id}` | 直接复用 |
+| 热身 | `POST /api/learning/warmup` | 直接复用 |
+| 词汇 | `POST /api/learning/vocabulary` | 直接复用 |
+| 表达 | `POST /api/learning/expressions` | 直接复用 |
+| 任务 | `POST /api/learning/tasks` | 直接复用 |
+| AI 点评 | `POST /api/learning/review` | 直接复用 |
+| 卡密兑换 | 待确认 | 需后端确认或新增 |
+| 会员状态 | 待确认 | 需后端确认或新增 |
 
-### DR-002 表结构兼容
-必须兼容以下现有表：
-- `users`
-- `topics`
-- `ai_models`
-- `redeem_codes`
-- `membership_records`
+---
 
-同时为账号合并与微信登录，推荐新增：
-- `user_wechat_auth`
+## 6.3 微信登录接口规格
 
-建议字段：
-- `id`
-- `user_id`
-- `wechat_open_id`
-- `wechat_union_id`
-- `created_at`
-- `updated_at`
+### POST `/api/auth/wechat-login`
 
-规则：
-1. `user_id` 指向唯一用户主体 `users.id`
-2. `wechat_open_id` 应唯一
-3. 若存在 `wechat_union_id`，也建议唯一约束
-4. 同一微信身份不得绑定多个用户
+**请求体**：
+```json
+{ "code": "微信临时登录凭证" }
+```
 
-### DR-003 历史数据兼容
-必须兼容现有历史数据，包括：
-- 历史用户
-- 历史主题
-- 历史会员状态
-- 历史卡密
-- 历史会员流水
+**响应** `200`：
+```json
+{
+  "token": "eyJhbGciOiJIUz...",
+  "username": "wx_user_xxx",
+  "role": "USER"
+}
+```
 
-### DR-004 字段语义兼容
-不得擅自改变既有字段语义，例如：
-- `membership_expire_at`
-- `role`
-- `questions`
-- `status`
-- `used_by`
-
-### DR-005 新增表要求
-如果后续新增练习记录等表，必须：
-1. 保持命名规范统一
-2. 与现有用户、主题主键逻辑兼容
-3. 不破坏现有业务数据读取
+**逻辑**：
+1. 后端用 `code` 换取微信 `openid`
+2. 查询 `user_wechat_auth` 表是否已绑定用户
+3. 若已绑定，直接签发 token 登录
+4. 若未绑定，自动创建用户 + 绑定关系 + 赠送 3 天会员，再签发 token
 
 ---
 
 ## 7. 建议接口清单
 
-> 以下为新后端建议实现的接口能力，路径可参考现有语义，但实现完全由新后端承担。
+> 以下为小程序前端需要对接的接口，路径与现有 Java 后端保持一致。
 
 ### 认证
-- `POST /auth/register`
-- `POST /auth/login`
-- `POST /auth/wechat-login`
-- `POST /auth/bind-wechat`
-- `POST /auth/set-password`
-- `PUT /auth/password`
-
-### 用户
-- `GET /user/membership`
-- `GET /user/membership-contact`
-- `GET /user/profile`（建议）
+- `POST /api/auth/register`
+- `POST /api/auth/login`
+- `POST /api/auth/wechat-login`（需后端新增）
+- `PUT /api/auth/password`
 
 ### 主题
-- `GET /topics`
-- `GET /topics/{id}`
-- `GET /topics/tags`
-- `GET /topics/stats`
-- `GET /topics/calendar`
+- `GET /api/topics`
+- `GET /api/topics/{id}`
+- `GET /api/topics/tags`
+- `GET /api/topics/stats`
+- `GET /api/topics/calendar`
 
 ### 学习中心
-- `GET /learning/topic/{id}`
-- `POST /learning/warmup`
-- `POST /learning/vocabulary`
-- `POST /learning/expressions`
-- `POST /learning/tasks`
-- `POST /learning/review`
+- `GET /api/learning/topic/{id}`
+- `POST /api/learning/warmup`
+- `POST /api/learning/vocabulary`
+- `POST /api/learning/expressions`
+- `POST /api/learning/tasks`
+- `POST /api/learning/review`
 
-### 卡密
-- `POST /redeem-codes/redeem`
+### 会员与卡密
+- `GET /api/user/membership`（需后端确认或新增）
+- `POST /api/redeem-codes/redeem`（需后端确认或新增）
 
 ---
 
@@ -456,22 +429,18 @@
 3. 首页、主题列表首屏加载需较快。
 
 ### 8.2 安全
-1. 密码必须加密存储。
-2. 鉴权令牌必须安全签发与校验。
-3. 卡密兑换必须事务控制。
-4. 敏感配置必须环境变量化。
+1. token 必须安全存储，请求自动携带。
+2. 敏感操作（卡密兑换）需登录态校验（由后端保障）。
 
 ### 8.3 可维护性
 1. 前端组件统一、可复用。
-2. 后端模块分层清晰。
-3. 数据访问层需单独封装 MySQL 适配逻辑。
-4. AI 调用逻辑需单独封装。
+2. 请求层统一封装，便于后续接口扩展。
+3. AI 调用逻辑由后端负责，前端只需展示结果。
 
 ### 8.4 一致性
 1. 前端所有页面风格一致。
 2. 前端所有受限态、空状态、错误态风格一致。
-3. 前后端关于会员状态的口径一致。
-4. 新后端与现有 MySQL 字段语义保持一致。
+3. 前后端关于会员状态的口径一致（以后端返回为准）。
 
 ---
 
@@ -482,16 +451,12 @@
 - 卡片、按钮、输入框、弹窗样式统一。
 - 空状态、受限状态、加载状态一致。
 
-### 9.2 独立后端验收
-- 小程序后端在 Java 服务不可用时仍能独立运行。
-- 登录、主题、学习、会员、卡密功能均由新后端完成。
+### 9.2 后端接口对接验收
+- 小程序前端可正常调用现有 Java 后端接口。
+- 微信登录接口由后端新增并联调通过。
+- 登录、主题、学习、会员、卡密功能均正常工作。
 
-### 9.3 MySQL 兼容验收
-- 新后端能正确读取现有 `users`、`topics`、`redeem_codes`、`membership_records` 等表。
-- 历史数据可正常使用。
-- 不出现字段语义错配。
-
-### 9.4 业务验收
+### 9.3 业务验收
 - 新用户注册后自动获得 3 天会员。
 - 登录用户可搜索主题。
 - 会员用户可进入学习中心并获取 AI 点评。
@@ -505,7 +470,7 @@
 本版 SRS 明确了小柚英语微信小程序的关键建设方向：
 
 1. 前端风格统一。
-2. 后端独立实现。
-3. 数据继续复用现有 MySQL。
+2. 后端直接复用现有 Java 接口，不另建独立后端。
+3. 仅需后端配合新增微信登录接口。
 
-该方案适合在现有业务已验证的基础上，建设一套更适合小程序长期演进的独立系统。
+该方案最大化复用现有后端能力，降低建设成本，同时为小程序提供完整的移动端体验。

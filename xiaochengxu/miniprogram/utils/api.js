@@ -23,6 +23,10 @@ function changePassword(oldPassword, newPassword) {
   });
 }
 
+function wechatLogin(code) {
+  return http.post('/auth/wechat-login', { code: code });
+}
+
 // ==================== Topics ====================
 
 function getTopics(params) {
@@ -128,6 +132,7 @@ module.exports = {
   login: login,
   register: register,
   changePassword: changePassword,
+  wechatLogin: wechatLogin,
   // Topics
   getTopics: getTopics,
   getTopic: getTopic,

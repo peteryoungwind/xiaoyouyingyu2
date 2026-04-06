@@ -24,6 +24,10 @@ server:
   tomcat:
     connection-timeout: 180000
 
+wechat:
+  appid: wxe44039d85e17c3d5
+  secret: ce05db971bee9a6b2a87693881bf9b87
+
 app:
   jwt:
     secret: your-256-bit-secret-key-change-in-production-please

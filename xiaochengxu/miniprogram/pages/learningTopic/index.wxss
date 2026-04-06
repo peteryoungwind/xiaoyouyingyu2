@@ -89,7 +89,7 @@
 .mode-btn-active {
   background: var(--primary);
   color: #FFFFFF;
-  box-shadow: 0 4rpx 12rpx rgba(74, 144, 217, 0.3);
+  box-shadow: 0 4rpx 12rpx rgba(0, 122, 255, 0.3);
 }
 
 /* Module card */
@@ -305,17 +305,17 @@
 
 .diff-basic, .diff-easy {
   background: #E8FAE6;
-  color: #52C41A;
+  color: #34C759;
 }
 
 .diff-intermediate, .diff-medium {
   background: #FFF3E0;
-  color: #F5A623;
+  color: #FF9500;
 }
 
 .diff-advanced, .diff-hard {
   background: #FFF0F0;
-  color: #FF4D4F;
+  color: #FF3B30;
 }
 
 .vocab-zh {

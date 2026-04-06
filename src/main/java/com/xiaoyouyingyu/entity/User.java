@@ -12,11 +12,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false, length = 50)
+    @Column(unique = true, length = 50)
     private String username;
 
-    @Column(nullable = false)
     private String password;
+
+    @Column(name = "wechat_openid", unique = true)
+    private String wechatOpenid;
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "VARCHAR(20) DEFAULT 'USER'")

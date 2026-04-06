@@ -23,10 +23,26 @@ Page({
 
   onShow() {
     this.setData({ isLoggedIn: app.checkLogin() });
+    // Check if there's a pending filter from another page
+    var pending = app.globalData._pendingTopicFilter;
+    if (pending) {
+      delete app.globalData._pendingTopicFilter;
+      if (pending.type === 'tag') {
+        this.setData({ selectedTag: pending.value, keyword: '', page: 0 });
+      } else if (pending.type === 'keyword') {
+        this.setData({ keyword: pending.value, selectedTag: '', page: 0 });
+      }
+      this.loadTopics(true);
+    }
   },
 
   setTagFilter(tag) {
-    this.setData({ selectedTag: tag, page: 0 });
+    this.setData({ selectedTag: tag, keyword: '', page: 0 });
+    this.loadTopics(true);
+  },
+
+  setKeywordFilter(keyword) {
+    this.setData({ keyword: keyword, selectedTag: '', page: 0 });
     this.loadTopics(true);
   },
 

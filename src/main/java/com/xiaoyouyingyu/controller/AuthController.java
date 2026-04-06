@@ -6,12 +6,21 @@ import com.xiaoyouyingyu.entity.User;
 import com.xiaoyouyingyu.repository.UserRepository;
 import com.xiaoyouyingyu.security.JwtUtils;
 import com.xiaoyouyingyu.service.MembershipService;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -21,6 +30,12 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
     private final MembershipService membershipService;
+
+    @Value("${wechat.appid}")
+    private String wechatAppid;
+
+    @Value("${wechat.secret}")
+    private String wechatSecret;
 
     private AuthResponse buildAuthResponse(User user) {
         String token = jwtUtils.generateToken(user.getUsername(), user.getRole().name());
@@ -63,5 +78,47 @@ public class AuthController {
                     return ResponseEntity.ok(Map.of("message", "密码修改成功"));
                 })
                 .orElse(ResponseEntity.badRequest().body(null));
+    }
+
+    @PostMapping("/wechat-login")
+    public ResponseEntity<?> wechatLogin(@RequestBody Map<String, String> body) {
+        String code = body.get("code");
+        if (code == null || code.isBlank()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "code不能为空"));
+        }
+
+        try {
+            // Exchange code for openid via WeChat API
+            String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + wechatAppid
+                    + "&secret=" + wechatSecret + "&js_code=" + code + "&grant_type=authorization_code";
+
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).GET().build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode json = mapper.readTree(response.body());
+
+            if (json.has("errcode") && json.get("errcode").asInt() != 0) {
+                return ResponseEntity.badRequest().body(Map.of("error", "微信登录失败: " + json.get("errmsg").asText()));
+            }
+
+            String openid = json.get("openid").asText();
+
+            // Find or create user
+            User user = userRepository.findByWechatOpenid(openid).orElseGet(() -> {
+                User newUser = new User();
+                newUser.setWechatOpenid(openid);
+                newUser.setUsername("wx_" + UUID.randomUUID().toString().substring(0, 8));
+                newUser.setPassword(passwordEncoder.encode(UUID.randomUUID().toString()));
+                userRepository.save(newUser);
+                membershipService.grantRegistrationGift(newUser);
+                return newUser;
+            });
+
+            return ResponseEntity.ok(buildAuthResponse(user));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", "微信登录失败: " + e.getMessage()));
+        }
     }
 }

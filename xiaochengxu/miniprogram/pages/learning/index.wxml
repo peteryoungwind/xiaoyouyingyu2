@@ -39,6 +39,30 @@
 
   <!-- Member content -->
   <view wx:else>
+    <!-- Header -->
+    <view class="page-header">
+      <view class="page-header-sub">继续学习</view>
+      <view class="page-header-title">学习中心</view>
+    </view>
+
+    <!-- Stats -->
+    <view class="stats-card">
+      <view class="stat-block">
+        <view class="stat-label">已坚持学习</view>
+        <view class="flex items-center">
+          <text class="stat-value">{{stats.days || 0}}</text>
+          <text class="stat-unit">天</text>
+        </view>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-block">
+        <view class="stat-label">话题总数</view>
+        <view class="flex items-center">
+          <text class="stat-value stat-value-gold">{{totalTopics || 0}}</text>
+        </view>
+      </view>
+    </view>
+
     <!-- Search bar -->
     <view class="search-bar">
       <view class="input-wrapper search-input-wrapper">
@@ -57,14 +81,14 @@
     <scroll-view scroll-x class="tag-scroll" wx:if="{{tags.length > 0}}">
       <view class="tag-list">
         <view
-          wx:for="{{tags}}"
-          wx:key="*this"
+          wx:for="{{tags}}" wx:key="*this"
           class="tag {{selectedTag === item ? 'tag-active' : ''}}"
-          bindtap="onSelectTag"
-          data-tag="{{item}}"
+          bindtap="onSelectTag" data-tag="{{item}}"
         >{{item}}</view>
       </view>
     </scroll-view>
+
+    <view class="section-title" wx:if="{{topics.length > 0}}">学习主题</view>
 
     <!-- Loading -->
     <view wx:if="{{loading}}" class="loading-container">
@@ -75,17 +99,12 @@
     <!-- Topic list -->
     <view wx:elif="{{topics.length > 0}}" class="topic-list">
       <view
-        wx:for="{{topics}}"
-        wx:key="id"
-        class="card topic-card"
-        bindtap="onTopicTap"
-        data-id="{{item.id}}"
+        wx:for="{{topics}}" wx:key="id"
+        class="card topic-card" bindtap="onTopicTap" data-id="{{item.id}}"
       >
         <view class="topic-title">{{item.title}}</view>
         <view class="topic-title-zh" wx:if="{{item.titleZh}}">{{item.titleZh}}</view>
-        <view class="topic-meta">
-          <text class="topic-date">{{item.eventDate}}</text>
-        </view>
+        <view class="topic-meta"><text class="topic-date">{{item.eventDate}}</text></view>
         <view class="topic-tags" wx:if="{{item.tagList.length > 0}}">
           <text wx:for="{{item.tagList}}" wx:for-item="tag" wx:key="*this" class="tag">{{tag}}</text>
         </view>
