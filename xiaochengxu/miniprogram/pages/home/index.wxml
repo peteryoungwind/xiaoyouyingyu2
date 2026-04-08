@@ -1,60 +1,63 @@
-<view class="page-container safe-bottom">
-
-  <!-- Header -->
-  <view class="header">
-    <view>
-      <view class="header-greeting">{{greetingText}}</view>
-      <view class="header-title">今天想聊点什么？</view>
-    </view>
-    <view class="header-search" bindtap="onSearchTap">
-      <text class="search-icon-btn">🔍</text>
+<view class="page-container safe-bottom home-page">
+  <view class="hero-card" bindtap="goToLearning">
+    <view class="hero-badge">Daily Practice</view>
+    <view class="hero-title">今天想聊点什么？</view>
+    <view class="hero-footer simple">
+      <view class="hero-progress">
+        <text class="hero-progress-value">已坚持 {{stats.days}} 天</text>
+        <text class="hero-progress-label">浏览主题或进入学习中心继续练习。</text>
+      </view>
+      <view class="hero-action">去学习</view>
     </view>
   </view>
 
-  <!-- 学习概览卡片 -->
-  <view class="stats-card" bindtap="goToLearning">
-    <view class="stats-left">
-      <view class="stats-icon-wrap">
-        <text class="stats-flame">🔥</text>
-      </view>
-      <view class="stats-info">
-        <view class="stats-label">今日学习进度</view>
-        <view class="stats-text">已坚持 {{stats.days}} 天，继续加油！</view>
-      </view>
+  <view class="overview-grid">
+    <view class="overview-card">
+      <view class="overview-label">主题总数</view>
+      <view class="overview-value">{{totalTopics}}</view>
+      <view class="overview-note">持续更新</view>
     </view>
-    <text class="stats-arrow">›</text>
+    <view class="overview-card">
+      <view class="overview-label">连续天数</view>
+      <view class="overview-value">{{stats.days}}</view>
+      <view class="overview-note">学习节奏</view>
+    </view>
+    <view class="overview-card">
+      <view class="overview-label">热门标签</view>
+      <view class="overview-value">{{tagCategories.length}}</view>
+      <view class="overview-note">分类浏览</view>
+    </view>
   </view>
 
-  <!-- 主题分类 -->
   <view class="section" wx:if="{{tagCategories.length > 0}}">
     <view class="section-header">
-      <text class="section-title">主题分类</text>
+      <view>
+        <text class="section-title">热门标签</text>
+      </view>
       <text class="section-more" bindtap="goToTopics">查看全部</text>
     </view>
-    <view class="explore-grid">
-      <view wx:for="{{tagCategories}}" wx:key="name" class="explore-item" bindtap="onCategoryTap" data-tag="{{item.name}}">
-        <view class="explore-icon" style="background: linear-gradient(135deg, {{item.gradientFrom}}, {{item.gradientTo}})">
-          <text>{{item.icon}}</text>
+    <view class="explore-grid compact-grid">
+      <view wx:for="{{tagCategories}}" wx:key="name" class="explore-item compact-item ios-tag-item" style="background: {{item.cardBg}}; border-color: {{item.cardBorder}};" bindtap="onCategoryTap" data-tag="{{item.name}}">
+        <view class="explore-icon compact-icon ios-tag-icon" style="background: {{item.iconBg}};">
+          <image class="explore-icon-image ios-tag-image" src="{{item.icon}}" mode="aspectFit" />
         </view>
-        <text class="explore-name">{{item.name}}</text>
-        <text class="explore-count">{{item.count}}</text>
+        <text class="explore-name compact-name ios-tag-name">{{item.name}}</text>
       </view>
     </view>
   </view>
 
-  <!-- 本周最热 -->
   <view class="section" wx:if="{{latestTopics.length > 0}}">
     <view class="section-header">
-      <view class="section-title-wrap">
-        <text class="section-title">本周最热</text>
-        <view class="hot-badge">Hot</view>
+      <view>
+        <text class="section-title">最新主题</text>
       </view>
+      <text class="section-more" bindtap="goToTopics">全部主题</text>
     </view>
     <view class="topic-list">
       <view wx:for="{{latestTopics}}" wx:key="id" class="topic-card" bindtap="goToTopicDetail" data-id="{{item.id}}">
         <view class="topic-left">
           <view class="topic-icon" style="background: {{item.iconBg}}">
-            <text>💬</text>
+            <text class="topic-icon-text">✦</text>
           </view>
           <view class="topic-info">
             <view class="topic-tags-row">
@@ -72,16 +75,18 @@
     </view>
   </view>
 
-  <!-- 底部提示 -->
+  <view class="member-card" wx:if="{{!isMember}}">
+    <view class="member-badge">会员专属</view>
+    <view class="member-title">解锁完整学习体验</view>
+    <view class="member-desc">开通会员后可使用学习中心、AI 点评等进阶功能。</view>
+    <view class="member-actions">
+      <view class="member-action primary" bindtap="goToLearning">了解学习功能</view>
+      <view class="member-action secondary" wx:if="{{!isLoggedIn}}" bindtap="goToLogin">立即登录</view>
+    </view>
+  </view>
+
   <view class="footer-hint">
     <text class="footer-text">更多主题持续更新中</text>
     <view class="footer-bar"></view>
   </view>
-
-  <!-- Login Guide -->
-  <view class="login-guide card" wx:if="{{!isLoggedIn}}" bindtap="goToLogin">
-    <view class="login-guide-text">登录后解锁搜索和学习功能</view>
-    <view class="btn btn-primary btn-sm">立即登录</view>
-  </view>
-
 </view>

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
-import { getTagColor } from '@/lib/tag-colors';
+import { CATEGORY_ORDER, getTagColor, normalizeKnownTags, parseTags } from '@/lib/tag-colors';
 import Link from 'next/link';
 import { GraduationCap, Search } from 'lucide-react';
 
@@ -73,7 +73,7 @@ export default function LearningCenterPage() {
 
   const topics = data?.content || [];
   const totalPages = data?.totalPages || 0;
-  const allTags = tagStats ? Object.keys(tagStats as Record<string, any>) : [];
+  const allTags = CATEGORY_ORDER.filter(category => Boolean((tagStats as Record<string, any> | undefined)?.[category]));
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -124,12 +124,13 @@ export default function LearningCenterPage() {
       ) : (
         <div className="grid grid-cols-2 xl:grid-cols-3 gap-4">
           {topics.map((topic: any) => {
-            const tags = topic.tags ? topic.tags.split(',').filter(Boolean) : [];
+            const tags = normalizeKnownTags(topic.tags);
+            const displayTags = tags.length > 0 ? tags : parseTags(topic.tags);
             return (
               <Link key={topic.id} href={`/learning-center/topic/${topic.id}`}
                 className="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-all group">
-                <div className="flex gap-1.5 mb-3">
-                  {tags.map((t: string) => (
+                <div className="flex gap-1.5 mb-3 flex-wrap">
+                  {displayTags.map((t: string) => (
                     <span key={t} className={`text-xs px-2 py-0.5 rounded-full font-medium ${getTagColor(t.trim())}`}>
                       {t.trim()}
                     </span>

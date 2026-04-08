@@ -1,5 +1,6 @@
 const app = getApp();
 const api = require('../../utils/api');
+const util = require('../../utils/util');
 
 Page({
   data: {
@@ -60,7 +61,7 @@ Page({
 
   loadTags() {
     api.getTagStats().then(res => {
-      this.setData({ tags: Object.keys(res || {}) });
+      this.setData({ tags: util.buildOrderedTagList(res || {}) });
     }).catch(err => console.error('Load tags failed:', err));
   },
 
@@ -74,9 +75,13 @@ Page({
     if (this.data.selectedTag) params.tag = this.data.selectedTag;
 
     api.getTopics(params).then(res => {
-      const topics = (res.content || []).map(t => ({
-        ...t, tagList: t.tags ? t.tags.split(',').map(s => s.trim()).filter(Boolean) : []
-      }));
+      const topics = (res.content || []).map(t => {
+        const normalizedTags = util.normalizeKnownTags(t.tags);
+        return {
+          ...t,
+          tagList: normalizedTags.length > 0 ? normalizedTags : util.parseTags(t.tags)
+        };
+      });
       this.setData({
         topics: reset ? topics : this.data.topics.concat(topics),
         page: page + 1,

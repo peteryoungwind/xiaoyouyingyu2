@@ -4,34 +4,18 @@ const app = getApp();
 
 const ICON_BGS = ['#FFF3E0', '#E5F1FF', '#E8F5E9', '#FCE4EC', '#EDE7F6', '#E0F7FA'];
 
-// Gradient color palette for tag category icons
-var TAG_GRADIENTS = [
-  { from: '#007AFF', to: '#5AC8FA' },
-  { from: '#FF9500', to: '#FFCC00' },
-  { from: '#34C759', to: '#30D158' },
-  { from: '#5856D6', to: '#AF52DE' },
-  { from: '#FF3B30', to: '#FF6B6B' },
-  { from: '#FF2D55', to: '#FF6F91' },
-  { from: '#5AC8FA', to: '#007AFF' },
-  { from: '#FFCC00', to: '#FF9500' }
-];
-
-// Emoji icon for common tag keywords
-function getTagIcon(name) {
-  var lower = (name || '').toLowerCase();
-  if (lower.includes('business') || lower.includes('work') || lower.includes('career') || lower.includes('job')) return '💼';
-  if (lower.includes('travel') || lower.includes('trip') || lower.includes('tourism')) return '✈️';
-  if (lower.includes('food') || lower.includes('cook') || lower.includes('dining') || lower.includes('restaurant')) return '🍽️';
-  if (lower.includes('social') || lower.includes('friend') || lower.includes('chat') || lower.includes('conversation')) return '☕';
-  if (lower.includes('school') || lower.includes('study') || lower.includes('education') || lower.includes('campus') || lower.includes('academic')) return '📖';
-  if (lower.includes('health') || lower.includes('fitness') || lower.includes('sport') || lower.includes('exercise')) return '🏃';
-  if (lower.includes('tech') || lower.includes('digital') || lower.includes('computer') || lower.includes('internet')) return '💻';
-  if (lower.includes('culture') || lower.includes('art') || lower.includes('music') || lower.includes('movie') || lower.includes('film')) return '🎭';
-  if (lower.includes('nature') || lower.includes('environment') || lower.includes('weather') || lower.includes('animal')) return '🌿';
-  if (lower.includes('shopping') || lower.includes('fashion') || lower.includes('clothes')) return '🛍️';
-  if (lower.includes('family') || lower.includes('home') || lower.includes('life') || lower.includes('daily')) return '🏠';
-  if (lower.includes('holiday') || lower.includes('festival') || lower.includes('celebration')) return '🎉';
-  return '💬';
+function hexToRgba(hex, alpha) {
+  var normalized = (hex || '').replace('#', '');
+  if (normalized.length === 3) {
+    normalized = normalized.split('').map(function(ch) { return ch + ch; }).join('');
+  }
+  if (normalized.length !== 6) {
+    return 'rgba(0, 122, 255, ' + alpha + ')';
+  }
+  var r = parseInt(normalized.slice(0, 2), 16);
+  var g = parseInt(normalized.slice(2, 4), 16);
+  var b = parseInt(normalized.slice(4, 6), 16);
+  return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')';
 }
 
 Page({
@@ -78,20 +62,18 @@ Page({
         api.getTagStats()
       ]);
 
-      const tagCategories = Object.entries(tagsRes || {})
-        .map(function(entry, i) {
-          var name = entry[0];
-          var count = entry[1].count;
-          var gradient = TAG_GRADIENTS[i % TAG_GRADIENTS.length];
+      const tagCategories = util.buildOrderedTagList(tagsRes || {})
+        .map(function(item) {
           return {
-            name: name,
-            count: count,
-            icon: getTagIcon(name),
-            gradientFrom: gradient.from,
-            gradientTo: gradient.to
+            name: item.name,
+            count: item.count,
+            icon: item.icon,
+            iconBg: item.bg,
+            iconColor: item.color,
+            cardBg: '#FFFFFF',
+            cardBorder: '#ECECF0'
           };
-        })
-        .sort(function(a, b) { return b.count - a.count; });
+        });
 
       const latestTopics = (topicsRes ? topicsRes.content : []).map(function(t, i) {
         var tags = t.tags ? t.tags.split(',') : [];

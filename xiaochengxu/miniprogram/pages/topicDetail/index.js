@@ -18,8 +18,13 @@ Page({
     try {
       const topic = await api.getTopic(id);
       const questions = util.parseQuestions(topic.questions);
+      const normalizedTags = util.normalizeKnownTags(topic.tags);
       this.setData({
-        topic: { ...topic, eventDate: util.formatDate(topic.eventDate) },
+        topic: {
+          ...topic,
+          eventDate: util.formatDate(topic.eventDate),
+          tagList: normalizedTags.length > 0 ? normalizedTags : util.parseTags(topic.tags)
+        },
         questions, loading: false
       });
       wx.setNavigationBarTitle({ title: topic.titleZh || topic.title });

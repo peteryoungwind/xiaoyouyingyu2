@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
-import { getTagColor } from '@/lib/tag-colors';
+import { getTagColor, normalizeKnownTags, parseTags } from '@/lib/tag-colors';
 import { useParams, useRouter } from 'next/navigation';
 import {
   GraduationCap, BookOpen, MessageSquare, Lightbulb, ClipboardList,
@@ -127,7 +127,8 @@ export default function TopicLearningCenter() {
   if (isLoading) return <div className="text-center py-12 text-gray-400">加载中...</div>;
   if (!topic) return <div className="text-center py-12 text-gray-400">主题不存在</div>;
 
-  const tags = topic.tags ? topic.tags.split(',').filter(Boolean) : [];
+  const tags = normalizeKnownTags(topic.tags);
+  const displayTags = tags.length > 0 ? tags : parseTags(topic.tags);
   const questions = typeof topic.questions === 'string' ? JSON.parse(topic.questions) : topic.questions;
 
   const cachedOrMut = (key: CacheKey, mut: any) => {
@@ -170,9 +171,9 @@ export default function TopicLearningCenter() {
           <div className="flex-1">
             <h1 className="text-xl font-semibold text-gray-900">{topic.title}</h1>
             {topic.titleZh && <p className="text-base text-gray-500 mt-1">{topic.titleZh}</p>}
-            {tags.length > 0 && (
-              <div className="flex gap-1.5 mt-3">
-                {tags.map((tag: string) => (
+            {displayTags.length > 0 && (
+              <div className="flex gap-1.5 mt-3 flex-wrap">
+                {displayTags.map((tag: string) => (
                   <span key={tag} className={`text-xs px-2.5 py-0.5 rounded-full font-medium ${getTagColor(tag.trim())}`}>
                     {tag.trim()}
                   </span>
@@ -224,7 +225,7 @@ export default function TopicLearningCenter() {
         {openSections.warmup && (
           <div className="px-4 pb-4">
             {!warmupData && !warmupMut.isPending && (
-              <button onClick={() => warmupMut.mutate()}
+              <button onClick={() => warmupMut.mutate(undefined)}
                 className="w-full py-3 text-sm text-blue-500 hover:bg-blue-50 rounded-xl transition-colors">
                 生成热身内容
               </button>
@@ -286,7 +287,7 @@ export default function TopicLearningCenter() {
         {openSections.vocabulary && (
           <div className="px-4 pb-4">
             {!vocabData && !vocabMut.isPending && (
-              <button onClick={() => vocabMut.mutate()}
+              <button onClick={() => vocabMut.mutate(undefined)}
                 className="w-full py-3 text-sm text-blue-500 hover:bg-blue-50 rounded-xl transition-colors">
                 生成主题词汇
               </button>
@@ -324,7 +325,7 @@ export default function TopicLearningCenter() {
         {openSections.expressions && (
           <div className="px-4 pb-4">
             {!exprData && !exprMut.isPending && (
-              <button onClick={() => exprMut.mutate()}
+              <button onClick={() => exprMut.mutate(undefined)}
                 className="w-full py-3 text-sm text-blue-500 hover:bg-blue-50 rounded-xl transition-colors">
                 生成表达模板
               </button>
@@ -358,7 +359,7 @@ export default function TopicLearningCenter() {
         {openSections.tasks && (
           <div className="px-4 pb-4">
             {!tasksData && !tasksMut.isPending && (
-              <button onClick={() => tasksMut.mutate()}
+              <button onClick={() => tasksMut.mutate(undefined)}
                 className="w-full py-3 text-sm text-blue-500 hover:bg-blue-50 rounded-xl transition-colors">
                 生成练习任务
               </button>
@@ -429,7 +430,7 @@ export default function TopicLearningCenter() {
               <div className="flex justify-between items-center mt-2">
                 <span className="text-xs text-gray-400">{answer.length} 字符</span>
                 <button
-                  onClick={() => reviewMut.mutate()}
+                  onClick={() => reviewMut.mutate(undefined)}
                   disabled={!answer.trim() || !selectedTask || reviewMut.isPending}
                   className="flex items-center gap-2 px-5 py-2.5 bg-blue-500 text-white rounded-xl text-sm hover:bg-blue-600 disabled:opacity-40 press-effect transition-colors">
                   <Send size={14} />

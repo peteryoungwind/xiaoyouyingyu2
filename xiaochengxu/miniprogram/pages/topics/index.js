@@ -23,6 +23,9 @@ Page({
 
   onShow() {
     this.setData({ isLoggedIn: app.checkLogin() });
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setData({ selected: 1 });
+    }
     // Check if there's a pending filter from another page
     var pending = app.globalData._pendingTopicFilter;
     if (pending) {
@@ -49,9 +52,7 @@ Page({
   async loadTags() {
     try {
       const tagsData = await api.getTagStats();
-      const tags = Object.entries(tagsData || {}).map(([name, info], i) => ({
-        name, count: info.count, ...util.getTagColor(i)
-      })).sort((a, b) => b.count - a.count);
+      const tags = util.buildOrderedTagList(tagsData);
       this.setData({ tags });
     } catch (e) { console.error(e); }
   },
@@ -67,9 +68,25 @@ Page({
       if (this.data.selectedTag) params.tag = this.data.selectedTag;
 
       const res = await api.getTopics(params);
-      const newTopics = (res.content || []).map(t => ({
-        ...t, eventDate: util.formatDate(t.eventDate)
-      }));
+      const newTopics = (res.content || []).map(t => {
+        const normalizedTags = util.normalizeKnownTags(t.tags);
+        const tagList = normalizedTags.length > 0 ? normalizedTags : util.parseTags(t.tags);
+        let questionCountText = '';
+        if (t.questions) {
+          try {
+            const questions = typeof t.questions === 'string' ? JSON.parse(t.questions) : t.questions;
+            if (Array.isArray(questions) && questions.length > 0) {
+              questionCountText = questions.length + ' 个讨论问题';
+            }
+          } catch (err) {}
+        }
+        return {
+          ...t,
+          eventDate: util.formatDate(t.eventDate),
+          tagList,
+          questionCountText
+        };
+      });
 
       this.setData({
         topics: reset ? newTopics : [...this.data.topics, ...newTopics],

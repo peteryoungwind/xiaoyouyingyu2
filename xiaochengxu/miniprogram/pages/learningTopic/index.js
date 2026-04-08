@@ -71,7 +71,8 @@ Page({
   loadTopic(id) {
     this.setData({ loading: true });
     api.getLearningTopic(id).then(res => {
-      const tagList = res.tags ? res.tags.split(',').map(s => s.trim()).filter(Boolean) : [];
+      const normalizedTags = util.normalizeKnownTags(res.tags);
+      const tagList = normalizedTags.length > 0 ? normalizedTags : util.parseTags(res.tags);
       this.setData({
         topic: res,
         tagList: tagList,

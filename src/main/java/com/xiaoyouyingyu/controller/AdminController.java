@@ -1,5 +1,6 @@
 package com.xiaoyouyingyu.controller;
 
+import com.xiaoyouyingyu.config.TopicCategoryConstants;
 import com.xiaoyouyingyu.entity.AiModel;
 import com.xiaoyouyingyu.entity.RedeemCode;
 import com.xiaoyouyingyu.entity.Topic;
@@ -35,7 +36,12 @@ public class AdminController {
     // ===================== 话题管理 =====================
 
     @PostMapping("/topics")
-    public ResponseEntity<Topic> createTopic(@Valid @RequestBody Topic topic, Authentication auth) {
+    public ResponseEntity<?> createTopic(@Valid @RequestBody Topic topic, Authentication auth) {
+        try {
+            topic.setTags(TopicCategoryConstants.normalizeTags(topic.getTags()));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
         userRepository.findByUsername((String) auth.getPrincipal())
                 .ifPresent(u -> topic.setCreatorId(u.getId()));
         return ResponseEntity.ok(topicRepository.save(topic));
@@ -43,10 +49,16 @@ public class AdminController {
 
     @PutMapping("/topics/{id}")
     public ResponseEntity<?> updateTopic(@PathVariable Long id, @RequestBody Topic updated) {
+        final String normalizedTags;
+        try {
+            normalizedTags = TopicCategoryConstants.normalizeTags(updated.getTags());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
         return topicRepository.findById(id).map(topic -> {
             topic.setTitle(updated.getTitle());
             topic.setTitleZh(updated.getTitleZh());
-            topic.setTags(updated.getTags());
+            topic.setTags(normalizedTags);
             topic.setEventDate(updated.getEventDate());
             topic.setQuestions(updated.getQuestions());
             return ResponseEntity.ok(topicRepository.save(topic));

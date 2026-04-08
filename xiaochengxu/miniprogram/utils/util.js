@@ -38,19 +38,91 @@ function getRemainingDays(expireAt) {
   return Math.ceil((expire - now) / (1000 * 60 * 60 * 24));
 }
 
-const TAG_COLORS = [
-  { bg: '#E5F1FF', color: '#007AFF' },
-  { bg: '#FFF3E0', color: '#FF9500' },
-  { bg: '#E8F5E9', color: '#34C759' },
-  { bg: '#FCE4EC', color: '#FF3B30' },
-  { bg: '#EDE7F6', color: '#5856D6' },
-  { bg: '#E0F7FA', color: '#5AC8FA' },
-  { bg: '#FFF8E1', color: '#FF9500' },
-  { bg: '#E8EAF6', color: '#007AFF' }
+const CATEGORY_ORDER = [
+  '个人成长',
+  '情绪心理',
+  '人际交往',
+  '生活方式',
+  '职场发展',
+  '学习提升',
+  '文化旅行',
+  '消费科技'
 ];
 
-function getTagColor(index) {
-  return TAG_COLORS[index % TAG_COLORS.length];
+const CATEGORY_META = {
+  '个人成长': { bg: '#EAF2FF', color: '#5C6675', icon: '/images/tag-icons/person.svg' },
+  '情绪心理': { bg: '#FFF1EE', color: '#5C6675', icon: '/images/tag-icons/heart.svg' },
+  '人际交往': { bg: '#FFF0F6', color: '#5C6675', icon: '/images/tag-icons/message.svg' },
+  '生活方式': { bg: '#EEF8EE', color: '#5C6675', icon: '/images/tag-icons/check-circle.svg' },
+  '职场发展': { bg: '#F1EFFD', color: '#5C6675', icon: '/images/tag-icons/briefcase.svg' },
+  '学习提升': { bg: '#EEF3FF', color: '#5C6675', icon: '/images/category-icons/education.svg' },
+  '文化旅行': { bg: '#EAF5FF', color: '#5C6675', icon: '/images/tag-icons/globe.svg' },
+  '消费科技': { bg: '#EEF4FB', color: '#5C6675', icon: '/images/tag-icons/device.svg' }
+};
+
+function parseTags(tags) {
+  if (!tags) return [];
+  var seen = {};
+  return String(tags)
+    .split(',')
+    .map(function(tag) { return tag.trim(); })
+    .filter(function(tag) {
+      if (!tag || seen[tag]) return false;
+      seen[tag] = true;
+      return true;
+    });
 }
 
-module.exports = { formatDate, parseQuestions, parseAiContent, getRemainingDays, getTagColor };
+function normalizeKnownTags(tags) {
+  var parsed = parseTags(tags);
+  return CATEGORY_ORDER.filter(function(category) {
+    return parsed.indexOf(category) !== -1;
+  });
+}
+
+function orderCategories(categories) {
+  categories = categories || [];
+  var known = CATEGORY_ORDER.filter(function(category) {
+    return categories.indexOf(category) !== -1;
+  });
+  var unknown = categories.filter(function(category) {
+    return CATEGORY_ORDER.indexOf(category) === -1;
+  });
+  return known.concat(unknown);
+}
+
+function getCategoryMeta(category) {
+  if (CATEGORY_META[category]) return CATEGORY_META[category];
+  var fallback = CATEGORY_META[CATEGORY_ORDER[0]];
+  return { bg: fallback.bg, color: fallback.color, icon: fallback.icon };
+}
+
+function buildOrderedTagList(tagStats) {
+  var stats = tagStats || {};
+  return CATEGORY_ORDER.filter(function(category) {
+    return !!stats[category];
+  }).map(function(category) {
+    var meta = getCategoryMeta(category);
+    return {
+      name: category,
+      count: stats[category].count || 0,
+      latestTitle: stats[category].latestTitle || '',
+      bg: meta.bg,
+      color: meta.color,
+      icon: meta.icon
+    };
+  });
+}
+
+module.exports = {
+  formatDate,
+  parseQuestions,
+  parseAiContent,
+  getRemainingDays,
+  CATEGORY_ORDER,
+  parseTags,
+  normalizeKnownTags,
+  orderCategories,
+  getCategoryMeta,
+  buildOrderedTagList
+};

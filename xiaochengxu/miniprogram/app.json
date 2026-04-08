@@ -20,6 +20,7 @@
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
+    "custom": true,
     "color": "#8E8E93",
     "selectedColor": "#007AFF",
     "backgroundColor": "#FFFFFF",
@@ -27,27 +28,19 @@
     "list": [
       {
         "pagePath": "pages/home/index",
-        "text": "首页",
-        "iconPath": "images/icons/home.png",
-        "selectedIconPath": "images/icons/home-active.png"
+        "text": "首页"
       },
       {
         "pagePath": "pages/topics/index",
-        "text": "主题",
-        "iconPath": "images/icons/goods.png",
-        "selectedIconPath": "images/icons/goods-active.png"
+        "text": "主题"
       },
       {
         "pagePath": "pages/learning/index",
-        "text": "学习",
-        "iconPath": "images/icons/examples.png",
-        "selectedIconPath": "images/icons/examples-active.png"
+        "text": "学习"
       },
       {
         "pagePath": "pages/profile/index",
-        "text": "我的",
-        "iconPath": "images/icons/usercenter.png",
-        "selectedIconPath": "images/icons/usercenter-active.png"
+        "text": "我的"
       }
     ]
   },

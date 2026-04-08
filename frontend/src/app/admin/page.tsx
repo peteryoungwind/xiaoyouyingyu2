@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
-import { getTagColor } from '@/lib/tag-colors';
+import { CATEGORY_ORDER, getTagColor, parseTags } from '@/lib/tag-colors';
 import { useRouter } from 'next/navigation';
 import { Sparkles, ChevronRight, RotateCcw, Check, Plus, Trash2, Star, Settings2, Loader2 } from 'lucide-react';
 
@@ -107,7 +107,14 @@ export default function AdminPage() {
     return <div className="text-center py-12 text-gray-400">无权限访问</div>;
   }
 
-  // ===================== AI Flow Handlers =====================
+  const toggleTags = (currentTags: string, category: string) => {
+    const parsed = parseTags(currentTags);
+    const next = parsed.includes(category)
+      ? parsed.filter(tag => tag !== category)
+      : [...parsed, category];
+    return next.join(',');
+  };
+
 
   // Set default model on initial load
   const getEffectiveModelId = () => {
@@ -473,11 +480,28 @@ export default function AdminPage() {
 
                   {/* Save section */}
                   <div className="space-y-3 pt-3 border-t border-gray-100">
-                    <div className="flex items-center gap-3">
-                      <label className="text-sm text-gray-500 whitespace-nowrap">分类标签：</label>
-                      <input type="text" placeholder="逗号分隔，如 TRAVEL,CULTURE" value={aiTags}
-                        onChange={e => setAiTags(e.target.value)}
-                        className="flex-1 px-3 py-2 rounded-apple bg-gray-100 text-sm outline-none focus:ring-2 focus:ring-gray-200" />
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-3">
+                        <label className="text-sm text-gray-500 whitespace-nowrap">分类标签：</label>
+                        <input type="text" placeholder="逗号分隔，如 个人成长,学习提升" value={aiTags}
+                          onChange={e => setAiTags(e.target.value)}
+                          className="flex-1 px-3 py-2 rounded-apple bg-gray-100 text-sm outline-none focus:ring-2 focus:ring-gray-200" />
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {CATEGORY_ORDER.map(category => {
+                          const selected = parseTags(aiTags).includes(category);
+                          return (
+                            <button
+                              key={category}
+                              type="button"
+                              onClick={() => setAiTags(toggleTags(aiTags, category))}
+                              className={`text-xs px-3 py-1.5 rounded-full transition-colors ${selected ? 'bg-gray-900 text-white' : getTagColor(category)}`}
+                            >
+                              {category}
+                            </button>
+                          );
+                        })}
+                      </div>
                     </div>
                     <div className="flex items-center gap-3">
                       <label className="text-sm text-gray-500">话题日期：</label>
@@ -512,13 +536,25 @@ export default function AdminPage() {
             <input type="text" placeholder="中文标题" value={form.titleZh}
               onChange={e => setForm(f => ({ ...f, titleZh: e.target.value }))}
               className="w-full px-4 py-2.5 rounded-apple bg-gray-100 border-0 outline-none focus:ring-2 focus:ring-gray-200 text-sm" />
-            <div className="flex gap-3">
-              <input type="text" placeholder="标签（逗号分隔，如 TECH,SOCIETY）" value={form.tags}
+            <div className="space-y-2">
+              <input type="text" placeholder="分类（逗号分隔，如 个人成长,学习提升）" value={form.tags}
                 onChange={e => setForm(f => ({ ...f, tags: e.target.value }))}
-                className="flex-1 px-4 py-2.5 rounded-apple bg-gray-100 border-0 outline-none focus:ring-2 focus:ring-gray-200 text-sm" />
-              <input type="date" value={form.eventDate}
-                onChange={e => setForm(f => ({ ...f, eventDate: e.target.value }))}
-                className="px-3 py-2 rounded-apple bg-gray-100 text-sm outline-none" />
+                className="w-full px-4 py-2.5 rounded-apple bg-gray-100 border-0 outline-none focus:ring-2 focus:ring-gray-200 text-sm" />
+              <div className="flex flex-wrap gap-2">
+                {CATEGORY_ORDER.map(category => {
+                  const selected = parseTags(form.tags).includes(category);
+                  return (
+                    <button
+                      key={category}
+                      type="button"
+                      onClick={() => setForm(f => ({ ...f, tags: toggleTags(f.tags, category) }))}
+                      className={`text-xs px-3 py-1.5 rounded-full transition-colors ${selected ? 'bg-gray-900 text-white' : getTagColor(category)}`}
+                    >
+                      {category}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
 
@@ -544,10 +580,15 @@ export default function AdminPage() {
               className="text-sm text-blue-500 hover:text-blue-600">+ 添加问题</button>
           </div>
 
-          <button onClick={handleSaveManual} disabled={manualSaving || !form.title || !form.eventDate}
-            className="px-5 py-2 bg-gray-900 text-white rounded-apple text-sm press-effect hover:bg-gray-800 disabled:opacity-50">
-            {manualSaving ? '保存中...' : '保存主题'}
-          </button>
+          <div className="flex items-center justify-between gap-3">
+            <input type="date" value={form.eventDate}
+              onChange={e => setForm(f => ({ ...f, eventDate: e.target.value }))}
+              className="px-3 py-2 rounded-apple bg-gray-100 text-sm outline-none" />
+            <button onClick={handleSaveManual} disabled={manualSaving || !form.title || !form.eventDate}
+              className="px-5 py-2 bg-gray-900 text-white rounded-apple text-sm press-effect hover:bg-gray-800 disabled:opacity-50">
+              {manualSaving ? '保存中...' : '保存主题'}
+            </button>
+          </div>
         </div>
       )}
 

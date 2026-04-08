@@ -9,8 +9,8 @@
       <view class="info-meta">
         <text class="info-date">{{topic.eventDate}}</text>
       </view>
-      <view class="info-tags" wx:if="{{topic.tags}}">
-        <text wx:for="{{topic.tags.split(',')}}" wx:for-item="tag" wx:key="*this" class="tag">{{tag}}</text>
+      <view class="info-tags" wx:if="{{topic.tagList && topic.tagList.length > 0}}">
+        <text wx:for="{{topic.tagList}}" wx:for-item="tag" wx:key="*this" class="tag">{{tag}}</text>
       </view>
     </view>
 

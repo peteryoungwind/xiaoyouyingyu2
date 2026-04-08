@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
-import { getTagColor } from '@/lib/tag-colors';
+import { CATEGORY_ORDER, getTagColor, normalizeKnownTags, parseTags } from '@/lib/tag-colors';
 import { useParams, useRouter } from 'next/navigation';
 import { Pencil, Check, X, Plus, GraduationCap } from 'lucide-react';
 import Link from 'next/link';
@@ -34,7 +34,8 @@ export default function TopicDetail() {
   if (!topic) return <div className="text-center py-12 text-gray-400">主题不存在</div>;
 
   const questions = typeof topic.questions === 'string' ? JSON.parse(topic.questions) : topic.questions;
-  const tags = topic.tags ? topic.tags.split(',').filter(Boolean) : [];
+  const tags = normalizeKnownTags(topic.tags);
+  const displayTags = tags.length > 0 ? tags : parseTags(topic.tags);
 
   const startEdit = () => {
     setForm({
@@ -72,10 +73,33 @@ export default function TopicDetail() {
           <input type="text" placeholder="中文标题" value={form.titleZh}
             onChange={e => setForm((f: any) => ({ ...f, titleZh: e.target.value }))}
             className="w-full px-4 py-2.5 rounded-apple bg-gray-100 border-0 outline-none focus:ring-2 focus:ring-gray-200 text-sm" />
-          <div className="flex gap-3">
-            <input type="text" placeholder="标签（逗号分隔）" value={form.tags}
-              onChange={e => setForm((f: any) => ({ ...f, tags: e.target.value }))}
-              className="flex-1 px-4 py-2.5 rounded-apple bg-gray-100 border-0 outline-none focus:ring-2 focus:ring-gray-200 text-sm" />
+          <div className="flex gap-3 items-start">
+            <div className="flex-1 space-y-2">
+              <input type="text" placeholder="分类（逗号分隔，如 个人成长,学习提升）" value={form.tags}
+                onChange={e => setForm((f: any) => ({ ...f, tags: e.target.value }))}
+                className="w-full px-4 py-2.5 rounded-apple bg-gray-100 border-0 outline-none focus:ring-2 focus:ring-gray-200 text-sm" />
+              <div className="flex flex-wrap gap-2">
+                {CATEGORY_ORDER.map(category => {
+                  const selected = parseTags(form.tags).includes(category);
+                  return (
+                    <button
+                      key={category}
+                      type="button"
+                      onClick={() => {
+                        const next = parseTags(form.tags);
+                        const value = next.includes(category)
+                          ? next.filter(item => item !== category)
+                          : [...next, category];
+                        setForm((f: any) => ({ ...f, tags: value.join(',') }));
+                      }}
+                      className={`text-xs px-3 py-1.5 rounded-full transition-colors ${selected ? 'bg-gray-900 text-white' : getTagColor(category)}`}
+                    >
+                      {category}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
             <input type="date" value={form.eventDate}
               onChange={e => setForm((f: any) => ({ ...f, eventDate: e.target.value }))}
               className="px-3 py-2 rounded-apple bg-gray-100 text-sm outline-none" />
@@ -145,9 +169,9 @@ export default function TopicDetail() {
           </div>
         </div>
 
-        {tags.length > 0 && (
-          <div className="flex gap-1.5 mb-6">
-            {tags.map((tag: string) => (
+        {displayTags.length > 0 && (
+          <div className="flex gap-1.5 mb-6 flex-wrap">
+            {displayTags.map((tag: string) => (
               <span key={tag} className={`text-xs px-2.5 py-0.5 rounded-full font-medium ${getTagColor(tag.trim())}`}>
                 {tag.trim()}
               </span>

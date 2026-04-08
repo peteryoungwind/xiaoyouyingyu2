@@ -12,16 +12,10 @@ Component({
 
   observers: {
     'topic.tags': function (tags) {
-      if (tags && typeof tags === 'string') {
-        var list = tags.split(',').map(function (t) {
-          return t.trim();
-        }).filter(function (t) {
-          return t.length > 0;
-        });
-        this.setData({ tagList: list });
-      } else {
-        this.setData({ tagList: [] });
-      }
+      var util = require('../../utils/util');
+      var normalized = util.normalizeKnownTags(tags);
+      var list = normalized.length > 0 ? normalized : util.parseTags(tags);
+      this.setData({ tagList: list });
     }
   },
 

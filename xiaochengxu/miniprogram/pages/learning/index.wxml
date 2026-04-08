@@ -81,10 +81,14 @@
     <scroll-view scroll-x class="tag-scroll" wx:if="{{tags.length > 0}}">
       <view class="tag-list">
         <view
-          wx:for="{{tags}}" wx:key="*this"
-          class="tag {{selectedTag === item ? 'tag-active' : ''}}"
-          bindtap="onSelectTag" data-tag="{{item}}"
-        >{{item}}</view>
+          class="tag {{selectedTag === '' ? 'tag-active' : ''}}"
+          bindtap="onSelectTag" data-tag=""
+        >全部</view>
+        <view
+          wx:for="{{tags}}" wx:key="name"
+          class="tag {{selectedTag === item.name ? 'tag-active' : ''}}"
+          bindtap="onSelectTag" data-tag="{{item.name}}"
+        >{{item.name}}</view>
       </view>
     </scroll-view>
 
