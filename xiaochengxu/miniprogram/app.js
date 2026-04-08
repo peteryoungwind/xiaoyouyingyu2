@@ -6,11 +6,39 @@ App({
     membershipActive: false,
     role: '',
     membershipExpireAt: '',
-    baseUrl: 'http://localhost:8080/api'
+    baseUrl: '',
+    apiBaseUrlMap: {
+      develop: 'http://localhost:8080/api',
+      trial: 'https://xiaoyou-ky.top/api',
+      release: 'https://xiaoyou-ky.top/api'
+    }
   },
 
   onLaunch() {
+    this.initBaseUrlByEnv();
     this.loadUserFromStorage();
+  },
+
+  initBaseUrlByEnv() {
+    var envVersion = 'develop';
+    try {
+      var accountInfo = wx.getAccountInfoSync();
+      envVersion = (accountInfo && accountInfo.miniProgram && accountInfo.miniProgram.envVersion) || 'develop';
+    } catch (e) {
+      console.warn('Get envVersion failed, fallback to develop:', e);
+    }
+
+    var map = this.globalData.apiBaseUrlMap || {};
+    var devBaseUrl = map.develop || 'http://localhost:8080/api';
+    var currentBaseUrl = map[envVersion] || '';
+
+    if (!currentBaseUrl) {
+      console.warn('Base URL for env [' + envVersion + '] is empty, fallback to develop URL.');
+      currentBaseUrl = devBaseUrl;
+    }
+
+    this.globalData.baseUrl = currentBaseUrl;
+    console.log('Current envVersion:', envVersion, 'baseUrl:', currentBaseUrl);
   },
 
   loadUserFromStorage() {

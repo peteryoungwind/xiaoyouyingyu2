@@ -55,14 +55,8 @@
           >换一批</button>
         </view>
 
-        <!-- Loading -->
-        <view wx:if="{{warmupLoading}}" class="module-loading">
-          <view class="loading-spinner-sm"></view>
-          <text>正在生成热身内容...</text>
-        </view>
-
         <!-- Content -->
-        <view wx:elif="{{warmupData}}" class="warmup-content">
+        <view wx:if="{{warmupData}}" class="warmup-content">
           <!-- Introduction -->
           <view wx:if="{{warmupData.introduction}}" class="sub-section">
             <view class="sub-title">简介</view>
@@ -134,12 +128,7 @@
           >换一批</button>
         </view>
 
-        <view wx:if="{{vocabLoading}}" class="module-loading">
-          <view class="loading-spinner-sm"></view>
-          <text>正在生成词汇表...</text>
-        </view>
-
-        <view wx:elif="{{vocabData && vocabData.vocabulary && vocabData.vocabulary.length > 0}}" class="vocab-content">
+        <view wx:if="{{vocabData && vocabData.vocabulary && vocabData.vocabulary.length > 0}}" class="vocab-content">
           <view wx:for="{{vocabData.vocabulary}}" wx:key="index" class="vocab-item">
             <view class="vocab-header-row">
               <view class="vocab-word">{{item.word}}</view>
@@ -183,12 +172,7 @@
           >换一批</button>
         </view>
 
-        <view wx:if="{{expressionsLoading}}" class="module-loading">
-          <view class="loading-spinner-sm"></view>
-          <text>正在生成表达模板...</text>
-        </view>
-
-        <view wx:elif="{{expressionsData && expressionsData.expressions && expressionsData.expressions.length > 0}}" class="expressions-content">
+        <view wx:if="{{expressionsData && expressionsData.expressions && expressionsData.expressions.length > 0}}" class="expressions-content">
           <view wx:for="{{expressionsData.expressions}}" wx:key="index" class="expression-item">
             <view wx:if="{{item.category}}" class="expression-category">{{item.category}}</view>
             <view class="expression-template">{{item.template}}</view>
@@ -229,12 +213,7 @@
           >换一批</button>
         </view>
 
-        <view wx:if="{{tasksLoading}}" class="module-loading">
-          <view class="loading-spinner-sm"></view>
-          <text>正在生成练习任务...</text>
-        </view>
-
-        <view wx:elif="{{tasksData && tasksData.tasks && tasksData.tasks.length > 0}}" class="tasks-content">
+        <view wx:if="{{tasksData && tasksData.tasks && tasksData.tasks.length > 0}}" class="tasks-content">
           <view wx:for="{{tasksData.tasks}}" wx:key="index" class="task-item">
             <view class="task-header-row">
               <view class="task-title">{{item.title}}</view>

@@ -11,7 +11,7 @@
   <!-- Register Form -->
   <view class="form-area">
     <view class="input-wrapper {{usernameFocus ? 'input-wrapper-focus' : ''}} mb-24">
-      <image class="input-icon" src="/images/icon-user.png" mode="aspectFit" />
+      <image class="input-icon" src="/images/tabbar/person.svg" mode="aspectFit" />
       <input
         placeholder="请输入用户名（3-50个字符）"
         placeholder-class="input-placeholder"
@@ -24,7 +24,7 @@
     </view>
 
     <view class="input-wrapper {{passwordFocus ? 'input-wrapper-focus' : ''}} mb-32">
-      <image class="input-icon" src="/images/icon-lock.png" mode="aspectFit" />
+      <image class="input-icon" src="/images/tag-icons/check-circle.svg" mode="aspectFit" />
       <input
         type="password"
         placeholder="请输入密码（至少6个字符）"

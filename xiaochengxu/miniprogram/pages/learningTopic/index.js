@@ -1,5 +1,6 @@
 const app = getApp();
 const api = require('../../utils/api');
+const util = require('../../utils/util');
 
 /**
  * Parse AI content string: strip markdown code fences, then JSON.parse.
@@ -62,10 +63,69 @@ Page({
   },
 
   onLoad(options) {
+    this.resetModeCache();
     if (options.id) {
       this.setData({ topicId: parseInt(options.id) });
       this.loadTopic(options.id);
     }
+  },
+
+  onUnload() {
+    this.resetModeCache();
+  },
+
+  resetModeCache() {
+    this.modeCache = {
+      beginner: {
+        warmupData: null,
+        vocabData: null,
+        expressionsData: null,
+        tasksData: null
+      },
+      advanced: {
+        warmupData: null,
+        vocabData: null,
+        expressionsData: null,
+        tasksData: null
+      }
+    };
+  },
+
+  getModeCache(mode) {
+    if (!this.modeCache) this.resetModeCache();
+    if (!this.modeCache[mode]) {
+      this.modeCache[mode] = {
+        warmupData: null,
+        vocabData: null,
+        expressionsData: null,
+        tasksData: null
+      };
+    }
+    return this.modeCache[mode];
+  },
+
+  syncCurrentModeCache() {
+    const cache = this.getModeCache(this.data.mode);
+    cache.warmupData = this.data.warmupData;
+    cache.vocabData = this.data.vocabData;
+    cache.expressionsData = this.data.expressionsData;
+    cache.tasksData = this.data.tasksData;
+  },
+
+  applyModeCache(mode) {
+    const cache = this.getModeCache(mode);
+    this.setData({
+      mode: mode,
+      warmupData: cache.warmupData,
+      vocabData: cache.vocabData,
+      expressionsData: cache.expressionsData,
+      tasksData: cache.tasksData,
+      showAnswerPanel: false,
+      showReview: false,
+      currentTask: null,
+      reviewData: null,
+      answerText: ''
+    });
   },
 
   loadTopic(id) {
@@ -89,18 +149,8 @@ Page({
   onModeChange(e) {
     const mode = e.currentTarget.dataset.mode;
     if (mode === this.data.mode) return;
-    this.setData({
-      mode: mode,
-      warmupData: null,
-      vocabData: null,
-      expressionsData: null,
-      tasksData: null,
-      showAnswerPanel: false,
-      showReview: false,
-      currentTask: null,
-      reviewData: null,
-      answerText: ''
-    });
+    this.syncCurrentModeCache();
+    this.applyModeCache(mode);
   },
 
   // --- Section toggle ---

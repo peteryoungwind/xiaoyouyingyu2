@@ -1,5 +1,7 @@
 const API_BASE = '/api';
-const BACKEND_BASE = 'http://localhost:8080/api';
+const BACKEND_BASE = process.env.NODE_ENV === 'production'
+  ? 'https://xiaoyou-ky.top/api'
+  : 'http://localhost:8080/api';
 
 async function request(url: string, options?: RequestInit & { direct?: boolean }) {
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;

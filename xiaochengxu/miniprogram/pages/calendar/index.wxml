@@ -2,11 +2,11 @@
   <!-- Month Navigation -->
   <view class="month-nav card">
     <view class="nav-btn" bindtap="prevMonth">
-      <text class="nav-arrow">&lt;</text>
+      <text class="nav-arrow">‹</text>
     </view>
     <view class="month-title">{{monthText}}</view>
     <view class="nav-btn" bindtap="nextMonth">
-      <text class="nav-arrow">&gt;</text>
+      <text class="nav-arrow">›</text>
     </view>
   </view>
 
