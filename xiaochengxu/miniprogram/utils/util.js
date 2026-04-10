@@ -7,6 +7,21 @@ function formatDate(dateStr) {
   return `${y}-${m}-${day}`;
 }
 
+function formatDateTime(dateStr) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  if (Number.isNaN(d.getTime())) {
+    return String(dateStr).replace('T', ' ').split('.')[0];
+  }
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  const h = String(d.getHours()).padStart(2, '0');
+  const min = String(d.getMinutes()).padStart(2, '0');
+  const s = String(d.getSeconds()).padStart(2, '0');
+  return `${y}-${m}-${day} ${h}:${min}:${s}`;
+}
+
 function parseQuestions(questionsStr) {
   if (!questionsStr) return [];
   try {
@@ -116,6 +131,7 @@ function buildOrderedTagList(tagStats) {
 
 module.exports = {
   formatDate,
+  formatDateTime,
   parseQuestions,
   parseAiContent,
   getRemainingDays,

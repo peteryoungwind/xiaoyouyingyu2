@@ -1,5 +1,6 @@
 const app = getApp();
 const api = require('../../utils/api');
+const util = require('../../utils/util');
 
 Page({
   data: {
@@ -11,6 +12,15 @@ Page({
     membershipStatus: '',
     membershipStatusLabel: '',
     contactInfo: null,
+    hasPassword: true,
+
+    showUsernameModal: false,
+    showPasswordModal: false,
+
+    // Change username form
+    username: '',
+    originalUsername: '',
+    submittingUsername: false,
 
     // Change password form
     oldPassword: '',
@@ -30,7 +40,9 @@ Page({
   refreshState() {
     const isLoggedIn = app.globalData.isLoggedIn;
     const isMember = app.isMember();
-    this.setData({ isLoggedIn, isMember });
+    const username = (app.globalData.userInfo && app.globalData.userInfo.username) || '';
+    const hasPassword = app.globalData.hasPassword !== undefined ? app.globalData.hasPassword : true;
+    this.setData({ isLoggedIn, isMember, username, originalUsername: username, hasPassword });
 
     if (isLoggedIn) {
       this.loadMembership();
@@ -43,7 +55,7 @@ Page({
   loadMembership() {
     api.getMembership().then(res => {
       const active = res.membershipActive || res.active || false;
-      const expireAt = res.membershipExpireAt || res.expireAt || '';
+      const expireAt = util.formatDateTime(res.membershipExpireAt || res.expireAt || '');
       const remaining = res.remainingDays || 0;
 
       let status = 'none';
@@ -81,6 +93,88 @@ Page({
     wx.navigateTo({ url: '/pages/redeem/index' });
   },
 
+  openUsernameModal() {
+    this.setData({
+      showUsernameModal: true,
+      username: this.data.originalUsername
+    });
+  },
+
+  closeUsernameModal() {
+    this.setData({
+      showUsernameModal: false,
+      username: this.data.originalUsername,
+      submittingUsername: false
+    });
+  },
+
+  openPasswordModal() {
+    this.setData({
+      showPasswordModal: true,
+      oldPassword: '',
+      newPassword: '',
+      confirmPassword: ''
+    });
+  },
+
+  closePasswordModal() {
+    this.setData({
+      showPasswordModal: false,
+      oldPassword: '',
+      newPassword: '',
+      confirmPassword: '',
+      submitting: false
+    });
+  },
+
+  stopModalPropagation() {},
+
+  // Username form handlers
+  onUsernameInput(e) {
+    this.setData({ username: e.detail.value });
+  },
+
+  onChangeUsername() {
+    const { username, originalUsername } = this.data;
+    const nextUsername = (username || '').trim();
+
+    if (!nextUsername) {
+      wx.showToast({ title: '请输入用户名', icon: 'none' });
+      return;
+    }
+    if (nextUsername.length < 3 || nextUsername.length > 50) {
+      wx.showToast({ title: '用户名需为3-50位', icon: 'none' });
+      return;
+    }
+    if (nextUsername === originalUsername) {
+      wx.showToast({ title: '用户名未变更', icon: 'none' });
+      return;
+    }
+
+    this.setData({ submittingUsername: true });
+
+    api.changeUsername(nextUsername).then(res => {
+      app.setLogin(res.token, {
+        username: res.username,
+        role: res.role,
+        membershipExpireAt: util.formatDateTime(res.membershipExpireAt),
+        membershipActive: res.membershipActive,
+        hasPassword: res.hasPassword
+      });
+      this.setData({
+        username: res.username,
+        originalUsername: res.username,
+        submittingUsername: false,
+        showUsernameModal: false
+      });
+      wx.showToast({ title: '用户名修改成功', icon: 'success' });
+    }).catch(err => {
+      this.setData({ submittingUsername: false });
+      const msg = (err && err.message) || '用户名修改失败';
+      wx.showToast({ title: msg, icon: 'none' });
+    });
+  },
+
   // Password form handlers
   onOldPasswordInput(e) {
     this.setData({ oldPassword: e.detail.value });
@@ -95,9 +189,9 @@ Page({
   },
 
   onChangePassword() {
-    const { oldPassword, newPassword, confirmPassword } = this.data;
+    const { hasPassword, oldPassword, newPassword, confirmPassword } = this.data;
 
-    if (!oldPassword) {
+    if (hasPassword && !oldPassword) {
       wx.showToast({ title: '请输入原密码', icon: 'none' });
       return;
     }
@@ -116,17 +210,30 @@ Page({
 
     this.setData({ submitting: true });
 
-    api.changePassword(oldPassword, newPassword).then(res => {
+    const request = hasPassword
+      ? api.changePassword(oldPassword, newPassword)
+      : api.setupPassword(newPassword);
+    const successTitle = hasPassword ? '密码修改成功' : '密码设置成功';
+
+    request.then(() => {
+      app.globalData.hasPassword = true;
+      if (app.globalData.userInfo) {
+        app.globalData.userInfo.hasPassword = true;
+      }
+      wx.setStorageSync('hasPassword', true);
       this.setData({
+        hasPassword: true,
         submitting: false,
         oldPassword: '',
         newPassword: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        showPasswordModal: false
       });
-      wx.showToast({ title: '密码修改成功', icon: 'success' });
+      wx.showToast({ title: successTitle, icon: 'success' });
     }).catch(err => {
       this.setData({ submitting: false });
-      const msg = (err && err.message) || '密码修改失败';
+      const defaultMsg = hasPassword ? '密码修改失败' : '密码设置失败';
+      const msg = (err && err.message) || defaultMsg;
       wx.showToast({ title: msg, icon: 'none' });
     });
   }

@@ -1,5 +1,6 @@
 const app = getApp();
 const api = require('../../utils/api');
+const util = require('../../utils/util');
 
 Page({
   data: {
@@ -59,7 +60,7 @@ Page({
   loadMembership() {
     api.getMembership().then(res => {
       const active = res.membershipActive || res.active || false;
-      const expireAt = res.membershipExpireAt || res.expireAt || '';
+      const expireAt = util.formatDateTime(res.membershipExpireAt || res.expireAt || '');
       const remaining = res.remainingDays || 0;
 
       let status = 'none';
@@ -80,11 +81,17 @@ Page({
         membershipStatusLabel: statusLabel
       });
 
-      // Update global state
       app.globalData.membershipActive = active;
       app.globalData.membershipExpireAt = expireAt;
-      wx.setStorageSync('membershipActive', active);
-      wx.setStorageSync('membershipExpireAt', expireAt);
+      if (app.globalData.token && app.globalData.userInfo) {
+        app.setLogin(app.globalData.token, {
+          username: app.globalData.userInfo.username,
+          role: app.globalData.role || app.globalData.userInfo.role || 'USER',
+          membershipActive: active,
+          membershipExpireAt: expireAt,
+          hasPassword: app.globalData.hasPassword
+        });
+      }
     }).catch(err => {
       console.error('Load membership failed:', err);
     });
@@ -104,6 +111,83 @@ Page({
 
   goToCalendar() {
     wx.navigateTo({ url: '/pages/calendar/index' });
+  },
+
+  onScanPcLogin() {
+    if (!app.globalData.isLoggedIn) {
+      wx.navigateTo({ url: '/pages/login/index' });
+      return;
+    }
+
+    wx.scanCode({
+      onlyFromCamera: false,
+      scanType: ['qrCode'],
+      success: (res) => {
+        const ticketId = this.extractPcLoginTicket(res.result);
+        if (!ticketId) {
+          wx.showToast({ title: '不是有效的电脑登录二维码', icon: 'none' });
+          return;
+        }
+        this.confirmPcLogin(ticketId);
+      },
+      fail: (err) => {
+        if (err && err.errMsg && err.errMsg.indexOf('cancel') >= 0) {
+          return;
+        }
+        wx.showToast({ title: '扫码失败，请重试', icon: 'none' });
+      }
+    });
+  },
+
+  extractPcLoginTicket(result) {
+    if (!result || typeof result !== 'string') {
+      return '';
+    }
+    const match = result.match(/ticket=([^&]+)/);
+    return match ? decodeURIComponent(match[1]) : '';
+  },
+
+  confirmPcLogin(ticketId) {
+    wx.showLoading({ title: '校验中...' });
+    api.getWechatPcLoginScene(ticketId).then(scene => {
+      wx.hideLoading();
+      const deviceInfo = scene.deviceInfo || '当前电脑';
+      wx.showModal({
+        title: '确认电脑端登录',
+        content: '将使用当前小程序账号登录：\n' + deviceInfo,
+        confirmText: '确认登录',
+        cancelText: '取消',
+        success: (res) => {
+          if (res.confirm) {
+            this.submitPcLoginConfirm(ticketId);
+            return;
+          }
+          this.submitPcLoginCancel(ticketId);
+        }
+      });
+    }).catch(err => {
+      wx.hideLoading();
+      wx.showToast({ title: err.message || '二维码不可用', icon: 'none' });
+    });
+  },
+
+  submitPcLoginConfirm(ticketId) {
+    wx.showLoading({ title: '确认中...' });
+    api.confirmWechatPcLogin(ticketId).then(() => {
+      wx.hideLoading();
+      wx.showModal({
+        title: '已确认',
+        content: '电脑端登录已确认，请返回电脑继续使用。',
+        showCancel: false
+      });
+    }).catch(err => {
+      wx.hideLoading();
+      wx.showToast({ title: err.message || '确认失败', icon: 'none' });
+    });
+  },
+
+  submitPcLoginCancel(ticketId) {
+    api.cancelWechatPcLogin(ticketId).catch(() => {});
   },
 
   onLogout() {

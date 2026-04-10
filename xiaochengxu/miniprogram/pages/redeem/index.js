@@ -1,5 +1,6 @@
 const app = getApp();
 const api = require('../../utils/api');
+const util = require('../../utils/util');
 
 Page({
   data: {
@@ -29,7 +30,7 @@ Page({
 
     api.getMembership().then(res => {
       const active = res.membershipActive || res.active || false;
-      const expireAt = res.membershipExpireAt || res.expireAt || '';
+      const expireAt = util.formatDateTime(res.membershipExpireAt || res.expireAt || '');
       const remaining = res.remainingDays || 0;
 
       let status = 'none';
@@ -81,16 +82,16 @@ Page({
           success: true,
           message: res.message || '兑换成功',
           daysAdded: res.daysAdded,
-          membershipExpireAt: res.membershipExpireAt
+          membershipExpireAt: util.formatDateTime(res.membershipExpireAt)
         },
         code: ''
       });
 
       // Update global membership state
       app.globalData.membershipActive = true;
-      app.globalData.membershipExpireAt = res.membershipExpireAt || '';
+      app.globalData.membershipExpireAt = util.formatDateTime(res.membershipExpireAt || '');
       wx.setStorageSync('membershipActive', true);
-      wx.setStorageSync('membershipExpireAt', res.membershipExpireAt || '');
+      wx.setStorageSync('membershipExpireAt', util.formatDateTime(res.membershipExpireAt || ''));
 
       // Reload membership info
       this.loadMembership();

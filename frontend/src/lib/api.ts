@@ -3,19 +3,41 @@ const BACKEND_BASE = process.env.NODE_ENV === 'production'
   ? 'https://xiaoyou-ky.top/api'
   : 'http://localhost:8080/api';
 
-async function request(url: string, options?: RequestInit & { direct?: boolean }) {
+interface RequestInitOptions extends RequestInit {
+  direct?: boolean;
+}
+
+async function request(url: string, options?: RequestInitOptions) {
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
   const headers: Record<string, string> = { 'Content-Type': 'application/json' };
   if (token) headers['Authorization'] = `Bearer ${token}`;
 
   const { direct, ...fetchOptions } = options || {};
   const base = direct ? BACKEND_BASE : API_BASE;
-  const res = await fetch(`${base}${url}`, { ...fetchOptions, headers: { ...headers, ...fetchOptions?.headers } });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({ error: 'Request failed' }));
-    throw new Error(err.error || `HTTP ${res.status}`);
+
+  let res: Response;
+  try {
+    res = await fetch(`${base}${url}`, { ...fetchOptions, headers: { ...headers, ...fetchOptions?.headers } });
+  } catch {
+    throw new Error('服务连接失败，请稍后重试');
   }
-  return res.json();
+
+  const text = await res.text();
+
+  let data: any = null;
+  if (text) {
+    try {
+      data = JSON.parse(text);
+    } catch {
+      data = null;
+    }
+  }
+
+  if (!res.ok) {
+    throw new Error(data?.error || data?.message || (res.status >= 500 ? '服务异常，请稍后重试' : '') || text || `请求失败（${res.status}）`);
+  }
+
+  return data;
 }
 
 export const api = {
@@ -26,6 +48,25 @@ export const api = {
     request('/auth/register', { method: 'POST', body: JSON.stringify(data) }),
   changePassword: (data: { oldPassword: string; newPassword: string }) =>
     request('/auth/password', { method: 'PUT', body: JSON.stringify(data) }),
+  createWechatPcLoginSession: () =>
+    request('/auth/wechat-pc-login/session', { method: 'POST' }) as Promise<{
+      ticketId: string;
+      pollToken: string;
+      expiresAt: string;
+      qrContent: string;
+    }>,
+  pollWechatPcLoginSession: (ticketId: string, pollToken: string) =>
+    request(`/auth/wechat-pc-login/session/${ticketId}?pollToken=${encodeURIComponent(pollToken)}`) as Promise<{
+      status: 'PENDING' | 'CONFIRMED';
+      token?: string;
+      username?: string;
+      role?: string;
+      membershipExpireAt?: string;
+      membershipActive?: boolean;
+      hasPassword?: boolean;
+    }>,
+  cancelWechatPcLoginSession: (ticketId: string) =>
+    request('/auth/wechat-pc-login/cancel', { method: 'POST', body: JSON.stringify({ ticketId }) }),
 
   // Topics
   getTopics: (params: Record<string, string>) =>

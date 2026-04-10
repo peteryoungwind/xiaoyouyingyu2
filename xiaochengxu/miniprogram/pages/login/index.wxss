@@ -111,21 +111,22 @@
 /* 微信登录按钮 */
 .wechat-btn {
   width: 100%;
-  height: 112rpx;
-  border-radius: 40rpx;
-  font-weight: 700;
-  font-size: 36rpx;
+  height: 104rpx;
+  border-radius: 999rpx;
+  font-weight: 600;
+  font-size: 32rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16rpx;
   background: #F2F2F7;
   color: #C7C7CC;
   border: none;
-  letter-spacing: 4rpx;
-  line-height: 112rpx;
-  padding: 0;
+  line-height: 104rpx;
+  padding: 0 40rpx;
   margin: 0;
+  letter-spacing: 1rpx;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
 }
 
 .wechat-btn::after {
@@ -135,15 +136,18 @@
 .wechat-btn-active {
   background: #07C160;
   color: #FFFFFF;
-  box-shadow: 0 8rpx 32rpx rgba(7, 193, 96, 0.3);
+  box-shadow: 0 12rpx 32rpx rgba(7, 193, 96, 0.18);
 }
 
 .wechat-btn-active:active {
-  transform: scale(0.97);
+  transform: scale(0.985);
+  opacity: 0.92;
 }
 
-.wechat-icon {
-  font-size: 48rpx;
+.wechat-btn-text {
+  font-size: 32rpx;
+  font-weight: 600;
+  letter-spacing: 1rpx;
 }
 
 .btn-disabled {

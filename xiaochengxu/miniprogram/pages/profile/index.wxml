@@ -64,11 +64,23 @@
         <view class="menu-arrow">›</view>
       </view>
 
+      <view class="menu-item" bindtap="onScanPcLogin">
+        <view class="menu-icon">💻</view>
+        <view class="menu-text">扫一扫登录电脑端</view>
+        <view class="menu-arrow">›</view>
+      </view>
+
       <view class="menu-item" bindtap="goToCalendar">
         <view class="menu-icon">📅</view>
         <view class="menu-text">日历</view>
         <view class="menu-arrow">›</view>
       </view>
+    </view>
+
+    <view class="card pc-hint-card">
+      <view class="pc-hint-title">PC 网页版</view>
+      <view class="pc-hint-link" selectable="true">https://xiaoyou-ky.top</view>
+      <view class="pc-hint-desc">如需在电脑上使用，可访问以上地址。</view>
     </view>
 
     <!-- Logout button -->

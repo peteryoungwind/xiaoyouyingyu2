@@ -32,7 +32,13 @@ Page({
         api.wechatLogin(loginRes.code).then((res) => {
           this.setData({ loading: false });
           if (res && res.token) {
-            app.setLogin(res.token, res);
+            app.setLogin(res.token, {
+              username: res.username,
+              role: res.role,
+              membershipExpireAt: res.membershipExpireAt,
+              membershipActive: res.membershipActive,
+              hasPassword: res.hasPassword
+            });
             wx.showToast({ title: '登录成功', icon: 'success' });
             setTimeout(() => {
               const pages = getCurrentPages();

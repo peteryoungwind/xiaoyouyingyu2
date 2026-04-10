@@ -39,7 +39,8 @@ public class SecurityConfig {
             }))
             .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/auth/register", "/api/auth/login", "/api/auth/wechat-login", "/api/auth/wechat-pc-login/session").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/auth/wechat-pc-login/session/*").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/topics").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/topics/calendar").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/topics/tags").permitAll()

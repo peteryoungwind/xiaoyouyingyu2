@@ -5,6 +5,7 @@ App({
     isLoggedIn: false,
     membershipActive: false,
     role: '',
+    hasPassword: true,
     membershipExpireAt: '',
     baseUrl: '',
     apiBaseUrlMap: {
@@ -48,13 +49,15 @@ App({
       const role = wx.getStorageSync('role');
       const membershipActive = wx.getStorageSync('membershipActive');
       const membershipExpireAt = wx.getStorageSync('membershipExpireAt');
+      const hasPassword = wx.getStorageSync('hasPassword');
       if (token && username) {
         this.globalData.token = token;
         this.globalData.isLoggedIn = true;
         this.globalData.role = role || 'USER';
         this.globalData.membershipActive = membershipActive || false;
         this.globalData.membershipExpireAt = membershipExpireAt || '';
-        this.globalData.userInfo = { username, role: role || 'USER' };
+        this.globalData.hasPassword = hasPassword !== '' ? !!hasPassword : true;
+        this.globalData.userInfo = { username, role: role || 'USER', hasPassword: hasPassword !== '' ? !!hasPassword : true };
       }
     } catch (e) {
       console.error('Load user from storage failed:', e);
@@ -67,9 +70,11 @@ App({
     this.globalData.role = userInfo.role || 'USER';
     this.globalData.membershipActive = userInfo.membershipActive || false;
     this.globalData.membershipExpireAt = userInfo.membershipExpireAt || '';
+    this.globalData.hasPassword = userInfo.hasPassword !== undefined ? !!userInfo.hasPassword : true;
     this.globalData.userInfo = {
       username: userInfo.username,
-      role: userInfo.role || 'USER'
+      role: userInfo.role || 'USER',
+      hasPassword: userInfo.hasPassword !== undefined ? !!userInfo.hasPassword : true
     };
 
     wx.setStorageSync('token', token);
@@ -77,6 +82,7 @@ App({
     wx.setStorageSync('role', userInfo.role || 'USER');
     wx.setStorageSync('membershipActive', userInfo.membershipActive || false);
     wx.setStorageSync('membershipExpireAt', userInfo.membershipExpireAt || '');
+    wx.setStorageSync('hasPassword', userInfo.hasPassword !== undefined ? !!userInfo.hasPassword : true);
   },
 
   logout() {
@@ -85,6 +91,7 @@ App({
     this.globalData.role = '';
     this.globalData.membershipActive = false;
     this.globalData.membershipExpireAt = '';
+    this.globalData.hasPassword = true;
     this.globalData.userInfo = null;
 
     wx.removeStorageSync('token');
@@ -92,6 +99,7 @@ App({
     wx.removeStorageSync('role');
     wx.removeStorageSync('membershipActive');
     wx.removeStorageSync('membershipExpireAt');
+    wx.removeStorageSync('hasPassword');
   },
 
   checkLogin() {

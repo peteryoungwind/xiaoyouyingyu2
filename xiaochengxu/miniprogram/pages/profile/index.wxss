@@ -53,5 +53,27 @@
 .menu-text { flex: 1; font-size: 30rpx; color: var(--text-primary); }
 .menu-arrow { font-size: 32rpx; color: var(--text-hint); }
 
+/* PC hint */
+.pc-hint-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+.pc-hint-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.pc-hint-link {
+  font-size: 28rpx;
+  color: var(--primary);
+  word-break: break-all;
+}
+.pc-hint-desc {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
 /* Logout */
 .logout-btn { color: var(--error) !important; border-color: var(--error) !important; }

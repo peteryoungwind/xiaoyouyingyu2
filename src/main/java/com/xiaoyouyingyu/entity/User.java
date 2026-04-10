@@ -17,6 +17,9 @@ public class User {
 
     private String password;
 
+    @Column(name = "has_password", nullable = false)
+    private boolean hasPassword = true;
+
     @Column(name = "wechat_openid", unique = true)
     private String wechatOpenid;
 

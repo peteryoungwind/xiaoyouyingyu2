@@ -16,6 +16,12 @@ function register(username, password) {
   });
 }
 
+function changeUsername(username) {
+  return http.put('/auth/username', {
+    username: username
+  });
+}
+
 function changePassword(oldPassword, newPassword) {
   return http.put('/auth/password', {
     oldPassword: oldPassword,
@@ -23,8 +29,30 @@ function changePassword(oldPassword, newPassword) {
   });
 }
 
+function setupPassword(newPassword) {
+  return http.put('/auth/password/setup', {
+    newPassword: newPassword
+  });
+}
+
 function wechatLogin(code) {
   return http.post('/auth/wechat-login', { code: code });
+}
+
+function getWechatPcLoginScene(ticketId) {
+  return http.get('/auth/wechat-pc-login/scene/' + encodeURIComponent(ticketId));
+}
+
+function confirmWechatPcLogin(ticketId) {
+  return http.post('/auth/wechat-pc-login/confirm', {
+    ticketId: ticketId
+  });
+}
+
+function cancelWechatPcLogin(ticketId) {
+  return http.post('/auth/wechat-pc-login/cancel', {
+    ticketId: ticketId
+  });
 }
 
 // ==================== Topics ====================
@@ -131,8 +159,13 @@ module.exports = {
   // Auth
   login: login,
   register: register,
+  changeUsername: changeUsername,
   changePassword: changePassword,
+  setupPassword: setupPassword,
   wechatLogin: wechatLogin,
+  getWechatPcLoginScene: getWechatPcLoginScene,
+  confirmWechatPcLogin: confirmWechatPcLogin,
+  cancelWechatPcLogin: cancelWechatPcLogin,
   // Topics
   getTopics: getTopics,
   getTopic: getTopic,

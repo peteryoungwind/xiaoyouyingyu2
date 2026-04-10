@@ -18,6 +18,7 @@ public class DataInit implements CommandLineRunner {
         User admin = userRepository.findByUsername("admin").orElse(new User());
         admin.setUsername("admin");
         admin.setPassword(passwordEncoder.encode("admin123"));
+        admin.setHasPassword(true);
         admin.setRole(User.Role.ADMIN);
         userRepository.save(admin);
     }

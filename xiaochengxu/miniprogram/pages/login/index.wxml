@@ -25,8 +25,7 @@
       bindtap="handleWechatLogin"
       disabled="{{loading}}"
     >
-      <text class="wechat-icon">💬</text>
-      <text>{{loading ? '登录中...' : '微信一键登录'}}</text>
+      <text class="wechat-btn-text">{{loading ? '登录中...' : '微信一键登录'}}</text>
     </button>
 
     <!-- 协议勾选 -->

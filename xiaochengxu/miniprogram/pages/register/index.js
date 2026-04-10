@@ -56,7 +56,13 @@ Page({
       const res = await api.register(username.trim(), password);
       wx.hideLoading();
       if (res && res.token) {
-        app.setLogin(res.token, res);
+        app.setLogin(res.token, {
+          username: res.username,
+          role: res.role,
+          membershipExpireAt: res.membershipExpireAt,
+          membershipActive: res.membershipActive,
+          hasPassword: res.hasPassword
+        });
         wx.showToast({ title: '注册成功，已赠送3天会员', icon: 'none', duration: 2000 });
         setTimeout(() => {
           const pages = getCurrentPages();
