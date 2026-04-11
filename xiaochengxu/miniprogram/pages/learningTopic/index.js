@@ -130,7 +130,8 @@ Page({
 
   loadTopic(id) {
     this.setData({ loading: true });
-    api.getLearningTopic(id).then(res => {
+
+    const applyTopic = (res) => {
       const normalizedTags = util.normalizeKnownTags(res.tags);
       const tagList = normalizedTags.length > 0 ? normalizedTags : util.parseTags(res.tags);
       this.setData({
@@ -138,10 +139,15 @@ Page({
         tagList: tagList,
         loading: false
       });
-    }).catch(err => {
-      console.error('Load topic failed:', err);
-      this.setData({ loading: false });
-      wx.showToast({ title: '加载主题失败', icon: 'none' });
+    };
+
+    api.getLearningTopic(id).then(applyTopic).catch(err => {
+      console.error('Load learning topic failed, fallback to public topic detail:', err);
+      api.getTopic(id).then(applyTopic).catch(fallbackErr => {
+        console.error('Load topic failed:', fallbackErr);
+        this.setData({ loading: false });
+        wx.showToast({ title: fallbackErr.message || '加载主题失败', icon: 'none' });
+      });
     });
   },
 

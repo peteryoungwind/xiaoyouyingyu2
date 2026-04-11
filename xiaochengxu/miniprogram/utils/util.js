@@ -53,6 +53,16 @@ function getRemainingDays(expireAt) {
   return Math.ceil((expire - now) / (1000 * 60 * 60 * 24));
 }
 
+function resolveMembershipResponse(res) {
+  var rawExpireAt = (res && (res.membershipExpireAt || res.expireAt)) || '';
+  return {
+    active: !!(res && (res.membershipActive || res.active)),
+    expireAt: rawExpireAt,
+    formattedExpireAt: formatDateTime(rawExpireAt),
+    remainingDays: (res && res.remainingDays) || 0
+  };
+}
+
 const CATEGORY_ORDER = [
   '个人成长',
   '情绪心理',
@@ -135,6 +145,7 @@ module.exports = {
   parseQuestions,
   parseAiContent,
   getRemainingDays,
+  resolveMembershipResponse,
   CATEGORY_ORDER,
   parseTags,
   normalizeKnownTags,

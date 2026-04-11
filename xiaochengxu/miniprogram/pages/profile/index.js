@@ -59,9 +59,10 @@ Page({
 
   loadMembership() {
     api.getMembership().then(res => {
-      const active = res.membershipActive || res.active || false;
-      const expireAt = util.formatDateTime(res.membershipExpireAt || res.expireAt || '');
-      const remaining = res.remainingDays || 0;
+      const membership = util.resolveMembershipResponse(res);
+      const active = membership.active;
+      const expireAt = membership.formattedExpireAt;
+      const remaining = membership.remainingDays;
 
       let status = 'none';
       let statusLabel = '未开通';
@@ -82,13 +83,13 @@ Page({
       });
 
       app.globalData.membershipActive = active;
-      app.globalData.membershipExpireAt = expireAt;
+      app.globalData.membershipExpireAt = membership.expireAt;
       if (app.globalData.token && app.globalData.userInfo) {
         app.setLogin(app.globalData.token, {
           username: app.globalData.userInfo.username,
           role: app.globalData.role || app.globalData.userInfo.role || 'USER',
           membershipActive: active,
-          membershipExpireAt: expireAt,
+          membershipExpireAt: membership.expireAt,
           hasPassword: app.globalData.hasPassword
         });
       }

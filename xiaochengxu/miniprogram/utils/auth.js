@@ -1,4 +1,5 @@
 var api = require('./api');
+var util = require('./util');
 
 var app = getApp();
 
@@ -47,10 +48,11 @@ function checkMemberAndShowModal() {
  */
 function refreshMembership() {
   return api.getMembership().then(function (res) {
-    app.globalData.membershipActive = res.active || false;
-    app.globalData.membershipExpireAt = res.expireAt || '';
-    wx.setStorageSync('membershipActive', res.active || false);
-    wx.setStorageSync('membershipExpireAt', res.expireAt || '');
+    var membership = util.resolveMembershipResponse(res);
+    app.globalData.membershipActive = membership.active;
+    app.globalData.membershipExpireAt = membership.expireAt;
+    wx.setStorageSync('membershipActive', membership.active);
+    wx.setStorageSync('membershipExpireAt', membership.expireAt);
     return res;
   }).catch(function (err) {
     console.error('Refresh membership failed:', err);

@@ -73,9 +73,12 @@ export default function TopicLearningCenter() {
   const cacheSet = (key: CacheKey, data: any) => setCache(prev => ({ ...prev, [`${key}_${mode}`]: data }));
   const cacheGet = (key: CacheKey) => cache[`${key}_${mode}`];
 
-  const { data: topic, isLoading } = useQuery({
-    queryKey: ['topic', id],
-    queryFn: () => api.getTopic(Number(id)),
+  const topicId = Number(id);
+
+  const { data: topic, isLoading, isError, error } = useQuery({
+    queryKey: ['learning-topic', topicId],
+    queryFn: () => api.getLearningTopic(topicId),
+    enabled: isPremium && Number.isFinite(topicId),
   });
 
   const toggleSection = (s: Section) => setOpenSections(prev => ({ ...prev, [s]: !prev[s] }));
@@ -125,6 +128,10 @@ export default function TopicLearningCenter() {
   }
 
   if (isLoading) return <div className="text-center py-12 text-gray-400">加载中...</div>;
+  if (isError) {
+    const message = error instanceof Error ? error.message : '加载失败，请稍后重试';
+    return <div className="text-center py-12 text-gray-400">{message}</div>;
+  }
   if (!topic) return <div className="text-center py-12 text-gray-400">主题不存在</div>;
 
   const tags = normalizeKnownTags(topic.tags);
