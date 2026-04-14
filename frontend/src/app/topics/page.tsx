@@ -40,7 +40,10 @@ function TopicsPageContent() {
       setShowAuth(true);
       return;
     }
-    setKeyword(searchInput);
+    const trimmedKeyword = searchInput.trim();
+    setSearchInput(trimmedKeyword);
+    setKeyword(trimmedKeyword);
+    setTag('');
     setPage(0);
   };
 

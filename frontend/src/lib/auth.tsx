@@ -69,6 +69,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const storedUser = loadStoredUser();
     if (storedUser) setUser(storedUser);
+
+    const handleAuthExpired = () => {
+      clearStoredUser();
+      setUser(null);
+    };
+
+    window.addEventListener('auth:expired', handleAuthExpired);
+    return () => window.removeEventListener('auth:expired', handleAuthExpired);
   }, []);
 
   const login = (data: AuthUser) => {

@@ -355,7 +355,7 @@ async function handleTopicsList(data, token) {
   const params = [];
 
   if (keyword) {
-    sql += ' AND (title LIKE ? OR title_zh LIKE ? OR questions LIKE ?)';
+    sql += ' AND (LOWER(title) LIKE LOWER(?) OR LOWER(title_zh) LIKE LOWER(?) OR LOWER(questions) LIKE LOWER(?))';
     const kw = '%' + keyword + '%';
     params.push(kw, kw, kw);
   }
@@ -655,7 +655,7 @@ function handleMembershipContact() {
     data: {
       message: '请联系管理员开通高级功能',
       contactName: '管理员',
-      wechat: 'xiaoyou-admin',
+      wechat: '915981048',
       phone: '',
       qrCodeUrl: ''
     }

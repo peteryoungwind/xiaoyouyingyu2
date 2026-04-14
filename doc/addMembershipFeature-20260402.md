@@ -492,7 +492,7 @@
 {
   "message": "请联系管理员开通高级功能",
   "contactName": "管理员",
-  "wechat": "xiaoyou-admin",
+  "wechat": "915981048",
   "phone": "",
   "qrCodeUrl": ""
 }

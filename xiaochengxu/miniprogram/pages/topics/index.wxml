@@ -52,7 +52,7 @@
 
   <view wx:if="{{loadingMore}}" class="loading-wrap"><view class="loading-text">加载更多...</view></view>
   <view wx:if="{{!loading && !loadingMore && page >= totalPages && topics.length > 0}}" class="load-more-wrap">
-    <view class="load-more-btn disabled">加载更多主题</view>
+    <view class="load-more-btn disabled">没有更多数据</view>
   </view>
 
   <view wx:if="{{!isLoggedIn}}" class="guest-tip">

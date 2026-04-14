@@ -23,12 +23,12 @@ public class TopicController {
 
     @GetMapping
     public ResponseEntity<?> list(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(required = false) String keyword,
-            @RequestParam(required = false) String tag,
-            @RequestParam(required = false) LocalDate startDate,
-            @RequestParam(required = false) LocalDate endDate,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "10") int size,
+            @RequestParam(name = "keyword", required = false) String keyword,
+            @RequestParam(name = "tag", required = false) String tag,
+            @RequestParam(name = "startDate", required = false) LocalDate startDate,
+            @RequestParam(name = "endDate", required = false) LocalDate endDate,
             Authentication auth) {
         boolean isGuest = (auth == null);
 
@@ -81,14 +81,14 @@ public class TopicController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> detail(@PathVariable Long id) {
+    public ResponseEntity<?> detail(@PathVariable("id") Long id) {
         return topicRepository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/calendar")
-    public ResponseEntity<?> calendar(@RequestParam int year, @RequestParam int month) {
+    public ResponseEntity<?> calendar(@RequestParam("year") int year, @RequestParam("month") int month) {
         YearMonth ym = YearMonth.of(year, month);
         LocalDate start = ym.atDay(1);
         LocalDate end = ym.atEndOfMonth();

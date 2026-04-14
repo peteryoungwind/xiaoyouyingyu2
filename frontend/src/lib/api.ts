@@ -34,6 +34,12 @@ async function request(url: string, options?: RequestInitOptions) {
   }
 
   if (!res.ok) {
+    if (res.status === 401 && typeof window !== 'undefined') {
+      ['token', 'username', 'role', 'membershipExpireAt', 'membershipActive', 'hasPassword'].forEach(key => {
+        localStorage.removeItem(key);
+      });
+      window.dispatchEvent(new Event('auth:expired'));
+    }
     throw new Error(data?.error || data?.message || (res.status >= 500 ? '服务异常，请稍后重试' : '') || text || `请求失败（${res.status}）`);
   }
 
@@ -69,8 +75,16 @@ export const api = {
     request('/auth/wechat-pc-login/cancel', { method: 'POST', body: JSON.stringify({ ticketId }) }),
 
   // Topics
-  getTopics: (params: Record<string, string>) =>
-    request(`/topics?${new URLSearchParams(params)}`),
+  getTopics: (params: Record<string, string>) => {
+    const searchParams = new URLSearchParams();
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== '') {
+        searchParams.set(key, value);
+      }
+    });
+    const query = searchParams.toString();
+    return request(query ? `/topics?${query}` : '/topics');
+  },
   getTopic: (id: number) => request(`/topics/${id}`),
   getTagStats: () => request('/topics/tags'),
   getStats: () => request('/topics/stats'),
