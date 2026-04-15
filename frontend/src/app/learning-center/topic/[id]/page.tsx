@@ -174,10 +174,10 @@ export default function TopicLearningCenter() {
 
       {/* Topic Overview */}
       <div className="bg-white rounded-2xl p-6 shadow-sm">
-        <div className="flex items-start justify-between">
-          <div className="flex-1">
-            <h1 className="text-xl font-semibold text-gray-900">{topic.title}</h1>
-            {topic.titleZh && <p className="text-base text-gray-500 mt-1">{topic.titleZh}</p>}
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div className="min-w-0 flex-1">
+            <h1 className="break-words text-xl font-semibold text-gray-900">{topic.title}</h1>
+            {topic.titleZh && <p className="mt-1 break-words text-base text-gray-500">{topic.titleZh}</p>}
             {displayTags.length > 0 && (
               <div className="flex gap-1.5 mt-3 flex-wrap">
                 {displayTags.map((tag: string) => (
@@ -188,7 +188,7 @@ export default function TopicLearningCenter() {
               </div>
             )}
           </div>
-          <span className="text-xs text-gray-400 whitespace-nowrap ml-4">{topic.eventDate}</span>
+          <span className="text-xs text-gray-400 whitespace-nowrap sm:ml-4">{topic.eventDate}</span>
         </div>
 
         {/* Discussion Questions */}
@@ -196,8 +196,8 @@ export default function TopicLearningCenter() {
           {questions.slice(0, 3).map((q: any, i: number) => (
             <div key={i} className="p-3 bg-gray-50 rounded-xl text-sm">
               <span className="text-gray-400 mr-2">Q{i + 1}</span>
-              <span className="text-gray-900">{q.en}</span>
-              {mode === 'beginner' && <p className="text-gray-500 text-xs mt-0.5 ml-7">{q.zh}</p>}
+              <span className="break-words text-gray-900">{q.en}</span>
+              {mode === 'beginner' && <p className="ml-7 mt-0.5 break-words text-xs text-gray-500">{q.zh}</p>}
             </div>
           ))}
           {questions.length > 3 && (
@@ -208,19 +208,19 @@ export default function TopicLearningCenter() {
 
       {/* Mode Switch */}
       <div className="bg-white rounded-2xl p-4 shadow-sm">
-        <div className="flex items-center gap-3">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
           <span className="text-sm text-gray-500">学习模式</span>
-          <div className="flex bg-gray-100 rounded-xl p-1">
+          <div className="flex w-full bg-gray-100 rounded-xl p-1 sm:w-auto">
             <button onClick={() => switchMode('beginner')}
-              className={`px-4 py-2 rounded-lg text-sm transition-all ${mode === 'beginner' ? 'bg-white shadow-sm text-gray-900 font-medium' : 'text-gray-500'}`}>
+              className={`flex-1 px-4 py-2 rounded-lg text-sm transition-all sm:flex-none ${mode === 'beginner' ? 'bg-white shadow-sm text-gray-900 font-medium' : 'text-gray-500'}`}>
               初级模式
             </button>
             <button onClick={() => switchMode('advanced')}
-              className={`px-4 py-2 rounded-lg text-sm transition-all ${mode === 'advanced' ? 'bg-white shadow-sm text-gray-900 font-medium' : 'text-gray-500'}`}>
+              className={`flex-1 px-4 py-2 rounded-lg text-sm transition-all sm:flex-none ${mode === 'advanced' ? 'bg-white shadow-sm text-gray-900 font-medium' : 'text-gray-500'}`}>
               进阶模式
             </button>
           </div>
-          <span className="text-xs text-gray-400 ml-auto">
+          <span className="text-xs text-gray-400 lg:ml-auto">
             {mode === 'beginner' ? '显示中文辅助，更多句型支架' : '弱化中文提示，强调逻辑与表达升级'}
           </span>
         </div>
@@ -252,8 +252,8 @@ export default function TopicLearningCenter() {
                     <div className="space-y-2">
                       {warmupData.warmupQuestions.map((q: any, i: number) => (
                         <div key={i} className="p-3 bg-gray-50 rounded-xl text-sm">
-                          <span className="text-gray-900">{q.en}</span>
-                          {mode === 'beginner' && <p className="text-xs text-gray-500 mt-0.5">{q.zh}</p>}
+                          <span className="break-words text-gray-900">{q.en}</span>
+                          {mode === 'beginner' && <p className="mt-0.5 break-words text-xs text-gray-500">{q.zh}</p>}
                         </div>
                       ))}
                     </div>
@@ -304,10 +304,10 @@ export default function TopicLearningCenter() {
               <div className="space-y-2">
                 {vocabData.vocabulary.map((v: any, i: number) => (
                   <div key={i} className="p-3 bg-gray-50 rounded-xl">
-                    <div className="flex items-center gap-2">
-                      <span className="font-medium text-sm text-gray-900">{v.word}</span>
-                      <span className="text-xs text-gray-500">{v.zh}</span>
-                      <span className={`text-xs px-2 py-0.5 rounded-full ml-auto ${
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="font-medium text-sm text-gray-900 break-words">{v.word}</span>
+                      <span className="text-xs text-gray-500 break-words">{v.zh}</span>
+                      <span className={`ml-auto text-xs px-2 py-0.5 rounded-full ${
                         v.difficulty === 'basic' ? 'bg-green-50 text-green-600' :
                         v.difficulty === 'intermediate' ? 'bg-amber-50 text-amber-600' :
                         'bg-red-50 text-red-600'
@@ -378,7 +378,7 @@ export default function TopicLearningCenter() {
                   <div key={i} className={`p-4 rounded-xl border-2 transition-colors cursor-pointer ${
                     selectedTask === t ? 'border-blue-500 bg-blue-50' : 'border-transparent bg-gray-50 hover:border-gray-200'
                   }`} onClick={() => { setSelectedTask(t); setOpenSections(prev => ({ ...prev, review: true })); }}>
-                    <div className="flex items-center justify-between mb-1">
+                    <div className="mb-1 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                       <span className="font-medium text-sm text-gray-900">{t.title}</span>
                       <div className="flex items-center gap-2">
                         <span className={`text-xs px-2 py-0.5 rounded-full ${
@@ -434,7 +434,7 @@ export default function TopicLearningCenter() {
                 rows={5}
                 className="w-full px-4 py-3 rounded-xl bg-gray-50 border-0 outline-none focus:ring-2 focus:ring-blue-100 text-sm resize-none"
               />
-              <div className="flex justify-between items-center mt-2">
+              <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <span className="text-xs text-gray-400">{answer.length} 字符</span>
                 <button
                   onClick={() => reviewMut.mutate(undefined)}

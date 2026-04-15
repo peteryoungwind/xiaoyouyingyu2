@@ -301,7 +301,7 @@ export default function AdminPage() {
     <div className="space-y-6">
       <h1 className="text-xl font-semibold">管理后台</h1>
 
-      <div className="flex gap-2 flex-wrap">
+      <div className="flex flex-wrap gap-2 overflow-x-auto pb-1 sm:flex-nowrap">
         {tabs.map(t => (
           <button key={t.key} onClick={() => setTab(t.key)}
             className={`px-4 py-2 text-sm rounded-apple press-effect transition-colors flex items-center gap-1.5
@@ -316,7 +316,7 @@ export default function AdminPage() {
       {tab === 'ai' && (
         <div className="bg-white rounded-apple-lg p-6 shadow-sm space-y-5">
           {/* Step indicator */}
-          <div className="flex items-center gap-2 text-xs text-gray-400">
+          <div className="flex flex-wrap items-center gap-2 overflow-x-auto pb-1 text-xs text-gray-400">
             <span className={`px-2.5 py-1 rounded-full font-medium transition-colors ${aiStep === 'input' ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-500'}`}>
               1. 输入需求
             </span>
@@ -330,13 +330,12 @@ export default function AdminPage() {
             </span>
           </div>
 
-          {/* Model selector */}
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <label className="text-sm text-gray-500 whitespace-nowrap">AI 模型：</label>
             <select
               value={selectedModelId ?? ''}
               onChange={e => setSelectedModelId(e.target.value ? Number(e.target.value) : undefined)}
-              className="text-sm px-3 py-2 rounded-apple bg-gray-100 border-0 outline-none focus:ring-2 focus:ring-gray-200 min-w-[180px]"
+              className="min-w-0 w-full text-sm px-3 py-2 rounded-apple bg-gray-100 border-0 outline-none focus:ring-2 focus:ring-gray-200 sm:min-w-[180px] sm:w-auto"
             >
               <option value="">默认模型 ({(aiModels || []).find((m: AiModelType) => m.isDefault)?.name || '系统配置'})</option>
               {(aiModels || []).map((m: AiModelType) => (
@@ -356,14 +355,14 @@ export default function AdminPage() {
           {/* ===== Step 1: Input ===== */}
           {aiStep === 'input' && (
             <div className="space-y-4">
-              <div className="flex gap-2">
+              <div className="flex flex-col gap-2 sm:flex-row">
                 <input type="text" placeholder="输入主题方向偏好（可选，如：关于工作压力、关于社交媒体...），留空则随机生成"
                   value={prompt}
                   onChange={e => setPrompt(e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && !aiLoading && handleGenerateTitles()}
-                  className="flex-1 px-4 py-2.5 rounded-apple bg-gray-100 border-0 outline-none focus:ring-2 focus:ring-gray-200 text-sm" />
+                  className="min-w-0 flex-1 px-4 py-2.5 rounded-apple bg-gray-100 border-0 outline-none focus:ring-2 focus:ring-gray-200 text-sm" />
                 <button onClick={handleGenerateTitles} disabled={aiLoading}
-                  className="px-5 py-2.5 bg-gray-900 text-white rounded-apple text-sm press-effect hover:bg-gray-800 disabled:opacity-50 flex items-center gap-2 whitespace-nowrap">
+                  className="flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-apple bg-gray-900 px-5 py-2.5 text-sm text-white press-effect hover:bg-gray-800 disabled:opacity-50 sm:w-auto">
                   {aiLoading ? <><Loader2 size={14} className="animate-spin" /> 生成中...</> : <><Sparkles size={14} /> 生成5个主题</>}
                 </button>
               </div>
@@ -376,9 +375,9 @@ export default function AdminPage() {
           {/* ===== Step 2: Title Selection ===== */}
           {aiStep === 'titles' && (
             <div className="space-y-4">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <h3 className="text-sm font-medium text-gray-700">请选择一个主题：</h3>
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
                   <button onClick={() => { resetAiFlow(); }}
                     className="text-xs text-gray-400 hover:text-gray-600 flex items-center gap-1">
                     <RotateCcw size={12} /> 返回重新输入
@@ -400,10 +399,10 @@ export default function AdminPage() {
                   {generatedTitles.map((title, i) => (
                     <button key={i} onClick={() => handleSelectTitle(title)}
                       className="w-full text-left p-4 rounded-apple bg-gray-50 hover:bg-blue-50 hover:border-blue-200 border border-gray-100 transition-all group">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm font-medium text-gray-900 group-hover:text-blue-700">{title.en}</p>
-                          <p className="text-xs text-gray-500 mt-0.5">{title.zh}</p>
+              <div className="flex min-w-0 items-center justify-between">
+                        <div className="min-w-0">
+                          <p className="break-words text-sm font-medium text-gray-900 group-hover:text-blue-700">{title.en}</p>
+                          <p className="mt-0.5 break-words text-xs text-gray-500">{title.zh}</p>
                         </div>
                         <ChevronRight size={16} className="text-gray-300 group-hover:text-blue-400" />
                       </div>
@@ -419,10 +418,10 @@ export default function AdminPage() {
             <div className="space-y-4">
               {/* Selected title display */}
               <div className="p-3 bg-blue-50 rounded-apple border border-blue-100">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-blue-800">{selectedTitle?.en}</p>
-                    <p className="text-xs text-blue-600 mt-0.5">{selectedTitle?.zh}</p>
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="min-w-0">
+                    <p className="break-words text-sm font-medium text-blue-800">{selectedTitle?.en}</p>
+                    <p className="mt-0.5 break-words text-xs text-blue-600">{selectedTitle?.zh}</p>
                   </div>
                   <button onClick={() => { setAiStep('titles'); setGeneratedQuestions([]); setSelectedTitle(null); }}
                     className="text-xs text-blue-500 hover:text-blue-700 flex items-center gap-1">
@@ -437,11 +436,11 @@ export default function AdminPage() {
                 </div>
               ) : (
                 <>
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <h3 className="text-sm font-medium text-gray-700">
                       选择要保留的问题（已选 {selectedQuestionIndices.size}/{generatedQuestions.length}）：
                     </h3>
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
                       <button
                         onClick={() => {
                           if (selectedQuestionIndices.size === generatedQuestions.length) {
@@ -470,8 +469,8 @@ export default function AdminPage() {
                             {isSelected && <Check size={12} className="text-white" />}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm text-gray-900">Q{i + 1}: {q.en}</p>
-                            <p className="text-xs text-gray-500 mt-0.5">{q.zh}</p>
+                            <p className="break-words text-sm text-gray-900">Q{i + 1}: {q.en}</p>
+                            <p className="mt-0.5 break-words text-xs text-gray-500">{q.zh}</p>
                           </div>
                         </button>
                       );
@@ -481,7 +480,7 @@ export default function AdminPage() {
                   {/* Save section */}
                   <div className="space-y-3 pt-3 border-t border-gray-100">
                     <div className="space-y-2">
-                      <div className="flex items-center gap-3">
+                      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                         <label className="text-sm text-gray-500 whitespace-nowrap">分类标签：</label>
                         <input type="text" placeholder="逗号分隔，如 个人成长,学习提升" value={aiTags}
                           onChange={e => setAiTags(e.target.value)}
@@ -503,20 +502,22 @@ export default function AdminPage() {
                         })}
                       </div>
                     </div>
-                    <div className="flex items-center gap-3">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                       <label className="text-sm text-gray-500">话题日期：</label>
                       <input type="date" value={eventDate} onChange={e => setEventDate(e.target.value)}
                         className="px-3 py-2 rounded-apple bg-gray-100 text-sm outline-none focus:ring-2 focus:ring-gray-200" />
-                      <div className="flex-1" />
-                      <button onClick={() => resetAiFlow()}
-                        className="px-4 py-2 text-sm text-gray-500 hover:text-gray-700 rounded-apple hover:bg-gray-100">
-                        取消
-                      </button>
-                      <button onClick={handleSaveFromAi}
-                        disabled={saving || selectedQuestionIndices.size === 0}
-                        className="px-5 py-2 bg-gray-900 text-white rounded-apple text-sm press-effect hover:bg-gray-800 disabled:opacity-50 flex items-center gap-2">
-                        {saving ? <><Loader2 size={14} className="animate-spin" /> 保存中...</> : <><Check size={14} /> 保存主题</>}
-                      </button>
+                      <div className="hidden flex-1 sm:block" />
+                      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:self-auto">
+                        <button onClick={() => resetAiFlow()}
+                          className="px-4 py-2 text-sm text-gray-500 hover:text-gray-700 rounded-apple hover:bg-gray-100">
+                          取消
+                        </button>
+                        <button onClick={handleSaveFromAi}
+                          disabled={saving || selectedQuestionIndices.size === 0}
+                          className="flex items-center justify-center gap-2 px-5 py-2 bg-gray-900 text-white rounded-apple text-sm press-effect hover:bg-gray-800 disabled:opacity-50">
+                          {saving ? <><Loader2 size={14} className="animate-spin" /> 保存中...</> : <><Check size={14} /> 保存主题</>}
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </>
@@ -561,7 +562,7 @@ export default function AdminPage() {
           <div className="space-y-2">
             <p className="text-sm font-medium text-gray-700">问题列表</p>
             {form.questions.map((q, i) => (
-              <div key={i} className="flex gap-2 items-start">
+              <div key={i} className="flex flex-col gap-2 rounded-2xl bg-gray-50 p-3 sm:flex-row sm:items-start sm:bg-transparent sm:p-0">
                 <div className="flex-1 space-y-1">
                   <input type="text" placeholder={`Q${i + 1} English *`} value={q.en}
                     onChange={e => setForm(f => ({ ...f, questions: f.questions.map((x, j) => j === i ? { ...x, en: e.target.value } : x) }))}
@@ -572,7 +573,7 @@ export default function AdminPage() {
                 </div>
                 {form.questions.length > 1 && (
                   <button onClick={() => setForm(f => ({ ...f, questions: f.questions.filter((_, j) => j !== i) }))}
-                    className="text-gray-300 hover:text-red-400 text-lg leading-none mt-2">×</button>
+                    className="self-end text-gray-300 hover:text-red-400 text-lg leading-none sm:mt-2 sm:self-auto">×</button>
                 )}
               </div>
             ))}
@@ -580,10 +581,10 @@ export default function AdminPage() {
               className="text-sm text-blue-500 hover:text-blue-600">+ 添加问题</button>
           </div>
 
-          <div className="flex items-center justify-between gap-3">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <input type="date" value={form.eventDate}
               onChange={e => setForm(f => ({ ...f, eventDate: e.target.value }))}
-              className="px-3 py-2 rounded-apple bg-gray-100 text-sm outline-none" />
+              className="px-3 py-2 rounded-apple bg-gray-100 text-sm outline-none sm:w-auto" />
             <button onClick={handleSaveManual} disabled={manualSaving || !form.title || !form.eventDate}
               className="px-5 py-2 bg-gray-900 text-white rounded-apple text-sm press-effect hover:bg-gray-800 disabled:opacity-50">
               {manualSaving ? '保存中...' : '保存主题'}
@@ -596,7 +597,7 @@ export default function AdminPage() {
       {tab === 'topics' && (
         <div className="space-y-3">
           {(topics?.content || []).map((topic: any) => (
-            <div key={topic.id} className="bg-white rounded-apple-lg p-4 shadow-sm flex items-center justify-between">
+            <div key={topic.id} className="bg-white rounded-apple-lg p-4 shadow-sm flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h3 className="font-medium text-sm">{topic.title}</h3>
                 {topic.titleZh && <p className="text-xs text-gray-500">{topic.titleZh}</p>}
@@ -613,9 +614,8 @@ export default function AdminPage() {
       {tab === 'users' && (
         <div className="space-y-3">
           {(users || []).map((user: any) => (
-            <div key={user.id} className="bg-white rounded-apple-lg p-4 shadow-sm flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <span className="text-sm font-medium">{user.username}</span>
+            <div key={user.id} className="bg-white rounded-apple-lg p-4 shadow-sm flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
                 <select value={user.role}
                   onChange={e => updateRole.mutate({ id: user.id, role: e.target.value })}
                   disabled={user.role === 'ADMIN' && (users || []).filter((x: any) => x.role === 'ADMIN').length <= 1}
@@ -636,8 +636,7 @@ export default function AdminPage() {
       {/* ==================== Model Management Tab ==================== */}
       {tab === 'models' && (
         <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <p className="text-sm text-gray-500">管理 AI 模型配置，支持多种 AI 服务提供商。</p>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <button onClick={() => { setShowModelForm(true); setEditingModel(null); setModelForm({ name: '', apiUrl: '', apiKey: '', modelName: '', isDefault: false }); }}
               className="px-4 py-2 bg-gray-900 text-white rounded-apple text-sm press-effect hover:bg-gray-800 flex items-center gap-1.5">
               <Plus size={14} /> 新增模型
@@ -653,7 +652,7 @@ export default function AdminPage() {
             )}
             {(aiModels || []).map((model: AiModelType) => (
               <div key={model.id} className="bg-white rounded-apple-lg p-4 shadow-sm">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-medium">{model.name}</span>
                     {model.isDefault && (
@@ -669,10 +668,10 @@ export default function AdminPage() {
                       className="text-xs text-red-400 hover:text-red-600">删除</button>
                   </div>
                 </div>
-                <div className="mt-2 text-xs text-gray-400 space-y-0.5">
-                  <p>模型：{model.modelName}</p>
-                  <p>API：{model.apiUrl}</p>
-                  <p>Key：{model.apiKey.substring(0, 8)}{'*'.repeat(Math.max(0, model.apiKey.length - 12))}{model.apiKey.substring(Math.max(0, model.apiKey.length - 4))}</p>
+                <div className="mt-2 space-y-0.5 text-xs text-gray-400">
+                  <p className="break-words">模型：{model.modelName}</p>
+                  <p className="break-all">API：{model.apiUrl}</p>
+                  <p className="break-all">Key：{model.apiKey.substring(0, 8)}{'*'.repeat(Math.max(0, model.apiKey.length - 12))}{model.apiKey.substring(Math.max(0, model.apiKey.length - 4))}</p>
                 </div>
               </div>
             ))}
@@ -680,8 +679,8 @@ export default function AdminPage() {
 
           {/* Model form modal */}
           {showModelForm && (
-            <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50" onClick={() => setShowModelForm(false)}>
-              <div className="bg-white rounded-apple-lg p-6 shadow-xl w-full max-w-md space-y-4" onClick={e => e.stopPropagation()}>
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4" onClick={() => setShowModelForm(false)}>
+              <div className="max-h-[80vh] w-full max-w-md space-y-4 overflow-y-auto rounded-apple-lg bg-white p-5 shadow-xl sm:p-6" onClick={e => e.stopPropagation()}>
                 <h3 className="font-medium">{editingModel ? '编辑模型' : '新增模型'}</h3>
                 <div className="space-y-3">
                   <div>
@@ -715,7 +714,7 @@ export default function AdminPage() {
                     设为默认模型
                   </label>
                 </div>
-                <div className="flex justify-end gap-2 pt-2">
+                <div className="flex flex-col gap-2 pt-2 sm:flex-row sm:justify-end">
                   <button onClick={() => setShowModelForm(false)}
                     className="px-4 py-2 text-sm text-gray-500 hover:bg-gray-100 rounded-apple">
                     取消

@@ -32,11 +32,11 @@ export default function Home() {
     .filter(([, info]) => Boolean(info));
 
   return (
-    <div className="flex gap-6">
+    <div className="flex flex-col gap-6 xl:flex-row">
       {/* Left: main content */}
       <div className="flex-1 space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="text-2xl font-semibold text-gray-900">Overview</h1>
             <p className="text-sm text-gray-500 mt-1">
@@ -45,7 +45,7 @@ export default function Home() {
           </div>
           {isAdmin && (
             <Link href="/admin"
-              className="flex items-center gap-2 px-5 py-2.5 bg-gray-900 text-white rounded-xl text-sm hover:bg-gray-800 transition-colors">
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-gray-900 px-5 py-2.5 text-sm text-white transition-colors hover:bg-gray-800 sm:w-auto">
               <Plus size={16} />
               Create Topic
             </Link>
@@ -53,7 +53,7 @@ export default function Home() {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
           <div className="bg-white rounded-2xl p-5 shadow-sm">
             <p className="text-sm text-gray-500">主题总数</p>
             <div className="flex items-end justify-between mt-2">
@@ -82,11 +82,11 @@ export default function Home() {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-gray-900">主题分类</h2>
           </div>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
             {categoryEntries.map(([tag, info]) => (
                 <Link key={tag} href={`/topics?tag=${encodeURIComponent(tag)}`}
-                  className="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-all group">
-                  <div className="flex items-center justify-between mb-3">
+                  className="group min-w-0 rounded-2xl bg-white p-5 shadow-sm transition-all hover:shadow-md">
+                  <div className="mb-3 flex min-w-0 items-center justify-between gap-3">
                     <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${getTagColor(tag)}`}>
                       {tag}
                     </span>
@@ -95,7 +95,7 @@ export default function Home() {
                       <span className="text-xs">{info?.count}</span>
                     </div>
                   </div>
-                  <p className="text-sm text-gray-600 line-clamp-1 group-hover:text-gray-900 transition-colors">
+                  <p className="line-clamp-1 min-w-0 text-sm text-gray-600 transition-colors group-hover:text-gray-900">
                     {info?.latestTitle}
                   </p>
                 </Link>
@@ -105,18 +105,18 @@ export default function Home() {
       </div>
 
       {/* Right sidebar: Calendar + Recent Topics */}
-      <div className="w-72 space-y-6 shrink-0">
+      <div className="w-full space-y-6 shrink-0 xl:w-72">
         <Calendar onSelectDate={() => {}} selectedDate={null} />
 
         <div className="bg-white rounded-2xl p-5 shadow-sm">
           <h3 className="font-semibold text-gray-900 mb-4">最近主题</h3>
           <div className="space-y-4">
             {topics.map((topic: any) => (
-              <Link key={topic.id} href={`/topic/${topic.id}`} className="flex gap-3 group">
+              <Link key={topic.id} href={`/topic/${topic.id}`} className="flex min-w-0 gap-3 group">
                 <span className="text-xs font-medium text-blue-500 bg-blue-50 px-2 py-1 rounded-lg h-fit whitespace-nowrap">
                   {topic.eventDate}
                 </span>
-                <p className="text-sm text-gray-900 group-hover:text-blue-500 transition-colors line-clamp-1">
+                <p className="min-w-0 text-sm text-gray-900 group-hover:text-blue-500 transition-colors line-clamp-1">
                   {topic.title}
                 </p>
               </Link>

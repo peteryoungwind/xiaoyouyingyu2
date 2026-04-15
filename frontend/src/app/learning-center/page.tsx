@@ -12,8 +12,8 @@ function ContactModal({ onClose }: { onClose: () => void }) {
   const { membershipExpireAt } = useAuth();
   const expired = membershipExpireAt && new Date(membershipExpireAt) <= new Date();
   return (
-    <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50" onClick={onClose}>
-      <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-xl space-y-4" onClick={e => e.stopPropagation()}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4" onClick={onClose}>
+      <div className="max-h-[80vh] w-full max-w-sm space-y-4 overflow-y-auto rounded-2xl bg-white p-6 shadow-xl" onClick={e => e.stopPropagation()}>
         <h3 className="font-semibold text-gray-900 text-center">
           {expired ? '你的高级会员已过期，请联系管理员开通高级功能' : '请联系管理员开通高级功能'}
         </h3>
@@ -89,16 +89,16 @@ export default function LearningCenterPage() {
       </div>
 
       {/* Search & Filter */}
-      <div className="flex gap-3">
-        <form onSubmit={handleSearch} className="flex-1 flex gap-2">
-          <div className="flex-1 relative">
+      <div className="flex flex-col gap-3">
+        <form onSubmit={handleSearch} className="flex flex-col gap-2 sm:flex-row">
+          <div className="relative min-w-0 flex-1">
             <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
             <input type="text" placeholder="搜索主题..." value={searchInput}
               onChange={e => setSearchInput(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white shadow-sm outline-none focus:ring-2 focus:ring-blue-100 text-sm" />
+              className="w-full min-w-0 pl-10 pr-4 py-2.5 rounded-xl bg-white shadow-sm outline-none focus:ring-2 focus:ring-blue-100 text-sm" />
           </div>
           <button type="submit"
-            className="px-5 py-2.5 bg-gray-900 text-white rounded-xl text-sm hover:bg-gray-800 press-effect">搜索</button>
+            className="w-full px-5 py-2.5 bg-gray-900 text-white rounded-xl text-sm hover:bg-gray-800 press-effect sm:w-auto">搜索</button>
         </form>
       </div>
 
@@ -122,13 +122,13 @@ export default function LearningCenterPage() {
       ) : topics.length === 0 ? (
         <div className="text-center py-12 text-gray-400">暂无主题</div>
       ) : (
-        <div className="grid grid-cols-2 xl:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {topics.map((topic: any) => {
             const tags = normalizeKnownTags(topic.tags);
             const displayTags = tags.length > 0 ? tags : parseTags(topic.tags);
             return (
               <Link key={topic.id} href={`/learning-center/topic/${topic.id}`}
-                className="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-all group">
+                className="group min-w-0 rounded-2xl bg-white p-5 shadow-sm transition-all hover:shadow-md">
                 <div className="flex gap-1.5 mb-3 flex-wrap">
                   {displayTags.map((t: string) => (
                     <span key={t} className={`text-xs px-2 py-0.5 rounded-full font-medium ${getTagColor(t.trim())}`}>
@@ -136,8 +136,8 @@ export default function LearningCenterPage() {
                     </span>
                   ))}
                 </div>
-                <h3 className="font-medium text-gray-900 group-hover:text-blue-600 transition-colors">{topic.title}</h3>
-                {topic.titleZh && <p className="text-sm text-gray-500 mt-0.5">{topic.titleZh}</p>}
+                <h3 className="break-words font-medium text-gray-900 transition-colors group-hover:text-blue-600">{topic.title}</h3>
+                {topic.titleZh && <p className="mt-0.5 break-words text-sm text-gray-500">{topic.titleZh}</p>}
                 <div className="flex items-center justify-between mt-3">
                   <span className="text-xs text-gray-400">{topic.eventDate}</span>
                   <span className="text-xs text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -152,7 +152,7 @@ export default function LearningCenterPage() {
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex justify-center items-center gap-2 pt-4">
+        <div className="flex flex-col items-center justify-center gap-2 pt-4 sm:flex-row">
           <button onClick={() => setPage(p => Math.max(0, p - 1))} disabled={page === 0}
             className="px-4 py-2 text-sm rounded-xl bg-white shadow-sm disabled:opacity-30">上一页</button>
           <span className="text-sm text-gray-500">{page + 1} / {totalPages}</span>

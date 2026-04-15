@@ -26,11 +26,11 @@ export default function CalendarPage() {
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-semibold text-gray-900">日历</h1>
-      <div className="flex gap-6">
-        <div className="w-80">
+      <div className="flex flex-col gap-6 lg:flex-row">
+        <div className="w-full overflow-x-auto lg:w-80 lg:shrink-0">
           <Calendar onSelectDate={setSelectedDate} selectedDate={selectedDate} />
         </div>
-        <div className="flex-1">
+        <div className="min-w-0 flex-1">
           {selectedDate ? (
             topics.length > 0 ? (
               <div className="space-y-3">

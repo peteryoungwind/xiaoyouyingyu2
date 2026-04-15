@@ -73,7 +73,7 @@ export default function TopicDetail() {
           <input type="text" placeholder="中文标题" value={form.titleZh}
             onChange={e => setForm((f: any) => ({ ...f, titleZh: e.target.value }))}
             className="w-full px-4 py-2.5 rounded-apple bg-gray-100 border-0 outline-none focus:ring-2 focus:ring-gray-200 text-sm" />
-          <div className="flex gap-3 items-start">
+          <div className="flex flex-col gap-3 items-start md:flex-row">
             <div className="flex-1 space-y-2">
               <input type="text" placeholder="分类（逗号分隔，如 个人成长,学习提升）" value={form.tags}
                 onChange={e => setForm((f: any) => ({ ...f, tags: e.target.value }))}
@@ -108,7 +108,7 @@ export default function TopicDetail() {
           <div className="space-y-2">
             <p className="text-sm font-medium text-gray-700">问题列表</p>
             {form.questions.map((q: any, i: number) => (
-              <div key={i} className="flex gap-2 items-start">
+              <div key={i} className="flex flex-col gap-2 rounded-2xl bg-gray-50 p-3 sm:flex-row sm:items-start sm:bg-transparent sm:p-0">
                 <div className="flex-1 space-y-1">
                   <input type="text" placeholder={`Q${i + 1} English *`} value={q.en}
                     onChange={e => setForm((f: any) => ({ ...f, questions: f.questions.map((x: any, j: number) => j === i ? { ...x, en: e.target.value } : x) }))}
@@ -119,7 +119,7 @@ export default function TopicDetail() {
                 </div>
                 {form.questions.length > 1 && (
                   <button onClick={() => setForm((f: any) => ({ ...f, questions: f.questions.filter((_: any, j: number) => j !== i) }))}
-                    className="text-gray-300 hover:text-red-400 text-lg leading-none mt-2">×</button>
+                    className="self-end text-gray-300 hover:text-red-400 text-lg leading-none sm:mt-2 sm:self-auto">×</button>
                 )}
               </div>
             ))}
@@ -129,7 +129,7 @@ export default function TopicDetail() {
             </button>
           </div>
 
-          <div className="flex justify-end gap-2 pt-2 border-t border-gray-100">
+          <div className="flex flex-col gap-2 border-t border-gray-100 pt-2 sm:flex-row sm:justify-end">
             <button onClick={() => setEditing(false)}
               className="px-4 py-2 text-sm text-gray-500 hover:bg-gray-100 rounded-apple flex items-center gap-1">
               <X size={14} /> 取消
@@ -153,12 +153,12 @@ export default function TopicDetail() {
       </button>
 
       <div className="bg-white rounded-apple-lg p-6 shadow-sm">
-        <div className="flex items-start justify-between mb-4">
-          <div>
-            <h1 className="text-xl font-semibold text-gray-900">{topic.title}</h1>
-            {topic.titleZh && <p className="text-base text-gray-500 mt-1">{topic.titleZh}</p>}
+        <div className="mb-4 flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+          <div className="min-w-0">
+            <h1 className="break-words text-xl font-semibold text-gray-900">{topic.title}</h1>
+            {topic.titleZh && <p className="mt-1 break-words text-base text-gray-500">{topic.titleZh}</p>}
           </div>
-          <div className="flex items-center gap-3 ml-4">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center md:ml-4">
             <span className="text-xs text-gray-400 whitespace-nowrap">{topic.eventDate}</span>
             {isAdmin && (
               <button onClick={startEdit}
@@ -182,11 +182,11 @@ export default function TopicDetail() {
         <div className="space-y-4">
           {questions.map((q: { en: string; zh: string }, i: number) => (
             <div key={i} className="p-4 bg-gray-50 rounded-apple">
-              <p className="text-sm font-medium text-gray-900 mb-1">
+              <p className="text-sm font-medium text-gray-900 mb-1 break-words">
                 <span className="text-gray-400 mr-2">Q{i + 1}</span>
                 {q.en}
               </p>
-              <p className="text-sm text-gray-500">{q.zh}</p>
+              <p className="text-sm text-gray-500 break-words">{q.zh}</p>
             </div>
           ))}
         </div>
@@ -194,7 +194,7 @@ export default function TopicDetail() {
 
       {isPremium && (
         <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 shadow-sm">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h3 className="font-semibold text-gray-900 flex items-center gap-2">
                 <GraduationCap size={20} className="text-blue-500" />
