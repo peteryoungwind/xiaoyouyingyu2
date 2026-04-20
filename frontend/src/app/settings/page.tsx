@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/lib/auth';
-import { api } from '@/lib/api';
+import { api, isAuthExpiredError } from '@/lib/api';
 import { Crown } from 'lucide-react';
 
 export default function SettingsPage() {
@@ -34,6 +34,7 @@ export default function SettingsPage() {
       setOldPwd('');
       setNewPwd('');
     } catch (err: any) {
+      if (isAuthExpiredError(err)) return;
       setMsg(err.message || '修改失败');
     }
   };
@@ -47,6 +48,7 @@ export default function SettingsPage() {
       setRedeemInput('');
       refreshMembership();
     } catch (err: any) {
+      if (isAuthExpiredError(err)) return;
       setRedeemMsg(err.message || '兑换失败');
     }
   };

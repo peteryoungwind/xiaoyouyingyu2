@@ -24,9 +24,7 @@ function request(url, method, data) {
       header: header,
       success: function (res) {
         if (res.statusCode === 401) {
-          // Token expired or invalid — clear login state and redirect
-          app.logout();
-          wx.navigateTo({ url: '/pages/login/index' });
+          require('./auth').handleAuthExpired();
           reject({ code: 401, message: '登录已过期，请重新登录' });
           return;
         }

@@ -2,6 +2,10 @@ const app = getApp();
 const api = require('../../utils/api');
 const util = require('../../utils/util');
 
+function isAuthExpiredError(err) {
+  return err && err.code === 401;
+}
+
 Page({
   data: {
     isLoggedIn: false,
@@ -94,12 +98,19 @@ Page({
         });
       }
     }).catch(err => {
+      if (isAuthExpiredError(err)) {
+        return;
+      }
       console.error('Load membership failed:', err);
     });
   },
 
   goToLogin() {
     wx.navigateTo({ url: '/pages/login/index' });
+  },
+
+  browseAsGuest() {
+    wx.switchTab({ url: '/pages/topics/index' });
   },
 
   goToSettings() {
@@ -168,6 +179,9 @@ Page({
       });
     }).catch(err => {
       wx.hideLoading();
+      if (isAuthExpiredError(err)) {
+        return;
+      }
       wx.showToast({ title: err.message || '二维码不可用', icon: 'none' });
     });
   },
@@ -183,6 +197,9 @@ Page({
       });
     }).catch(err => {
       wx.hideLoading();
+      if (isAuthExpiredError(err)) {
+        return;
+      }
       wx.showToast({ title: err.message || '确认失败', icon: 'none' });
     });
   },

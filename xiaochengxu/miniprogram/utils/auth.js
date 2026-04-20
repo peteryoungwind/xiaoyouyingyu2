@@ -2,31 +2,68 @@ var api = require('./api');
 var util = require('./util');
 
 var app = getApp();
+var authExpiredModalVisible = false;
+var authExpiredNavigating = false;
+
+function isLoginPage() {
+  var pages = getCurrentPages();
+  var currentPage = pages[pages.length - 1];
+  return !!(currentPage && currentPage.route === 'pages/login/index');
+}
+
+function resetAuthExpiredPromptState() {
+  authExpiredModalVisible = false;
+  authExpiredNavigating = false;
+}
+
+function handleAuthExpired() {
+  app.logout();
+
+  if (isLoginPage() || authExpiredModalVisible || authExpiredNavigating) {
+    return;
+  }
+
+  authExpiredModalVisible = true;
+  wx.showModal({
+    title: '登录已过期',
+    content: '当前登录状态已失效，请重新登录后继续使用。',
+    confirmText: '去登录',
+    cancelText: '取消',
+    success: function (res) {
+      authExpiredModalVisible = false;
+      if (!res.confirm || authExpiredNavigating || isLoginPage()) {
+        return;
+      }
+      authExpiredNavigating = true;
+      wx.navigateTo({
+        url: '/pages/login/index',
+        complete: function () {
+          authExpiredNavigating = false;
+        }
+      });
+    },
+    fail: function () {
+      authExpiredModalVisible = false;
+    }
+  });
+}
 
 /**
- * Check if user is logged in. If not, redirect to login page.
+ * Check if user is logged in.
  * @returns {boolean} true if logged in, false otherwise
  */
 function checkLoginAndRedirect() {
-  if (!app.checkLogin()) {
-    wx.navigateTo({
-      url: '/pages/login/index'
-    });
-    return false;
-  }
-  return true;
+  return app.checkLogin();
 }
 
 /**
  * Check if user is a member (ADMIN or has active membership).
- * If not, show the membership modal.
+ * If not logged in, return false and let the page decide whether to prompt login.
+ * If logged in but not a member, show the membership modal.
  * @returns {boolean} true if member, false otherwise
  */
 function checkMemberAndShowModal() {
   if (!app.checkLogin()) {
-    wx.navigateTo({
-      url: '/pages/login/index'
-    });
     return false;
   }
 
@@ -63,5 +100,7 @@ function refreshMembership() {
 module.exports = {
   checkLoginAndRedirect: checkLoginAndRedirect,
   checkMemberAndShowModal: checkMemberAndShowModal,
-  refreshMembership: refreshMembership
+  refreshMembership: refreshMembership,
+  handleAuthExpired: handleAuthExpired,
+  resetAuthExpiredPromptState: resetAuthExpiredPromptState
 };

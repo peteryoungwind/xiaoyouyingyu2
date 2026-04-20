@@ -2,6 +2,10 @@ const app = getApp();
 const api = require('../../utils/api');
 const util = require('../../utils/util');
 
+function isAuthExpiredError(err) {
+  return err && err.code === 401;
+}
+
 /**
  * Parse AI content string: strip markdown code fences, then JSON.parse.
  */
@@ -146,6 +150,9 @@ Page({
       api.getTopic(id).then(applyTopic).catch(fallbackErr => {
         console.error('Load topic failed:', fallbackErr);
         this.setData({ loading: false });
+        if (isAuthExpiredError(fallbackErr)) {
+          return;
+        }
         wx.showToast({ title: fallbackErr.message || '加载主题失败', icon: 'none' });
       });
     });
@@ -186,6 +193,9 @@ Page({
       console.error('Generate warmup failed:', err);
       this.setData({ warmupLoading: false });
       wx.hideLoading();
+      if (isAuthExpiredError(err)) {
+        return;
+      }
       wx.showToast({ title: '生成失败，请重试', icon: 'none' });
     });
   },
@@ -214,6 +224,9 @@ Page({
       console.error('Generate vocabulary failed:', err);
       this.setData({ vocabLoading: false });
       wx.hideLoading();
+      if (isAuthExpiredError(err)) {
+        return;
+      }
       wx.showToast({ title: '生成失败，请重试', icon: 'none' });
     });
   },
@@ -242,6 +255,9 @@ Page({
       console.error('Generate expressions failed:', err);
       this.setData({ expressionsLoading: false });
       wx.hideLoading();
+      if (isAuthExpiredError(err)) {
+        return;
+      }
       wx.showToast({ title: '生成失败，请重试', icon: 'none' });
     });
   },
@@ -270,6 +286,9 @@ Page({
       console.error('Generate tasks failed:', err);
       this.setData({ tasksLoading: false });
       wx.hideLoading();
+      if (isAuthExpiredError(err)) {
+        return;
+      }
       wx.showToast({ title: '生成失败，请重试', icon: 'none' });
     });
   },
@@ -327,6 +346,9 @@ Page({
       console.error('Review answer failed:', err);
       this.setData({ submittingAnswer: false });
       wx.hideLoading();
+      if (isAuthExpiredError(err)) {
+        return;
+      }
       wx.showToast({ title: 'AI点评失败，请重试', icon: 'none' });
     });
   },

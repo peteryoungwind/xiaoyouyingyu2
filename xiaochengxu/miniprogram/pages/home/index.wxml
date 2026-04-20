@@ -82,6 +82,7 @@
     <view class="member-actions">
       <view class="member-action primary" bindtap="goToLearning">了解学习功能</view>
       <view class="member-action secondary" wx:if="{{!isLoggedIn}}" bindtap="goToLogin">立即登录</view>
+      <view class="member-action secondary" wx:if="{{!isLoggedIn}}" bindtap="goToTopics">以游客身份浏览</view>
     </view>
   </view>
 

@@ -7,6 +7,28 @@ interface RequestInitOptions extends RequestInit {
   direct?: boolean;
 }
 
+export class ApiError extends Error {
+  status?: number;
+  code?: string;
+
+  constructor(message: string, options?: { status?: number; code?: string }) {
+    super(message);
+    this.name = 'ApiError';
+    this.status = options?.status;
+    this.code = options?.code;
+  }
+}
+
+let authExpiredNotified = false;
+
+export function resetAuthExpiredNotification() {
+  authExpiredNotified = false;
+}
+
+export function isAuthExpiredError(error: unknown) {
+  return error instanceof ApiError && (error.status === 401 || error.code === 'AUTH_EXPIRED');
+}
+
 async function request(url: string, options?: RequestInitOptions) {
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
   const headers: Record<string, string> = { 'Content-Type': 'application/json' };
@@ -34,13 +56,23 @@ async function request(url: string, options?: RequestInitOptions) {
   }
 
   if (!res.ok) {
+    const message = data?.error || data?.message || (res.status >= 500 ? '服务异常，请稍后重试' : '') || text || `请求失败（${res.status}）`;
     if (res.status === 401 && typeof window !== 'undefined') {
       ['token', 'username', 'role', 'membershipExpireAt', 'membershipActive', 'hasPassword'].forEach(key => {
         localStorage.removeItem(key);
       });
-      window.dispatchEvent(new Event('auth:expired'));
+      if (!authExpiredNotified) {
+        authExpiredNotified = true;
+        window.dispatchEvent(new CustomEvent('auth:expired', {
+          detail: {
+            message: '登录已过期，请重新登录',
+            code: 'AUTH_EXPIRED',
+          },
+        }));
+      }
+      throw new ApiError('登录已过期，请重新登录', { status: 401, code: 'AUTH_EXPIRED' });
     }
-    throw new Error(data?.error || data?.message || (res.status >= 500 ? '服务异常，请稍后重试' : '') || text || `请求失败（${res.status}）`);
+    throw new ApiError(message, { status: res.status });
   }
 
   return data;

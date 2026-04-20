@@ -6,6 +6,7 @@
     <view class="empty-title">登录后开启学习之旅</view>
     <view class="empty-desc">学习中心提供热身、词汇、表达、练习任务等丰富内容</view>
     <button class="btn btn-primary btn-block mt-32" bindtap="goToLogin">去登录</button>
+    <button class="btn btn-outline btn-block mt-16" bindtap="browseAsGuest">以游客身份浏览</button>
   </view>
 
   <!-- Logged in but not member -->

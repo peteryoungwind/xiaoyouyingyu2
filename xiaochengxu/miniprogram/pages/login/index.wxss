@@ -3,7 +3,31 @@
   background: #FFFFFF;
   display: flex;
   flex-direction: column;
-  padding: 0 80rpx;
+  padding: env(safe-area-inset-top) 80rpx 0;
+}
+
+.login-header {
+  display: flex;
+  justify-content: flex-start;
+  padding-top: 24rpx;
+}
+
+.back-btn {
+  min-width: 144rpx;
+  height: 72rpx;
+  line-height: 72rpx;
+  padding: 0 32rpx;
+  border-radius: 999rpx;
+  border: 2rpx solid #D1D1D6;
+  background: #FFFFFF;
+  color: #1C1C1E;
+  font-size: 28rpx;
+  font-weight: 600;
+  margin: 0;
+}
+
+.back-btn::after {
+  border: none;
 }
 
 /* Logo 区 */
@@ -148,6 +172,27 @@
   font-size: 32rpx;
   font-weight: 600;
   letter-spacing: 1rpx;
+}
+
+.guest-btn {
+  width: 100%;
+  height: 96rpx;
+  margin-top: 24rpx;
+  border-radius: 999rpx;
+  border: 2rpx solid #D1D1D6;
+  background: #FFFFFF;
+  color: #1C1C1E;
+  font-size: 30rpx;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.guest-btn::after {
+  border: none;
 }
 
 .btn-disabled {

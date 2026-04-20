@@ -1,5 +1,6 @@
 'use client';
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { resetAuthExpiredNotification } from '@/lib/api';
 
 interface AuthUser {
   username: string;
@@ -81,11 +82,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = (data: AuthUser) => {
     persistUser(data);
+    resetAuthExpiredNotification();
     setUser(data);
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('auth:restored'));
+    }
   };
 
   const logout = () => {
     clearStoredUser();
+    resetAuthExpiredNotification();
     setUser(null);
   };
 

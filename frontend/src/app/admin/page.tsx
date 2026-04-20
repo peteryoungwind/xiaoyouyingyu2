@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '@/lib/api';
+import { api, isAuthExpiredError } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
 import { CATEGORY_ORDER, getTagColor, parseTags } from '@/lib/tag-colors';
 import { useRouter } from 'next/navigation';
@@ -141,6 +141,7 @@ export default function AdminPage() {
         setAiError('AI 返回格式异常，请重试');
       }
     } catch (err: any) {
+      if (isAuthExpiredError(err)) return;
       setAiError(err.message || 'AI 生成失败');
     } finally {
       setAiLoading(false);
@@ -172,6 +173,7 @@ export default function AdminPage() {
         setAiError('AI 返回格式异常，请重试');
       }
     } catch (err: any) {
+      if (isAuthExpiredError(err)) return;
       setAiError(err.message || '问题生成失败');
     } finally {
       setAiLoading(false);
@@ -207,6 +209,7 @@ export default function AdminPage() {
       resetAiFlow();
       queryClient.invalidateQueries({ queryKey: ['admin-topics'] });
     } catch (err: any) {
+      if (isAuthExpiredError(err)) return;
       setAiError(err.message || '保存失败');
     } finally {
       setSaving(false);
@@ -239,6 +242,7 @@ export default function AdminPage() {
       setModelForm({ name: '', apiUrl: '', apiKey: '', modelName: '', isDefault: false });
       refetchModels();
     } catch (err: any) {
+      if (isAuthExpiredError(err)) return;
       alert(err.message || '保存失败');
     }
   };
@@ -251,6 +255,7 @@ export default function AdminPage() {
       // If deleted model was selected, reset selection
       if (selectedModelId === id) setSelectedModelId(undefined);
     } catch (err: any) {
+      if (isAuthExpiredError(err)) return;
       alert(err.message || '删除失败');
     }
   };

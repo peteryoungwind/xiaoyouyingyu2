@@ -36,7 +36,17 @@ Page({
 
   goToLearning() {
     if (!app.checkLogin()) {
-      wx.navigateTo({ url: '/pages/login/index' });
+      wx.showModal({
+        title: '提示',
+        content: '请先登录后进入学习中心',
+        confirmText: '去登录',
+        cancelText: '取消',
+        success: (res) => {
+          if (res.confirm) {
+            wx.navigateTo({ url: '/pages/login/index' });
+          }
+        }
+      });
       return;
     }
     if (!app.isMember()) {

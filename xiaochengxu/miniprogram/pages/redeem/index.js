@@ -2,6 +2,10 @@ const app = getApp();
 const api = require('../../utils/api');
 const util = require('../../utils/util');
 
+function isAuthExpiredError(err) {
+  return err && err.code === 401;
+}
+
 Page({
   data: {
     code: '',
@@ -52,6 +56,9 @@ Page({
         membershipStatusLabel: statusLabel
       });
     }).catch(err => {
+      if (isAuthExpiredError(err)) {
+        return;
+      }
       console.error('Load membership failed:', err);
     });
   },
@@ -68,8 +75,17 @@ Page({
     }
 
     if (!app.globalData.isLoggedIn) {
-      wx.showToast({ title: '请先登录', icon: 'none' });
-      wx.navigateTo({ url: '/pages/login/index' });
+      wx.showModal({
+        title: '提示',
+        content: '请先登录后再兑换卡密',
+        confirmText: '去登录',
+        cancelText: '取消',
+        success: (res) => {
+          if (res.confirm) {
+            wx.navigateTo({ url: '/pages/login/index' });
+          }
+        }
+      });
       return;
     }
 
@@ -107,6 +123,9 @@ Page({
           message: (err && err.message) || '兑换失败，请检查兑换码是否正确'
         }
       });
+      if (isAuthExpiredError(err)) {
+        this.setData({ showResult: false, result: null });
+      }
     });
   },
 

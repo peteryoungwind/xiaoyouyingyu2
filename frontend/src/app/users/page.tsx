@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '@/lib/api';
+import { api, isAuthExpiredError } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
 
 export default function UsersPage() {
@@ -36,6 +36,7 @@ export default function UsersPage() {
       setMembershipMsg(`成功追加 ${addDays} 天`);
       queryClient.invalidateQueries({ queryKey: ['admin-users'] });
     } catch (err: any) {
+      if (isAuthExpiredError(err)) return;
       setMembershipMsg(err.message || '操作失败');
     }
   };
@@ -47,6 +48,7 @@ export default function UsersPage() {
       setMembershipMsg('到期时间已更新');
       queryClient.invalidateQueries({ queryKey: ['admin-users'] });
     } catch (err: any) {
+      if (isAuthExpiredError(err)) return;
       setMembershipMsg(err.message || '操作失败');
     }
   };

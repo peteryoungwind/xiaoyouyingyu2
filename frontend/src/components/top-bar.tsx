@@ -1,17 +1,55 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { resetAuthExpiredNotification } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
 import { AuthModal } from './auth-modal';
+import { useToast } from './toast-provider';
 import { Bell, Crown } from 'lucide-react';
 
 export function TopBar() {
-  const { user, logout, isAdmin, isPremium, membershipExpireAt } = useAuth();
+  const { user, logout, isAdmin, isPremium } = useAuth();
+  const { showToast } = useToast();
   const [showAuth, setShowAuth] = useState(false);
+  const authExpiryHandledRef = useRef(false);
+
+  useEffect(() => {
+    const handleAuthExpired = (event: Event) => {
+      if (authExpiryHandledRef.current) return;
+      authExpiryHandledRef.current = true;
+      const detail = event instanceof CustomEvent ? event.detail : undefined;
+      showToast(detail?.message || '登录已过期，请重新登录', 'error');
+      setShowAuth(true);
+    };
+
+    const handleAuthRestored = () => {
+      authExpiryHandledRef.current = false;
+    };
+
+    window.addEventListener('auth:expired', handleAuthExpired);
+    window.addEventListener('auth:restored', handleAuthRestored);
+    return () => {
+      window.removeEventListener('auth:expired', handleAuthExpired);
+      window.removeEventListener('auth:restored', handleAuthRestored);
+    };
+  }, [showToast]);
 
   const getMembershipLabel = () => {
     if (isAdmin) return '管理员';
     if (isPremium) return '会员中';
     return '普通用户';
+  };
+
+  const handleLogout = () => {
+    authExpiryHandledRef.current = false;
+    logout();
+  };
+
+  const handleCloseAuth = () => {
+    setShowAuth(false);
+    if (!user) {
+      authExpiryHandledRef.current = false;
+      resetAuthExpiredNotification();
+    }
   };
 
   return (
@@ -39,7 +77,7 @@ export function TopBar() {
                 {user.username.charAt(0).toUpperCase()}
               </div>
               <span className="max-w-14 truncate text-sm text-gray-700 sm:max-w-24 md:max-w-none">{user.username}</span>
-              <button onClick={logout} className="shrink-0 text-xs text-gray-400 hover:text-gray-600">退出</button>
+              <button onClick={handleLogout} className="shrink-0 text-xs text-gray-400 hover:text-gray-600">退出</button>
             </div>
           ) : (
             <button onClick={() => setShowAuth(true)}
@@ -49,7 +87,7 @@ export function TopBar() {
           )}
         </div>
       </header>
-      <AuthModal open={showAuth} onClose={() => setShowAuth(false)} />
+      <AuthModal open={showAuth} onClose={handleCloseAuth} />
     </>
   );
 }

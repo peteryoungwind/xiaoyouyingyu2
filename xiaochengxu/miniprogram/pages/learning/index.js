@@ -2,6 +2,10 @@ const app = getApp();
 const api = require('../../utils/api');
 const util = require('../../utils/util');
 
+function isAuthExpiredError(err) {
+  return err && err.code === 401;
+}
+
 Page({
   data: {
     isLoggedIn: false,
@@ -92,6 +96,9 @@ Page({
     }).catch(err => {
       console.error('Load topics failed:', err);
       this.setData({ loading: false, loadingMore: false });
+      if (isAuthExpiredError(err)) {
+        return;
+      }
       wx.showToast({ title: '加载失败', icon: 'none' });
     });
   },
@@ -111,6 +118,7 @@ Page({
   },
 
   goToLogin() { wx.navigateTo({ url: '/pages/login/index' }); },
+  browseAsGuest() { wx.switchTab({ url: '/pages/topics/index' }); },
   goToRedeem() { wx.navigateTo({ url: '/pages/redeem/index' }); },
 
   onPullDownRefresh() { this.refreshState(); wx.stopPullDownRefresh(); },

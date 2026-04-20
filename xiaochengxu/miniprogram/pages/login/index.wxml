@@ -1,4 +1,8 @@
 <view class="login-page">
+  <view class="login-header">
+    <button class="back-btn" bindtap="handleBack">返回</button>
+  </view>
+
   <!-- Logo 区 -->
   <view class="logo-area">
     <view class="logo-icon">
@@ -27,6 +31,8 @@
     >
       <text class="wechat-btn-text">{{loading ? '登录中...' : '微信一键登录'}}</text>
     </button>
+
+    <button class="guest-btn" bindtap="browseAsGuest">以游客身份浏览</button>
 
     <!-- 协议勾选 -->
     <view class="agreement" bindtap="toggleAgree">

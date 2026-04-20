@@ -6,6 +6,7 @@
     <view class="empty-title">请先登录</view>
     <view class="empty-desc">登录后查看个人信息和会员状态</view>
     <button class="btn btn-primary btn-block mt-32" bindtap="goToLogin">去登录</button>
+    <button class="btn btn-outline btn-block mt-16" bindtap="browseAsGuest">以游客身份浏览</button>
   </view>
 
   <!-- Logged in -->
