@@ -41,7 +41,7 @@
     <button
       class="btn btn-gold btn-block mt-24"
       bindtap="onRedeem"
-      disabled="{{submitting || !code.trim()}}"
+      disabled="{{submitting || !canRedeem}}"
     >{{submitting ? '兑换中...' : '兑换'}}</button>
   </view>
 

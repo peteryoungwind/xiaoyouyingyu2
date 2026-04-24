@@ -9,7 +9,7 @@ App({
     membershipExpireAt: '',
     baseUrl: '',
     apiBaseUrlMap: {
-      develop: 'http://localhost:8080/api',
+      develop: 'http://10.180.100.15:8080/api',
       trial: 'https://xiaoyou-ky.top/api',
       release: 'https://xiaoyou-ky.top/api'
     }

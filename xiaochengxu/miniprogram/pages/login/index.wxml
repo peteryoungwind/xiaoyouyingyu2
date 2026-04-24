@@ -1,7 +1,8 @@
 <view class="login-page">
-  <view class="login-header">
-    <button class="back-btn" bindtap="handleBack">返回</button>
-  </view>
+  <button class="back-arrow-btn" style="{{backButtonStyle}}" bindtap="handleBack">
+    <text class="back-arrow-icon">‹</text>
+    <text class="back-arrow-text">返回</text>
+  </button>
 
   <!-- Logo 区 -->
   <view class="logo-area">

@@ -23,9 +23,9 @@ function request(url, method, data) {
       data: data,
       header: header,
       success: function (res) {
-        if (res.statusCode === 401) {
+        if (res.statusCode === 401 || res.statusCode === 403) {
           require('./auth').handleAuthExpired();
-          reject({ code: 401, message: '登录已过期，请重新登录' });
+          reject({ code: res.statusCode, message: '登录已过期，请重新登录' });
           return;
         }
 

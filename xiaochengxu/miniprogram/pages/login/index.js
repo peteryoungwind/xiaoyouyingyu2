@@ -6,7 +6,30 @@ Page({
   data: {
     agree: false,
     showTip: false,
-    loading: false
+    loading: false,
+    backButtonStyle: ''
+  },
+
+  onLoad() {
+    this.syncBackButtonPosition();
+  },
+
+  syncBackButtonPosition() {
+    try {
+      const menuButton = wx.getMenuButtonBoundingClientRect();
+      const systemInfo = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync();
+      const horizontalInset = Math.max(systemInfo.windowWidth - menuButton.right, 12);
+
+      this.setData({
+        backButtonStyle: [
+          `top:${menuButton.top}px`,
+          `left:${horizontalInset}px`,
+          `height:${menuButton.height}px`
+        ].join(';')
+      });
+    } catch (error) {
+      console.warn('syncBackButtonPosition failed:', error);
+    }
   },
 
   handleBack() {

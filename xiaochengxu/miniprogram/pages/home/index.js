@@ -31,6 +31,9 @@ Page({
   },
 
   onLoad() {
+    wx.showShareMenu({
+      menus: ['shareAppMessage', 'shareTimeline']
+    });
     this.setGreeting();
     this.loadData();
   },
@@ -142,5 +145,19 @@ Page({
 
   onSearchTap() {
     wx.switchTab({ url: '/pages/topics/index' });
+  },
+
+  onShareAppMessage() {
+    return {
+      title: '小柚英语｜每日英语口语主题练习',
+      path: '/pages/home/index'
+    };
+  },
+
+  onShareTimeline() {
+    return {
+      title: '小柚英语｜每日英语口语主题练习',
+      query: ''
+    };
   }
 });

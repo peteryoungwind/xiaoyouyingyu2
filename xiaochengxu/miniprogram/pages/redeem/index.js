@@ -9,6 +9,7 @@ function isAuthExpiredError(err) {
 Page({
   data: {
     code: '',
+    canRedeem: false,
     submitting: false,
     result: null, // { success, message, daysAdded, membershipExpireAt }
     showResult: false,
@@ -64,7 +65,11 @@ Page({
   },
 
   onCodeInput(e) {
-    this.setData({ code: e.detail.value });
+    const code = e.detail.value || '';
+    this.setData({
+      code,
+      canRedeem: Boolean(code.trim())
+    });
   },
 
   onRedeem() {
@@ -101,7 +106,8 @@ Page({
           daysAdded: res.daysAdded,
           membershipExpireAt: util.formatDateTime(res.membershipExpireAt)
         },
-        code: ''
+        code: '',
+        canRedeem: false
       });
 
       // Update global membership state

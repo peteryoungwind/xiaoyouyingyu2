@@ -6,6 +6,9 @@ Page({
   data: { topic: null, questions: [], loading: true, isMember: false, isLoggedIn: false },
 
   onLoad(options) {
+    wx.showShareMenu({
+      menus: ['shareAppMessage', 'shareTimeline']
+    });
     if (options.id) this.loadTopic(options.id);
   },
 
@@ -66,5 +69,21 @@ Page({
         if (res.confirm) wx.navigateTo({ url: '/pages/redeem/index' });
       }
     });
+  },
+
+  onShareAppMessage() {
+    const topic = this.data.topic;
+    return {
+      title: topic ? (topic.titleZh || topic.title) : '小柚英语｜英语口语主题详情',
+      path: topic ? ('/pages/topicDetail/index?id=' + topic.id) : '/pages/topics/index'
+    };
+  },
+
+  onShareTimeline() {
+    const topic = this.data.topic;
+    return {
+      title: topic ? (topic.titleZh || topic.title) : '小柚英语｜英语口语主题详情',
+      query: topic ? ('id=' + topic.id) : ''
+    };
   }
 });

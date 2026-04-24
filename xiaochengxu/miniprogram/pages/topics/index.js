@@ -17,6 +17,9 @@ Page({
   },
 
   onLoad() {
+    wx.showShareMenu({
+      menus: ['shareAppMessage', 'shareTimeline']
+    });
     this.loadTags();
     this.loadTopics(true);
   },
@@ -145,5 +148,19 @@ Page({
 
   goToCalendar() {
     wx.navigateTo({ url: '/pages/calendar/index' });
+  },
+
+  onShareAppMessage() {
+    return {
+      title: '小柚英语｜精选英语话题列表',
+      path: '/pages/topics/index'
+    };
+  },
+
+  onShareTimeline() {
+    return {
+      title: '小柚英语｜精选英语话题列表',
+      query: ''
+    };
   }
 });

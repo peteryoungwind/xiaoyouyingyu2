@@ -4,30 +4,41 @@
   display: flex;
   flex-direction: column;
   padding: env(safe-area-inset-top) 80rpx 0;
+  position: relative;
 }
 
-.login-header {
-  display: flex;
+.back-arrow-btn {
+  position: absolute;
+  left: 24rpx;
+  top: calc(env(safe-area-inset-top) + 16rpx);
+  display: inline-flex;
+  align-items: center;
   justify-content: flex-start;
-  padding-top: 24rpx;
-}
-
-.back-btn {
-  min-width: 144rpx;
-  height: 72rpx;
-  line-height: 72rpx;
-  padding: 0 32rpx;
-  border-radius: 999rpx;
-  border: 2rpx solid #D1D1D6;
-  background: #FFFFFF;
-  color: #1C1C1E;
-  font-size: 28rpx;
-  font-weight: 600;
+  gap: 4rpx;
+  padding: 0;
   margin: 0;
+  background: transparent;
+  color: #8E8E93;
+  border: none;
+  line-height: 1;
+  box-sizing: border-box;
+  z-index: 10;
 }
 
-.back-btn::after {
+.back-arrow-btn::after {
   border: none;
+}
+
+.back-arrow-icon {
+  font-size: 36rpx;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.back-arrow-text {
+  font-size: 32rpx;
+  font-weight: 600;
+  line-height: 1;
 }
 
 /* Logo 区 */

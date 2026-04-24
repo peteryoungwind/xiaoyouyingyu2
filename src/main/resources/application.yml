@@ -31,7 +31,7 @@ wechat:
 app:
   jwt:
     secret: n7Qv2Kp9Xc4mL8tR1yF6uD3sW0zH5jNqB2eG9aV4rT7kM1pC
-    expiration-ms: 86400000
+    expiration-ms: 2592000000
   ai:
     api-key: sk-Z6mBSV3LAK2yp1T67ThtU1PBJFvXy50m8zEJMMuVYALEG8af
     api-url: https://api.gptgod.online/v1/chat/completions
