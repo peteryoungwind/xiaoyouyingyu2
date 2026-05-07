@@ -6,16 +6,25 @@
       <view class="search-input-wrap">
         <input class="search-input" placeholder="搜索主题关键词" placeholder-class="search-placeholder" value="{{keyword}}" bindinput="onSearchInput" bindconfirm="onSearch" />
       </view>
-      <scroll-view scroll-x class="tags-scroll" wx:if="{{tags.length > 0}}">
-        <view class="tags-row">
-          <view class="filter-pill {{selectedTag === '' ? 'filter-pill-active' : ''}}" bindtap="onTagTap" data-tag="">
-            全部
+      <view class="filter-panel">
+        <view class="filter-grid">
+          <view class="filter-cell">
+            <view class="filter-pill filter-pill-all {{selectedTag === '' ? 'filter-pill-active filter-pill-all-active' : ''}}" bindtap="onTagTap" data-tag="">
+              全部
+            </view>
           </view>
-          <view wx:for="{{tags}}" wx:key="name" class="filter-pill {{selectedTag === item.name ? 'filter-pill-active' : ''}}" bindtap="onTagTap" data-tag="{{item.name}}">
-            {{item.name}}
+          <view wx:for="{{tags}}" wx:key="name" class="filter-cell">
+            <view
+              class="filter-pill {{selectedTag === item.name ? 'filter-pill-active' : ''}}"
+              bindtap="onTagTap"
+              data-tag="{{item.name}}"
+              style="background: {{selectedTag === item.name ? item.activeBg : item.bg}}; color: {{selectedTag === item.name ? item.activeColor : item.color}}; border-color: {{selectedTag === item.name ? item.activeBorder : item.border}};"
+            >
+              {{item.name}}
+            </view>
           </view>
         </view>
-      </scroll-view>
+      </view>
       <view class="calendar-entry" bindtap="goToCalendar">
         <text class="calendar-entry-text">按日历浏览本月主题</text>
         <view class="calendar-entry-btn">进入日历</view>

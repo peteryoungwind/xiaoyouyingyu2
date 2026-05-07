@@ -21,6 +21,7 @@ Page({
       menus: ['shareAppMessage', 'shareTimeline']
     });
     this.loadTags();
+    this.applyPendingFilter();
     this.loadTopics(true);
   },
 
@@ -29,17 +30,28 @@ Page({
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 1 });
     }
-    // Check if there's a pending filter from another page
-    var pending = app.globalData._pendingTopicFilter;
-    if (pending) {
-      delete app.globalData._pendingTopicFilter;
-      if (pending.type === 'tag') {
-        this.setData({ selectedTag: pending.value, keyword: '', page: 0 });
-      } else if (pending.type === 'keyword') {
-        this.setData({ keyword: pending.value, selectedTag: '', page: 0 });
-      }
+    if (this.applyPendingFilter()) {
       this.loadTopics(true);
     }
+  },
+
+  applyPendingFilter() {
+    var pending = app.globalData._pendingTopicFilter;
+    if (!pending) {
+      return false;
+    }
+
+    delete app.globalData._pendingTopicFilter;
+    if (pending.type === 'tag') {
+      this.setData({ selectedTag: pending.value, keyword: '', page: 0 });
+      return true;
+    }
+    if (pending.type === 'keyword') {
+      this.setData({ keyword: pending.value, selectedTag: '', page: 0 });
+      return true;
+    }
+
+    return false;
   },
 
   setTagFilter(tag) {

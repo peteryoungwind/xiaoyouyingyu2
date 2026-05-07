@@ -62,7 +62,9 @@
     <view class="search-bar">
       <view class="input-wrapper search-input-wrapper">
         <input
+          class="search-input"
           placeholder="搜索学习主题"
+          placeholder-class="search-placeholder"
           value="{{keyword}}"
           bindinput="onInputKeyword"
           bindconfirm="onSearch"
@@ -73,19 +75,23 @@
     </view>
 
     <!-- Tag filter -->
-    <scroll-view scroll-x class="tag-scroll" wx:if="{{tags.length > 0}}">
-      <view class="tag-list">
-        <view
-          class="tag {{selectedTag === '' ? 'tag-active' : ''}}"
-          bindtap="onSelectTag" data-tag=""
-        >全部</view>
-        <view
-          wx:for="{{tags}}" wx:key="name"
-          class="tag {{selectedTag === item.name ? 'tag-active' : ''}}"
-          bindtap="onSelectTag" data-tag="{{item.name}}"
-        >{{item.name}}</view>
+    <view class="filter-panel">
+      <view class="filter-grid">
+        <view class="filter-cell">
+          <view
+            class="filter-pill filter-pill-all {{selectedTag === '' ? 'filter-pill-active filter-pill-all-active' : ''}}"
+            bindtap="onSelectTag" data-tag=""
+          >全部</view>
+        </view>
+        <view wx:for="{{tags}}" wx:key="name" class="filter-cell">
+          <view
+            class="filter-pill {{selectedTag === item.name ? 'filter-pill-active' : ''}}"
+            bindtap="onSelectTag" data-tag="{{item.name}}"
+            style="background: {{selectedTag === item.name ? item.activeBg : item.bg}}; color: {{selectedTag === item.name ? item.activeColor : item.color}}; border-color: {{selectedTag === item.name ? item.activeBorder : item.border}};"
+          >{{item.name}}</view>
+        </view>
       </view>
-    </scroll-view>
+    </view>
 
     <view class="section-title" wx:if="{{topics.length > 0}}">学习主题</view>
 

@@ -35,12 +35,89 @@
 
 /* Search bar */
 .search-bar { margin-bottom: 24rpx; }
-.search-input-wrapper { position: relative; }
-.clear-btn { padding: 8rpx 16rpx; color: var(--text-hint); font-size: 28rpx; }
+.search-input-wrapper {
+  position: relative;
+  height: 100rpx;
+  padding: 0 30rpx;
+  display: flex;
+  align-items: center;
+  background: #FFFFFF;
+  border: 2rpx solid #E5E5EA;
+  border-radius: 34rpx;
+  box-shadow: 0 14rpx 36rpx rgba(17, 24, 39, 0.04);
+}
+.search-input {
+  flex: 1;
+  height: 100%;
+  font-size: 30rpx;
+  color: #1D1D1F;
+}
+.search-placeholder { color: #A1A1AA; }
+.clear-btn {
+  padding: 8rpx 0 8rpx 16rpx;
+  color: var(--text-hint);
+  font-size: 28rpx;
+  flex-shrink: 0;
+}
 
-/* Tag scroll */
-.tag-scroll { white-space: nowrap; margin-bottom: 24rpx; }
-.tag-list { display: inline-flex; padding: 4rpx 0; }
+/* Tag filter */
+.filter-panel {
+  margin-bottom: 24rpx;
+  padding: 24rpx 22rpx;
+  border-radius: 30rpx;
+  background: rgba(255, 255, 255, 0.82);
+  border: 2rpx solid rgba(229, 229, 234, 0.92);
+  box-shadow: 0 14rpx 36rpx rgba(17, 24, 39, 0.04);
+  backdrop-filter: blur(10rpx);
+}
+
+.filter-grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -8rpx;
+}
+
+.filter-cell {
+  width: 20%;
+  padding: 8rpx;
+  box-sizing: border-box;
+}
+
+.filter-pill {
+  width: 100%;
+  min-height: 76rpx;
+  padding: 12rpx 6rpx;
+  border-radius: 24rpx;
+  border: 2rpx solid transparent;
+  font-size: 22rpx;
+  font-weight: 600;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.filter-pill-all {
+  background: #EEF5FF;
+  border-color: #CFE0FF;
+  color: #4F7BFF;
+}
+
+.filter-pill-active {
+  font-weight: 700;
+  box-shadow: 0 10rpx 24rpx rgba(17, 24, 39, 0.08);
+}
+
+.filter-pill-all-active {
+  background: linear-gradient(135deg, #007AFF, #4DA3FF);
+  border-color: transparent;
+  color: #FFFFFF;
+}
 
 /* Topic card */
 .topic-card { position: relative; }

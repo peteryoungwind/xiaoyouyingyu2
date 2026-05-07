@@ -487,7 +487,7 @@ export default function AdminPage() {
                     <div className="space-y-2">
                       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                         <label className="text-sm text-gray-500 whitespace-nowrap">分类标签：</label>
-                        <input type="text" placeholder="逗号分隔，如 个人成长,学习提升" value={aiTags}
+                        <input type="text" placeholder="逗号分隔，如 自我成长,学习方法" value={aiTags}
                           onChange={e => setAiTags(e.target.value)}
                           className="flex-1 px-3 py-2 rounded-apple bg-gray-100 text-sm outline-none focus:ring-2 focus:ring-gray-200" />
                       </div>
@@ -543,7 +543,7 @@ export default function AdminPage() {
               onChange={e => setForm(f => ({ ...f, titleZh: e.target.value }))}
               className="w-full px-4 py-2.5 rounded-apple bg-gray-100 border-0 outline-none focus:ring-2 focus:ring-gray-200 text-sm" />
             <div className="space-y-2">
-              <input type="text" placeholder="分类（逗号分隔，如 个人成长,学习提升）" value={form.tags}
+              <input type="text" placeholder="分类（逗号分隔，如 自我成长,学习方法）" value={form.tags}
                 onChange={e => setForm(f => ({ ...f, tags: e.target.value }))}
                 className="w-full px-4 py-2.5 rounded-apple bg-gray-100 border-0 outline-none focus:ring-2 focus:ring-gray-200 text-sm" />
               <div className="flex flex-wrap gap-2">
