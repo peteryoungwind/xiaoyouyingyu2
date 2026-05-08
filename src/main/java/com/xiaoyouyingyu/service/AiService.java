@@ -20,6 +20,8 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class AiService {
+    private record ResolvedAiConfig(String apiUrl, String apiKey, String modelName) {}
+
     @Value("${app.ai.api-key}")
     private String defaultApiKey;
 
@@ -344,23 +346,28 @@ public class AiService {
         return callAi(modelId, systemPrompt, "主题：%s（%s）".formatted(titleEn, titleZh), null);
     }
 
+    private ResolvedAiConfig resolveAiConfig(Long modelId) {
+        if (modelId != null) {
+            AiModel aiModel = aiModelRepository.findById(modelId).orElse(null);
+            if (aiModel == null) {
+                throw new IllegalArgumentException("AI 数据源不存在: " + modelId);
+            }
+            return new ResolvedAiConfig(aiModel.getApiUrl(), aiModel.getApiKey(), aiModel.getModelName());
+        }
+
+        AiModel defaultModelConfig = aiModelRepository.findByIsDefaultTrue().orElse(null);
+        if (defaultModelConfig != null) {
+            return new ResolvedAiConfig(defaultModelConfig.getApiUrl(), defaultModelConfig.getApiKey(), defaultModelConfig.getModelName());
+        }
+
+        return new ResolvedAiConfig(defaultApiUrl, defaultApiKey, defaultModel);
+    }
+
     // ===================== 统一 AI 调用方法 =====================
 
     private String callAi(Long modelId, String systemPrompt, String userPrompt, List<Map<String, String>> history) {
         try {
-            // 确定使用的模型配置
-            String apiUrl = defaultApiUrl;
-            String apiKey = defaultApiKey;
-            String model = defaultModel;
-
-            if (modelId != null) {
-                AiModel aiModel = aiModelRepository.findById(modelId).orElse(null);
-                if (aiModel != null) {
-                    apiUrl = aiModel.getApiUrl();
-                    apiKey = aiModel.getApiKey();
-                    model = aiModel.getModelName();
-                }
-            }
+            ResolvedAiConfig config = resolveAiConfig(modelId);
 
             List<Map<String, String>> messages = new ArrayList<>();
             messages.add(Map.of("role", "system", "content", systemPrompt));
@@ -369,11 +376,11 @@ public class AiService {
             }
             messages.add(Map.of("role", "user", "content", userPrompt));
 
-            Map<String, Object> body = Map.of("model", model, "messages", messages);
+            Map<String, Object> body = Map.of("model", config.modelName(), "messages", messages);
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(apiUrl))
+                    .uri(URI.create(config.apiUrl()))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + apiKey)
+                    .header("Authorization", "Bearer " + config.apiKey())
                     .timeout(Duration.ofSeconds(180))
                     .POST(HttpRequest.BodyPublishers.ofString(mapper.writeValueAsString(body)))
                     .build();

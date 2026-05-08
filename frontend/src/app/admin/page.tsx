@@ -342,7 +342,7 @@ export default function AdminPage() {
               onChange={e => setSelectedModelId(e.target.value ? Number(e.target.value) : undefined)}
               className="min-w-0 w-full text-sm px-3 py-2 rounded-apple bg-gray-100 border-0 outline-none focus:ring-2 focus:ring-gray-200 sm:min-w-[180px] sm:w-auto"
             >
-              <option value="">默认模型 ({(aiModels || []).find((m: AiModelType) => m.isDefault)?.name || '系统配置'})</option>
+              <option value="">当前启用配置 ({(aiModels || []).find((m: AiModelType) => m.isDefault)?.name || '未设置，回退系统配置'})</option>
               {(aiModels || []).map((m: AiModelType) => (
                 <option key={m.id} value={m.id}>{m.name} ({m.modelName})</option>
               ))}
