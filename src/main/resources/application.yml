@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://139.196.43.133:3306/xiaoyouyingyu?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai&autoReconnect=true&connectTimeout=5000&socketTimeout=30000
+    url: jdbc:mysql://sh-cynosdbmysql-grp-ft100p3o.sql.tencentcdb.com:29616/xiaoyouyingyu?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai&autoReconnect=true&connectTimeout=5000&socketTimeout=30000
     username: root
-    password: pzq18217074393
+    password: pzq915981048.
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       connection-timeout: 10000
