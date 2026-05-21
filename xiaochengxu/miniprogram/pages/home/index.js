@@ -132,5 +132,19 @@ Page({
 
   onSearchTap() {
     wx.switchTab({ url: '/pages/topics/index' });
+  },
+
+  onShareAppMessage() {
+    return {
+      title: '小柚英语｜英语口语练习主题库',
+      path: '/pages/home/index'
+    };
+  },
+
+  onShareTimeline() {
+    return {
+      title: '小柚英语｜英语口语练习主题库',
+      query: ''
+    };
   }
 });

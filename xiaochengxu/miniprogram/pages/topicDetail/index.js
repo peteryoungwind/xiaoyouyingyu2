@@ -56,5 +56,27 @@ Page({
         if (res.confirm) wx.navigateTo({ url: '/pages/redeem/index' });
       }
     });
+  },
+
+  onShareAppMessage() {
+    var topic = this.data.topic || {};
+    var shareTitle = topic.titleZh
+      ? (topic.titleZh + '｜小柚英语')
+      : ((topic.title || '英语口语主题详情') + '｜小柚英语');
+    var path = topic.id
+      ? '/pages/topicDetail/index?id=' + topic.id
+      : '/pages/topics/index';
+    return {
+      title: shareTitle,
+      path: path
+    };
+  },
+
+  onShareTimeline() {
+    var topic = this.data.topic || {};
+    return {
+      title: topic.titleZh || topic.title || '英语口语主题详情',
+      query: topic.id ? ('id=' + topic.id) : ''
+    };
   }
 });

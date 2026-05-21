@@ -16,7 +16,20 @@ Page({
     isLoggedIn: false
   },
 
-  onLoad() {
+  onLoad(options) {
+    var nextState = {};
+    if (options && options.tag) {
+      nextState.selectedTag = decodeURIComponent(options.tag);
+      nextState.keyword = '';
+    }
+    if (options && options.keyword) {
+      nextState.keyword = decodeURIComponent(options.keyword);
+      nextState.selectedTag = '';
+    }
+    if (Object.keys(nextState).length > 0) {
+      nextState.page = 0;
+      this.setData(nextState);
+    }
     this.loadTags();
     this.loadTopics(true);
   },
@@ -145,5 +158,33 @@ Page({
 
   goToCalendar() {
     wx.navigateTo({ url: '/pages/calendar/index' });
+  },
+
+  onShareAppMessage() {
+    var query = [];
+    if (this.data.selectedTag) {
+      query.push('tag=' + encodeURIComponent(this.data.selectedTag));
+    }
+    if (this.data.keyword) {
+      query.push('keyword=' + encodeURIComponent(this.data.keyword));
+    }
+    return {
+      title: '小柚英语｜英语口语主题列表',
+      path: '/pages/topics/index' + (query.length ? '?' + query.join('&') : '')
+    };
+  },
+
+  onShareTimeline() {
+    var query = [];
+    if (this.data.selectedTag) {
+      query.push('tag=' + encodeURIComponent(this.data.selectedTag));
+    }
+    if (this.data.keyword) {
+      query.push('keyword=' + encodeURIComponent(this.data.keyword));
+    }
+    return {
+      title: '小柚英语｜英语口语主题列表',
+      query: query.join('&')
+    };
   }
 });
