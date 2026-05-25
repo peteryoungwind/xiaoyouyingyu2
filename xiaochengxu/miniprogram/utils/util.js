@@ -64,24 +64,26 @@ function resolveMembershipResponse(res) {
 }
 
 const CATEGORY_ORDER = [
-  '个人成长',
+  '自我成长',
   '情绪心理',
-  '人际交往',
-  '生活方式',
+  '人际沟通',
+  '生活习惯',
+  '学习方法',
   '职场发展',
-  '学习提升',
   '文化旅行',
+  '兴趣娱乐',
   '消费科技'
 ];
 
 const CATEGORY_META = {
-  '个人成长': { bg: '#EAF2FF', color: '#5C6675', icon: '/images/tag-icons/person.svg' },
+  '自我成长': { bg: '#EAF2FF', color: '#5C6675', icon: '/images/tag-icons/person.svg' },
   '情绪心理': { bg: '#FFF1EE', color: '#5C6675', icon: '/images/tag-icons/heart.svg' },
-  '人际交往': { bg: '#FFF0F6', color: '#5C6675', icon: '/images/tag-icons/message.svg' },
-  '生活方式': { bg: '#EEF8EE', color: '#5C6675', icon: '/images/tag-icons/check-circle.svg' },
+  '人际沟通': { bg: '#FFF0F6', color: '#5C6675', icon: '/images/tag-icons/message.svg' },
+  '生活习惯': { bg: '#EEF8EE', color: '#5C6675', icon: '/images/tag-icons/check-circle.svg' },
+  '学习方法': { bg: '#EEF3FF', color: '#5C6675', icon: '/images/category-icons/education.svg' },
   '职场发展': { bg: '#F1EFFD', color: '#5C6675', icon: '/images/tag-icons/briefcase.svg' },
-  '学习提升': { bg: '#EEF3FF', color: '#5C6675', icon: '/images/category-icons/education.svg' },
   '文化旅行': { bg: '#EAF5FF', color: '#5C6675', icon: '/images/tag-icons/globe.svg' },
+  '兴趣娱乐': { bg: '#FFF7E8', color: '#5C6675', icon: '/images/tag-icons/check-circle.svg' },
   '消费科技': { bg: '#EEF4FB', color: '#5C6675', icon: '/images/tag-icons/device.svg' }
 };
 
@@ -124,14 +126,13 @@ function getCategoryMeta(category) {
 
 function buildOrderedTagList(tagStats) {
   var stats = tagStats || {};
-  return CATEGORY_ORDER.filter(function(category) {
-    return !!stats[category];
-  }).map(function(category) {
+  return CATEGORY_ORDER.map(function(category) {
     var meta = getCategoryMeta(category);
+    var stat = stats[category] || {};
     return {
       name: category,
-      count: stats[category].count || 0,
-      latestTitle: stats[category].latestTitle || '',
+      count: stat.count || 0,
+      latestTitle: stat.latestTitle || '',
       bg: meta.bg,
       color: meta.color,
       icon: meta.icon

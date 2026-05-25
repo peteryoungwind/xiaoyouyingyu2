@@ -3,7 +3,7 @@ import { Suspense, useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
-import { CATEGORY_ORDER, getTagColor, normalizeKnownTags, parseTags } from '@/lib/tag-colors';
+import { buildOrderedTagList, getTagColor, normalizeKnownTags, parseTags, TagStats } from '@/lib/tag-colors';
 import { AuthModal } from '@/components/auth-modal';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
@@ -30,9 +30,14 @@ function TopicsPageContent() {
     },
   });
 
+  const { data: tagStats } = useQuery({
+    queryKey: ['tagStats'],
+    queryFn: () => api.getTagStats(),
+  });
+
   const topics = data?.content || [];
   const totalPages = data?.totalPages || 0;
-  const categoryOptions = CATEGORY_ORDER;
+  const categoryOptions = buildOrderedTagList(tagStats as TagStats | undefined);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,11 +89,11 @@ function TopicsPageContent() {
           </button>
           {categoryOptions.map(category => (
             <button
-              key={category}
-              onClick={() => { setTag(category); setPage(0); }}
-              className={`text-xs px-3 py-1.5 rounded-full transition-colors ${tag === category ? 'bg-gray-900 text-white' : getTagColor(category)}`}
+              key={category.name}
+              onClick={() => { setTag(category.name); setPage(0); }}
+              className={`text-xs px-3 py-1.5 rounded-full transition-colors ${tag === category.name ? 'bg-gray-900 text-white' : getTagColor(category.name)}`}
             >
-              {category}
+              {category.name}
             </button>
           ))}
         </div>

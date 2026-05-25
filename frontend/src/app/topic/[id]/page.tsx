@@ -75,7 +75,7 @@ export default function TopicDetail() {
             className="w-full px-4 py-2.5 rounded-apple bg-gray-100 border-0 outline-none focus:ring-2 focus:ring-gray-200 text-sm" />
           <div className="flex gap-3 items-start">
             <div className="flex-1 space-y-2">
-              <input type="text" placeholder="分类（逗号分隔，如 个人成长,学习提升）" value={form.tags}
+              <input type="text" placeholder="分类（逗号分隔，如 自我成长,学习方法）" value={form.tags}
                 onChange={e => setForm((f: any) => ({ ...f, tags: e.target.value }))}
                 className="w-full px-4 py-2.5 rounded-apple bg-gray-100 border-0 outline-none focus:ring-2 focus:ring-gray-200 text-sm" />
               <div className="flex flex-wrap gap-2">

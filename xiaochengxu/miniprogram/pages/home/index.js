@@ -63,6 +63,7 @@ Page({
       ]);
 
       const tagCategories = util.buildOrderedTagList(tagsRes || {})
+        .slice(0, 8)
         .map(function(item) {
           return {
             name: item.name,

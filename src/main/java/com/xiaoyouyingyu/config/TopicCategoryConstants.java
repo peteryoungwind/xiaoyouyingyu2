@@ -7,13 +7,14 @@ import java.util.stream.Collectors;
 
 public final class TopicCategoryConstants {
     public static final List<String> CATEGORY_ORDER = List.of(
-            "个人成长",
+            "自我成长",
             "情绪心理",
-            "人际交往",
-            "生活方式",
+            "人际沟通",
+            "生活习惯",
+            "学习方法",
             "职场发展",
-            "学习提升",
             "文化旅行",
+            "兴趣娱乐",
             "消费科技"
     );
 

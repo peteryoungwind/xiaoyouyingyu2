@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
-import { CATEGORY_ORDER, getTagColor, normalizeKnownTags, parseTags } from '@/lib/tag-colors';
+import { buildOrderedTagList, getTagColor, normalizeKnownTags, parseTags, TagStats } from '@/lib/tag-colors';
 import Link from 'next/link';
 import { GraduationCap, Search } from 'lucide-react';
 
@@ -73,7 +73,7 @@ export default function LearningCenterPage() {
 
   const topics = data?.content || [];
   const totalPages = data?.totalPages || 0;
-  const allTags = CATEGORY_ORDER.filter(category => Boolean((tagStats as Record<string, any> | undefined)?.[category]));
+  const allTags = buildOrderedTagList(tagStats as TagStats | undefined);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -108,10 +108,10 @@ export default function LearningCenterPage() {
           className={`text-xs px-3 py-1.5 rounded-full transition-colors ${!tag ? 'bg-gray-900 text-white' : 'bg-white text-gray-600 hover:bg-gray-100'}`}>
           全部
         </button>
-        {allTags.map(t => (
-          <button key={t} onClick={() => { setTag(t); setPage(0); }}
-            className={`text-xs px-3 py-1.5 rounded-full transition-colors ${tag === t ? 'bg-gray-900 text-white' : `${getTagColor(t)}`}`}>
-            {t}
+        {allTags.map(item => (
+          <button key={item.name} onClick={() => { setTag(item.name); setPage(0); }}
+            className={`text-xs px-3 py-1.5 rounded-full transition-colors ${tag === item.name ? 'bg-gray-900 text-white' : `${getTagColor(item.name)}`}`}>
+            {item.name}
           </button>
         ))}
       </div>
