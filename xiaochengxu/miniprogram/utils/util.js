@@ -76,30 +76,16 @@ const CATEGORY_ORDER = [
 ];
 
 const CATEGORY_META = {
-  '自我成长': { bg: '#EEF4FF', color: '#4F7BFF', icon: '/images/tag-icons/person.svg' },
-  '情绪心理': { bg: '#FFF0F3', color: '#FF6B8A', icon: '/images/tag-icons/heart.svg' },
-  '人际沟通': { bg: '#F4EEFF', color: '#8E63FF', icon: '/images/tag-icons/message.svg' },
-  '生活习惯': { bg: '#EEF9F1', color: '#31A05F', icon: '/images/tag-icons/check-circle.svg' },
-  '学习方法': { bg: '#EEF5FF', color: '#3A78E0', icon: '/images/category-icons/education.svg' },
-  '职场发展': { bg: '#FFF6EA', color: '#D9822B', icon: '/images/tag-icons/briefcase.svg' },
-  '文化旅行': { bg: '#EAFBFF', color: '#1F9BB6', icon: '/images/tag-icons/globe.svg' },
-  '兴趣娱乐': { bg: '#FFF7E8', color: '#D48806', icon: '/images/tag-icons/person.svg' },
-  '消费科技': { bg: '#F2F4F7', color: '#5B6B84', icon: '/images/tag-icons/device.svg' }
+  '自我成长': { bg: '#EAF2FF', color: '#5C6675', icon: '/images/tag-icons/person.svg' },
+  '情绪心理': { bg: '#FFF1EE', color: '#5C6675', icon: '/images/tag-icons/heart.svg' },
+  '人际沟通': { bg: '#FFF0F6', color: '#5C6675', icon: '/images/tag-icons/message.svg' },
+  '生活习惯': { bg: '#EEF8EE', color: '#5C6675', icon: '/images/tag-icons/check-circle.svg' },
+  '学习方法': { bg: '#EEF3FF', color: '#5C6675', icon: '/images/category-icons/education.svg' },
+  '职场发展': { bg: '#F1EFFD', color: '#5C6675', icon: '/images/tag-icons/briefcase.svg' },
+  '文化旅行': { bg: '#EAF5FF', color: '#5C6675', icon: '/images/tag-icons/globe.svg' },
+  '兴趣娱乐': { bg: '#FFF7E8', color: '#5C6675', icon: '/images/tag-icons/check-circle.svg' },
+  '消费科技': { bg: '#EEF4FB', color: '#5C6675', icon: '/images/tag-icons/device.svg' }
 };
-
-function hexToRgba(hex, alpha) {
-  var normalized = String(hex || '').replace('#', '');
-  if (normalized.length === 3) {
-    normalized = normalized.split('').map(function(ch) { return ch + ch; }).join('');
-  }
-  if (normalized.length !== 6) {
-    return 'rgba(0, 122, 255, ' + alpha + ')';
-  }
-  var r = parseInt(normalized.slice(0, 2), 16);
-  var g = parseInt(normalized.slice(2, 4), 16);
-  var b = parseInt(normalized.slice(4, 6), 16);
-  return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')';
-}
 
 function parseTags(tags) {
   if (!tags) return [];
@@ -149,10 +135,6 @@ function buildOrderedTagList(tagStats) {
       latestTitle: stat.latestTitle || '',
       bg: meta.bg,
       color: meta.color,
-      border: hexToRgba(meta.color, 0.22),
-      activeBg: meta.color,
-      activeColor: '#FFFFFF',
-      activeBorder: meta.color,
       icon: meta.icon
     };
   });

@@ -6,9 +6,6 @@ Page({
   data: { topic: null, questions: [], loading: true, isMember: false, isLoggedIn: false },
 
   onLoad(options) {
-    wx.showShareMenu({
-      menus: ['shareAppMessage', 'shareTimeline']
-    });
     if (options.id) this.loadTopic(options.id);
   },
 
@@ -39,17 +36,7 @@ Page({
 
   goToLearning() {
     if (!app.checkLogin()) {
-      wx.showModal({
-        title: '提示',
-        content: '请先登录后进入学习中心',
-        confirmText: '去登录',
-        cancelText: '取消',
-        success: (res) => {
-          if (res.confirm) {
-            wx.navigateTo({ url: '/pages/login/index' });
-          }
-        }
-      });
+      wx.navigateTo({ url: '/pages/login/index' });
       return;
     }
     if (!app.isMember()) {
@@ -72,18 +59,24 @@ Page({
   },
 
   onShareAppMessage() {
-    const topic = this.data.topic;
+    var topic = this.data.topic || {};
+    var shareTitle = topic.titleZh
+      ? (topic.titleZh + '｜小柚英语')
+      : ((topic.title || '英语口语主题详情') + '｜小柚英语');
+    var path = topic.id
+      ? '/pages/topicDetail/index?id=' + topic.id
+      : '/pages/topics/index';
     return {
-      title: topic ? (topic.titleZh || topic.title) : '小柚英语｜英语口语主题详情',
-      path: topic ? ('/pages/topicDetail/index?id=' + topic.id) : '/pages/topics/index'
+      title: shareTitle,
+      path: path
     };
   },
 
   onShareTimeline() {
-    const topic = this.data.topic;
+    var topic = this.data.topic || {};
     return {
-      title: topic ? (topic.titleZh || topic.title) : '小柚英语｜英语口语主题详情',
-      query: topic ? ('id=' + topic.id) : ''
+      title: topic.titleZh || topic.title || '英语口语主题详情',
+      query: topic.id ? ('id=' + topic.id) : ''
     };
   }
 });

@@ -16,12 +16,21 @@ Page({
     isLoggedIn: false
   },
 
-  onLoad() {
-    wx.showShareMenu({
-      menus: ['shareAppMessage', 'shareTimeline']
-    });
+  onLoad(options) {
+    var nextState = {};
+    if (options && options.tag) {
+      nextState.selectedTag = decodeURIComponent(options.tag);
+      nextState.keyword = '';
+    }
+    if (options && options.keyword) {
+      nextState.keyword = decodeURIComponent(options.keyword);
+      nextState.selectedTag = '';
+    }
+    if (Object.keys(nextState).length > 0) {
+      nextState.page = 0;
+      this.setData(nextState);
+    }
     this.loadTags();
-    this.applyPendingFilter();
     this.loadTopics(true);
   },
 
@@ -30,28 +39,17 @@ Page({
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 1 });
     }
-    if (this.applyPendingFilter()) {
+    // Check if there's a pending filter from another page
+    var pending = app.globalData._pendingTopicFilter;
+    if (pending) {
+      delete app.globalData._pendingTopicFilter;
+      if (pending.type === 'tag') {
+        this.setData({ selectedTag: pending.value, keyword: '', page: 0 });
+      } else if (pending.type === 'keyword') {
+        this.setData({ keyword: pending.value, selectedTag: '', page: 0 });
+      }
       this.loadTopics(true);
     }
-  },
-
-  applyPendingFilter() {
-    var pending = app.globalData._pendingTopicFilter;
-    if (!pending) {
-      return false;
-    }
-
-    delete app.globalData._pendingTopicFilter;
-    if (pending.type === 'tag') {
-      this.setData({ selectedTag: pending.value, keyword: '', page: 0 });
-      return true;
-    }
-    if (pending.type === 'keyword') {
-      this.setData({ keyword: pending.value, selectedTag: '', page: 0 });
-      return true;
-    }
-
-    return false;
   },
 
   setTagFilter(tag) {
@@ -163,16 +161,30 @@ Page({
   },
 
   onShareAppMessage() {
+    var query = [];
+    if (this.data.selectedTag) {
+      query.push('tag=' + encodeURIComponent(this.data.selectedTag));
+    }
+    if (this.data.keyword) {
+      query.push('keyword=' + encodeURIComponent(this.data.keyword));
+    }
     return {
-      title: '小柚英语｜精选英语话题列表',
-      path: '/pages/topics/index'
+      title: '小柚英语｜英语口语主题列表',
+      path: '/pages/topics/index' + (query.length ? '?' + query.join('&') : '')
     };
   },
 
   onShareTimeline() {
+    var query = [];
+    if (this.data.selectedTag) {
+      query.push('tag=' + encodeURIComponent(this.data.selectedTag));
+    }
+    if (this.data.keyword) {
+      query.push('keyword=' + encodeURIComponent(this.data.keyword));
+    }
     return {
-      title: '小柚英语｜精选英语话题列表',
-      query: ''
+      title: '小柚英语｜英语口语主题列表',
+      query: query.join('&')
     };
   }
 });

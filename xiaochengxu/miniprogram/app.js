@@ -9,7 +9,7 @@ App({
     membershipExpireAt: '',
     baseUrl: '',
     apiBaseUrlMap: {
-      develop: 'http://10.180.100.15:8080/api',
+      develop: 'https://xiaoyou-ky.top/api',
       trial: 'https://xiaoyou-ky.top/api',
       release: 'https://xiaoyou-ky.top/api'
     }
@@ -30,7 +30,7 @@ App({
     }
 
     var map = this.globalData.apiBaseUrlMap || {};
-    var devBaseUrl = map.develop || 'http://localhost:8080/api';
+    var devBaseUrl = map.develop || 'https://xiaoyou-ky.top/api';
     var currentBaseUrl = map[envVersion] || '';
 
     if (!currentBaseUrl) {

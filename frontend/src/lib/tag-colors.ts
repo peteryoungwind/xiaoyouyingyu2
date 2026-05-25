@@ -12,16 +12,28 @@ export const CATEGORY_ORDER = [
 
 export type CategoryName = typeof CATEGORY_ORDER[number];
 
-const CATEGORY_META: Record<CategoryName, { color: string }> = {
-  自我成长: { color: 'bg-slate-100 text-slate-700' },
-  情绪心理: { color: 'bg-rose-100 text-rose-700' },
-  人际沟通: { color: 'bg-pink-100 text-pink-700' },
-  生活习惯: { color: 'bg-emerald-100 text-emerald-700' },
-  学习方法: { color: 'bg-blue-100 text-blue-700' },
-  职场发展: { color: 'bg-violet-100 text-violet-700' },
-  文化旅行: { color: 'bg-cyan-100 text-cyan-700' },
-  兴趣娱乐: { color: 'bg-amber-100 text-amber-700' },
-  消费科技: { color: 'bg-indigo-100 text-indigo-700' },
+type CategoryMeta = {
+  color: string;
+};
+
+export type TagStats = Record<string, { count?: number; latestTitle?: string } | undefined>;
+
+export type OrderedTag = {
+  name: CategoryName;
+  count: number;
+  latestTitle: string;
+};
+
+const CATEGORY_META: Record<CategoryName, CategoryMeta> = {
+  自我成长: { color: 'bg-[#EAF2FF] text-[#5C6675]' },
+  情绪心理: { color: 'bg-[#FFF1EE] text-[#5C6675]' },
+  人际沟通: { color: 'bg-[#FFF0F6] text-[#5C6675]' },
+  生活习惯: { color: 'bg-[#EEF8EE] text-[#5C6675]' },
+  学习方法: { color: 'bg-[#EEF3FF] text-[#5C6675]' },
+  职场发展: { color: 'bg-[#F1EFFD] text-[#5C6675]' },
+  文化旅行: { color: 'bg-[#EAF5FF] text-[#5C6675]' },
+  兴趣娱乐: { color: 'bg-[#FFF7E8] text-[#5C6675]' },
+  消费科技: { color: 'bg-[#EEF4FB] text-[#5C6675]' },
 };
 
 const CATEGORY_SET = new Set<string>(CATEGORY_ORDER);
@@ -31,10 +43,9 @@ const fallbackColors = [
   'bg-rose-100 text-rose-700',
   'bg-pink-100 text-pink-700',
   'bg-emerald-100 text-emerald-700',
-  'bg-blue-100 text-blue-700',
   'bg-violet-100 text-violet-700',
+  'bg-blue-100 text-blue-700',
   'bg-cyan-100 text-cyan-700',
-  'bg-amber-100 text-amber-700',
   'bg-indigo-100 text-indigo-700',
 ];
 
@@ -66,6 +77,17 @@ export function orderCategories<T extends string>(categories: T[]): T[] {
   const known = CATEGORY_ORDER.filter(category => categories.includes(category as T)) as T[];
   const unknown = categories.filter(category => !CATEGORY_SET.has(category));
   return [...known, ...unknown];
+}
+
+export function buildOrderedTagList(tagStats?: TagStats | null): OrderedTag[] {
+  const stats = tagStats || {};
+
+  return CATEGORY_ORDER
+    .map(category => ({
+      name: category,
+      count: Number(stats[category]?.count || 0),
+      latestTitle: stats[category]?.latestTitle || '',
+    }));
 }
 
 export function getTagColor(tag: string): string {

@@ -31,9 +31,6 @@ Page({
   },
 
   onLoad() {
-    wx.showShareMenu({
-      menus: ['shareAppMessage', 'shareTimeline']
-    });
     this.setGreeting();
     this.loadData();
   },
@@ -118,17 +115,7 @@ Page({
 
   goToLearning() {
     if (!app.checkLogin()) {
-      wx.showModal({
-        title: '提示',
-        content: '请先登录后使用学习功能',
-        confirmText: '去登录',
-        cancelText: '取消',
-        success: (res) => {
-          if (res.confirm) {
-            wx.navigateTo({ url: '/pages/login/index' });
-          }
-        }
-      });
+      wx.navigateTo({ url: '/pages/login/index' });
       return;
     }
     wx.switchTab({ url: '/pages/learning/index' });
@@ -150,14 +137,14 @@ Page({
 
   onShareAppMessage() {
     return {
-      title: '小柚英语｜每日英语口语主题练习',
+      title: '小柚英语｜英语口语练习主题库',
       path: '/pages/home/index'
     };
   },
 
   onShareTimeline() {
     return {
-      title: '小柚英语｜每日英语口语主题练习',
+      title: '小柚英语｜英语口语练习主题库',
       query: ''
     };
   }
