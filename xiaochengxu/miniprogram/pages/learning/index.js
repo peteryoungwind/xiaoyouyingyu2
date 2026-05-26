@@ -120,6 +120,7 @@ Page({
   goToLogin() { wx.navigateTo({ url: '/pages/login/index' }); },
   browseAsGuest() { wx.switchTab({ url: '/pages/topics/index' }); },
   goToRedeem() { wx.navigateTo({ url: '/pages/redeem/index' }); },
+  goToWordPractice() { wx.navigateTo({ url: '/pages/wordBooks/index' }); },
 
   onPullDownRefresh() { this.refreshState(); wx.stopPullDownRefresh(); },
 

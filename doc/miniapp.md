@@ -49,6 +49,10 @@ flowchart LR
 - 我的：`pages/profile/index`
 - 话题详情：`pages/topicDetail/index`
 - 学习详情：`pages/learningTopic/index`
+- 单词本列表：`pages/wordBooks/index`
+- 单词本详情：`pages/wordBookDetail/index`
+- 单词练习：`pages/wordPractice/index`
+- 单词详情：`pages/wordDetail/index`
 - 登录：`pages/login/index`
 - 注册：`pages/register/index`
 - 设置：`pages/settings/index`
@@ -99,6 +103,7 @@ flowchart LR
 - 自动附加 `Authorization: Bearer <token>`。
 - 2xx 返回 `res.data`。
 - 401 自动退出登录并跳转登录页。
+- 403 仅作为权限不足返回调用页处理，不清除本地登录态；会员权限场景会引导到学习中心开通/兑换。
 - 非 2xx 统一包装错误信息。
 
 ### `utils/api.js`
@@ -109,6 +114,7 @@ flowchart LR
 - 话题：列表、详情、标签、统计、日历。
 - 学习：主题详情、热身、词汇、表达、任务、点评。
 - 会员：会员状态、联系方式、卡密兑换。
+- 单词练习：已发布单词本、单词本详情、下一词、单词详情、提交认识/不认识、进度。
 
 ## 页面说明
 
@@ -119,6 +125,10 @@ flowchart LR
 | 话题详情 | `pages/topicDetail/index` | 展示主题、问题、会员学习入口 |
 | 学习列表 | `pages/learning/index` | 会员学习入口、主题筛选、非会员开通提示 |
 | 学习详情 | `pages/learningTopic/index` | AI 热身、词汇、表达、任务、回答点评 |
+| 单词本列表 | `pages/wordBooks/index` | 展示已发布单词本、词数和个人进度 |
+| 单词本详情 | `pages/wordBookDetail/index` | 初级/进阶切换、总词数、已学、待复习、已掌握 |
+| 单词练习 | `pages/wordPractice/index` | 先展示英文单词，用户选择认识/不认识，可进入详情 |
+| 单词详情 | `pages/wordDetail/index` | 展示释义、音标、词性、句型、例句、来源和音频按钮 |
 | 登录 | `pages/login/index` | 微信登录，调用 `wx.login` 后传 code 到后端 |
 | 注册 | `pages/register/index` | 用户名密码注册 |
 | 我的 | `pages/profile/index` | 用户信息、会员状态、设置、兑换、PC 登录确认 |
@@ -187,6 +197,24 @@ sequenceDiagram
 
 接口需要会员权限。若后端返回无权限，小程序应引导登录、兑换或开通会员。
 
+## 单词练习流程
+
+小程序首页和学习中心均新增“单词练习”入口。
+
+流程：
+
+1. 未登录用户点击入口跳转登录页。
+2. 已登录用户进入 `pages/wordBooks/index` 后，由 `/api/word-practice/**` 接口按后端实时会员状态判权。
+3. 非会员或会员过期时接口返回 403，页面保留登录态并回到学习中心引导，不再提示重新登录。
+4. 会员用户查看已发布单词本。
+5. 用户进入单词本详情后选择初级或进阶。
+6. 单词本详情页展示总词数、已学、待复习、已掌握，并提供“已学/已掌握”学习记录列表。
+7. 练习页调用 `/api/word-practice/books/{bookId}/next`，后端优先返回到期复习词，没有到期复习词时返回未学新词。
+8. 用户点击“认识”或“不认识”后提交结果，后端更新连续认识次数、下次复习时间和掌握状态。
+9. 用户可进入单词详情页查看释义、句型、例句和发音入口。
+
+单词和例句音频由后端按单词本维度保存到 `/uploads/word-audio/{wordBookId}/{wordId}/`，小程序直接使用接口返回的本地 URL 播放；若音频不存在或生成失败，页面会提示“暂无音频”。
+
 ## 会员与卡密
 
 小程序中会员入口分布在：
@@ -243,4 +271,3 @@ sequenceDiagram
 - 微信登录依赖后端 `wechat.appid` 和 `wechat.secret`，上线前需确认与小程序 AppID 一致。
 - 小程序端不要保存敏感密钥，所有密钥应仅在后端或云函数中使用。
 - 学习详情页的 AI 返回 JSON 建议增加解析容错与重试提示。
-

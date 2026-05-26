@@ -5,7 +5,7 @@ import { api, isAuthExpiredError } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
 import { CATEGORY_ORDER, getTagColor, parseTags } from '@/lib/tag-colors';
 import { useRouter } from 'next/navigation';
-import { Sparkles, ChevronRight, RotateCcw, Check, Plus, Trash2, Star, Settings2, Loader2 } from 'lucide-react';
+import { Sparkles, ChevronRight, RotateCcw, Check, Plus, Star, Settings2, Loader2, Volume2 } from 'lucide-react';
 
 // ===================== Types =====================
 
@@ -27,6 +27,33 @@ interface AiModelType {
   modelName: string;
   isDefault: boolean;
 }
+
+interface TtsModelType {
+  id: number;
+  name: string;
+  baseUrl: string;
+  apiKey: string;
+  modelName: string;
+  provider: string;
+  voiceUs: string;
+  voiceUk: string;
+  outputFormat: string;
+  enabled: boolean;
+  isDefault: boolean;
+}
+
+const emptyTtsForm = {
+  name: '',
+  baseUrl: '',
+  apiKey: '',
+  modelName: 'qwen3-tts-flash',
+  provider: 'qwen',
+  voiceUs: 'Cherry',
+  voiceUk: 'Ethan',
+  outputFormat: 'wav',
+  enabled: true,
+  isDefault: false,
+};
 
 // ===================== AI Generation Steps =====================
 type AiStep = 'input' | 'titles' | 'questions' | 'save';
@@ -62,11 +89,19 @@ export default function AdminPage() {
   const [showModelForm, setShowModelForm] = useState(false);
   const [editingModel, setEditingModel] = useState<AiModelType | null>(null);
   const [modelForm, setModelForm] = useState({ name: '', apiUrl: '', apiKey: '', modelName: '', isDefault: false });
+  const [showTtsForm, setShowTtsForm] = useState(false);
+  const [editingTts, setEditingTts] = useState<TtsModelType | null>(null);
+  const [ttsForm, setTtsForm] = useState(emptyTtsForm);
 
   // ===== Manual form state =====
   const emptyForm = { title: '', titleZh: '', tags: '', eventDate: new Date().toISOString().split('T')[0], questions: [{ en: '', zh: '' }] };
   const [form, setForm] = useState(emptyForm);
   const [manualSaving, setManualSaving] = useState(false);
+
+  // ===== Word supplement after topic creation =====
+  const [supplementTopic, setSupplementTopic] = useState<any>(null);
+  const [supplementForm, setSupplementForm] = useState({ wordBookId: '', beginnerCount: 5, advancedCount: 5, modelId: '' });
+  const [supplementMessage, setSupplementMessage] = useState('');
 
   // ===== Queries =====
   const { data: topics } = useQuery({
@@ -86,6 +121,19 @@ export default function AdminPage() {
     queryFn: () => api.getAiModels(),
     enabled: isAdmin,
   });
+
+  const { data: ttsModels = [], refetch: refetchTtsModels } = useQuery({
+    queryKey: ['tts-models'],
+    queryFn: () => api.getTtsModels(),
+    enabled: isAdmin,
+  });
+
+  const { data: wordBooksPage } = useQuery({
+    queryKey: ['admin-word-books-for-supplement'],
+    queryFn: () => api.getWordBooks({ page: '0', size: '100' }),
+    enabled: isAdmin,
+  });
+  const wordBooks = wordBooksPage?.content || [];
 
   // ===== Mutations =====
   const deleteTopic = useMutation({
@@ -198,7 +246,7 @@ export default function AdminPage() {
     setAiError('');
     try {
       const selectedQuestions = generatedQuestions.filter((_, i) => selectedQuestionIndices.has(i));
-      await api.createTopic({
+      const createdTopic = await api.createTopic({
         title: selectedTitle.en,
         titleZh: selectedTitle.zh,
         tags: aiTags,
@@ -208,6 +256,7 @@ export default function AdminPage() {
       // Reset flow
       resetAiFlow();
       queryClient.invalidateQueries({ queryKey: ['admin-topics'] });
+      openSupplementModal(createdTopic);
     } catch (err: any) {
       if (isAuthExpiredError(err)) return;
       setAiError(err.message || '保存失败');
@@ -272,13 +321,74 @@ export default function AdminPage() {
     setShowModelForm(true);
   };
 
+  const openCreateTtsForm = () => {
+    setEditingTts(null);
+    setTtsForm(emptyTtsForm);
+    setShowTtsForm(true);
+  };
+
+  const handleEditTts = (model: TtsModelType) => {
+    setEditingTts(model);
+    setTtsForm({
+      name: model.name,
+      baseUrl: model.baseUrl,
+      apiKey: '',
+      modelName: model.modelName,
+      provider: model.provider || 'openai',
+      voiceUs: model.voiceUs || 'alloy',
+      voiceUk: model.voiceUk || 'verse',
+      outputFormat: model.outputFormat || 'mp3',
+      enabled: model.enabled,
+      isDefault: model.isDefault,
+    });
+    setShowTtsForm(true);
+  };
+
+  const handleSaveTts = async () => {
+    try {
+      if (editingTts) {
+        await api.updateTtsModel(editingTts.id, ttsForm);
+      } else {
+        await api.createTtsModel(ttsForm);
+      }
+      setShowTtsForm(false);
+      setEditingTts(null);
+      setTtsForm(emptyTtsForm);
+      refetchTtsModels();
+    } catch (err: any) {
+      if (isAuthExpiredError(err)) return;
+      alert(err.message || '保存失败');
+    }
+  };
+
+  const handleDeleteTts = async (id: number) => {
+    if (!confirm('确定删除此 TTS 模型？')) return;
+    try {
+      await api.deleteTtsModel(id);
+      refetchTtsModels();
+    } catch (err: any) {
+      if (isAuthExpiredError(err)) return;
+      alert(err.message || '删除失败');
+    }
+  };
+
+  const handleSetDefaultTts = async (id: number) => {
+    try {
+      await api.setDefaultTtsModel(id);
+      refetchTtsModels();
+    } catch (err: any) {
+      if (isAuthExpiredError(err)) return;
+      alert(err.message || '设置失败');
+    }
+  };
+
   // ===================== Manual Handlers =====================
 
   const handleSaveManual = async () => {
     if (!form.title || !form.eventDate || form.questions.some(q => !q.en)) return;
     setManualSaving(true);
     try {
-      await api.createTopic({
+      const createdTopic = await api.createTopic({
         title: form.title,
         titleZh: form.titleZh,
         tags: form.tags,
@@ -287,8 +397,38 @@ export default function AdminPage() {
       });
       setForm(emptyForm);
       queryClient.invalidateQueries({ queryKey: ['admin-topics'] });
+      openSupplementModal(createdTopic);
     } finally {
       setManualSaving(false);
+    }
+  };
+
+  const openSupplementModal = (topic: any) => {
+    setSupplementTopic(topic);
+    setSupplementForm({
+      wordBookId: wordBooks[0]?.id ? String(wordBooks[0].id) : '',
+      beginnerCount: 5,
+      advancedCount: 5,
+      modelId: '',
+    });
+    setSupplementMessage('');
+  };
+
+  const handleSupplementWords = async () => {
+    if (!supplementTopic || !supplementForm.wordBookId) return;
+    setSupplementMessage('生成中...');
+    try {
+      const result = await api.generateWordsByTopics(Number(supplementForm.wordBookId), {
+        topicIds: [supplementTopic.id],
+        beginnerCount: supplementForm.beginnerCount,
+        advancedCount: supplementForm.advancedCount,
+        modelId: supplementForm.modelId ? Number(supplementForm.modelId) : undefined,
+      });
+      setSupplementMessage(`补充完成：新增 ${result.saved || 0} 个，跳过 ${result.skipped || 0} 个`);
+      queryClient.invalidateQueries({ queryKey: ['admin-word-books-for-supplement'] });
+    } catch (err: any) {
+      if (isAuthExpiredError(err)) return;
+      setSupplementMessage(err.message || '补充失败');
     }
   };
 
@@ -641,46 +781,104 @@ export default function AdminPage() {
       {/* ==================== Model Management Tab ==================== */}
       {tab === 'models' && (
         <div className="space-y-4">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <button onClick={() => { setShowModelForm(true); setEditingModel(null); setModelForm({ name: '', apiUrl: '', apiKey: '', modelName: '', isDefault: false }); }}
-              className="px-4 py-2 bg-gray-900 text-white rounded-apple text-sm press-effect hover:bg-gray-800 flex items-center gap-1.5">
-              <Plus size={14} /> 新增模型
-            </button>
-          </div>
+          <section className="space-y-3">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h2 className="text-sm font-semibold text-gray-900">AI 文本模型</h2>
+                <p className="mt-1 text-xs text-gray-400">用于口语主题和单词内容生成。</p>
+              </div>
+              <button onClick={() => { setShowModelForm(true); setEditingModel(null); setModelForm({ name: '', apiUrl: '', apiKey: '', modelName: '', isDefault: false }); }}
+                className="flex items-center gap-1.5 rounded-apple bg-gray-900 px-4 py-2 text-sm text-white press-effect hover:bg-gray-800">
+                <Plus size={14} /> 新增 AI 模型
+              </button>
+            </div>
 
-          {/* Model list */}
-          <div className="space-y-3">
-            {(aiModels || []).length === 0 && (
-              <div className="text-center py-8 text-gray-400 text-sm">
-                暂无自定义模型，将使用系统默认配置。
-              </div>
-            )}
-            {(aiModels || []).map((model: AiModelType) => (
-              <div key={model.id} className="bg-white rounded-apple-lg p-4 shadow-sm">
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium">{model.name}</span>
-                    {model.isDefault && (
-                      <span className="text-xs px-2 py-0.5 bg-yellow-100 text-yellow-700 rounded-full flex items-center gap-1">
-                        <Star size={10} /> 默认
-                      </span>
-                    )}
+            <div className="space-y-3">
+              {(aiModels || []).length === 0 && (
+                <div className="rounded-apple-lg bg-white py-8 text-center text-sm text-gray-400 shadow-sm">
+                  暂无自定义模型，将使用系统默认配置。
+                </div>
+              )}
+              {(aiModels || []).map((model: AiModelType) => (
+                <div key={model.id} className="rounded-apple-lg bg-white p-4 shadow-sm">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium">{model.name}</span>
+                      {model.isDefault && (
+                        <span className="flex items-center gap-1 rounded-full bg-yellow-100 px-2 py-0.5 text-xs text-yellow-700">
+                          <Star size={10} /> 默认
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button onClick={() => handleEditModel(model)}
+                        className="text-xs text-gray-400 hover:text-gray-600">编辑</button>
+                      <button onClick={() => handleDeleteModel(model.id)}
+                        className="text-xs text-red-400 hover:text-red-600">删除</button>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <button onClick={() => handleEditModel(model)}
-                      className="text-xs text-gray-400 hover:text-gray-600">编辑</button>
-                    <button onClick={() => handleDeleteModel(model.id)}
-                      className="text-xs text-red-400 hover:text-red-600">删除</button>
+                  <div className="mt-2 space-y-0.5 text-xs text-gray-400">
+                    <p className="break-words">模型：{model.modelName}</p>
+                    <p className="break-all">API：{model.apiUrl}</p>
+                    <p className="break-all">Key：{model.apiKey.substring(0, 8)}{'*'.repeat(Math.max(0, model.apiKey.length - 12))}{model.apiKey.substring(Math.max(0, model.apiKey.length - 4))}</p>
                   </div>
                 </div>
-                <div className="mt-2 space-y-0.5 text-xs text-gray-400">
-                  <p className="break-words">模型：{model.modelName}</p>
-                  <p className="break-all">API：{model.apiUrl}</p>
-                  <p className="break-all">Key：{model.apiKey.substring(0, 8)}{'*'.repeat(Math.max(0, model.apiKey.length - 12))}{model.apiKey.substring(Math.max(0, model.apiKey.length - 4))}</p>
-                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="space-y-3">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h2 className="flex items-center gap-2 text-sm font-semibold text-gray-900"><Volume2 size={16} /> TTS 发音模型</h2>
+                <p className="mt-1 text-xs text-gray-400">全局配置，单词训练生成音频时可选择使用。</p>
               </div>
-            ))}
-          </div>
+              <button onClick={openCreateTtsForm}
+                className="flex items-center gap-1.5 rounded-apple bg-gray-900 px-4 py-2 text-sm text-white press-effect hover:bg-gray-800">
+                <Plus size={14} /> 新增 TTS 模型
+              </button>
+            </div>
+
+            <div className="space-y-3">
+              {(ttsModels || []).length === 0 && (
+                <div className="rounded-apple-lg bg-white py-8 text-center text-sm text-gray-400 shadow-sm">
+                  暂无 TTS 模型，单词音频生成前请先配置默认模型。
+                </div>
+              )}
+              {(ttsModels || []).map((model: TtsModelType) => (
+                <div key={model.id} className="rounded-apple-lg bg-white p-4 shadow-sm">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="text-sm font-medium">{model.name}</span>
+                      {model.isDefault && (
+                        <span className="flex items-center gap-1 rounded-full bg-yellow-100 px-2 py-0.5 text-xs text-yellow-700">
+                          <Star size={10} /> 默认
+                        </span>
+                      )}
+                      {!model.enabled && (
+                        <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-500">停用</span>
+                      )}
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2">
+                      {!model.isDefault && (
+                        <button onClick={() => handleSetDefaultTts(model.id)}
+                          className="text-xs text-blue-500 hover:text-blue-700">设为默认</button>
+                      )}
+                      <button onClick={() => handleEditTts(model)}
+                        className="text-xs text-gray-400 hover:text-gray-600">编辑</button>
+                      <button onClick={() => handleDeleteTts(model.id)}
+                        className="text-xs text-red-400 hover:text-red-600">删除</button>
+                    </div>
+                  </div>
+                  <div className="mt-2 space-y-0.5 text-xs text-gray-400">
+                    <p className="break-words">模型：{model.modelName} · {model.outputFormat || 'mp3'} · {model.voiceUs}/{model.voiceUk}</p>
+                    <p className="break-all">API：{model.baseUrl}</p>
+                    <p className="break-all">Provider：{model.provider || 'openai'}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
 
           {/* Model form modal */}
           {showModelForm && (
@@ -733,6 +931,115 @@ export default function AdminPage() {
               </div>
             </div>
           )}
+
+          {showTtsForm && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4" onClick={() => setShowTtsForm(false)}>
+              <div className="max-h-[80vh] w-full max-w-lg space-y-4 overflow-y-auto rounded-apple-lg bg-white p-5 shadow-xl sm:p-6" onClick={e => e.stopPropagation()}>
+                <h3 className="font-medium">{editingTts ? '编辑 TTS 模型' : '新增 TTS 模型'}</h3>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div>
+                    <label className="mb-1 block text-xs text-gray-500">显示名称 *</label>
+                    <input value={ttsForm.name} onChange={e => setTtsForm(f => ({ ...f, name: e.target.value }))}
+                      className="w-full rounded-apple bg-gray-100 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-gray-200" />
+                  </div>
+                  <div>
+                    <label className="mb-1 block text-xs text-gray-500">模型名称 *</label>
+                    <input value={ttsForm.modelName} onChange={e => setTtsForm(f => ({ ...f, modelName: e.target.value }))}
+                      placeholder="qwen3-tts-flash / tts-1"
+                      className="w-full rounded-apple bg-gray-100 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-gray-200" />
+                  </div>
+                  <div className="sm:col-span-2">
+                    <label className="mb-1 block text-xs text-gray-500">Base URL *</label>
+                    <input value={ttsForm.baseUrl} onChange={e => setTtsForm(f => ({ ...f, baseUrl: e.target.value }))}
+                      placeholder="https://dashscope.aliyuncs.com/api/v1 或 https://api.openai.com/v1"
+                      className="w-full rounded-apple bg-gray-100 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-gray-200" />
+                  </div>
+                  <div className="sm:col-span-2">
+                    <label className="mb-1 block text-xs text-gray-500">API Key *</label>
+                    <input type="password" value={ttsForm.apiKey} onChange={e => setTtsForm(f => ({ ...f, apiKey: e.target.value }))}
+                      placeholder={editingTts ? '重新填写 API Key' : 'sk-...'}
+                      className="w-full rounded-apple bg-gray-100 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-gray-200" />
+                  </div>
+                  <div>
+                    <label className="mb-1 block text-xs text-gray-500">供应商</label>
+                    <input value={ttsForm.provider} onChange={e => setTtsForm(f => ({ ...f, provider: e.target.value }))}
+                      placeholder="qwen / openai"
+                      className="w-full rounded-apple bg-gray-100 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-gray-200" />
+                  </div>
+                  <div>
+                    <label className="mb-1 block text-xs text-gray-500">输出格式</label>
+                    <input value={ttsForm.outputFormat} onChange={e => setTtsForm(f => ({ ...f, outputFormat: e.target.value }))}
+                      className="w-full rounded-apple bg-gray-100 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-gray-200" />
+                  </div>
+                  <div>
+                    <label className="mb-1 block text-xs text-gray-500">美式 voice</label>
+                    <input value={ttsForm.voiceUs} onChange={e => setTtsForm(f => ({ ...f, voiceUs: e.target.value }))}
+                      placeholder="Cherry / alloy"
+                      className="w-full rounded-apple bg-gray-100 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-gray-200" />
+                  </div>
+                  <div>
+                    <label className="mb-1 block text-xs text-gray-500">英式 voice</label>
+                    <input value={ttsForm.voiceUk} onChange={e => setTtsForm(f => ({ ...f, voiceUk: e.target.value }))}
+                      placeholder="Ethan / verse"
+                      className="w-full rounded-apple bg-gray-100 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-gray-200" />
+                  </div>
+                  <label className="flex cursor-pointer items-center gap-2 text-sm text-gray-600">
+                    <input type="checkbox" checked={ttsForm.enabled}
+                      onChange={e => setTtsForm(f => ({ ...f, enabled: e.target.checked }))}
+                      className="rounded" />
+                    启用
+                  </label>
+                  <label className="flex cursor-pointer items-center gap-2 text-sm text-gray-600">
+                    <input type="checkbox" checked={ttsForm.isDefault}
+                      onChange={e => setTtsForm(f => ({ ...f, isDefault: e.target.checked }))}
+                      className="rounded" />
+                    设为默认 TTS
+                  </label>
+                </div>
+                <div className="flex flex-col gap-2 pt-2 sm:flex-row sm:justify-end">
+                  <button onClick={() => setShowTtsForm(false)}
+                    className="rounded-apple px-4 py-2 text-sm text-gray-500 hover:bg-gray-100">
+                    取消
+                  </button>
+                  <button onClick={handleSaveTts}
+                    disabled={!ttsForm.name || !ttsForm.baseUrl || !ttsForm.apiKey || !ttsForm.modelName}
+                    className="rounded-apple bg-gray-900 px-5 py-2 text-sm text-white press-effect hover:bg-gray-800 disabled:opacity-50">
+                    保存
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {supplementTopic && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4" onClick={() => setSupplementTopic(null)}>
+          <div className="w-full max-w-lg space-y-4 rounded-apple-lg bg-white p-5 shadow-xl" onClick={e => e.stopPropagation()}>
+            <div>
+              <h3 className="font-medium text-gray-900">是否为单词本补充该主题相关词汇？</h3>
+              <p className="mt-1 text-sm text-gray-500">{supplementTopic.titleZh || supplementTopic.title}</p>
+            </div>
+            <div className="space-y-3">
+              <select value={supplementForm.wordBookId} onChange={e => setSupplementForm(f => ({ ...f, wordBookId: e.target.value }))} className="w-full rounded-apple bg-gray-100 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-200">
+                <option value="">选择目标单词本</option>
+                {wordBooks.map((book: any) => <option key={book.id} value={book.id}>{book.name}</option>)}
+              </select>
+              <div className="grid grid-cols-3 gap-2">
+                <input type="number" min={0} value={supplementForm.beginnerCount} onChange={e => setSupplementForm(f => ({ ...f, beginnerCount: Number(e.target.value) }))} className="rounded-apple bg-gray-100 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-200" />
+                <input type="number" min={0} value={supplementForm.advancedCount} onChange={e => setSupplementForm(f => ({ ...f, advancedCount: Number(e.target.value) }))} className="rounded-apple bg-gray-100 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-200" />
+                <select value={supplementForm.modelId} onChange={e => setSupplementForm(f => ({ ...f, modelId: e.target.value }))} className="rounded-apple bg-gray-100 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-200">
+                  <option value="">默认模型</option>
+                  {(aiModels || []).map((m: AiModelType) => <option key={m.id} value={m.id}>{m.name}</option>)}
+                </select>
+              </div>
+            </div>
+            {supplementMessage && <div className="rounded-apple bg-blue-50 px-3 py-2 text-sm text-blue-700">{supplementMessage}</div>}
+            <div className="flex justify-end gap-2">
+              <button onClick={() => setSupplementTopic(null)} className="rounded-apple bg-gray-100 px-4 py-2 text-sm text-gray-600">跳过</button>
+              <button onClick={handleSupplementWords} disabled={!supplementForm.wordBookId || supplementMessage === '生成中...'} className="rounded-apple bg-gray-900 px-4 py-2 text-sm text-white disabled:opacity-50">生成词汇</button>
+            </div>
+          </div>
         </div>
       )}
     </div>

@@ -40,6 +40,14 @@
 
   <!-- Member content -->
   <view wx:else>
+    <view class="word-practice-card" bindtap="goToWordPractice">
+      <view>
+        <view class="word-practice-title">单词练习</view>
+        <view class="word-practice-desc">先回忆，再反馈，连续 4 次认识后标记掌握</view>
+      </view>
+      <view class="word-practice-btn">进入</view>
+    </view>
+
     <!-- Stats -->
     <view class="stats-card">
       <view class="stat-block">

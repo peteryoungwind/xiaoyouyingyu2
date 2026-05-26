@@ -155,6 +155,38 @@ function redeemCode(code) {
   });
 }
 
+// ==================== Word Practice ====================
+
+function getWordBooks() {
+  return http.get('/word-practice/books');
+}
+
+function getWordBookDetail(bookId, difficulty) {
+  return http.get('/word-practice/books/' + bookId + '?difficulty=' + (difficulty || 'BEGINNER'));
+}
+
+function getNextWords(bookId, difficulty, limit) {
+  return http.get('/word-practice/books/' + bookId + '/next?difficulty=' + (difficulty || 'BEGINNER') + '&limit=' + (limit || 1));
+}
+
+function getWordDetail(wordId) {
+  return http.get('/word-practice/words/' + wordId);
+}
+
+function submitWordAnswer(wordId, result) {
+  return http.post('/word-practice/words/' + wordId + '/answer', {
+    result: result
+  });
+}
+
+function getWordBookProgress(bookId, difficulty) {
+  return http.get('/word-practice/books/' + bookId + '/progress?difficulty=' + (difficulty || 'BEGINNER'));
+}
+
+function getWordBookWords(bookId, difficulty) {
+  return http.get('/word-practice/books/' + bookId + '/words?difficulty=' + (difficulty || 'BEGINNER'));
+}
+
 module.exports = {
   // Auth
   login: login,
@@ -182,5 +214,13 @@ module.exports = {
   // Membership
   getMembership: getMembership,
   getMembershipContact: getMembershipContact,
-  redeemCode: redeemCode
+  redeemCode: redeemCode,
+  // Word Practice
+  getWordBooks: getWordBooks,
+  getWordBookDetail: getWordBookDetail,
+  getNextWords: getNextWords,
+  getWordDetail: getWordDetail,
+  submitWordAnswer: submitWordAnswer,
+  getWordBookProgress: getWordBookProgress,
+  getWordBookWords: getWordBookWords
 };

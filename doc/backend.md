@@ -103,6 +103,7 @@ src/main/java/com/xiaoyouyingyu/
 权限：
 
 - `SecurityConfig` 中限制为 `PREMIUM_USER`、`ADMIN` 或动态会员角色 `MEMBER`。
+- 后端会员判定统一由 `User.isMembershipActive()` 提供，`ADMIN`、`PREMIUM_USER` 和未过期会员都会被视为会员。
 
 ### `MembershipController`
 
@@ -132,6 +133,39 @@ src/main/java/com/xiaoyouyingyu/
 
 - 所有 `/api/admin/**` 接口都要求 `ADMIN`。
 
+### `AdminWordBookController`
+
+路径前缀：`/api/admin`
+
+负责单词练习管理端功能：
+
+- 单词本创建、更新、发布、下架、软删除。
+- 单词列表筛选、手动新增、更新、软删除。
+- AI 按场景生成单词、按口语主题生成单词。
+- AI 创建单词本后台任务创建、进度查询。
+- 批量发布、下架、删除、排序和重新生成音频。
+
+### `AdminTtsModelController`
+
+路径前缀：`/api/admin/tts-models`
+
+负责全局 TTS 模型配置：
+
+- 全局 TTS 模型配置查询、新增、更新、删除和设置默认；前端统一放在 `/admin` 的“模型管理”中维护。
+
+### `WordPracticeController`
+
+路径前缀：`/api/word-practice`
+
+负责用户端单词练习功能：
+
+- 查询已发布单词本和个人进度。
+- 查询单词本详情、下一批练习词、单词详情。
+- 提交“认识/不认识”并更新复习计划。
+
+权限与学习中心一致：管理员、`PREMIUM_USER` 或动态会员角色 `MEMBER`。
+其中 `PREMIUM_USER` 角色本身也属于有效会员，不要求额外配置会员到期时间。
+
 ## Service 说明
 
 ### `AiService`
@@ -143,6 +177,8 @@ src/main/java/com/xiaoyouyingyu/
 - `generate`：旧版通用生成接口。
 - `generateTitles`：生成 5 个主题标题，会读取近一年和历史主题标题作为去重上下文。
 - `generateQuestions`：按选中主题生成 10 个讨论问题。
+- `generateWordsByScene`：按场景生成单词练习词汇 JSON。
+- `generateWordsByTopic`：按口语主题生成单词练习词汇 JSON。
 - `generateWarmup`：学习中心热身内容。
 - `generateVocabulary`：学习中心词汇。
 - `generateExpressions`：学习中心表达模板。
@@ -194,6 +230,27 @@ src/main/java/com/xiaoyouyingyu/
 - ticket 存在内存 `ConcurrentHashMap` 中，不适合多实例共享。
 - 如要多实例部署，建议改为 Redis 或数据库存储。
 
+### `WordBookService` / `WordService` / `WordGenerationService`
+
+负责单词练习管理端业务：
+
+- `WordBookService`：单词本 CRUD、发布/下架、软删除和统计。
+- `WordService`：单词 CRUD、单词本内归一化去重、批量操作和响应组装。
+- `WordGenerationService`：调用 `AiService`，解析 AI JSON，校验字段，跳过重复词并保存；同步接口仍保留，后台任务会复用候选词生成、保存和音频生成能力。
+- `WordGenerationTaskService`：创建 `word_generation_tasks` 后台任务并异步执行，持续记录 `GENERATING_WORDS`、`SAVING_WORDS`、`GENERATING_AUDIO`、`COMPLETED`、`FAILED` 等阶段，刷新页面不影响任务执行。
+- `WordAudioService`：读取默认可用 TTS 模型，为单词和例句分别生成美式/英式音频并保存到本地；支持 OpenAI 兼容 `/audio/speech` 与千问 Qwen-TTS 非流式接口。Qwen-TTS 返回的临时音频 URL 会被立即下载成本地文件。
+- 单词新增、AI 生成和重新生成音频时可传入 `ttsModelId` 指定 TTS 模型；未传入时使用默认可用模型。
+- `TtsModelService`：管理全局 TTS 模型配置，API Key 返回时会脱敏。
+
+### `WordPracticeService`
+
+负责用户练习闭环：
+
+- 下一词查询时优先返回到期复习词，没有到期复习词时返回未学新词。
+- `KNOWN` 会累加连续认识次数，并按 1 天、3 天、7 天安排复习。
+- 连续 4 次 `KNOWN` 后状态变为 `MASTERED`，`nextReviewAt` 置空。
+- `UNKNOWN` 会将连续认识次数重置为 0，并安排次日复习。
+
 ## Entity 说明
 
 | 实体 | 表 | 说明 |
@@ -203,6 +260,13 @@ src/main/java/com/xiaoyouyingyu/
 | `AiModel` | `ai_models` | AI API 供应商/模型配置 |
 | `RedeemCode` | `redeem_codes` | 会员卡密 |
 | `MembershipRecord` | `membership_records` | 会员变更流水 |
+| `TtsModel` | `tts_models` | TTS 供应商、模型、语音、输出格式和默认模型配置，支持 OpenAI 兼容模型与 Qwen-TTS 并存 |
+| `WordBook` | `word_books` | 单词本，支持草稿、已发布、已下架和软删除 |
+| `Word` | `words` | 单词内容、释义、例句、音频 URL、难度、发布状态和来源 |
+| `WordBookTopic` | `word_book_topics` | 单词本与口语主题的多对多关联 |
+| `WordTopic` | `word_topics` | 单词与口语主题的多对多来源关联 |
+| `UserWordProgress` | `user_word_progress` | 用户单词学习进度、复习时间和掌握状态 |
+| `WordGenerationTask` | `word_generation_tasks` | AI 创建单词本后台任务、阶段、进度和错误摘要 |
 
 ## Repository 说明
 
@@ -213,6 +277,13 @@ src/main/java/com/xiaoyouyingyu/
 | `AiModelRepository` | 查询默认模型、清空默认模型 |
 | `RedeemCodeRepository` | 按 code 查询、按状态分页、倒序分页 |
 | `MembershipRecordRepository` | 按用户查询会员流水 |
+| `TtsModelRepository` | 查询默认/可用 TTS 模型、清空默认模型 |
+| `WordBookRepository` | 单词本分页、已发布单词本查询 |
+| `WordRepository` | 单词本内去重、单词筛选、练习新词查询、统计 |
+| `WordBookTopicRepository` | 单词本主题关联去重与统计 |
+| `WordTopicRepository` | 单词来源主题关联去重与展示 |
+| `UserWordProgressRepository` | 用户练习进度、到期复习词、进度统计 |
+| `WordGenerationTaskRepository` | 后台生成任务列表和任务状态持久化 |
 
 ## 认证与授权
 
@@ -243,6 +314,8 @@ src/main/java/com/xiaoyouyingyu/
 - 会员联系信息：公开。
 - `/api/admin/**`：仅管理员。
 - `/api/learning/**`：会员、管理员或动态会员角色。
+- `/api/word-practice/**`：会员、管理员或动态会员角色。
+- `/uploads/**`：公开读取，用于小程序和 PC 前端播放本地音频。
 - 其他接口：要求登录。
 
 ## 配置说明
@@ -259,6 +332,9 @@ src/main/java/com/xiaoyouyingyu/
 | `app.jwt.secret` | JWT 签名密钥 |
 | `app.jwt.expiration-ms` | JWT 过期时间 |
 | `app.ai.*` | 默认 AI API 配置 |
+| `app.upload.dir` | 本地上传/音频保存目录，默认 `uploads` |
+
+单词音频保存路径以单词本为维度组织：`{app.upload.dir}/word-audio/{wordBookId}/{wordId}/`，对外 URL 为 `/uploads/word-audio/{wordBookId}/{wordId}/...`。
 
 安全建议：
 
@@ -280,4 +356,3 @@ mvn clean package
 ```
 
 构建产物位于 `target/`，可通过 `java -jar` 运行。
-

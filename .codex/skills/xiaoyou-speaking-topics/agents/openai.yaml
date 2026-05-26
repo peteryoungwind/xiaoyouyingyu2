@@ -1,0 +1,7 @@
+interface:
+  display_name: "Xiaoyou Speaking Topics"
+  short_description: "项目内口语主题生成与问题设计"
+  default_prompt: "Use $xiaoyou-speaking-topics to generate five candidate speaking topics for this project."
+
+policy:
+  allow_implicit_invocation: false

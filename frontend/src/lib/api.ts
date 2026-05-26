@@ -165,6 +165,59 @@ export const api = {
   deleteAiModel: (id: number) =>
     request(`/admin/ai/models/${id}`, { method: 'DELETE' }),
 
+  // Admin - Word Practice
+  getWordBooks: (params: Record<string, string> = {}) =>
+    request(`/admin/word-books?${new URLSearchParams(params)}`),
+  createWordBook: (data: any) =>
+    request('/admin/word-books', { method: 'POST', body: JSON.stringify(data) }),
+  updateWordBook: (id: number, data: any) =>
+    request(`/admin/word-books/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+  publishWordBook: (id: number) =>
+    request(`/admin/word-books/${id}/publish`, { method: 'PATCH' }),
+  offlineWordBook: (id: number) =>
+    request(`/admin/word-books/${id}/offline`, { method: 'PATCH' }),
+  deleteWordBook: (id: number) =>
+    request(`/admin/word-books/${id}`, { method: 'DELETE' }),
+  getWords: (bookId: number, params: Record<string, string> = {}) =>
+    request(`/admin/word-books/${bookId}/words?${new URLSearchParams(params)}`),
+  createWord: (bookId: number, data: any, ttsModelId?: number) =>
+    request(`/admin/word-books/${bookId}/words${ttsModelId ? `?ttsModelId=${ttsModelId}` : ''}`, { method: 'POST', body: JSON.stringify(data) }),
+  updateWord: (wordId: number, data: any) =>
+    request(`/admin/words/${wordId}`, { method: 'PUT', body: JSON.stringify(data) }),
+  deleteWord: (wordId: number) =>
+    request(`/admin/words/${wordId}`, { method: 'DELETE' }),
+  generateWordsByScene: (bookId: number, data: any) =>
+    request(`/admin/word-books/${bookId}/generate-by-scene`, { method: 'POST', body: JSON.stringify(data), direct: true }),
+  generateWordsByTopics: (bookId: number, data: any) =>
+    request(`/admin/word-books/${bookId}/generate-by-topics`, { method: 'POST', body: JSON.stringify(data), direct: true }),
+  createWordGenerationTaskByScene: (data: any) =>
+    request('/admin/word-books/generation-tasks/scene', { method: 'POST', body: JSON.stringify(data), direct: true }),
+  createWordGenerationTaskByTopics: (data: any) =>
+    request('/admin/word-books/generation-tasks/topics', { method: 'POST', body: JSON.stringify(data), direct: true }),
+  getWordGenerationTasks: () =>
+    request('/admin/word-books/generation-tasks'),
+  getWordGenerationTask: (taskId: number) =>
+    request(`/admin/word-books/generation-tasks/${taskId}`),
+  batchPublishWords: (ids: number[]) =>
+    request('/admin/words/batch-publish', { method: 'POST', body: JSON.stringify({ ids }) }),
+  batchOfflineWords: (ids: number[]) =>
+    request('/admin/words/batch-offline', { method: 'POST', body: JSON.stringify({ ids }) }),
+  batchDeleteWords: (ids: number[]) =>
+    request('/admin/words/batch-delete', { method: 'POST', body: JSON.stringify({ ids }) }),
+  batchSortWords: (items: Array<{ id: number; sortOrder: number }>) =>
+    request('/admin/words/batch-sort', { method: 'POST', body: JSON.stringify({ items }) }),
+  batchRegenerateWordAudio: (ids: number[], ttsModelId?: number) =>
+    request('/admin/words/batch-regenerate-audio', { method: 'POST', body: JSON.stringify({ ids, ttsModelId }) }),
+  getTtsModels: () => request('/admin/tts-models'),
+  createTtsModel: (data: any) =>
+    request('/admin/tts-models', { method: 'POST', body: JSON.stringify(data) }),
+  updateTtsModel: (id: number, data: any) =>
+    request(`/admin/tts-models/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+  deleteTtsModel: (id: number) =>
+    request(`/admin/tts-models/${id}`, { method: 'DELETE' }),
+  setDefaultTtsModel: (id: number) =>
+    request(`/admin/tts-models/${id}/default`, { method: 'PATCH' }),
+
   // Learning Center
   getLearningTopic: (id: number) => request(`/learning/topic/${id}`, { direct: true }),
   generateWarmup: (titleEn: string, titleZh: string, mode: string, exclude?: string) =>
@@ -183,6 +236,17 @@ export const api = {
   getMembershipContact: () => request('/user/membership-contact', { direct: true }),
   redeemCode: (code: string) =>
     request('/redeem-codes/redeem', { method: 'POST', body: JSON.stringify({ code }), direct: true }),
+
+  // Word Practice
+  getPracticeWordBooks: () => request('/word-practice/books', { direct: true }),
+  getPracticeWordBook: (bookId: number, difficulty = 'BEGINNER') =>
+    request(`/word-practice/books/${bookId}?difficulty=${difficulty}`, { direct: true }),
+  getNextPracticeWords: (bookId: number, difficulty = 'BEGINNER', limit = 1) =>
+    request(`/word-practice/books/${bookId}/next?difficulty=${difficulty}&limit=${limit}`, { direct: true }),
+  getPracticeWord: (wordId: number) =>
+    request(`/word-practice/words/${wordId}`, { direct: true }),
+  submitPracticeAnswer: (wordId: number, result: 'KNOWN' | 'UNKNOWN') =>
+    request(`/word-practice/words/${wordId}/answer`, { method: 'POST', body: JSON.stringify({ result }), direct: true }),
 
   // Admin - Redeem Codes
   generateRedeemCodes: (data: { name: string; count: number; days: number; expireAt?: string; remark?: string }) =>

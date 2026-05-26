@@ -3,6 +3,7 @@ package com.xiaoyouyingyu.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xiaoyouyingyu.entity.AiModel;
+import com.xiaoyouyingyu.entity.Topic;
 import com.xiaoyouyingyu.repository.AiModelRepository;
 import com.xiaoyouyingyu.repository.TopicRepository;
 import lombok.RequiredArgsConstructor;
@@ -156,6 +157,77 @@ public class AiService {
         String userPrompt = "主题：%s（%s）\n请为这个主题生成10个由浅入深的英语口语讨论问题。".formatted(titleEn, titleZh);
 
         return callAi(modelId, systemPrompt, userPrompt, null);
+    }
+
+    // ===================== 单词练习：生成单词 =====================
+
+    public String generateWordsByScene(Long modelId, String scene, int count, String difficulty) {
+        String systemPrompt = wordGenerationSystemPrompt(difficulty);
+        String userPrompt = """
+                场景描述：%s
+                生成数量：%d
+                难度：%s
+
+                请生成适合该场景的单词或短语，按语义相关性排序，让相关词相邻。
+                """.formatted(scene, count, difficulty);
+        return callAi(modelId, systemPrompt, userPrompt, null);
+    }
+
+    public String generateWordsByTopic(Long modelId, Topic topic, int count, String difficulty) {
+        String systemPrompt = wordGenerationSystemPrompt(difficulty);
+        String userPrompt = """
+                口语主题英文标题：%s
+                口语主题中文标题：%s
+                标签：%s
+                讨论问题 JSON：%s
+                生成数量：%d
+                难度：%s
+
+                请生成和该口语主题高度相关、能帮助用户表达该主题的单词或短语。
+                """.formatted(topic.getTitle(), topic.getTitleZh(), topic.getTags(), topic.getQuestions(), count, difficulty);
+        return callAi(modelId, systemPrompt, userPrompt, null);
+    }
+
+    private String wordGenerationSystemPrompt(String difficulty) {
+        boolean advanced = "advanced".equalsIgnoreCase(difficulty);
+        return """
+                你是一位专业英语词汇教研老师。请为“小柚英语”的单词练习模块生成结构化词汇。
+
+                ## 难度要求
+                - 当前难度：%s
+                %s
+
+                ## 内容要求
+                - 返回单词或高频短语，不要生成长句
+                - 按语义相关性排序，让相关词相邻
+                - 每个词必须包含中文释义、英文释义、音标、词性、常用搭配或常用句型、英文例句、中文例句翻译
+                - 例句要自然、适合口语表达
+
+                ## 输出格式
+                必须返回严格 JSON，不要 Markdown，不要解释：
+                {
+                  "words": [
+                    {
+                      "word": "word or phrase",
+                      "phonetic": "/.../",
+                      "partOfSpeech": "noun/verb/phrase",
+                      "definitionZh": "中文释义",
+                      "definitionEn": "English definition",
+                      "commonPatterns": "common collocations or sentence patterns",
+                      "exampleEn": "Natural example sentence.",
+                      "exampleZh": "例句中文翻译",
+                      "difficulty": "%s",
+                      "sourceScene": "来源场景，可为空"
+                    }
+                  ]
+                }
+                """.formatted(
+                advanced ? "advanced" : "beginner",
+                advanced
+                        ? "- 进阶词汇应更精确、更地道，适合表达升级，但仍需常见可用"
+                        : "- 初级词汇应高频、基础、容易用于日常开口表达，避免过难或生僻词",
+                advanced ? "advanced" : "beginner"
+        );
     }
 
     // ===================== 学习中心：生成词汇 =====================

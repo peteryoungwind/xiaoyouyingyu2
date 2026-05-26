@@ -43,6 +43,7 @@ public class User {
 
     public boolean isMembershipActive() {
         if (role == Role.ADMIN) return true;
+        if (role == Role.PREMIUM_USER) return true;
         return membershipExpireAt != null && membershipExpireAt.isAfter(LocalDateTime.now());
     }
 }

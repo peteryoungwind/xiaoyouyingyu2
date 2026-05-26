@@ -1,0 +1,25 @@
+.loading { padding: 120rpx 0; text-align: center; color: #8E8E93; }
+.book-hero { background: #EAF3FF; border-radius: 34rpx; padding: 36rpx 32rpx; border: 2rpx solid rgba(0, 122, 255, 0.08); }
+.book-name { font-size: 42rpx; line-height: 1.25; font-weight: 800; color: #1D1D1F; }
+.book-desc { margin-top: 14rpx; font-size: 26rpx; line-height: 1.6; color: #4D4D52; }
+.segmented { display: grid; grid-template-columns: 1fr 1fr; gap: 12rpx; margin: 28rpx 0; padding: 8rpx; border-radius: 24rpx; background: #FFFFFF; border: 2rpx solid #ECECF0; }
+.segment { height: 72rpx; border-radius: 18rpx; display: flex; align-items: center; justify-content: center; font-size: 26rpx; font-weight: 700; color: #6E6E73; }
+.segment.active { background: #007AFF; color: #FFFFFF; }
+.progress-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18rpx; }
+.progress-card { background: #FFFFFF; border: 2rpx solid #ECECF0; border-radius: 28rpx; padding: 30rpx; }
+.progress-card text:first-child { display: block; font-size: 46rpx; font-weight: 800; color: #1D1D1F; }
+.progress-card text:last-child { display: block; margin-top: 8rpx; font-size: 24rpx; color: #6E6E73; }
+.start-btn { margin-top: 34rpx; height: 92rpx; border-radius: 28rpx; background: #007AFF; color: #FFFFFF; font-size: 30rpx; font-weight: 800; }
+.word-section { margin-top: 36rpx; }
+.word-section-header { display: flex; align-items: center; justify-content: space-between; gap: 20rpx; margin-bottom: 18rpx; }
+.word-section-title { font-size: 32rpx; font-weight: 800; color: #1D1D1F; }
+.word-filter { display: flex; gap: 8rpx; padding: 6rpx; border-radius: 18rpx; background: #FFFFFF; border: 2rpx solid #ECECF0; }
+.filter-item { height: 52rpx; padding: 0 18rpx; border-radius: 14rpx; display: flex; align-items: center; justify-content: center; font-size: 22rpx; font-weight: 700; color: #6E6E73; }
+.filter-item.active { background: #1D1D1F; color: #FFFFFF; }
+.learned-list { display: flex; flex-direction: column; gap: 16rpx; }
+.learned-card { display: flex; align-items: center; justify-content: space-between; gap: 20rpx; background: #FFFFFF; border: 2rpx solid #ECECF0; border-radius: 24rpx; padding: 24rpx; }
+.learned-word { font-size: 30rpx; font-weight: 800; color: #1D1D1F; }
+.learned-meaning { margin-top: 6rpx; font-size: 24rpx; color: #6E6E73; line-height: 1.5; }
+.learned-status { flex-shrink: 0; padding: 10rpx 16rpx; border-radius: 999rpx; background: #FFF3E0; color: #B56A00; font-size: 22rpx; font-weight: 700; }
+.learned-status.mastered { background: #E8F5E9; color: #1B7F3A; }
+.word-empty { background: #FFFFFF; border: 2rpx solid #ECECF0; border-radius: 24rpx; padding: 38rpx; text-align: center; color: #8E8E93; font-size: 26rpx; }

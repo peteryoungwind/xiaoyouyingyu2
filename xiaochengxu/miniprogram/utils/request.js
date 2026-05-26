@@ -23,9 +23,20 @@ function request(url, method, data) {
       data: data,
       header: header,
       success: function (res) {
-        if (res.statusCode === 401 || res.statusCode === 403) {
+        if (res.statusCode === 401) {
           require('./auth').handleAuthExpired();
           reject({ code: res.statusCode, message: '登录已过期，请重新登录' });
+          return;
+        }
+
+        if (res.statusCode === 403) {
+          var forbiddenMsg = '暂无权限，请开通会员后继续使用';
+          if (res.data && res.data.error) {
+            forbiddenMsg = res.data.error;
+          } else if (res.data && res.data.message) {
+            forbiddenMsg = res.data.message;
+          }
+          reject({ code: res.statusCode, message: forbiddenMsg, data: res.data });
           return;
         }
 

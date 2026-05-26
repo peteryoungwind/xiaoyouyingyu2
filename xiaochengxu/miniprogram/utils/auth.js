@@ -48,6 +48,14 @@ function handleAuthExpired() {
   });
 }
 
+function handlePermissionDenied(message) {
+  wx.showToast({
+    title: message || '请开通会员后继续使用',
+    icon: 'none'
+  });
+  wx.switchTab({ url: '/pages/learning/index' });
+}
+
 /**
  * Check if user is logged in.
  * @returns {boolean} true if logged in, false otherwise
@@ -102,5 +110,6 @@ module.exports = {
   checkMemberAndShowModal: checkMemberAndShowModal,
   refreshMembership: refreshMembership,
   handleAuthExpired: handleAuthExpired,
+  handlePermissionDenied: handlePermissionDenied,
   resetAuthExpiredPromptState: resetAuthExpiredPromptState
 };

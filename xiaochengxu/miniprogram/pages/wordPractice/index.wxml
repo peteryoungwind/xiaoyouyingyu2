@@ -1,0 +1,29 @@
+<view class="page-container safe-bottom practice-page">
+  <view wx:if="{{loading}}" class="loading">加载中...</view>
+
+  <view wx:elif="{{completed}}" class="complete-card">
+    <view class="complete-title">今天这一组完成了</view>
+    <view class="complete-desc">没有到期复习词，也没有新的已发布单词。</view>
+    <button class="secondary-btn" bindtap="loadNext">再检查一次</button>
+  </view>
+
+  <view wx:elif="{{word}}" class="practice-card">
+    <view class="progress-line" wx:if="{{progress}}">
+      已学 {{progress.learned || 0}} / {{progress.total || 0}} · 待复习 {{progress.dueReview || 0}} · 掌握 {{progress.mastered || 0}}
+    </view>
+    <view class="word">{{word.word}}</view>
+    <view class="phonetic" wx:if="{{word.phonetic}}">{{word.phonetic}}</view>
+
+    <view class="audio-row">
+      <button class="audio-btn" bindtap="playAudio" data-url="{{word.audioUsUrl}}">美式</button>
+      <button class="audio-btn" bindtap="playAudio" data-url="{{word.audioUkUrl}}">英式</button>
+    </view>
+
+    <view class="answer-row">
+      <button class="answer-btn unknown" bindtap="answer" data-result="UNKNOWN" loading="{{submitting}}">不认识</button>
+      <button class="answer-btn known" bindtap="answer" data-result="KNOWN" loading="{{submitting}}">认识</button>
+    </view>
+
+    <button class="detail-btn" bindtap="showDetail">查看详情</button>
+  </view>
+</view>

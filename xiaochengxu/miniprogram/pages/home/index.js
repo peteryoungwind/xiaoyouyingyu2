@@ -121,6 +121,14 @@ Page({
     wx.switchTab({ url: '/pages/learning/index' });
   },
 
+  goToWordPractice() {
+    if (!app.checkLogin()) {
+      wx.navigateTo({ url: '/pages/login/index' });
+      return;
+    }
+    wx.navigateTo({ url: '/pages/wordBooks/index' });
+  },
+
   goToLogin() {
     wx.navigateTo({ url: '/pages/login/index' });
   },

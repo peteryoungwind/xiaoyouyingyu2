@@ -29,6 +29,8 @@ wechat:
   secret: ce05db971bee9a6b2a87693881bf9b87
 
 app:
+  upload:
+    dir: uploads
   jwt:
     secret: n7Qv2Kp9Xc4mL8tR1yF6uD3sW0zH5jNqB2eG9aV4rT7kM1pC
     expiration-ms: 2592000000

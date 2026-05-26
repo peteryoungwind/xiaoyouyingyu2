@@ -11,6 +11,15 @@
     </view>
   </view>
 
+  <view class="word-entry" bindtap="goToWordPractice">
+    <view class="word-entry-icon">Aa</view>
+    <view class="word-entry-copy">
+      <view class="word-entry-title">单词练习</view>
+      <view class="word-entry-desc">按记忆曲线复习主题词汇</view>
+    </view>
+    <view class="word-entry-action">开始</view>
+  </view>
+
   <view class="overview-grid">
     <view class="overview-card">
       <view class="overview-label">主题总数</view>

@@ -163,6 +163,95 @@ Authorization: Bearer <token>
 
 前端和小程序需要再解析 `content` 中的 JSON 字符串。
 
+## 单词练习接口
+
+### 管理端单词接口
+
+路径前缀：`/api/admin`
+
+所有接口需要管理员权限。
+
+| 方法 | 路径 | 说明 |
+| --- | --- | --- |
+| GET | `/word-books` | 分页查询单词本 |
+| POST | `/word-books` | 创建单词本 |
+| GET | `/word-books/{id}` | 查询单词本详情与统计 |
+| PUT | `/word-books/{id}` | 更新单词本 |
+| PATCH | `/word-books/{id}/publish` | 发布单词本 |
+| PATCH | `/word-books/{id}/offline` | 下架单词本 |
+| DELETE | `/word-books/{id}` | 软删除单词本 |
+| GET | `/word-books/{id}/words` | 查询单词列表 |
+| POST | `/word-books/{id}/words` | 新增单词，可选 `ttsModelId` 查询参数 |
+| PUT | `/words/{wordId}` | 更新单词 |
+| DELETE | `/words/{wordId}` | 软删除单词 |
+| POST | `/word-books/{id}/generate-by-scene` | AI 按场景生成单词并保存，可传 `ttsModelId` |
+| POST | `/word-books/{id}/generate-by-topics` | AI 按口语主题生成单词并保存，可传 `ttsModelId` |
+| POST | `/word-books/generation-tasks/scene` | 创建“按场景生成单词本”的后台任务，立即返回任务状态 |
+| POST | `/word-books/generation-tasks/topics` | 创建“按主题生成单词本”的后台任务，立即返回任务状态 |
+| GET | `/word-books/generation-tasks` | 查询最近后台生成任务及进度 |
+| GET | `/word-books/generation-tasks/{taskId}` | 查询单个后台生成任务进度 |
+| POST | `/words/batch-publish` | 批量发布单词 |
+| POST | `/words/batch-offline` | 批量下架单词 |
+| POST | `/words/batch-delete` | 批量软删除单词 |
+| POST | `/words/batch-sort` | 批量调整排序 |
+| POST | `/words/batch-regenerate-audio` | 批量重新生成音频，可传 `ttsModelId` |
+| GET | `/tts-models` | 查询 TTS 模型配置 |
+| POST | `/tts-models` | 新增 TTS 模型配置 |
+| PUT | `/tts-models/{id}` | 更新 TTS 模型配置 |
+| DELETE | `/tts-models/{id}` | 删除 TTS 模型配置 |
+| PATCH | `/tts-models/{id}/default` | 设置默认 TTS 模型 |
+
+单词列表支持参数：`page`、`size`、`difficulty`、`status`、`sourceTopicId`、`keyword`。
+
+### 用户端单词接口
+
+路径前缀：`/api/word-practice`
+
+权限与学习中心一致：管理员、`PREMIUM_USER` 或会员未过期用户。
+
+| 方法 | 路径 | 说明 |
+| --- | --- | --- |
+| GET | `/books` | 查询已发布单词本与当前用户初级进度 |
+| GET | `/books/{bookId}` | 查询单词本详情与指定难度进度 |
+| GET | `/books/{bookId}/next` | 获取下一批练习词，优先到期复习词 |
+| GET | `/words/{wordId}` | 查询已发布单词详情 |
+| POST | `/words/{wordId}/answer` | 提交认识/不认识 |
+| GET | `/books/{bookId}/progress` | 查询指定难度进度 |
+| GET | `/books/{bookId}/words` | 查询当前用户已学单词 |
+
+提交练习结果：
+
+```json
+{
+  "result": "KNOWN"
+}
+```
+
+`result` 可取 `KNOWN` 或 `UNKNOWN`。
+
+复习规则：
+
+- `KNOWN`：连续认识次数加 1；第 1、2、3 次分别安排 1 天、3 天、7 天后复习；连续 4 次认识后标记为 `MASTERED`。
+- `UNKNOWN`：连续认识次数重置为 0，次日复习。
+
+### 单词音频生成
+
+后台通过 `tts_models` 配置 TTS 接口，可同时保存多个模型并通过默认模型或请求参数 `ttsModelId` 手动切换。
+
+- `provider=openai`：OpenAI 兼容 TTS。`base_url` 可以填写供应商根路径，例如 `https://api.openai.com/v1`，后端会调用 `{base_url}/audio/speech`；也可以直接填写完整 `/audio/speech` 地址。
+- `provider=qwen`、`dashscope` 或 `aliyun`：千问 Qwen-TTS。`base_url` 可以填写 `https://dashscope.aliyuncs.com/api/v1` 或完整 `.../services/aigc/multimodal-generation/generation` 地址。后端调用非流式接口，读取响应中的 `output.audio.url`，并立即下载音频保存到本地，避免使用 24 小时有效期的临时 URL。
+
+新增单词、AI 生成单词和批量重新生成音频时，后端会为每个单词生成：
+
+- 单词美式发音：`/uploads/word-audio/{wordBookId}/{wordId}/word-us.{format}`
+- 单词英式发音：`/uploads/word-audio/{wordBookId}/{wordId}/word-uk.{format}`
+- 例句美式发音：`/uploads/word-audio/{wordBookId}/{wordId}/example-us.{format}`
+- 例句英式发音：`/uploads/word-audio/{wordBookId}/{wordId}/example-uk.{format}`
+
+如果音频生成失败，单词文本仍会保存，`audio_status` 置为 `FAILED`，`audio_error` 记录错误，管理员可通过批量重新生成接口重试。
+
+AI 创建单词本走后台任务：接口先创建单词本和 `word_generation_tasks` 记录，再异步执行“生成单词、保存单词、生成音频”。前端刷新页面不影响任务执行，可通过任务查询接口展示阶段、百分比、已保存单词数和音频生成进度。
+
 ## 会员接口
 
 路径前缀：`/api`
@@ -314,6 +403,141 @@ Authorization: Bearer <token>
 | `remark` | VARCHAR(255) | 备注 |
 | `created_at` | DATETIME | 创建时间 |
 
+### `tts_models`
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `id` | BIGINT | 主键 |
+| `name` | VARCHAR(100) | 显示名称 |
+| `base_url` | VARCHAR(500) | TTS API 根地址或完整接口地址。OpenAI 兼容模型支持 `/audio/speech`，Qwen-TTS 支持 DashScope `/services/aigc/multimodal-generation/generation` |
+| `api_key` | VARCHAR(500) | API Key |
+| `model_name` | VARCHAR(200) | TTS 模型名 |
+| `provider` | VARCHAR(60) | 供应商标识，支持 `openai`、`qwen`、`dashscope`、`aliyun` |
+| `voice_us` | VARCHAR(80) | 美式发音 voice |
+| `voice_uk` | VARCHAR(80) | 英式发音 voice |
+| `output_format` | VARCHAR(20) | 输出格式，默认 `mp3` |
+| `is_default` | BOOLEAN | 是否默认 |
+| `enabled` | BOOLEAN | 是否启用 |
+| `created_at` | DATETIME | 创建时间 |
+| `updated_at` | DATETIME | 更新时间 |
+
+### `word_books`
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `id` | BIGINT | 主键 |
+| `name` | VARCHAR(120) | 单词本名称 |
+| `description` | VARCHAR(1000) | 描述 |
+| `scene` | VARCHAR(500) | 适用场景 |
+| `status` | VARCHAR(20) | `DRAFT`、`PUBLISHED`、`OFFLINE` |
+| `deleted` | BOOLEAN | 软删除 |
+| `created_by` | BIGINT | 创建人 |
+| `created_at` | DATETIME | 创建时间 |
+| `updated_at` | DATETIME | 更新时间 |
+
+### `word_generation_tasks`
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `id` | BIGINT | 主键 |
+| `word_book_id` | BIGINT | 目标单词本 ID |
+| `type` | VARCHAR(20) | `SCENE` 或 `TOPICS` |
+| `status` | VARCHAR(20) | `PENDING`、`RUNNING`、`COMPLETED`、`FAILED` |
+| `stage` | VARCHAR(30) | `PENDING`、`GENERATING_WORDS`、`SAVING_WORDS`、`GENERATING_AUDIO`、`COMPLETED`、`FAILED` |
+| `message` | VARCHAR(200) | 当前进度文案 |
+| `progress` | INT | 0-100 进度百分比 |
+| `total_words` | INT | AI 返回候选单词数 |
+| `saved_words` | INT | 已保存单词数 |
+| `skipped_words` | INT | 重复或字段不完整跳过数 |
+| `audio_total` | INT | 待生成音频的单词数 |
+| `audio_done` | INT | 已生成音频的单词数 |
+| `error` | VARCHAR(1000) | 错误或跳过原因摘要 |
+| `created_by` | BIGINT | 创建人 |
+| `created_at` | DATETIME | 创建时间 |
+| `started_at` | DATETIME | 开始时间 |
+| `finished_at` | DATETIME | 完成/失败时间 |
+| `updated_at` | DATETIME | 更新时间 |
+
+### `word_book_topics`
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `id` | BIGINT | 主键 |
+| `word_book_id` | BIGINT | 单词本 ID |
+| `topic_id` | BIGINT | 口语主题 ID |
+| `created_at` | DATETIME | 创建时间 |
+
+唯一约束：`word_book_id + topic_id`。
+
+### `words`
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `id` | BIGINT | 主键 |
+| `word_book_id` | BIGINT | 单词本 ID |
+| `word` | VARCHAR(120) | 英文单词或短语 |
+| `normalized_word` | VARCHAR(120) | 去首尾空格并小写后的去重字段 |
+| `difficulty` | VARCHAR(20) | `BEGINNER`、`ADVANCED` |
+| `status` | VARCHAR(20) | `DRAFT`、`PUBLISHED`、`OFFLINE` |
+| `phonetic` | VARCHAR(120) | 音标 |
+| `part_of_speech` | VARCHAR(255) | 词性 |
+| `definition_zh` | VARCHAR(1000) | 中文释义 |
+| `definition_en` | VARCHAR(1000) | 英文释义 |
+| `common_patterns` | VARCHAR(1200) | 常用搭配/句型 |
+| `example_en` | VARCHAR(1200) | 英文例句 |
+| `example_zh` | VARCHAR(1200) | 中文例句翻译 |
+| `source_scene` | VARCHAR(500) | 来源场景 |
+| `source_topic_id` | BIGINT | 来源口语主题 ID |
+| `source_topic_title` | VARCHAR(300) | 来源口语主题标题 |
+| `audio_us_url` | VARCHAR(500) | 单词美式发音 URL |
+| `audio_uk_url` | VARCHAR(500) | 单词英式发音 URL |
+| `example_audio_us_url` | VARCHAR(500) | 例句美式发音 URL |
+| `example_audio_uk_url` | VARCHAR(500) | 例句英式发音 URL |
+| `audio_status` | VARCHAR(20) | `PENDING`、`READY`、`FAILED` |
+| `audio_error` | VARCHAR(1000) | 音频生成错误 |
+| `sort_order` | INT | 后台排序 |
+| `deleted` | BOOLEAN | 软删除 |
+| `created_at` | DATETIME | 创建时间 |
+| `updated_at` | DATETIME | 更新时间 |
+
+唯一约束：`word_book_id + normalized_word`。
+
+### `word_topics`
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `id` | BIGINT | 主键 |
+| `word_id` | BIGINT | 单词 ID |
+| `topic_id` | BIGINT | 口语主题 ID |
+| `topic_title_en` | VARCHAR(200) | 来源主题英文标题冗余 |
+| `topic_title_zh` | VARCHAR(200) | 来源主题中文标题冗余 |
+| `created_at` | DATETIME | 创建时间 |
+
+唯一约束：`word_id + topic_id`。同一单词本内遇到重复词但来源主题不同时，不新增重复单词，只补充 `word_topics` 关联。
+
+### `user_word_progress`
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `id` | BIGINT | 主键 |
+| `user_id` | BIGINT | 用户 ID |
+| `word_id` | BIGINT | 单词 ID |
+| `word_book_id` | BIGINT | 单词本 ID |
+| `status` | VARCHAR(20) | `NEW`、`LEARNING`、`REVIEWING`、`MASTERED` |
+| `difficulty` | VARCHAR(20) | 冗余记录练习时单词难度 |
+| `study_count` | INT | 总练习次数 |
+| `known_count` | INT | 认识次数 |
+| `unknown_count` | INT | 不认识次数 |
+| `consecutive_known_count` | INT | 连续认识次数 |
+| `first_studied_at` | DATETIME | 首次学习时间 |
+| `last_practiced_at` | DATETIME | 上次练习时间 |
+| `next_review_at` | DATETIME | 下次复习时间 |
+| `mastered_at` | DATETIME | 掌握时间 |
+| `created_at` | DATETIME | 创建时间 |
+| `updated_at` | DATETIME | 更新时间 |
+
+唯一约束：`user_id + word_id`。
+
 ## 固定话题分类
 
 后端 `TopicCategoryConstants` 只允许以下分类：
@@ -334,4 +558,3 @@ Authorization: Bearer <token>
 - 去重。
 - 校验是否在允许列表内。
 - 按固定顺序重新拼接。
-
