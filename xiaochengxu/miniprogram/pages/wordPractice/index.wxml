@@ -15,15 +15,54 @@
     <view class="phonetic" wx:if="{{word.phonetic}}">{{word.phonetic}}</view>
 
     <view class="audio-row">
-      <button class="audio-btn" bindtap="playAudio" data-url="{{word.audioUsUrl}}">美式</button>
-      <button class="audio-btn" bindtap="playAudio" data-url="{{word.audioUkUrl}}">英式</button>
+      <button class="audio-btn" bindtap="playAudio" data-url="{{word.audioUsUrl}}">
+        <image class="audio-icon" src="/images/icons/volume.svg" mode="aspectFit" />
+        <text>美式发音</text>
+      </button>
+      <button class="audio-btn" bindtap="playAudio" data-url="{{word.audioUkUrl}}">
+        <image class="audio-icon" src="/images/icons/volume.svg" mode="aspectFit" />
+        <text>英式发音</text>
+      </button>
     </view>
 
-    <view class="answer-row">
+    <view class="answer-row" wx:if="{{!detailVisible}}">
       <button class="answer-btn unknown" bindtap="answer" data-result="UNKNOWN" loading="{{submitting}}">不认识</button>
       <button class="answer-btn known" bindtap="answer" data-result="KNOWN" loading="{{submitting}}">认识</button>
     </view>
 
-    <button class="detail-btn" bindtap="showDetail">查看详情</button>
+    <view class="inline-detail" wx:if="{{detailVisible}}">
+      <view class="section">
+        <view class="label">中文释义</view>
+        <view class="text">{{word.definitionZh}}</view>
+      </view>
+      <view class="section" wx:if="{{word.definitionEn}}">
+        <view class="label">英文释义</view>
+        <view class="text">{{word.definitionEn}}</view>
+      </view>
+      <view class="section" wx:if="{{word.commonPatterns}}">
+        <view class="label">常用搭配/句型</view>
+        <view class="text">{{word.commonPatterns}}</view>
+      </view>
+      <view class="section" wx:if="{{word.exampleEn || word.exampleZh}}">
+        <view class="label">例句</view>
+        <view class="text strong">{{word.exampleEn}}</view>
+        <view class="text zh">{{word.exampleZh}}</view>
+        <view class="audio-row small">
+          <button class="audio-btn" bindtap="playAudio" data-url="{{word.exampleAudioUsUrl}}">
+            <image class="audio-icon" src="/images/icons/volume.svg" mode="aspectFit" />
+            <text>美式发音</text>
+          </button>
+          <button class="audio-btn" bindtap="playAudio" data-url="{{word.exampleAudioUkUrl}}">
+            <image class="audio-icon" src="/images/icons/volume.svg" mode="aspectFit" />
+            <text>英式发音</text>
+          </button>
+        </view>
+      </view>
+      <view class="section" wx:if="{{word.sourceScene || word.sourceTopicTitle}}">
+        <view class="label">来源</view>
+        <view class="text">{{word.sourceScene || word.sourceTopicTitle}}</view>
+      </view>
+      <button class="secondary-btn" bindtap="loadNext">下一词</button>
+    </view>
   </view>
 </view>

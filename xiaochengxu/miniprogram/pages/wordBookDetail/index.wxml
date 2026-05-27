@@ -19,36 +19,5 @@
     </view>
 
     <button class="start-btn" bindtap="startPractice">开始练习</button>
-
-    <view class="word-section">
-      <view class="word-section-header">
-        <view class="word-section-title">学习记录</view>
-        <view class="word-filter">
-          <view class="filter-item {{wordFilter === 'ALL' ? 'active' : ''}}" bindtap="switchWordFilter" data-filter="ALL">已学</view>
-          <view class="filter-item {{wordFilter === 'MASTERED' ? 'active' : ''}}" bindtap="switchWordFilter" data-filter="MASTERED">已掌握</view>
-        </view>
-      </view>
-
-      <view wx:if="{{learnedWords.length > 0}}" class="learned-list">
-        <block wx:for="{{learnedWords}}" wx:key="id">
-          <view
-            wx:if="{{wordFilter === 'ALL' || item.progress.status === 'MASTERED'}}"
-            class="learned-card"
-            bindtap="goToWordDetail"
-            data-id="{{item.id}}"
-          >
-            <view>
-              <view class="learned-word">{{item.word}}</view>
-              <view class="learned-meaning">{{item.definitionZh}}</view>
-            </view>
-            <view class="learned-status {{item.progress.status === 'MASTERED' ? 'mastered' : ''}}">
-              {{item.progress.status === 'MASTERED' ? '已掌握' : '学习中'}}
-            </view>
-          </view>
-        </block>
-      </view>
-
-      <view wx:else class="word-empty">还没有学习记录</view>
-    </view>
   </view>
 </view>

@@ -8,8 +8,14 @@
       <text>{{word.difficulty}}</text>
     </view>
     <view class="audio-row">
-      <button bindtap="playAudio" data-url="{{word.audioUsUrl}}">单词美式</button>
-      <button bindtap="playAudio" data-url="{{word.audioUkUrl}}">单词英式</button>
+      <button bindtap="playAudio" data-url="{{word.audioUsUrl}}">
+        <image class="audio-icon" src="/images/icons/volume.svg" mode="aspectFit" />
+        <text>美式发音</text>
+      </button>
+      <button bindtap="playAudio" data-url="{{word.audioUkUrl}}">
+        <image class="audio-icon" src="/images/icons/volume.svg" mode="aspectFit" />
+        <text>英式发音</text>
+      </button>
     </view>
 
     <view class="section">
@@ -29,8 +35,14 @@
       <view class="text strong">{{word.exampleEn}}</view>
       <view class="text zh">{{word.exampleZh}}</view>
       <view class="audio-row small">
-        <button bindtap="playAudio" data-url="{{word.exampleAudioUsUrl}}">例句美式</button>
-        <button bindtap="playAudio" data-url="{{word.exampleAudioUkUrl}}">例句英式</button>
+        <button bindtap="playAudio" data-url="{{word.exampleAudioUsUrl}}">
+          <image class="audio-icon" src="/images/icons/volume.svg" mode="aspectFit" />
+          <text>美式发音</text>
+        </button>
+        <button bindtap="playAudio" data-url="{{word.exampleAudioUkUrl}}">
+          <image class="audio-icon" src="/images/icons/volume.svg" mode="aspectFit" />
+          <text>英式发音</text>
+        </button>
       </view>
     </view>
     <view class="section" wx:if="{{word.sourceScene || word.sourceTopicTitle}}">

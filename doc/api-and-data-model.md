@@ -207,7 +207,7 @@ Authorization: Bearer <token>
 
 路径前缀：`/api/word-practice`
 
-权限与学习中心一致：管理员、`PREMIUM_USER` 或会员未过期用户。
+权限：登录用户。单词练习不再限制会员状态，普通 `USER`、`PREMIUM_USER` 和 `ADMIN` 只要携带有效 JWT 均可使用。
 
 | 方法 | 路径 | 说明 |
 | --- | --- | --- |

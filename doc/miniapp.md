@@ -32,7 +32,7 @@ xiaochengxu/
 flowchart LR
   Page["小程序页面"] --> Api["utils/api.js"]
   Api --> Request["utils/request.js"]
-  Request --> Backend["https://xiaoyou-ky.top/api"]
+  Request --> Backend["develop: http://localhost:8080/api; trial/release: https://xiaoyou-ky.top/api"]
 ```
 
 `cloudfunctions/api` 中存在一套历史/可选云函数业务实现，包含 MySQL、JWT、AI 调用等重复逻辑。若后续继续采用直连 REST API，应考虑归档或删除云函数重复业务，避免双写维护。
@@ -81,7 +81,8 @@ flowchart LR
 
 环境 API 地址：
 
-- `develop`、`trial`、`release` 当前都配置为 `https://xiaoyou-ky.top/api`。
+- `develop` 配置为 `http://localhost:8080/api`，用于微信开发者工具本地联调。
+- `trial`、`release` 配置为 `https://xiaoyou-ky.top/api`。
 - 启动时通过 `wx.getAccountInfoSync()` 识别小程序环境并设置 `globalData.baseUrl`。
 
 全局方法：
@@ -126,9 +127,9 @@ flowchart LR
 | 学习列表 | `pages/learning/index` | 会员学习入口、主题筛选、非会员开通提示 |
 | 学习详情 | `pages/learningTopic/index` | AI 热身、词汇、表达、任务、回答点评 |
 | 单词本列表 | `pages/wordBooks/index` | 展示已发布单词本、词数和个人进度 |
-| 单词本详情 | `pages/wordBookDetail/index` | 初级/进阶切换、总词数、已学、待复习、已掌握 |
-| 单词练习 | `pages/wordPractice/index` | 先展示英文单词，用户选择认识/不认识，可进入详情 |
-| 单词详情 | `pages/wordDetail/index` | 展示释义、音标、词性、句型、例句、来源和音频按钮 |
+| 单词本详情 | `pages/wordBookDetail/index` | 初级/进阶切换、总词数、已学、待复习、已掌握和开始练习入口 |
+| 单词练习 | `pages/wordPractice/index` | 先展示英文单词，用户选择认识/不认识；不认识后在当前页展开详情 |
+| 单词详情 | `pages/wordDetail/index` | 展示释义、音标、词性、句型、例句、来源和美式/英式发音按钮 |
 | 登录 | `pages/login/index` | 微信登录，调用 `wx.login` 后传 code 到后端 |
 | 注册 | `pages/register/index` | 用户名密码注册 |
 | 我的 | `pages/profile/index` | 用户信息、会员状态、设置、兑换、PC 登录确认 |
@@ -204,16 +205,16 @@ sequenceDiagram
 流程：
 
 1. 未登录用户点击入口跳转登录页。
-2. 已登录用户进入 `pages/wordBooks/index` 后，由 `/api/word-practice/**` 接口按后端实时会员状态判权。
-3. 非会员或会员过期时接口返回 403，页面保留登录态并回到学习中心引导，不再提示重新登录。
-4. 会员用户查看已发布单词本。
+2. 已登录用户进入 `pages/wordBooks/index` 后，可访问 `/api/word-practice/**` 接口。
+3. 单词练习仅要求登录，不限制会员状态。
+4. 登录用户可查看已发布单词本。
 5. 用户进入单词本详情后选择初级或进阶。
-6. 单词本详情页展示总词数、已学、待复习、已掌握，并提供“已学/已掌握”学习记录列表。
+6. 单词本详情页展示总词数、已学、待复习、已掌握和开始练习入口，不展示学习记录列表。
 7. 练习页调用 `/api/word-practice/books/{bookId}/next`，后端优先返回到期复习词，没有到期复习词时返回未学新词。
-8. 用户点击“认识”或“不认识”后提交结果，后端更新连续认识次数、下次复习时间和掌握状态。
-9. 用户可进入单词详情页查看释义、句型、例句和发音入口。
+8. 用户点击“认识”后提交结果并进入下一词；点击“不认识”后提交结果，并在当前单词下方直接展示释义、句型、例句、来源和发音入口。
+9. 用户也可进入单词详情页查看释义、句型、例句和带语音图标的“美式发音/英式发音”入口。
 
-单词和例句音频由后端按单词本维度保存到 `/uploads/word-audio/{wordBookId}/{wordId}/`，小程序直接使用接口返回的本地 URL 播放；若音频不存在或生成失败，页面会提示“暂无音频”。
+单词和例句音频由后端按单词本维度保存到 `/uploads/word-audio/{wordBookId}/{wordId}/`。接口可能返回 `/uploads/...` 形式的站点相对路径，小程序播放前会用当前环境 API 地址去掉 `/api` 后补全为可访问的静态资源 URL；若音频不存在或生成失败，页面会提示“暂无音频”或“音频播放失败”。
 
 ## 会员与卡密
 

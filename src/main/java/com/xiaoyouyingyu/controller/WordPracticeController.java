@@ -4,9 +4,12 @@ import com.xiaoyouyingyu.entity.WordDifficulty;
 import com.xiaoyouyingyu.entity.WordPracticeResult;
 import com.xiaoyouyingyu.service.WordPracticeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import java.util.Map;
 
 @RestController
@@ -15,16 +18,29 @@ import java.util.Map;
 public class WordPracticeController {
     private final WordPracticeService wordPracticeService;
 
+    private String requireUsername(Authentication auth) {
+        if (auth == null
+                || !auth.isAuthenticated()
+                || auth instanceof AnonymousAuthenticationToken
+                || !(auth.getPrincipal() instanceof String username)
+                || "anonymousUser".equals(username)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "请先登录");
+        }
+        return username;
+    }
+
     @GetMapping("/books")
     public ResponseEntity<?> books(Authentication auth) {
-        return ResponseEntity.ok(wordPracticeService.listPublishedBooks((String) auth.getPrincipal()));
+        String username = requireUsername(auth);
+        return ResponseEntity.ok(wordPracticeService.listPublishedBooks(username));
     }
 
     @GetMapping("/books/{bookId}")
     public ResponseEntity<?> book(@PathVariable Long bookId,
                                   @RequestParam(defaultValue = "BEGINNER") WordDifficulty difficulty,
                                   Authentication auth) {
-        return ResponseEntity.ok(wordPracticeService.getBook(bookId, (String) auth.getPrincipal(), difficulty));
+        String username = requireUsername(auth);
+        return ResponseEntity.ok(wordPracticeService.getBook(bookId, username, difficulty));
     }
 
     @GetMapping("/books/{bookId}/next")
@@ -32,31 +48,36 @@ public class WordPracticeController {
                                   @RequestParam(defaultValue = "BEGINNER") WordDifficulty difficulty,
                                   @RequestParam(defaultValue = "1") int limit,
                                   Authentication auth) {
-        return ResponseEntity.ok(wordPracticeService.next(bookId, (String) auth.getPrincipal(), difficulty, Math.max(1, Math.min(limit, 20))));
+        String username = requireUsername(auth);
+        return ResponseEntity.ok(wordPracticeService.next(bookId, username, difficulty, Math.max(1, Math.min(limit, 20))));
     }
 
     @GetMapping("/words/{wordId}")
     public ResponseEntity<?> word(@PathVariable Long wordId, Authentication auth) {
-        return ResponseEntity.ok(wordPracticeService.wordDetail(wordId, (String) auth.getPrincipal()));
+        String username = requireUsername(auth);
+        return ResponseEntity.ok(wordPracticeService.wordDetail(wordId, username));
     }
 
     @PostMapping("/words/{wordId}/answer")
     public ResponseEntity<?> answer(@PathVariable Long wordId, @RequestBody Map<String, String> body, Authentication auth) {
+        String username = requireUsername(auth);
         WordPracticeResult result = WordPracticeResult.valueOf(body.getOrDefault("result", "UNKNOWN").toUpperCase());
-        return ResponseEntity.ok(wordPracticeService.answer(wordId, (String) auth.getPrincipal(), result));
+        return ResponseEntity.ok(wordPracticeService.answer(wordId, username, result));
     }
 
     @GetMapping("/books/{bookId}/progress")
     public ResponseEntity<?> progress(@PathVariable Long bookId,
                                       @RequestParam(defaultValue = "BEGINNER") WordDifficulty difficulty,
                                       Authentication auth) {
-        return ResponseEntity.ok(wordPracticeService.progress(bookId, (String) auth.getPrincipal(), difficulty));
+        String username = requireUsername(auth);
+        return ResponseEntity.ok(wordPracticeService.progress(bookId, username, difficulty));
     }
 
     @GetMapping("/books/{bookId}/words")
     public ResponseEntity<?> learnedWords(@PathVariable Long bookId,
                                           @RequestParam(defaultValue = "BEGINNER") WordDifficulty difficulty,
                                           Authentication auth) {
-        return ResponseEntity.ok(wordPracticeService.learnedWords(bookId, (String) auth.getPrincipal(), difficulty));
+        String username = requireUsername(auth);
+        return ResponseEntity.ok(wordPracticeService.learnedWords(bookId, username, difficulty));
     }
 }

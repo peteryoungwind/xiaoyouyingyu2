@@ -56,12 +56,32 @@ function handlePermissionDenied(message) {
   wx.switchTab({ url: '/pages/learning/index' });
 }
 
+function handleWordPracticeDenied(message, options) {
+  var opts = options || {};
+  var title = message;
+  if (!title || title.indexOf('权限') !== -1 || title.indexOf('会员') !== -1) {
+    title = '请求失败，请稍后重试';
+  }
+  if (!opts.silent) {
+    wx.showToast({
+      title: title,
+      icon: 'none'
+    });
+  }
+}
+
 /**
  * Check if user is logged in.
  * @returns {boolean} true if logged in, false otherwise
  */
 function checkLoginAndRedirect() {
-  return app.checkLogin();
+  if (app.checkLogin()) {
+    return true;
+  }
+  if (!isLoginPage()) {
+    wx.navigateTo({ url: '/pages/login/index' });
+  }
+  return false;
 }
 
 /**
@@ -111,5 +131,6 @@ module.exports = {
   refreshMembership: refreshMembership,
   handleAuthExpired: handleAuthExpired,
   handlePermissionDenied: handlePermissionDenied,
+  handleWordPracticeDenied: handleWordPracticeDenied,
   resetAuthExpiredPromptState: resetAuthExpiredPromptState
 };

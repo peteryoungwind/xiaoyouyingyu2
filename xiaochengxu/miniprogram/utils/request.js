@@ -8,12 +8,15 @@ var app = getApp();
 function request(url, method, data) {
   return new Promise(function (resolve, reject) {
     var baseUrl = app.globalData.baseUrl;
-    var token = app.globalData.token;
+    var token = app.globalData.token || wx.getStorageSync('token');
     var header = {
       'Content-Type': 'application/json'
     };
 
     if (token) {
+      if (!app.globalData.token) {
+        app.globalData.token = token;
+      }
       header['Authorization'] = 'Bearer ' + token;
     }
 
@@ -24,13 +27,19 @@ function request(url, method, data) {
       header: header,
       success: function (res) {
         if (res.statusCode === 401) {
+          console.warn('HTTP 401', method, url, res.data);
+        } else if (res.statusCode === 403) {
+          console.warn('HTTP 403', method, url, res.data);
+        }
+
+        if (res.statusCode === 401) {
           require('./auth').handleAuthExpired();
           reject({ code: res.statusCode, message: '登录已过期，请重新登录' });
           return;
         }
 
         if (res.statusCode === 403) {
-          var forbiddenMsg = '暂无权限，请开通会员后继续使用';
+          var forbiddenMsg = '请求失败，请稍后重试';
           if (res.data && res.data.error) {
             forbiddenMsg = res.data.error;
           } else if (res.data && res.data.message) {

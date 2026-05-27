@@ -47,8 +47,8 @@ npm run dev
 
 1. 使用微信开发者工具打开 `xiaochengxu` 目录。
 2. 确认 `project.config.json` 中的 AppID 与实际小程序一致。
-3. `miniprogram/app.js` 中当前 develop/trial/release 都指向生产 API。
-4. 如需本地联调，建议临时将 develop 环境 API 改为可被手机/模拟器访问的测试地址。
+3. `miniprogram/app.js` 中 `develop` 指向 `http://localhost:8080/api`，用于微信开发者工具本地联调。
+4. `trial` 和 `release` 指向生产 API；如需真机调试本地后端，需改成手机可访问的局域网地址或测试域名。
 
 ## 数据库初始化
 
@@ -228,4 +228,3 @@ npm run build
 
 - 使用微信开发者工具编译。
 - 检查登录、主题列表、学习中心、卡密兑换、PC 登录确认。
-

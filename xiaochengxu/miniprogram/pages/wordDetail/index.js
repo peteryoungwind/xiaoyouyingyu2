@@ -1,9 +1,6 @@
 const api = require('../../utils/api');
 const auth = require('../../utils/auth');
-
-function isForbiddenError(err) {
-  return err && err.code === 403;
-}
+const audio = require('../../utils/audio');
 
 Page({
   data: {
@@ -14,6 +11,13 @@ Page({
 
   onLoad(options) {
     this.setData({ id: options.id });
+    this.ensureAccess();
+  },
+
+  ensureAccess() {
+    if (!auth.checkLoginAndRedirect()) {
+      return;
+    }
     this.loadWord();
   },
 
@@ -24,22 +28,11 @@ Page({
     }).catch(err => {
       console.error('Load word detail failed:', err);
       this.setData({ loading: false });
-      if (isForbiddenError(err)) {
-        auth.handlePermissionDenied(err.message);
-        return;
-      }
-      wx.showToast({ title: '加载失败', icon: 'none' });
+      auth.handleWordPracticeDenied(err && err.message ? err.message : '加载失败');
     });
   },
 
   playAudio(e) {
-    const url = e.currentTarget.dataset.url;
-    if (!url) {
-      wx.showToast({ title: '暂无音频', icon: 'none' });
-      return;
-    }
-    const audio = wx.createInnerAudioContext();
-    audio.src = url;
-    audio.play();
+    audio.play(e.currentTarget.dataset.url);
   }
 });

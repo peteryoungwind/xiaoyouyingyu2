@@ -4,8 +4,9 @@
 .word-meta { display: flex; flex-wrap: wrap; gap: 12rpx; margin-top: 16rpx; }
 .word-meta text { padding: 8rpx 16rpx; border-radius: 999rpx; background: #F5F5F7; font-size: 22rpx; color: #6E6E73; }
 .audio-row { display: flex; gap: 16rpx; margin-top: 24rpx; }
-.audio-row button { flex: 1; height: 64rpx; border-radius: 20rpx; background: #EAF3FF; color: #007AFF; font-size: 24rpx; font-weight: 700; }
+.audio-row button { flex: 1; height: 64rpx; border-radius: 20rpx; background: #EAF3FF; color: #007AFF; font-size: 24rpx; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8rpx; }
 .audio-row.small button { background: #F5F5F7; color: #1D1D1F; }
+.audio-icon { width: 30rpx; height: 30rpx; flex-shrink: 0; }
 .section { margin-top: 34rpx; padding-top: 28rpx; border-top: 2rpx solid #F2F2F7; }
 .label { font-size: 22rpx; font-weight: 800; color: #8E8E93; }
 .text { margin-top: 12rpx; font-size: 30rpx; line-height: 1.65; color: #1D1D1F; }

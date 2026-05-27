@@ -163,8 +163,7 @@ src/main/java/com/xiaoyouyingyu/
 - 查询单词本详情、下一批练习词、单词详情。
 - 提交“认识/不认识”并更新复习计划。
 
-权限与学习中心一致：管理员、`PREMIUM_USER` 或动态会员角色 `MEMBER`。
-其中 `PREMIUM_USER` 角色本身也属于有效会员，不要求额外配置会员到期时间。
+权限由 `SecurityConfig` 要求有效登录态，控制器内统一读取并校验用户名；登录用户均可访问，不限制会员状态。
 
 ## Service 说明
 
@@ -314,7 +313,7 @@ src/main/java/com/xiaoyouyingyu/
 - 会员联系信息：公开。
 - `/api/admin/**`：仅管理员。
 - `/api/learning/**`：会员、管理员或动态会员角色。
-- `/api/word-practice/**`：会员、管理员或动态会员角色。
+- `/api/word-practice/**`：要求登录，由控制器读取并校验用户名；登录用户可用，不限制会员状态。
 - `/uploads/**`：公开读取，用于小程序和 PC 前端播放本地音频。
 - 其他接口：要求登录。
 

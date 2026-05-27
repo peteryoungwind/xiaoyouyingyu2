@@ -1,10 +1,5 @@
 const api = require('../../utils/api');
 const auth = require('../../utils/auth');
-const app = getApp();
-
-function isForbiddenError(err) {
-  return err && err.code === 403;
-}
 
 Page({
   data: {
@@ -21,8 +16,7 @@ Page({
   },
 
   ensureAccess() {
-    if (!app.checkLogin()) {
-      wx.navigateTo({ url: '/pages/login/index' });
+    if (!auth.checkLoginAndRedirect()) {
       return;
     }
     this.loadBooks();
@@ -35,11 +29,7 @@ Page({
     }).catch(err => {
       console.error('Load word books failed:', err);
       this.setData({ loading: false });
-      if (isForbiddenError(err)) {
-        auth.handlePermissionDenied(err.message);
-        return;
-      }
-      wx.showToast({ title: '加载失败', icon: 'none' });
+      auth.handleWordPracticeDenied(err && err.message ? err.message : '加载失败');
     });
   },
 
