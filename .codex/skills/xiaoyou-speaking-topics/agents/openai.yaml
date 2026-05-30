@@ -1,0 +1,6 @@
+interface:
+  display_name: "小柚口语主题"
+  short_description: "为小柚英语生成项目专属口语主题候选"
+  default_prompt: "Use $xiaoyou-speaking-topics to generate five speaking topic candidates for this project."
+policy:
+  allow_implicit_invocation: false
