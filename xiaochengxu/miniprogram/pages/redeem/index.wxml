@@ -1,0 +1,67 @@
+<view class="page-container safe-bottom">
+
+  <!-- Explanation card -->
+  <view class="card">
+    <view class="card-title">什么是兑换码？</view>
+    <view class="explain-text">
+      兑换码是一组由字母和数字组成的码，可用于开通或延长会员时间。获取兑换码后，在下方输入即可兑换。
+    </view>
+  </view>
+
+  <!-- Current membership status -->
+  <view class="card membership-card {{membershipActive ? 'membership-active' : ''}}">
+    <view class="card-title">当前会员状态</view>
+    <view class="flex justify-between items-center mt-16">
+      <text class="detail-label">状态</text>
+      <view class="membership-status status-{{membershipStatus}}">{{membershipStatusLabel || '未开通'}}</view>
+    </view>
+    <view wx:if="{{membershipExpireAt}}" class="flex justify-between items-center mt-16">
+      <text class="detail-label">{{membershipActive ? '到期时间' : '过期时间'}}</text>
+      <text class="detail-value {{!membershipActive ? 'expired-text' : ''}}">{{membershipExpireAt}}</text>
+    </view>
+    <view wx:if="{{membershipActive && remainingDays > 0}}" class="flex justify-between items-center mt-16">
+      <text class="detail-label">剩余天数</text>
+      <text class="detail-value remain-days">{{remainingDays}} 天</text>
+    </view>
+  </view>
+
+  <!-- Redeem input -->
+  <view class="card">
+    <view class="card-title">输入兑换码</view>
+    <view class="input-wrapper mt-16 code-input-wrapper">
+      <input
+        placeholder="请输入兑换码"
+        value="{{code}}"
+        bindinput="onCodeInput"
+        bindconfirm="onRedeem"
+        confirm-type="done"
+        maxlength="50"
+      />
+    </view>
+    <button
+      class="btn btn-gold btn-block mt-24"
+      bindtap="onRedeem"
+      disabled="{{submitting || !canRedeem}}"
+    >{{submitting ? '兑换中...' : '兑换'}}</button>
+  </view>
+
+  <!-- Result display -->
+  <view wx:if="{{showResult && result}}" class="card result-card {{result.success ? 'result-success' : 'result-error'}}">
+    <view class="result-icon">{{result.success ? '✅' : '❌'}}</view>
+    <view class="result-message">{{result.message}}</view>
+
+    <view wx:if="{{result.success}}" class="result-detail mt-16">
+      <view wx:if="{{result.daysAdded}}" class="result-item">
+        <text class="result-label">增加天数</text>
+        <text class="result-value">{{result.daysAdded}} 天</text>
+      </view>
+      <view wx:if="{{result.membershipExpireAt}}" class="result-item">
+        <text class="result-label">到期时间</text>
+        <text class="result-value">{{result.membershipExpireAt}}</text>
+      </view>
+    </view>
+
+    <button class="btn btn-outline btn-sm mt-24" bindtap="onClearResult">知道了</button>
+  </view>
+
+</view>

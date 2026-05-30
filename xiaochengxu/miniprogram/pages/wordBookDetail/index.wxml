@@ -1,0 +1,23 @@
+<view class="page-container safe-bottom">
+  <view wx:if="{{loading}}" class="loading">加载中...</view>
+  <view wx:elif="{{book}}">
+    <view class="book-hero">
+      <view class="book-name">{{book.name}}</view>
+      <view class="book-desc">{{book.description || book.scene || '暂无描述'}}</view>
+    </view>
+
+    <view class="segmented">
+      <view class="segment {{difficulty === 'BEGINNER' ? 'active' : ''}}" bindtap="switchDifficulty" data-difficulty="BEGINNER">初级</view>
+      <view class="segment {{difficulty === 'ADVANCED' ? 'active' : ''}}" bindtap="switchDifficulty" data-difficulty="ADVANCED">进阶</view>
+    </view>
+
+    <view class="progress-grid">
+      <view class="progress-card"><text>{{book.progress.total || 0}}</text><text>总词数</text></view>
+      <view class="progress-card"><text>{{book.progress.learned || 0}}</text><text>已学</text></view>
+      <view class="progress-card"><text>{{book.progress.dueReview || 0}}</text><text>待复习</text></view>
+      <view class="progress-card"><text>{{book.progress.mastered || 0}}</text><text>已掌握</text></view>
+    </view>
+
+    <button class="start-btn" bindtap="startPractice">开始练习</button>
+  </view>
+</view>

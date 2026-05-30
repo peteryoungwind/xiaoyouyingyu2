@@ -1,0 +1,92 @@
+<view class="page-container safe-bottom">
+
+  <!-- Not logged in -->
+  <view wx:if="{{!isLoggedIn}}" class="empty-state">
+    <view class="empty-icon">👤</view>
+    <view class="empty-title">请先登录</view>
+    <view class="empty-desc">登录后查看个人信息和会员状态</view>
+    <button class="btn btn-primary btn-block mt-32" bindtap="goToLogin">去登录</button>
+    <button class="btn btn-outline btn-block mt-16" bindtap="browseAsGuest">以游客身份浏览</button>
+  </view>
+
+  <!-- Logged in -->
+  <view wx:else>
+
+    <!-- User info card -->
+    <view class="card user-card">
+      <view class="user-avatar">
+        <text class="avatar-text">{{username[0] || 'U'}}</text>
+      </view>
+      <view class="user-info">
+        <view class="user-name">{{username}}</view>
+        <view class="user-role">
+          <text class="role-badge role-{{role}}">{{roleLabel}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- Membership card -->
+    <view class="card membership-card {{membershipActive ? 'membership-active' : ''}}">
+      <view class="flex justify-between items-center">
+        <view class="membership-label">会员状态</view>
+        <view class="membership-status status-{{membershipStatus}}">{{membershipStatusLabel || '未开通'}}</view>
+      </view>
+
+      <view wx:if="{{membershipActive}}" class="membership-detail mt-16">
+        <view class="membership-expire">
+          <text class="detail-label">到期时间</text>
+          <text class="detail-value">{{membershipExpireAt}}</text>
+        </view>
+        <view class="membership-remain" wx:if="{{remainingDays > 0}}">
+          <text class="detail-label">剩余天数</text>
+          <text class="detail-value remain-days">{{remainingDays}} 天</text>
+        </view>
+      </view>
+
+      <view wx:elif="{{membershipStatus === 'expired'}}" class="membership-detail mt-16">
+        <view class="membership-expire">
+          <text class="detail-label">过期时间</text>
+          <text class="detail-value expired-text">{{membershipExpireAt}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- Function entries -->
+    <view class="card menu-card">
+      <view class="menu-item" bindtap="goToSettings">
+        <view class="menu-icon">⚙️</view>
+        <view class="menu-text">设置</view>
+        <view class="menu-arrow">›</view>
+      </view>
+
+      <view class="menu-item" bindtap="goToRedeem">
+        <view class="menu-icon">🎫</view>
+        <view class="menu-text">卡密兑换</view>
+        <view class="menu-arrow">›</view>
+      </view>
+
+      <view class="menu-item" bindtap="onScanPcLogin">
+        <view class="menu-icon">💻</view>
+        <view class="menu-text">扫一扫登录电脑端</view>
+        <view class="menu-arrow">›</view>
+      </view>
+
+      <view class="menu-item" bindtap="goToCalendar">
+        <view class="menu-icon">📅</view>
+        <view class="menu-text">日历</view>
+        <view class="menu-arrow">›</view>
+      </view>
+    </view>
+
+    <view class="card pc-hint-card">
+      <view class="pc-hint-title">PC 网页版</view>
+      <view class="pc-hint-link" selectable="true">https://xiaoyou-ky.top</view>
+      <view class="pc-hint-desc">如需在电脑上使用，可访问以上地址。</view>
+    </view>
+
+    <!-- Logout button -->
+    <button class="btn btn-outline btn-block mt-32 logout-btn" bindtap="onLogout">退出登录</button>
+
+  </view>
+
+</view>

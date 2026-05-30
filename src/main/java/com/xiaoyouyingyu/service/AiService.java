@@ -3,6 +3,7 @@ package com.xiaoyouyingyu.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xiaoyouyingyu.entity.AiModel;
+import com.xiaoyouyingyu.entity.Topic;
 import com.xiaoyouyingyu.repository.AiModelRepository;
 import com.xiaoyouyingyu.repository.TopicRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,8 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class AiService {
+    private record ResolvedAiConfig(String apiUrl, String apiKey, String modelName) {}
+
     @Value("${app.ai.api-key}")
     private String defaultApiKey;
 
@@ -73,18 +76,24 @@ public class AiService {
         String olderTitlesStr = olderTitles.isEmpty() ? "（暂无）" : String.join("、", olderTitles);
 
         String systemPrompt = """
-                你是一位专业英语教育专家，专注于为年轻人设计英语口语练习话题。
+                你是一位专业英语教育专家，专注于设计适合大众练习的英语口语主题。
 
                 ## 任务
                 根据用户需求一次生成 5 个英语口语练习主题标题（仅标题，无需问题）。
 
                 ## 主题设计要求
-                - 标题要宽泛、概括性强，是一个大方向/大主题，而不是一个具体的小问题
-                - 好的标题示例：「周末时光」「职场社交」「童年回忆」「饮食习惯」「旅行见闻」
-                - 不好的标题示例（太细）：「如何在周末早起去跑步」「第一次独自出国旅行的经历」
-                - 标题应该是一个能展开 10 个讨论问题的大话题，而不是一个只能回答一两句话的具体问题
-                - 主题要贴近年轻人生活，有普适性，让每个人都能有话可说
-                - 避免过于学术或宏大的话题（如"全球化""人工智能的未来"）
+                - 主题必须贴近日常工作与日常生活，优先选择大多数人都真实经历过、观察过、思考过的场景
+                - 优先方向：日常沟通、工作协作、学习成长、时间安排、消费选择、健康习惯、人际关系、家庭生活、通勤出行、休闲放松、网络生活、情绪与压力管理
+                - 标题不要太虚、太空、太宏大，也不要过于概念化
+                - 不要把主题限定在某一小群体、某一种职业、某个年龄层、某个特定身份或小众经历上
+                - 标题应让学生、上班族、自由职业者、全职家长等不同背景的人都能结合自己的经验开口表达
+                - 标题要具体到能联想到真实场景，但又不能细到只剩一个小问题
+                - 标题应该是一个能自然展开 10 个讨论问题的话题，而不是一个只能回答一两句话的具体问题
+
+                ## 示例
+                - 好的标题示例：「下班后的时间安排」「和同事相处」「线上购物习惯」「家庭分工」「工作压力」「周末放松方式」
+                - 不好的标题示例（太虚/太空）：「现代社会的发展」「科技改变世界」「人生的意义」
+                - 不好的标题示例（太窄/太细）：「程序员如何在凌晨发布系统后缓解压力」「空乘人员在国际航班上的沟通技巧」
 
                 ## 去重规则（非常重要！）
                 以下是近一年内已有的主题中文标题，生成的新主题绝对不能与这些相同或高度相似：
@@ -108,7 +117,7 @@ public class AiService {
                 """.formatted(recentTitlesStr, olderTitlesStr);
 
         String userPrompt = (prompt == null || prompt.isBlank())
-                ? "请帮我生成5个适合年轻人讨论的英语口语练习话题"
+                ? "请帮我生成5个贴近日常工作和生活、适合大多数人表达的英语口语练习主题"
                 : prompt;
 
         return callAi(modelId, systemPrompt, userPrompt, null);
@@ -148,6 +157,77 @@ public class AiService {
         String userPrompt = "主题：%s（%s）\n请为这个主题生成10个由浅入深的英语口语讨论问题。".formatted(titleEn, titleZh);
 
         return callAi(modelId, systemPrompt, userPrompt, null);
+    }
+
+    // ===================== 单词练习：生成单词 =====================
+
+    public String generateWordsByScene(Long modelId, String scene, int count, String difficulty) {
+        String systemPrompt = wordGenerationSystemPrompt(difficulty);
+        String userPrompt = """
+                场景描述：%s
+                生成数量：%d
+                难度：%s
+
+                请生成适合该场景的单词或短语，按语义相关性排序，让相关词相邻。
+                """.formatted(scene, count, difficulty);
+        return callAi(modelId, systemPrompt, userPrompt, null);
+    }
+
+    public String generateWordsByTopic(Long modelId, Topic topic, int count, String difficulty) {
+        String systemPrompt = wordGenerationSystemPrompt(difficulty);
+        String userPrompt = """
+                口语主题英文标题：%s
+                口语主题中文标题：%s
+                标签：%s
+                讨论问题 JSON：%s
+                生成数量：%d
+                难度：%s
+
+                请生成和该口语主题高度相关、能帮助用户表达该主题的单词或短语。
+                """.formatted(topic.getTitle(), topic.getTitleZh(), topic.getTags(), topic.getQuestions(), count, difficulty);
+        return callAi(modelId, systemPrompt, userPrompt, null);
+    }
+
+    private String wordGenerationSystemPrompt(String difficulty) {
+        boolean advanced = "advanced".equalsIgnoreCase(difficulty);
+        return """
+                你是一位专业英语词汇教研老师。请为“小柚英语”的单词练习模块生成结构化词汇。
+
+                ## 难度要求
+                - 当前难度：%s
+                %s
+
+                ## 内容要求
+                - 返回单词或高频短语，不要生成长句
+                - 按语义相关性排序，让相关词相邻
+                - 每个词必须包含中文释义、英文释义、音标、词性、常用搭配或常用句型、英文例句、中文例句翻译
+                - 例句要自然、适合口语表达
+
+                ## 输出格式
+                必须返回严格 JSON，不要 Markdown，不要解释：
+                {
+                  "words": [
+                    {
+                      "word": "word or phrase",
+                      "phonetic": "/.../",
+                      "partOfSpeech": "noun/verb/phrase",
+                      "definitionZh": "中文释义",
+                      "definitionEn": "English definition",
+                      "commonPatterns": "common collocations or sentence patterns",
+                      "exampleEn": "Natural example sentence.",
+                      "exampleZh": "例句中文翻译",
+                      "difficulty": "%s",
+                      "sourceScene": "来源场景，可为空"
+                    }
+                  ]
+                }
+                """.formatted(
+                advanced ? "advanced" : "beginner",
+                advanced
+                        ? "- 进阶词汇应更精确、更地道，适合表达升级，但仍需常见可用"
+                        : "- 初级词汇应高频、基础、容易用于日常开口表达，避免过难或生僻词",
+                advanced ? "advanced" : "beginner"
+        );
     }
 
     // ===================== 学习中心：生成词汇 =====================
@@ -338,23 +418,28 @@ public class AiService {
         return callAi(modelId, systemPrompt, "主题：%s（%s）".formatted(titleEn, titleZh), null);
     }
 
+    private ResolvedAiConfig resolveAiConfig(Long modelId) {
+        if (modelId != null) {
+            AiModel aiModel = aiModelRepository.findById(modelId).orElse(null);
+            if (aiModel == null) {
+                throw new IllegalArgumentException("AI 数据源不存在: " + modelId);
+            }
+            return new ResolvedAiConfig(aiModel.getApiUrl(), aiModel.getApiKey(), aiModel.getModelName());
+        }
+
+        AiModel defaultModelConfig = aiModelRepository.findByIsDefaultTrue().orElse(null);
+        if (defaultModelConfig != null) {
+            return new ResolvedAiConfig(defaultModelConfig.getApiUrl(), defaultModelConfig.getApiKey(), defaultModelConfig.getModelName());
+        }
+
+        return new ResolvedAiConfig(defaultApiUrl, defaultApiKey, defaultModel);
+    }
+
     // ===================== 统一 AI 调用方法 =====================
 
     private String callAi(Long modelId, String systemPrompt, String userPrompt, List<Map<String, String>> history) {
         try {
-            // 确定使用的模型配置
-            String apiUrl = defaultApiUrl;
-            String apiKey = defaultApiKey;
-            String model = defaultModel;
-
-            if (modelId != null) {
-                AiModel aiModel = aiModelRepository.findById(modelId).orElse(null);
-                if (aiModel != null) {
-                    apiUrl = aiModel.getApiUrl();
-                    apiKey = aiModel.getApiKey();
-                    model = aiModel.getModelName();
-                }
-            }
+            ResolvedAiConfig config = resolveAiConfig(modelId);
 
             List<Map<String, String>> messages = new ArrayList<>();
             messages.add(Map.of("role", "system", "content", systemPrompt));
@@ -363,11 +448,11 @@ public class AiService {
             }
             messages.add(Map.of("role", "user", "content", userPrompt));
 
-            Map<String, Object> body = Map.of("model", model, "messages", messages);
+            Map<String, Object> body = Map.of("model", config.modelName(), "messages", messages);
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(apiUrl))
+                    .uri(URI.create(config.apiUrl()))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + apiKey)
+                    .header("Authorization", "Bearer " + config.apiKey())
                     .timeout(Duration.ofSeconds(180))
                     .POST(HttpRequest.BodyPublishers.ofString(mapper.writeValueAsString(body)))
                     .build();

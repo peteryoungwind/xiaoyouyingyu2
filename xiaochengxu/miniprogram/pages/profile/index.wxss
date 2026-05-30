@@ -1,0 +1,79 @@
+/* Empty state */
+.empty-state {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; padding: 160rpx 48rpx;
+}
+.empty-icon { font-size: 96rpx; margin-bottom: 32rpx; }
+.empty-title { font-size: 36rpx; font-weight: 700; color: var(--text-primary); margin-bottom: 16rpx; }
+.empty-desc { font-size: 28rpx; color: var(--text-secondary); text-align: center; }
+
+/* User card */
+.user-card { display: flex; align-items: center; padding: 40rpx 32rpx; }
+.user-avatar {
+  width: 100rpx; height: 100rpx; border-radius: 50%;
+  background: linear-gradient(135deg, #007AFF, #5856D6);
+  display: flex; align-items: center; justify-content: center;
+  margin-right: 24rpx; flex-shrink: 0;
+}
+.avatar-text { font-size: 40rpx; font-weight: 700; color: #FFFFFF; text-transform: uppercase; }
+.user-info { flex: 1; }
+.user-name { font-size: 36rpx; font-weight: 700; color: var(--text-primary); }
+.user-role { margin-top: 8rpx; }
+.role-badge {
+  display: inline-block; font-size: 22rpx; padding: 4rpx 16rpx;
+  border-radius: 16rpx; font-weight: 600;
+}
+.role-ADMIN { background: #FFF0F0; color: var(--error); }
+.role-PREMIUM_USER { background: var(--accent-gold-light); color: var(--accent-gold); }
+.role-USER { background: var(--primary-light); color: var(--primary); }
+
+/* Membership card */
+.membership-card { border: 2rpx solid var(--border); }
+.membership-active {
+  border-color: var(--accent-gold);
+  background: linear-gradient(135deg, #FFFFFF, var(--accent-gold-light));
+}
+.membership-label { font-size: 28rpx; font-weight: 700; color: var(--text-primary); }
+.membership-status { font-size: 24rpx; font-weight: 600; padding: 6rpx 16rpx; border-radius: 16rpx; }
+.status-active { background: #E8FAE6; color: var(--success); }
+.status-expired { background: #FFF0F0; color: var(--error); }
+.status-none { background: var(--bg-input); color: var(--text-hint); }
+.membership-detail { display: flex; flex-direction: column; gap: 12rpx; }
+.membership-expire, .membership-remain { display: flex; justify-content: space-between; align-items: center; }
+.detail-label { font-size: 26rpx; color: var(--text-secondary); }
+.detail-value { font-size: 26rpx; color: var(--text-primary); font-weight: 600; }
+.remain-days { color: var(--accent-gold); font-weight: 700; }
+.expired-text { color: var(--error); }
+
+/* Menu card */
+.menu-card { padding: 0; }
+.menu-item { display: flex; align-items: center; padding: 32rpx; border-bottom: 1rpx solid var(--border); }
+.menu-item:last-child { border-bottom: none; }
+.menu-icon { font-size: 36rpx; margin-right: 20rpx; width: 48rpx; text-align: center; }
+.menu-text { flex: 1; font-size: 30rpx; color: var(--text-primary); }
+.menu-arrow { font-size: 32rpx; color: var(--text-hint); }
+
+/* PC hint */
+.pc-hint-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+.pc-hint-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.pc-hint-link {
+  font-size: 28rpx;
+  color: var(--primary);
+  word-break: break-all;
+}
+.pc-hint-desc {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Logout */
+.logout-btn { color: var(--error) !important; border-color: var(--error) !important; }

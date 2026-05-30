@@ -1,19 +1,81 @@
 const API_BASE = '/api';
-const BACKEND_BASE = 'http://localhost:8080/api';
+const BACKEND_BASE = process.env.NODE_ENV === 'production'
+  ? 'https://xiaoyou-ky.top/api'
+  : 'http://localhost:8080/api';
 
-async function request(url: string, options?: RequestInit & { direct?: boolean }) {
+interface RequestInitOptions extends RequestInit {
+  direct?: boolean;
+}
+
+export class ApiError extends Error {
+  status?: number;
+  code?: string;
+
+  constructor(message: string, options?: { status?: number; code?: string }) {
+    super(message);
+    this.name = 'ApiError';
+    this.status = options?.status;
+    this.code = options?.code;
+  }
+}
+
+let authExpiredNotified = false;
+
+export function resetAuthExpiredNotification() {
+  authExpiredNotified = false;
+}
+
+export function isAuthExpiredError(error: unknown) {
+  return error instanceof ApiError && (error.status === 401 || error.code === 'AUTH_EXPIRED');
+}
+
+async function request(url: string, options?: RequestInitOptions) {
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
   const headers: Record<string, string> = { 'Content-Type': 'application/json' };
   if (token) headers['Authorization'] = `Bearer ${token}`;
 
   const { direct, ...fetchOptions } = options || {};
   const base = direct ? BACKEND_BASE : API_BASE;
-  const res = await fetch(`${base}${url}`, { ...fetchOptions, headers: { ...headers, ...fetchOptions?.headers } });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({ error: 'Request failed' }));
-    throw new Error(err.error || `HTTP ${res.status}`);
+
+  let res: Response;
+  try {
+    res = await fetch(`${base}${url}`, { ...fetchOptions, headers: { ...headers, ...fetchOptions?.headers } });
+  } catch {
+    throw new Error('服务连接失败，请稍后重试');
   }
-  return res.json();
+
+  const text = await res.text();
+
+  let data: any = null;
+  if (text) {
+    try {
+      data = JSON.parse(text);
+    } catch {
+      data = null;
+    }
+  }
+
+  if (!res.ok) {
+    const message = data?.error || data?.message || (res.status >= 500 ? '服务异常，请稍后重试' : '') || text || `请求失败（${res.status}）`;
+    if (res.status === 401 && typeof window !== 'undefined') {
+      ['token', 'username', 'role', 'membershipExpireAt', 'membershipActive', 'hasPassword'].forEach(key => {
+        localStorage.removeItem(key);
+      });
+      if (!authExpiredNotified) {
+        authExpiredNotified = true;
+        window.dispatchEvent(new CustomEvent('auth:expired', {
+          detail: {
+            message: '登录已过期，请重新登录',
+            code: 'AUTH_EXPIRED',
+          },
+        }));
+      }
+      throw new ApiError('登录已过期，请重新登录', { status: 401, code: 'AUTH_EXPIRED' });
+    }
+    throw new ApiError(message, { status: res.status });
+  }
+
+  return data;
 }
 
 export const api = {
@@ -24,10 +86,37 @@ export const api = {
     request('/auth/register', { method: 'POST', body: JSON.stringify(data) }),
   changePassword: (data: { oldPassword: string; newPassword: string }) =>
     request('/auth/password', { method: 'PUT', body: JSON.stringify(data) }),
+  createWechatPcLoginSession: () =>
+    request('/auth/wechat-pc-login/session', { method: 'POST' }) as Promise<{
+      ticketId: string;
+      pollToken: string;
+      expiresAt: string;
+      qrContent: string;
+    }>,
+  pollWechatPcLoginSession: (ticketId: string, pollToken: string) =>
+    request(`/auth/wechat-pc-login/session/${ticketId}?pollToken=${encodeURIComponent(pollToken)}`) as Promise<{
+      status: 'PENDING' | 'CONFIRMED';
+      token?: string;
+      username?: string;
+      role?: string;
+      membershipExpireAt?: string;
+      membershipActive?: boolean;
+      hasPassword?: boolean;
+    }>,
+  cancelWechatPcLoginSession: (ticketId: string) =>
+    request('/auth/wechat-pc-login/cancel', { method: 'POST', body: JSON.stringify({ ticketId }) }),
 
   // Topics
-  getTopics: (params: Record<string, string>) =>
-    request(`/topics?${new URLSearchParams(params)}`),
+  getTopics: (params: Record<string, string>) => {
+    const searchParams = new URLSearchParams();
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== '') {
+        searchParams.set(key, value);
+      }
+    });
+    const query = searchParams.toString();
+    return request(query ? `/topics?${query}` : '/topics');
+  },
   getTopic: (id: number) => request(`/topics/${id}`),
   getTagStats: () => request('/topics/tags'),
   getStats: () => request('/topics/stats'),
@@ -76,6 +165,59 @@ export const api = {
   deleteAiModel: (id: number) =>
     request(`/admin/ai/models/${id}`, { method: 'DELETE' }),
 
+  // Admin - Word Practice
+  getWordBooks: (params: Record<string, string> = {}) =>
+    request(`/admin/word-books?${new URLSearchParams(params)}`),
+  createWordBook: (data: any) =>
+    request('/admin/word-books', { method: 'POST', body: JSON.stringify(data) }),
+  updateWordBook: (id: number, data: any) =>
+    request(`/admin/word-books/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+  publishWordBook: (id: number) =>
+    request(`/admin/word-books/${id}/publish`, { method: 'PATCH' }),
+  offlineWordBook: (id: number) =>
+    request(`/admin/word-books/${id}/offline`, { method: 'PATCH' }),
+  deleteWordBook: (id: number) =>
+    request(`/admin/word-books/${id}`, { method: 'DELETE' }),
+  getWords: (bookId: number, params: Record<string, string> = {}) =>
+    request(`/admin/word-books/${bookId}/words?${new URLSearchParams(params)}`),
+  createWord: (bookId: number, data: any, ttsModelId?: number) =>
+    request(`/admin/word-books/${bookId}/words${ttsModelId ? `?ttsModelId=${ttsModelId}` : ''}`, { method: 'POST', body: JSON.stringify(data) }),
+  updateWord: (wordId: number, data: any) =>
+    request(`/admin/words/${wordId}`, { method: 'PUT', body: JSON.stringify(data) }),
+  deleteWord: (wordId: number) =>
+    request(`/admin/words/${wordId}`, { method: 'DELETE' }),
+  generateWordsByScene: (bookId: number, data: any) =>
+    request(`/admin/word-books/${bookId}/generate-by-scene`, { method: 'POST', body: JSON.stringify(data), direct: true }),
+  generateWordsByTopics: (bookId: number, data: any) =>
+    request(`/admin/word-books/${bookId}/generate-by-topics`, { method: 'POST', body: JSON.stringify(data), direct: true }),
+  createWordGenerationTaskByScene: (data: any) =>
+    request('/admin/word-books/generation-tasks/scene', { method: 'POST', body: JSON.stringify(data), direct: true }),
+  createWordGenerationTaskByTopics: (data: any) =>
+    request('/admin/word-books/generation-tasks/topics', { method: 'POST', body: JSON.stringify(data), direct: true }),
+  getWordGenerationTasks: () =>
+    request('/admin/word-books/generation-tasks'),
+  getWordGenerationTask: (taskId: number) =>
+    request(`/admin/word-books/generation-tasks/${taskId}`),
+  batchPublishWords: (ids: number[]) =>
+    request('/admin/words/batch-publish', { method: 'POST', body: JSON.stringify({ ids }) }),
+  batchOfflineWords: (ids: number[]) =>
+    request('/admin/words/batch-offline', { method: 'POST', body: JSON.stringify({ ids }) }),
+  batchDeleteWords: (ids: number[]) =>
+    request('/admin/words/batch-delete', { method: 'POST', body: JSON.stringify({ ids }) }),
+  batchSortWords: (items: Array<{ id: number; sortOrder: number }>) =>
+    request('/admin/words/batch-sort', { method: 'POST', body: JSON.stringify({ items }) }),
+  batchRegenerateWordAudio: (ids: number[], ttsModelId?: number) =>
+    request('/admin/words/batch-regenerate-audio', { method: 'POST', body: JSON.stringify({ ids, ttsModelId }) }),
+  getTtsModels: () => request('/admin/tts-models'),
+  createTtsModel: (data: any) =>
+    request('/admin/tts-models', { method: 'POST', body: JSON.stringify(data) }),
+  updateTtsModel: (id: number, data: any) =>
+    request(`/admin/tts-models/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+  deleteTtsModel: (id: number) =>
+    request(`/admin/tts-models/${id}`, { method: 'DELETE' }),
+  setDefaultTtsModel: (id: number) =>
+    request(`/admin/tts-models/${id}/default`, { method: 'PATCH' }),
+
   // Learning Center
   getLearningTopic: (id: number) => request(`/learning/topic/${id}`, { direct: true }),
   generateWarmup: (titleEn: string, titleZh: string, mode: string, exclude?: string) =>
@@ -88,4 +230,37 @@ export const api = {
     request('/learning/tasks', { method: 'POST', body: JSON.stringify({ titleEn, titleZh, mode, exclude }), direct: true }),
   reviewAnswer: (titleEn: string, titleZh: string, taskTitle: string, answer: string, mode: string) =>
     request('/learning/review', { method: 'POST', body: JSON.stringify({ titleEn, titleZh, taskTitle, answer, mode }), direct: true }),
+
+  // Membership
+  getMembership: () => request('/user/membership', { direct: true }),
+  getMembershipContact: () => request('/user/membership-contact', { direct: true }),
+  redeemCode: (code: string) =>
+    request('/redeem-codes/redeem', { method: 'POST', body: JSON.stringify({ code }), direct: true }),
+
+  // Word Practice
+  getPracticeWordBooks: () => request('/word-practice/books', { direct: true }),
+  getPracticeWordBook: (bookId: number, difficulty = 'BEGINNER') =>
+    request(`/word-practice/books/${bookId}?difficulty=${difficulty}`, { direct: true }),
+  getNextPracticeWords: (bookId: number, difficulty = 'BEGINNER', limit = 1) =>
+    request(`/word-practice/books/${bookId}/next?difficulty=${difficulty}&limit=${limit}`, { direct: true }),
+  getPracticeWord: (wordId: number) =>
+    request(`/word-practice/words/${wordId}`, { direct: true }),
+  submitPracticeAnswer: (wordId: number, result: 'KNOWN' | 'UNKNOWN') =>
+    request(`/word-practice/words/${wordId}/answer`, { method: 'POST', body: JSON.stringify({ result }), direct: true }),
+
+  // Admin - Redeem Codes
+  generateRedeemCodes: (data: { name: string; count: number; days: number; expireAt?: string; remark?: string }) =>
+    request('/admin/redeem-codes', { method: 'POST', body: JSON.stringify(data) }),
+  getRedeemCodes: (params: Record<string, string>) =>
+    request(`/admin/redeem-codes?${new URLSearchParams(params)}`),
+  disableRedeemCode: (id: number) =>
+    request(`/admin/redeem-codes/${id}/disable`, { method: 'PATCH' }),
+
+  // Admin - Membership
+  setMembershipExpireAt: (userId: number, expireAt: string, remark?: string) =>
+    request(`/admin/users/${userId}/membership-expire-at`, { method: 'PATCH', body: JSON.stringify({ expireAt, remark }) }),
+  addMembershipDays: (userId: number, days: number, remark?: string) =>
+    request(`/admin/users/${userId}/membership-add-days`, { method: 'POST', body: JSON.stringify({ days, remark }) }),
+  getMembershipRecords: (userId: number) =>
+    request(`/admin/users/${userId}/membership-records`),
 };

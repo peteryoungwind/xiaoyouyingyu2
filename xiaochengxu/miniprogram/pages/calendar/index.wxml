@@ -1,0 +1,71 @@
+<view class="page-container safe-bottom">
+  <!-- Month Navigation -->
+  <view class="month-nav card">
+    <view class="nav-btn" bindtap="prevMonth">
+      <text class="nav-arrow">‹</text>
+    </view>
+    <view class="month-title">{{monthText}}</view>
+    <view class="nav-btn" bindtap="nextMonth">
+      <text class="nav-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- Calendar Grid -->
+  <view class="calendar-card card">
+    <!-- Week Header -->
+    <view class="week-header">
+      <view class="week-day" wx:for="{{weekDays}}" wx:key="*this">
+        <text class="week-day-text {{index === 0 || index === 6 ? 'weekend' : ''}}">{{item}}</text>
+      </view>
+    </view>
+
+    <!-- Days Grid -->
+    <view class="days-grid">
+      <view
+        wx:for="{{calendarDays}}"
+        wx:key="index"
+        class="day-cell {{item.empty ? 'empty' : ''}} {{item.isToday ? 'today' : ''}} {{item.dateStr === selectedDate ? 'selected' : ''}} {{item.hasTopics ? 'has-topics' : ''}}"
+        bindtap="onDayTap"
+        data-date="{{item.dateStr}}"
+      >
+        <text class="day-number" wx:if="{{!item.empty}}">{{item.day}}</text>
+        <view class="topic-dot" wx:if="{{item.hasTopics}}"></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Selected Date Topics -->
+  <view class="topics-section" wx:if="{{selectedDate}}">
+    <view class="section-header">
+      <text class="card-title">{{selectedDate}}</text>
+      <text class="topic-count" wx:if="{{selectedTopics.length > 0}}">{{selectedTopics.length}} 个话题</text>
+    </view>
+
+    <block wx:if="{{selectedTopics.length > 0}}">
+      <view
+        class="topic-item card"
+        wx:for="{{selectedTopics}}"
+        wx:key="id"
+        bindtap="goToTopicDetail"
+        data-id="{{item.id}}"
+      >
+        <text class="topic-title">{{item.title}}</text>
+        <text class="topic-arrow">></text>
+      </view>
+    </block>
+
+    <view wx:else class="card text-center">
+      <text class="empty-text">该日期暂无话题</text>
+    </view>
+  </view>
+
+  <!-- Hint when no date selected -->
+  <view class="hint-card card text-center" wx:if="{{!selectedDate && !loading}}">
+    <text class="hint-text">点击日期查看当日话题</text>
+  </view>
+
+  <!-- Loading -->
+  <view wx:if="{{loading}}" class="card text-center">
+    <text class="loading-text">加载中...</text>
+  </view>
+</view>

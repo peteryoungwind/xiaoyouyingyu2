@@ -14,10 +14,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="zh-CN">
       <body className="bg-[#F5F7FA]">
         <Providers>
-          <Sidebar />
-          <div className="ml-56 min-h-screen flex flex-col">
-            <TopBar />
-            <main className="flex-1 p-6">{children}</main>
+          <div className="min-h-screen overflow-x-hidden md:flex">
+            <Sidebar />
+            <div className="min-h-screen min-w-0 flex flex-1 flex-col md:ml-56">
+              <TopBar />
+              <main className="flex-1 overflow-x-hidden px-4 py-4 pb-28 md:p-6">{children}</main>
+            </div>
           </div>
         </Providers>
       </body>

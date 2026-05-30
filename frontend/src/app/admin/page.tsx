@@ -1,11 +1,11 @@
 'use client';
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '@/lib/api';
+import { api, isAuthExpiredError } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
-import { getTagColor } from '@/lib/tag-colors';
+import { CATEGORY_ORDER, getTagColor, parseTags } from '@/lib/tag-colors';
 import { useRouter } from 'next/navigation';
-import { Sparkles, ChevronRight, RotateCcw, Check, Plus, Trash2, Star, Settings2, Loader2 } from 'lucide-react';
+import { Sparkles, ChevronRight, RotateCcw, Check, Plus, Star, Settings2, Loader2, Volume2 } from 'lucide-react';
 
 // ===================== Types =====================
 
@@ -27,6 +27,33 @@ interface AiModelType {
   modelName: string;
   isDefault: boolean;
 }
+
+interface TtsModelType {
+  id: number;
+  name: string;
+  baseUrl: string;
+  apiKey: string;
+  modelName: string;
+  provider: string;
+  voiceUs: string;
+  voiceUk: string;
+  outputFormat: string;
+  enabled: boolean;
+  isDefault: boolean;
+}
+
+const emptyTtsForm = {
+  name: '',
+  baseUrl: '',
+  apiKey: '',
+  modelName: 'qwen3-tts-flash',
+  provider: 'qwen',
+  voiceUs: 'Cherry',
+  voiceUk: 'Ethan',
+  outputFormat: 'wav',
+  enabled: true,
+  isDefault: false,
+};
 
 // ===================== AI Generation Steps =====================
 type AiStep = 'input' | 'titles' | 'questions' | 'save';
@@ -62,11 +89,19 @@ export default function AdminPage() {
   const [showModelForm, setShowModelForm] = useState(false);
   const [editingModel, setEditingModel] = useState<AiModelType | null>(null);
   const [modelForm, setModelForm] = useState({ name: '', apiUrl: '', apiKey: '', modelName: '', isDefault: false });
+  const [showTtsForm, setShowTtsForm] = useState(false);
+  const [editingTts, setEditingTts] = useState<TtsModelType | null>(null);
+  const [ttsForm, setTtsForm] = useState(emptyTtsForm);
 
   // ===== Manual form state =====
   const emptyForm = { title: '', titleZh: '', tags: '', eventDate: new Date().toISOString().split('T')[0], questions: [{ en: '', zh: '' }] };
   const [form, setForm] = useState(emptyForm);
   const [manualSaving, setManualSaving] = useState(false);
+
+  // ===== Word supplement after topic creation =====
+  const [supplementTopic, setSupplementTopic] = useState<any>(null);
+  const [supplementForm, setSupplementForm] = useState({ wordBookId: '', beginnerCount: 5, advancedCount: 5, modelId: '' });
+  const [supplementMessage, setSupplementMessage] = useState('');
 
   // ===== Queries =====
   const { data: topics } = useQuery({
@@ -86,6 +121,19 @@ export default function AdminPage() {
     queryFn: () => api.getAiModels(),
     enabled: isAdmin,
   });
+
+  const { data: ttsModels = [], refetch: refetchTtsModels } = useQuery({
+    queryKey: ['tts-models'],
+    queryFn: () => api.getTtsModels(),
+    enabled: isAdmin,
+  });
+
+  const { data: wordBooksPage } = useQuery({
+    queryKey: ['admin-word-books-for-supplement'],
+    queryFn: () => api.getWordBooks({ page: '0', size: '100' }),
+    enabled: isAdmin,
+  });
+  const wordBooks = wordBooksPage?.content || [];
 
   // ===== Mutations =====
   const deleteTopic = useMutation({
@@ -107,7 +155,14 @@ export default function AdminPage() {
     return <div className="text-center py-12 text-gray-400">无权限访问</div>;
   }
 
-  // ===================== AI Flow Handlers =====================
+  const toggleTags = (currentTags: string, category: string) => {
+    const parsed = parseTags(currentTags);
+    const next = parsed.includes(category)
+      ? parsed.filter(tag => tag !== category)
+      : [...parsed, category];
+    return next.join(',');
+  };
+
 
   // Set default model on initial load
   const getEffectiveModelId = () => {
@@ -134,6 +189,7 @@ export default function AdminPage() {
         setAiError('AI 返回格式异常，请重试');
       }
     } catch (err: any) {
+      if (isAuthExpiredError(err)) return;
       setAiError(err.message || 'AI 生成失败');
     } finally {
       setAiLoading(false);
@@ -165,6 +221,7 @@ export default function AdminPage() {
         setAiError('AI 返回格式异常，请重试');
       }
     } catch (err: any) {
+      if (isAuthExpiredError(err)) return;
       setAiError(err.message || '问题生成失败');
     } finally {
       setAiLoading(false);
@@ -189,7 +246,7 @@ export default function AdminPage() {
     setAiError('');
     try {
       const selectedQuestions = generatedQuestions.filter((_, i) => selectedQuestionIndices.has(i));
-      await api.createTopic({
+      const createdTopic = await api.createTopic({
         title: selectedTitle.en,
         titleZh: selectedTitle.zh,
         tags: aiTags,
@@ -199,7 +256,9 @@ export default function AdminPage() {
       // Reset flow
       resetAiFlow();
       queryClient.invalidateQueries({ queryKey: ['admin-topics'] });
+      openSupplementModal(createdTopic);
     } catch (err: any) {
+      if (isAuthExpiredError(err)) return;
       setAiError(err.message || '保存失败');
     } finally {
       setSaving(false);
@@ -232,6 +291,7 @@ export default function AdminPage() {
       setModelForm({ name: '', apiUrl: '', apiKey: '', modelName: '', isDefault: false });
       refetchModels();
     } catch (err: any) {
+      if (isAuthExpiredError(err)) return;
       alert(err.message || '保存失败');
     }
   };
@@ -244,6 +304,7 @@ export default function AdminPage() {
       // If deleted model was selected, reset selection
       if (selectedModelId === id) setSelectedModelId(undefined);
     } catch (err: any) {
+      if (isAuthExpiredError(err)) return;
       alert(err.message || '删除失败');
     }
   };
@@ -260,13 +321,74 @@ export default function AdminPage() {
     setShowModelForm(true);
   };
 
+  const openCreateTtsForm = () => {
+    setEditingTts(null);
+    setTtsForm(emptyTtsForm);
+    setShowTtsForm(true);
+  };
+
+  const handleEditTts = (model: TtsModelType) => {
+    setEditingTts(model);
+    setTtsForm({
+      name: model.name,
+      baseUrl: model.baseUrl,
+      apiKey: '',
+      modelName: model.modelName,
+      provider: model.provider || 'openai',
+      voiceUs: model.voiceUs || 'alloy',
+      voiceUk: model.voiceUk || 'verse',
+      outputFormat: model.outputFormat || 'mp3',
+      enabled: model.enabled,
+      isDefault: model.isDefault,
+    });
+    setShowTtsForm(true);
+  };
+
+  const handleSaveTts = async () => {
+    try {
+      if (editingTts) {
+        await api.updateTtsModel(editingTts.id, ttsForm);
+      } else {
+        await api.createTtsModel(ttsForm);
+      }
+      setShowTtsForm(false);
+      setEditingTts(null);
+      setTtsForm(emptyTtsForm);
+      refetchTtsModels();
+    } catch (err: any) {
+      if (isAuthExpiredError(err)) return;
+      alert(err.message || '保存失败');
+    }
+  };
+
+  const handleDeleteTts = async (id: number) => {
+    if (!confirm('确定删除此 TTS 模型？')) return;
+    try {
+      await api.deleteTtsModel(id);
+      refetchTtsModels();
+    } catch (err: any) {
+      if (isAuthExpiredError(err)) return;
+      alert(err.message || '删除失败');
+    }
+  };
+
+  const handleSetDefaultTts = async (id: number) => {
+    try {
+      await api.setDefaultTtsModel(id);
+      refetchTtsModels();
+    } catch (err: any) {
+      if (isAuthExpiredError(err)) return;
+      alert(err.message || '设置失败');
+    }
+  };
+
   // ===================== Manual Handlers =====================
 
   const handleSaveManual = async () => {
     if (!form.title || !form.eventDate || form.questions.some(q => !q.en)) return;
     setManualSaving(true);
     try {
-      await api.createTopic({
+      const createdTopic = await api.createTopic({
         title: form.title,
         titleZh: form.titleZh,
         tags: form.tags,
@@ -275,8 +397,38 @@ export default function AdminPage() {
       });
       setForm(emptyForm);
       queryClient.invalidateQueries({ queryKey: ['admin-topics'] });
+      openSupplementModal(createdTopic);
     } finally {
       setManualSaving(false);
+    }
+  };
+
+  const openSupplementModal = (topic: any) => {
+    setSupplementTopic(topic);
+    setSupplementForm({
+      wordBookId: wordBooks[0]?.id ? String(wordBooks[0].id) : '',
+      beginnerCount: 5,
+      advancedCount: 5,
+      modelId: '',
+    });
+    setSupplementMessage('');
+  };
+
+  const handleSupplementWords = async () => {
+    if (!supplementTopic || !supplementForm.wordBookId) return;
+    setSupplementMessage('生成中...');
+    try {
+      const result = await api.generateWordsByTopics(Number(supplementForm.wordBookId), {
+        topicIds: [supplementTopic.id],
+        beginnerCount: supplementForm.beginnerCount,
+        advancedCount: supplementForm.advancedCount,
+        modelId: supplementForm.modelId ? Number(supplementForm.modelId) : undefined,
+      });
+      setSupplementMessage(`补充完成：新增 ${result.saved || 0} 个，跳过 ${result.skipped || 0} 个`);
+      queryClient.invalidateQueries({ queryKey: ['admin-word-books-for-supplement'] });
+    } catch (err: any) {
+      if (isAuthExpiredError(err)) return;
+      setSupplementMessage(err.message || '补充失败');
     }
   };
 
@@ -294,7 +446,7 @@ export default function AdminPage() {
     <div className="space-y-6">
       <h1 className="text-xl font-semibold">管理后台</h1>
 
-      <div className="flex gap-2 flex-wrap">
+      <div className="flex flex-wrap gap-2 overflow-x-auto pb-1 sm:flex-nowrap">
         {tabs.map(t => (
           <button key={t.key} onClick={() => setTab(t.key)}
             className={`px-4 py-2 text-sm rounded-apple press-effect transition-colors flex items-center gap-1.5
@@ -309,7 +461,7 @@ export default function AdminPage() {
       {tab === 'ai' && (
         <div className="bg-white rounded-apple-lg p-6 shadow-sm space-y-5">
           {/* Step indicator */}
-          <div className="flex items-center gap-2 text-xs text-gray-400">
+          <div className="flex flex-wrap items-center gap-2 overflow-x-auto pb-1 text-xs text-gray-400">
             <span className={`px-2.5 py-1 rounded-full font-medium transition-colors ${aiStep === 'input' ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-500'}`}>
               1. 输入需求
             </span>
@@ -323,15 +475,14 @@ export default function AdminPage() {
             </span>
           </div>
 
-          {/* Model selector */}
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <label className="text-sm text-gray-500 whitespace-nowrap">AI 模型：</label>
             <select
               value={selectedModelId ?? ''}
               onChange={e => setSelectedModelId(e.target.value ? Number(e.target.value) : undefined)}
-              className="text-sm px-3 py-2 rounded-apple bg-gray-100 border-0 outline-none focus:ring-2 focus:ring-gray-200 min-w-[180px]"
+              className="min-w-0 w-full text-sm px-3 py-2 rounded-apple bg-gray-100 border-0 outline-none focus:ring-2 focus:ring-gray-200 sm:min-w-[180px] sm:w-auto"
             >
-              <option value="">默认模型 ({(aiModels || []).find((m: AiModelType) => m.isDefault)?.name || '系统配置'})</option>
+              <option value="">当前启用配置 ({(aiModels || []).find((m: AiModelType) => m.isDefault)?.name || '未设置，回退系统配置'})</option>
               {(aiModels || []).map((m: AiModelType) => (
                 <option key={m.id} value={m.id}>{m.name} ({m.modelName})</option>
               ))}
@@ -349,14 +500,14 @@ export default function AdminPage() {
           {/* ===== Step 1: Input ===== */}
           {aiStep === 'input' && (
             <div className="space-y-4">
-              <div className="flex gap-2">
+              <div className="flex flex-col gap-2 sm:flex-row">
                 <input type="text" placeholder="输入主题方向偏好（可选，如：关于工作压力、关于社交媒体...），留空则随机生成"
                   value={prompt}
                   onChange={e => setPrompt(e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && !aiLoading && handleGenerateTitles()}
-                  className="flex-1 px-4 py-2.5 rounded-apple bg-gray-100 border-0 outline-none focus:ring-2 focus:ring-gray-200 text-sm" />
+                  className="min-w-0 flex-1 px-4 py-2.5 rounded-apple bg-gray-100 border-0 outline-none focus:ring-2 focus:ring-gray-200 text-sm" />
                 <button onClick={handleGenerateTitles} disabled={aiLoading}
-                  className="px-5 py-2.5 bg-gray-900 text-white rounded-apple text-sm press-effect hover:bg-gray-800 disabled:opacity-50 flex items-center gap-2 whitespace-nowrap">
+                  className="flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-apple bg-gray-900 px-5 py-2.5 text-sm text-white press-effect hover:bg-gray-800 disabled:opacity-50 sm:w-auto">
                   {aiLoading ? <><Loader2 size={14} className="animate-spin" /> 生成中...</> : <><Sparkles size={14} /> 生成5个主题</>}
                 </button>
               </div>
@@ -369,9 +520,9 @@ export default function AdminPage() {
           {/* ===== Step 2: Title Selection ===== */}
           {aiStep === 'titles' && (
             <div className="space-y-4">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <h3 className="text-sm font-medium text-gray-700">请选择一个主题：</h3>
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
                   <button onClick={() => { resetAiFlow(); }}
                     className="text-xs text-gray-400 hover:text-gray-600 flex items-center gap-1">
                     <RotateCcw size={12} /> 返回重新输入
@@ -393,10 +544,10 @@ export default function AdminPage() {
                   {generatedTitles.map((title, i) => (
                     <button key={i} onClick={() => handleSelectTitle(title)}
                       className="w-full text-left p-4 rounded-apple bg-gray-50 hover:bg-blue-50 hover:border-blue-200 border border-gray-100 transition-all group">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm font-medium text-gray-900 group-hover:text-blue-700">{title.en}</p>
-                          <p className="text-xs text-gray-500 mt-0.5">{title.zh}</p>
+              <div className="flex min-w-0 items-center justify-between">
+                        <div className="min-w-0">
+                          <p className="break-words text-sm font-medium text-gray-900 group-hover:text-blue-700">{title.en}</p>
+                          <p className="mt-0.5 break-words text-xs text-gray-500">{title.zh}</p>
                         </div>
                         <ChevronRight size={16} className="text-gray-300 group-hover:text-blue-400" />
                       </div>
@@ -412,10 +563,10 @@ export default function AdminPage() {
             <div className="space-y-4">
               {/* Selected title display */}
               <div className="p-3 bg-blue-50 rounded-apple border border-blue-100">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-blue-800">{selectedTitle?.en}</p>
-                    <p className="text-xs text-blue-600 mt-0.5">{selectedTitle?.zh}</p>
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="min-w-0">
+                    <p className="break-words text-sm font-medium text-blue-800">{selectedTitle?.en}</p>
+                    <p className="mt-0.5 break-words text-xs text-blue-600">{selectedTitle?.zh}</p>
                   </div>
                   <button onClick={() => { setAiStep('titles'); setGeneratedQuestions([]); setSelectedTitle(null); }}
                     className="text-xs text-blue-500 hover:text-blue-700 flex items-center gap-1">
@@ -430,11 +581,11 @@ export default function AdminPage() {
                 </div>
               ) : (
                 <>
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <h3 className="text-sm font-medium text-gray-700">
                       选择要保留的问题（已选 {selectedQuestionIndices.size}/{generatedQuestions.length}）：
                     </h3>
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
                       <button
                         onClick={() => {
                           if (selectedQuestionIndices.size === generatedQuestions.length) {
@@ -463,8 +614,8 @@ export default function AdminPage() {
                             {isSelected && <Check size={12} className="text-white" />}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm text-gray-900">Q{i + 1}: {q.en}</p>
-                            <p className="text-xs text-gray-500 mt-0.5">{q.zh}</p>
+                            <p className="break-words text-sm text-gray-900">Q{i + 1}: {q.en}</p>
+                            <p className="mt-0.5 break-words text-xs text-gray-500">{q.zh}</p>
                           </div>
                         </button>
                       );
@@ -473,26 +624,45 @@ export default function AdminPage() {
 
                   {/* Save section */}
                   <div className="space-y-3 pt-3 border-t border-gray-100">
-                    <div className="flex items-center gap-3">
-                      <label className="text-sm text-gray-500 whitespace-nowrap">分类标签：</label>
-                      <input type="text" placeholder="逗号分隔，如 TRAVEL,CULTURE" value={aiTags}
-                        onChange={e => setAiTags(e.target.value)}
-                        className="flex-1 px-3 py-2 rounded-apple bg-gray-100 text-sm outline-none focus:ring-2 focus:ring-gray-200" />
+                    <div className="space-y-2">
+                      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                        <label className="text-sm text-gray-500 whitespace-nowrap">分类标签：</label>
+                        <input type="text" placeholder="逗号分隔，如 自我成长,学习方法" value={aiTags}
+                          onChange={e => setAiTags(e.target.value)}
+                          className="flex-1 px-3 py-2 rounded-apple bg-gray-100 text-sm outline-none focus:ring-2 focus:ring-gray-200" />
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {CATEGORY_ORDER.map(category => {
+                          const selected = parseTags(aiTags).includes(category);
+                          return (
+                            <button
+                              key={category}
+                              type="button"
+                              onClick={() => setAiTags(toggleTags(aiTags, category))}
+                              className={`text-xs px-3 py-1.5 rounded-full transition-colors ${selected ? 'bg-gray-900 text-white' : getTagColor(category)}`}
+                            >
+                              {category}
+                            </button>
+                          );
+                        })}
+                      </div>
                     </div>
-                    <div className="flex items-center gap-3">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                       <label className="text-sm text-gray-500">话题日期：</label>
                       <input type="date" value={eventDate} onChange={e => setEventDate(e.target.value)}
                         className="px-3 py-2 rounded-apple bg-gray-100 text-sm outline-none focus:ring-2 focus:ring-gray-200" />
-                      <div className="flex-1" />
-                      <button onClick={() => resetAiFlow()}
-                        className="px-4 py-2 text-sm text-gray-500 hover:text-gray-700 rounded-apple hover:bg-gray-100">
-                        取消
-                      </button>
-                      <button onClick={handleSaveFromAi}
-                        disabled={saving || selectedQuestionIndices.size === 0}
-                        className="px-5 py-2 bg-gray-900 text-white rounded-apple text-sm press-effect hover:bg-gray-800 disabled:opacity-50 flex items-center gap-2">
-                        {saving ? <><Loader2 size={14} className="animate-spin" /> 保存中...</> : <><Check size={14} /> 保存主题</>}
-                      </button>
+                      <div className="hidden flex-1 sm:block" />
+                      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:self-auto">
+                        <button onClick={() => resetAiFlow()}
+                          className="px-4 py-2 text-sm text-gray-500 hover:text-gray-700 rounded-apple hover:bg-gray-100">
+                          取消
+                        </button>
+                        <button onClick={handleSaveFromAi}
+                          disabled={saving || selectedQuestionIndices.size === 0}
+                          className="flex items-center justify-center gap-2 px-5 py-2 bg-gray-900 text-white rounded-apple text-sm press-effect hover:bg-gray-800 disabled:opacity-50">
+                          {saving ? <><Loader2 size={14} className="animate-spin" /> 保存中...</> : <><Check size={14} /> 保存主题</>}
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </>
@@ -512,20 +682,32 @@ export default function AdminPage() {
             <input type="text" placeholder="中文标题" value={form.titleZh}
               onChange={e => setForm(f => ({ ...f, titleZh: e.target.value }))}
               className="w-full px-4 py-2.5 rounded-apple bg-gray-100 border-0 outline-none focus:ring-2 focus:ring-gray-200 text-sm" />
-            <div className="flex gap-3">
-              <input type="text" placeholder="标签（逗号分隔，如 TECH,SOCIETY）" value={form.tags}
+            <div className="space-y-2">
+              <input type="text" placeholder="分类（逗号分隔，如 自我成长,学习方法）" value={form.tags}
                 onChange={e => setForm(f => ({ ...f, tags: e.target.value }))}
-                className="flex-1 px-4 py-2.5 rounded-apple bg-gray-100 border-0 outline-none focus:ring-2 focus:ring-gray-200 text-sm" />
-              <input type="date" value={form.eventDate}
-                onChange={e => setForm(f => ({ ...f, eventDate: e.target.value }))}
-                className="px-3 py-2 rounded-apple bg-gray-100 text-sm outline-none" />
+                className="w-full px-4 py-2.5 rounded-apple bg-gray-100 border-0 outline-none focus:ring-2 focus:ring-gray-200 text-sm" />
+              <div className="flex flex-wrap gap-2">
+                {CATEGORY_ORDER.map(category => {
+                  const selected = parseTags(form.tags).includes(category);
+                  return (
+                    <button
+                      key={category}
+                      type="button"
+                      onClick={() => setForm(f => ({ ...f, tags: toggleTags(f.tags, category) }))}
+                      className={`text-xs px-3 py-1.5 rounded-full transition-colors ${selected ? 'bg-gray-900 text-white' : getTagColor(category)}`}
+                    >
+                      {category}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
 
           <div className="space-y-2">
             <p className="text-sm font-medium text-gray-700">问题列表</p>
             {form.questions.map((q, i) => (
-              <div key={i} className="flex gap-2 items-start">
+              <div key={i} className="flex flex-col gap-2 rounded-2xl bg-gray-50 p-3 sm:flex-row sm:items-start sm:bg-transparent sm:p-0">
                 <div className="flex-1 space-y-1">
                   <input type="text" placeholder={`Q${i + 1} English *`} value={q.en}
                     onChange={e => setForm(f => ({ ...f, questions: f.questions.map((x, j) => j === i ? { ...x, en: e.target.value } : x) }))}
@@ -536,7 +718,7 @@ export default function AdminPage() {
                 </div>
                 {form.questions.length > 1 && (
                   <button onClick={() => setForm(f => ({ ...f, questions: f.questions.filter((_, j) => j !== i) }))}
-                    className="text-gray-300 hover:text-red-400 text-lg leading-none mt-2">×</button>
+                    className="self-end text-gray-300 hover:text-red-400 text-lg leading-none sm:mt-2 sm:self-auto">×</button>
                 )}
               </div>
             ))}
@@ -544,10 +726,15 @@ export default function AdminPage() {
               className="text-sm text-blue-500 hover:text-blue-600">+ 添加问题</button>
           </div>
 
-          <button onClick={handleSaveManual} disabled={manualSaving || !form.title || !form.eventDate}
-            className="px-5 py-2 bg-gray-900 text-white rounded-apple text-sm press-effect hover:bg-gray-800 disabled:opacity-50">
-            {manualSaving ? '保存中...' : '保存主题'}
-          </button>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <input type="date" value={form.eventDate}
+              onChange={e => setForm(f => ({ ...f, eventDate: e.target.value }))}
+              className="px-3 py-2 rounded-apple bg-gray-100 text-sm outline-none sm:w-auto" />
+            <button onClick={handleSaveManual} disabled={manualSaving || !form.title || !form.eventDate}
+              className="px-5 py-2 bg-gray-900 text-white rounded-apple text-sm press-effect hover:bg-gray-800 disabled:opacity-50">
+              {manualSaving ? '保存中...' : '保存主题'}
+            </button>
+          </div>
         </div>
       )}
 
@@ -555,7 +742,7 @@ export default function AdminPage() {
       {tab === 'topics' && (
         <div className="space-y-3">
           {(topics?.content || []).map((topic: any) => (
-            <div key={topic.id} className="bg-white rounded-apple-lg p-4 shadow-sm flex items-center justify-between">
+            <div key={topic.id} className="bg-white rounded-apple-lg p-4 shadow-sm flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h3 className="font-medium text-sm">{topic.title}</h3>
                 {topic.titleZh && <p className="text-xs text-gray-500">{topic.titleZh}</p>}
@@ -572,9 +759,8 @@ export default function AdminPage() {
       {tab === 'users' && (
         <div className="space-y-3">
           {(users || []).map((user: any) => (
-            <div key={user.id} className="bg-white rounded-apple-lg p-4 shadow-sm flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <span className="text-sm font-medium">{user.username}</span>
+            <div key={user.id} className="bg-white rounded-apple-lg p-4 shadow-sm flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
                 <select value={user.role}
                   onChange={e => updateRole.mutate({ id: user.id, role: e.target.value })}
                   disabled={user.role === 'ADMIN' && (users || []).filter((x: any) => x.role === 'ADMIN').length <= 1}
@@ -595,52 +781,109 @@ export default function AdminPage() {
       {/* ==================== Model Management Tab ==================== */}
       {tab === 'models' && (
         <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <p className="text-sm text-gray-500">管理 AI 模型配置，支持多种 AI 服务提供商。</p>
-            <button onClick={() => { setShowModelForm(true); setEditingModel(null); setModelForm({ name: '', apiUrl: '', apiKey: '', modelName: '', isDefault: false }); }}
-              className="px-4 py-2 bg-gray-900 text-white rounded-apple text-sm press-effect hover:bg-gray-800 flex items-center gap-1.5">
-              <Plus size={14} /> 新增模型
-            </button>
-          </div>
+          <section className="space-y-3">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h2 className="text-sm font-semibold text-gray-900">AI 文本模型</h2>
+                <p className="mt-1 text-xs text-gray-400">用于口语主题和单词内容生成。</p>
+              </div>
+              <button onClick={() => { setShowModelForm(true); setEditingModel(null); setModelForm({ name: '', apiUrl: '', apiKey: '', modelName: '', isDefault: false }); }}
+                className="flex items-center gap-1.5 rounded-apple bg-gray-900 px-4 py-2 text-sm text-white press-effect hover:bg-gray-800">
+                <Plus size={14} /> 新增 AI 模型
+              </button>
+            </div>
 
-          {/* Model list */}
-          <div className="space-y-3">
-            {(aiModels || []).length === 0 && (
-              <div className="text-center py-8 text-gray-400 text-sm">
-                暂无自定义模型，将使用系统默认配置。
-              </div>
-            )}
-            {(aiModels || []).map((model: AiModelType) => (
-              <div key={model.id} className="bg-white rounded-apple-lg p-4 shadow-sm">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium">{model.name}</span>
-                    {model.isDefault && (
-                      <span className="text-xs px-2 py-0.5 bg-yellow-100 text-yellow-700 rounded-full flex items-center gap-1">
-                        <Star size={10} /> 默认
-                      </span>
-                    )}
+            <div className="space-y-3">
+              {(aiModels || []).length === 0 && (
+                <div className="rounded-apple-lg bg-white py-8 text-center text-sm text-gray-400 shadow-sm">
+                  暂无自定义模型，将使用系统默认配置。
+                </div>
+              )}
+              {(aiModels || []).map((model: AiModelType) => (
+                <div key={model.id} className="rounded-apple-lg bg-white p-4 shadow-sm">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium">{model.name}</span>
+                      {model.isDefault && (
+                        <span className="flex items-center gap-1 rounded-full bg-yellow-100 px-2 py-0.5 text-xs text-yellow-700">
+                          <Star size={10} /> 默认
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button onClick={() => handleEditModel(model)}
+                        className="text-xs text-gray-400 hover:text-gray-600">编辑</button>
+                      <button onClick={() => handleDeleteModel(model.id)}
+                        className="text-xs text-red-400 hover:text-red-600">删除</button>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <button onClick={() => handleEditModel(model)}
-                      className="text-xs text-gray-400 hover:text-gray-600">编辑</button>
-                    <button onClick={() => handleDeleteModel(model.id)}
-                      className="text-xs text-red-400 hover:text-red-600">删除</button>
+                  <div className="mt-2 space-y-0.5 text-xs text-gray-400">
+                    <p className="break-words">模型：{model.modelName}</p>
+                    <p className="break-all">API：{model.apiUrl}</p>
+                    <p className="break-all">Key：{model.apiKey.substring(0, 8)}{'*'.repeat(Math.max(0, model.apiKey.length - 12))}{model.apiKey.substring(Math.max(0, model.apiKey.length - 4))}</p>
                   </div>
                 </div>
-                <div className="mt-2 text-xs text-gray-400 space-y-0.5">
-                  <p>模型：{model.modelName}</p>
-                  <p>API：{model.apiUrl}</p>
-                  <p>Key：{model.apiKey.substring(0, 8)}{'*'.repeat(Math.max(0, model.apiKey.length - 12))}{model.apiKey.substring(Math.max(0, model.apiKey.length - 4))}</p>
-                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="space-y-3">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h2 className="flex items-center gap-2 text-sm font-semibold text-gray-900"><Volume2 size={16} /> TTS 发音模型</h2>
+                <p className="mt-1 text-xs text-gray-400">全局配置，单词训练生成音频时可选择使用。</p>
               </div>
-            ))}
-          </div>
+              <button onClick={openCreateTtsForm}
+                className="flex items-center gap-1.5 rounded-apple bg-gray-900 px-4 py-2 text-sm text-white press-effect hover:bg-gray-800">
+                <Plus size={14} /> 新增 TTS 模型
+              </button>
+            </div>
+
+            <div className="space-y-3">
+              {(ttsModels || []).length === 0 && (
+                <div className="rounded-apple-lg bg-white py-8 text-center text-sm text-gray-400 shadow-sm">
+                  暂无 TTS 模型，单词音频生成前请先配置默认模型。
+                </div>
+              )}
+              {(ttsModels || []).map((model: TtsModelType) => (
+                <div key={model.id} className="rounded-apple-lg bg-white p-4 shadow-sm">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="text-sm font-medium">{model.name}</span>
+                      {model.isDefault && (
+                        <span className="flex items-center gap-1 rounded-full bg-yellow-100 px-2 py-0.5 text-xs text-yellow-700">
+                          <Star size={10} /> 默认
+                        </span>
+                      )}
+                      {!model.enabled && (
+                        <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-500">停用</span>
+                      )}
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2">
+                      {!model.isDefault && (
+                        <button onClick={() => handleSetDefaultTts(model.id)}
+                          className="text-xs text-blue-500 hover:text-blue-700">设为默认</button>
+                      )}
+                      <button onClick={() => handleEditTts(model)}
+                        className="text-xs text-gray-400 hover:text-gray-600">编辑</button>
+                      <button onClick={() => handleDeleteTts(model.id)}
+                        className="text-xs text-red-400 hover:text-red-600">删除</button>
+                    </div>
+                  </div>
+                  <div className="mt-2 space-y-0.5 text-xs text-gray-400">
+                    <p className="break-words">模型：{model.modelName} · {model.outputFormat || 'mp3'} · {model.voiceUs}/{model.voiceUk}</p>
+                    <p className="break-all">API：{model.baseUrl}</p>
+                    <p className="break-all">Provider：{model.provider || 'openai'}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
 
           {/* Model form modal */}
           {showModelForm && (
-            <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50" onClick={() => setShowModelForm(false)}>
-              <div className="bg-white rounded-apple-lg p-6 shadow-xl w-full max-w-md space-y-4" onClick={e => e.stopPropagation()}>
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4" onClick={() => setShowModelForm(false)}>
+              <div className="max-h-[80vh] w-full max-w-md space-y-4 overflow-y-auto rounded-apple-lg bg-white p-5 shadow-xl sm:p-6" onClick={e => e.stopPropagation()}>
                 <h3 className="font-medium">{editingModel ? '编辑模型' : '新增模型'}</h3>
                 <div className="space-y-3">
                   <div>
@@ -674,7 +917,7 @@ export default function AdminPage() {
                     设为默认模型
                   </label>
                 </div>
-                <div className="flex justify-end gap-2 pt-2">
+                <div className="flex flex-col gap-2 pt-2 sm:flex-row sm:justify-end">
                   <button onClick={() => setShowModelForm(false)}
                     className="px-4 py-2 text-sm text-gray-500 hover:bg-gray-100 rounded-apple">
                     取消
@@ -688,6 +931,115 @@ export default function AdminPage() {
               </div>
             </div>
           )}
+
+          {showTtsForm && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4" onClick={() => setShowTtsForm(false)}>
+              <div className="max-h-[80vh] w-full max-w-lg space-y-4 overflow-y-auto rounded-apple-lg bg-white p-5 shadow-xl sm:p-6" onClick={e => e.stopPropagation()}>
+                <h3 className="font-medium">{editingTts ? '编辑 TTS 模型' : '新增 TTS 模型'}</h3>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div>
+                    <label className="mb-1 block text-xs text-gray-500">显示名称 *</label>
+                    <input value={ttsForm.name} onChange={e => setTtsForm(f => ({ ...f, name: e.target.value }))}
+                      className="w-full rounded-apple bg-gray-100 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-gray-200" />
+                  </div>
+                  <div>
+                    <label className="mb-1 block text-xs text-gray-500">模型名称 *</label>
+                    <input value={ttsForm.modelName} onChange={e => setTtsForm(f => ({ ...f, modelName: e.target.value }))}
+                      placeholder="qwen3-tts-flash / tts-1"
+                      className="w-full rounded-apple bg-gray-100 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-gray-200" />
+                  </div>
+                  <div className="sm:col-span-2">
+                    <label className="mb-1 block text-xs text-gray-500">Base URL *</label>
+                    <input value={ttsForm.baseUrl} onChange={e => setTtsForm(f => ({ ...f, baseUrl: e.target.value }))}
+                      placeholder="https://dashscope.aliyuncs.com/api/v1 或 https://api.openai.com/v1"
+                      className="w-full rounded-apple bg-gray-100 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-gray-200" />
+                  </div>
+                  <div className="sm:col-span-2">
+                    <label className="mb-1 block text-xs text-gray-500">API Key *</label>
+                    <input type="password" value={ttsForm.apiKey} onChange={e => setTtsForm(f => ({ ...f, apiKey: e.target.value }))}
+                      placeholder={editingTts ? '重新填写 API Key' : 'sk-...'}
+                      className="w-full rounded-apple bg-gray-100 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-gray-200" />
+                  </div>
+                  <div>
+                    <label className="mb-1 block text-xs text-gray-500">供应商</label>
+                    <input value={ttsForm.provider} onChange={e => setTtsForm(f => ({ ...f, provider: e.target.value }))}
+                      placeholder="qwen / openai"
+                      className="w-full rounded-apple bg-gray-100 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-gray-200" />
+                  </div>
+                  <div>
+                    <label className="mb-1 block text-xs text-gray-500">输出格式</label>
+                    <input value={ttsForm.outputFormat} onChange={e => setTtsForm(f => ({ ...f, outputFormat: e.target.value }))}
+                      className="w-full rounded-apple bg-gray-100 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-gray-200" />
+                  </div>
+                  <div>
+                    <label className="mb-1 block text-xs text-gray-500">美式 voice</label>
+                    <input value={ttsForm.voiceUs} onChange={e => setTtsForm(f => ({ ...f, voiceUs: e.target.value }))}
+                      placeholder="Cherry / alloy"
+                      className="w-full rounded-apple bg-gray-100 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-gray-200" />
+                  </div>
+                  <div>
+                    <label className="mb-1 block text-xs text-gray-500">英式 voice</label>
+                    <input value={ttsForm.voiceUk} onChange={e => setTtsForm(f => ({ ...f, voiceUk: e.target.value }))}
+                      placeholder="Ethan / verse"
+                      className="w-full rounded-apple bg-gray-100 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-gray-200" />
+                  </div>
+                  <label className="flex cursor-pointer items-center gap-2 text-sm text-gray-600">
+                    <input type="checkbox" checked={ttsForm.enabled}
+                      onChange={e => setTtsForm(f => ({ ...f, enabled: e.target.checked }))}
+                      className="rounded" />
+                    启用
+                  </label>
+                  <label className="flex cursor-pointer items-center gap-2 text-sm text-gray-600">
+                    <input type="checkbox" checked={ttsForm.isDefault}
+                      onChange={e => setTtsForm(f => ({ ...f, isDefault: e.target.checked }))}
+                      className="rounded" />
+                    设为默认 TTS
+                  </label>
+                </div>
+                <div className="flex flex-col gap-2 pt-2 sm:flex-row sm:justify-end">
+                  <button onClick={() => setShowTtsForm(false)}
+                    className="rounded-apple px-4 py-2 text-sm text-gray-500 hover:bg-gray-100">
+                    取消
+                  </button>
+                  <button onClick={handleSaveTts}
+                    disabled={!ttsForm.name || !ttsForm.baseUrl || !ttsForm.apiKey || !ttsForm.modelName}
+                    className="rounded-apple bg-gray-900 px-5 py-2 text-sm text-white press-effect hover:bg-gray-800 disabled:opacity-50">
+                    保存
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {supplementTopic && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4" onClick={() => setSupplementTopic(null)}>
+          <div className="w-full max-w-lg space-y-4 rounded-apple-lg bg-white p-5 shadow-xl" onClick={e => e.stopPropagation()}>
+            <div>
+              <h3 className="font-medium text-gray-900">是否为单词本补充该主题相关词汇？</h3>
+              <p className="mt-1 text-sm text-gray-500">{supplementTopic.titleZh || supplementTopic.title}</p>
+            </div>
+            <div className="space-y-3">
+              <select value={supplementForm.wordBookId} onChange={e => setSupplementForm(f => ({ ...f, wordBookId: e.target.value }))} className="w-full rounded-apple bg-gray-100 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-200">
+                <option value="">选择目标单词本</option>
+                {wordBooks.map((book: any) => <option key={book.id} value={book.id}>{book.name}</option>)}
+              </select>
+              <div className="grid grid-cols-3 gap-2">
+                <input type="number" min={0} value={supplementForm.beginnerCount} onChange={e => setSupplementForm(f => ({ ...f, beginnerCount: Number(e.target.value) }))} className="rounded-apple bg-gray-100 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-200" />
+                <input type="number" min={0} value={supplementForm.advancedCount} onChange={e => setSupplementForm(f => ({ ...f, advancedCount: Number(e.target.value) }))} className="rounded-apple bg-gray-100 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-200" />
+                <select value={supplementForm.modelId} onChange={e => setSupplementForm(f => ({ ...f, modelId: e.target.value }))} className="rounded-apple bg-gray-100 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-200">
+                  <option value="">默认模型</option>
+                  {(aiModels || []).map((m: AiModelType) => <option key={m.id} value={m.id}>{m.name}</option>)}
+                </select>
+              </div>
+            </div>
+            {supplementMessage && <div className="rounded-apple bg-blue-50 px-3 py-2 text-sm text-blue-700">{supplementMessage}</div>}
+            <div className="flex justify-end gap-2">
+              <button onClick={() => setSupplementTopic(null)} className="rounded-apple bg-gray-100 px-4 py-2 text-sm text-gray-600">跳过</button>
+              <button onClick={handleSupplementWords} disabled={!supplementForm.wordBookId || supplementMessage === '生成中...'} className="rounded-apple bg-gray-900 px-4 py-2 text-sm text-white disabled:opacity-50">生成词汇</button>
+            </div>
+          </div>
         </div>
       )}
     </div>

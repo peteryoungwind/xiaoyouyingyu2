@@ -1,18 +1,24 @@
 package com.xiaoyouyingyu.controller;
 
+import com.xiaoyouyingyu.config.TopicCategoryConstants;
 import com.xiaoyouyingyu.entity.AiModel;
+import com.xiaoyouyingyu.entity.RedeemCode;
 import com.xiaoyouyingyu.entity.Topic;
 import com.xiaoyouyingyu.entity.User;
 import com.xiaoyouyingyu.repository.AiModelRepository;
+import com.xiaoyouyingyu.repository.RedeemCodeRepository;
 import com.xiaoyouyingyu.repository.TopicRepository;
 import com.xiaoyouyingyu.repository.UserRepository;
 import com.xiaoyouyingyu.service.AiService;
+import com.xiaoyouyingyu.service.MembershipService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -24,11 +30,18 @@ public class AdminController {
     private final UserRepository userRepository;
     private final AiService aiService;
     private final AiModelRepository aiModelRepository;
+    private final MembershipService membershipService;
+    private final RedeemCodeRepository redeemCodeRepository;
 
     // ===================== 话题管理 =====================
 
     @PostMapping("/topics")
-    public ResponseEntity<Topic> createTopic(@Valid @RequestBody Topic topic, Authentication auth) {
+    public ResponseEntity<?> createTopic(@Valid @RequestBody Topic topic, Authentication auth) {
+        try {
+            topic.setTags(TopicCategoryConstants.normalizeTags(topic.getTags()));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
         userRepository.findByUsername((String) auth.getPrincipal())
                 .ifPresent(u -> topic.setCreatorId(u.getId()));
         return ResponseEntity.ok(topicRepository.save(topic));
@@ -36,10 +49,16 @@ public class AdminController {
 
     @PutMapping("/topics/{id}")
     public ResponseEntity<?> updateTopic(@PathVariable Long id, @RequestBody Topic updated) {
+        final String normalizedTags;
+        try {
+            normalizedTags = TopicCategoryConstants.normalizeTags(updated.getTags());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
         return topicRepository.findById(id).map(topic -> {
             topic.setTitle(updated.getTitle());
             topic.setTitleZh(updated.getTitleZh());
-            topic.setTags(updated.getTags());
+            topic.setTags(normalizedTags);
             topic.setEventDate(updated.getEventDate());
             topic.setQuestions(updated.getQuestions());
             return ResponseEntity.ok(topicRepository.save(topic));
@@ -157,5 +176,64 @@ public class AdminController {
     public ResponseEntity<?> deleteModel(@PathVariable Long id) {
         aiModelRepository.deleteById(id);
         return ResponseEntity.ok(Map.of("message", "模型已删除"));
+    }
+
+    // ===================== 卡密管理 =====================
+
+    @PostMapping("/redeem-codes")
+    public ResponseEntity<?> generateRedeemCodes(@RequestBody Map<String, Object> body, Authentication auth) {
+        String name = (String) body.get("name");
+        int count = body.get("count") != null ? ((Number) body.get("count")).intValue() : 1;
+        int days = ((Number) body.get("days")).intValue();
+        LocalDateTime expireAt = body.get("expireAt") != null ? LocalDateTime.parse((String) body.get("expireAt")) : null;
+        String remark = (String) body.get("remark");
+        Long creatorId = userRepository.findByUsername((String) auth.getPrincipal()).map(User::getId).orElse(null);
+        List<RedeemCode> codes = membershipService.generateCodes(name, count, days, expireAt, remark, creatorId);
+        return ResponseEntity.ok(codes);
+    }
+
+    @GetMapping("/redeem-codes")
+    public ResponseEntity<?> listRedeemCodes(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(required = false) String status) {
+        if (status != null && !status.isBlank()) {
+            return ResponseEntity.ok(redeemCodeRepository.findByStatusOrderByCreatedAtDesc(status, PageRequest.of(page, size)));
+        }
+        return ResponseEntity.ok(redeemCodeRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(page, size)));
+    }
+
+    @PatchMapping("/redeem-codes/{id}/disable")
+    public ResponseEntity<?> disableRedeemCode(@PathVariable Long id) {
+        return redeemCodeRepository.findById(id).map(code -> {
+            code.setStatus("DISABLED");
+            redeemCodeRepository.save(code);
+            return ResponseEntity.ok(Map.of("message", "卡密已禁用"));
+        }).orElse(ResponseEntity.notFound().build());
+    }
+
+    // ===================== 会员管理 =====================
+
+    @PatchMapping("/users/{id}/membership-expire-at")
+    public ResponseEntity<?> setMembershipExpireAt(@PathVariable Long id, @RequestBody Map<String, String> body, Authentication auth) {
+        LocalDateTime expireAt = body.get("expireAt") != null ? LocalDateTime.parse(body.get("expireAt")) : null;
+        String remark = body.getOrDefault("remark", "");
+        Long operatorId = userRepository.findByUsername((String) auth.getPrincipal()).map(User::getId).orElse(null);
+        membershipService.setMembershipExpireAt(id, expireAt, remark, operatorId);
+        return ResponseEntity.ok(Map.of("message", "会员到期时间已更新"));
+    }
+
+    @PostMapping("/users/{id}/membership-add-days")
+    public ResponseEntity<?> addMembershipDays(@PathVariable Long id, @RequestBody Map<String, Object> body, Authentication auth) {
+        int days = ((Number) body.get("days")).intValue();
+        String remark = (String) body.getOrDefault("remark", "");
+        Long operatorId = userRepository.findByUsername((String) auth.getPrincipal()).map(User::getId).orElse(null);
+        membershipService.addMembershipDays(id, days, remark, operatorId);
+        return ResponseEntity.ok(Map.of("message", "会员天数已追加"));
+    }
+
+    @GetMapping("/users/{id}/membership-records")
+    public ResponseEntity<?> getMembershipRecords(@PathVariable Long id) {
+        return ResponseEntity.ok(membershipService.getUserRecords(id));
     }
 }

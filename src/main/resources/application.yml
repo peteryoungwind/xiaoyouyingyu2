@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://139.196.43.133:3306/xiaoyouyingyu?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai&autoReconnect=true&connectTimeout=5000&socketTimeout=30000
+    url: jdbc:mysql://sh-cynosdbmysql-grp-ft100p3o.sql.tencentcdb.com:29616/xiaoyouyingyu?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai&autoReconnect=true&connectTimeout=5000&socketTimeout=30000
     username: root
-    password: pzq18217074393
+    password: pzq915981048.
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       connection-timeout: 10000
@@ -24,10 +24,16 @@ server:
   tomcat:
     connection-timeout: 180000
 
+wechat:
+  appid: wxe44039d85e17c3d5
+  secret: ce05db971bee9a6b2a87693881bf9b87
+
 app:
+  upload:
+    dir: uploads
   jwt:
-    secret: your-256-bit-secret-key-change-in-production-please
-    expiration-ms: 86400000
+    secret: n7Qv2Kp9Xc4mL8tR1yF6uD3sW0zH5jNqB2eG9aV4rT7kM1pC
+    expiration-ms: 2592000000
   ai:
     api-key: sk-Z6mBSV3LAK2yp1T67ThtU1PBJFvXy50m8zEJMMuVYALEG8af
     api-url: https://api.gptgod.online/v1/chat/completions

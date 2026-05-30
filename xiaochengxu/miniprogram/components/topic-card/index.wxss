@@ -1,0 +1,43 @@
+.topic-card {
+  padding: 28rpx 32rpx;
+}
+
+.topic-card:active {
+  background: #F5F7FA;
+}
+
+.topic-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 8rpx;
+}
+
+.topic-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1A1A2E;
+  flex: 1;
+  margin-right: 16rpx;
+  line-height: 1.4;
+}
+
+.topic-date {
+  font-size: 24rpx;
+  color: #B0B8C4;
+  white-space: nowrap;
+  line-height: 1.4;
+  padding-top: 4rpx;
+}
+
+.topic-title-zh {
+  font-size: 26rpx;
+  color: #6C7A8D;
+  margin-bottom: 16rpx;
+  display: block;
+  line-height: 1.4;
+}
+
+.topic-tags {
+  margin-top: 12rpx;
+}

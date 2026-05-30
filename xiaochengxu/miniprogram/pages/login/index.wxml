@@ -1,0 +1,61 @@
+<view class="login-page">
+  <button class="back-arrow-btn" style="{{backButtonStyle}}" bindtap="handleBack">
+    <text class="back-arrow-icon">‹</text>
+    <text class="back-arrow-text">返回</text>
+  </button>
+
+  <!-- Logo 区 -->
+  <view class="logo-area">
+    <view class="logo-icon">
+      <text class="logo-emoji">📖</text>
+      <view class="logo-badge">
+        <text class="badge-emoji">✨</text>
+      </view>
+    </view>
+    <text class="logo-title">小柚英语</text>
+    <text class="logo-subtitle">地道口语，AI 轻松陪练</text>
+  </view>
+
+  <!-- 登录操作区 -->
+  <view class="login-action">
+    <!-- 气泡提示 -->
+    <view class="tip-bubble {{showTip ? 'tip-show' : ''}}">
+      <text>请先勾选同意协议</text>
+      <view class="tip-arrow"></view>
+    </view>
+
+    <!-- 微信一键登录按钮 -->
+    <button
+      class="wechat-btn {{agree ? 'wechat-btn-active' : ''}} {{loading ? 'btn-disabled' : ''}}"
+      bindtap="handleWechatLogin"
+      disabled="{{loading}}"
+    >
+      <text class="wechat-btn-text">{{loading ? '登录中...' : '微信一键登录'}}</text>
+    </button>
+
+    <button class="guest-btn" bindtap="browseAsGuest">以游客身份浏览</button>
+
+    <!-- 协议勾选 -->
+    <view class="agreement" bindtap="toggleAgree">
+      <view class="checkbox {{agree ? 'checkbox-checked' : ''}}">
+        <text wx:if="{{agree}}" class="check-mark">✓</text>
+      </view>
+      <view class="agreement-text">
+        <text>我已阅读并同意 </text>
+        <text class="link">《用户服务协议》</text>
+        <text> 与 </text>
+        <text class="link">《隐私政策》</text>
+        <view class="agreement-hint">
+          <text>首次登录将为您自动创建账号并开通试用会员</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部装饰 -->
+  <view class="footer">
+    <view class="footer-line"></view>
+    <text class="footer-text">Powered by GPT-4o</text>
+    <view class="footer-line"></view>
+  </view>
+</view>

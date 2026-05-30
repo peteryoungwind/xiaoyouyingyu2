@@ -1,0 +1,55 @@
+<view class="page-container safe-bottom">
+  <!-- Logo Area -->
+  <view class="logo-area">
+    <view class="logo-icon">
+      <text class="logo-emoji">🍊</text>
+    </view>
+    <text class="logo-title">小柚英语</text>
+    <text class="logo-subtitle">创建账号，开启口语之旅</text>
+  </view>
+
+  <!-- Register Form -->
+  <view class="form-area">
+    <view class="input-wrapper {{usernameFocus ? 'input-wrapper-focus' : ''}} mb-24">
+      <image class="input-icon" src="/images/tabbar/person.svg" mode="aspectFit" />
+      <input
+        placeholder="请输入用户名（3-50个字符）"
+        placeholder-class="input-placeholder"
+        value="{{username}}"
+        bindinput="onUsernameInput"
+        bindfocus="onUsernameFocus"
+        bindblur="onUsernameBlur"
+        maxlength="50"
+      />
+    </view>
+
+    <view class="input-wrapper {{passwordFocus ? 'input-wrapper-focus' : ''}} mb-32">
+      <image class="input-icon" src="/images/tag-icons/check-circle.svg" mode="aspectFit" />
+      <input
+        type="password"
+        placeholder="请输入密码（至少6个字符）"
+        placeholder-class="input-placeholder"
+        value="{{password}}"
+        bindinput="onPasswordInput"
+        bindfocus="onPasswordFocus"
+        bindblur="onPasswordBlur"
+      />
+    </view>
+
+    <button class="btn btn-primary btn-block mb-24 {{loading ? 'btn-disabled' : ''}}" bindtap="handleRegister" disabled="{{loading}}">
+      注册
+    </button>
+
+    <button class="btn btn-gold btn-block mb-32" bindtap="handleWechatLogin">
+      微信一键登录
+    </button>
+
+    <view class="wechat-note text-center mb-24">
+      <text class="text-hint">首次微信登录将自动注册</text>
+    </view>
+
+    <view class="text-center">
+      <text class="link-text" bindtap="goToLogin">已有账号？去登录</text>
+    </view>
+  </view>
+</view>

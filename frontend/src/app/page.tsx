@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Calendar } from '@/components/calendar';
 import { Plus, Tag, Flame, MessageSquare } from 'lucide-react';
 import Link from 'next/link';
-import { getTagColor } from '@/lib/tag-colors';
+import { buildOrderedTagList, getTagColor, TagStats } from '@/lib/tag-colors';
 
 export default function Home() {
   const { user, isAdmin } = useAuth();
@@ -28,6 +28,7 @@ export default function Home() {
   const topics = topicsData?.content || [];
   const totalTopics = topicsData?.totalElements || 0;
   const days = stats?.days || 0;
+  const categoryEntries = buildOrderedTagList(tagStats as TagStats | undefined);
 
   return (
     <div className="flex gap-6">
@@ -69,7 +70,7 @@ export default function Home() {
           <div className="bg-white rounded-2xl p-5 shadow-sm">
             <p className="text-sm text-gray-500">标签分类</p>
             <div className="flex items-end justify-between mt-2">
-              <span className="text-3xl font-semibold">{tagStats ? Object.keys(tagStats).length : 0}</span>
+              <span className="text-3xl font-semibold">{categoryEntries.length}</span>
               <Tag size={20} className="text-purple-400" />
             </div>
           </div>
@@ -81,22 +82,20 @@ export default function Home() {
             <h2 className="text-lg font-semibold text-gray-900">主题分类</h2>
           </div>
           <div className="grid grid-cols-3 gap-3">
-            {tagStats && Object.entries(tagStats as Record<string, { count: number; latestTitle: string }>)
-              .sort(([, a], [, b]) => b.count - a.count)
-              .map(([tag, info]) => (
-                <Link key={tag} href={`/topics?tag=${encodeURIComponent(tag)}`}
+            {categoryEntries.map(item => (
+                <Link key={item.name} href={`/topics?tag=${encodeURIComponent(item.name)}`}
                   className="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-all group">
                   <div className="flex items-center justify-between mb-3">
-                    <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${getTagColor(tag)}`}>
-                      {tag}
+                    <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${getTagColor(item.name)}`}>
+                      {item.name}
                     </span>
                     <div className="flex items-center gap-1 text-gray-400">
                       <MessageSquare size={14} />
-                      <span className="text-xs">{info.count}</span>
+                      <span className="text-xs">{item.count}</span>
                     </div>
                   </div>
                   <p className="text-sm text-gray-600 line-clamp-1 group-hover:text-gray-900 transition-colors">
-                    {info.latestTitle}
+                    {item.latestTitle || '暂无主题'}
                   </p>
                 </Link>
               ))}

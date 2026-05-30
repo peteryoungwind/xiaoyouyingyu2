@@ -1,5 +1,5 @@
 'use client';
-import { getTagColor } from '@/lib/tag-colors';
+import { getTagColor, normalizeKnownTags, parseTags } from '@/lib/tag-colors';
 import Link from 'next/link';
 
 interface Props {
@@ -8,7 +8,8 @@ interface Props {
 }
 
 export function TopicCard({ topic }: Props) {
-  const tags = topic.tags ? topic.tags.split(',').filter(Boolean) : [];
+  const tags = normalizeKnownTags(topic.tags);
+  const displayTags = tags.length > 0 ? tags : parseTags(topic.tags);
 
   return (
     <Link href={`/topic/${topic.id}`}
@@ -19,9 +20,9 @@ export function TopicCard({ topic }: Props) {
           {topic.titleZh && <p className="text-sm text-gray-500 mt-0.5">{topic.titleZh}</p>}
           <p className="text-xs text-gray-400 mt-1">{topic.eventDate}</p>
         </div>
-        {tags.length > 0 && (
+        {displayTags.length > 0 && (
           <div className="flex gap-1.5 ml-3">
-            {tags.map((tag: string) => (
+            {displayTags.map((tag: string) => (
               <span key={tag} className={`text-xs px-2 py-0.5 rounded-full font-medium ${getTagColor(tag.trim())}`}>
                 {tag.trim()}
               </span>

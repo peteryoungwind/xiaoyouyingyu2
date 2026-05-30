@@ -1,0 +1,285 @@
+.login-page {
+  min-height: 100vh;
+  background: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  padding: env(safe-area-inset-top) 80rpx 0;
+  position: relative;
+}
+
+.back-arrow-btn {
+  position: absolute;
+  left: 24rpx;
+  top: calc(env(safe-area-inset-top) + 16rpx);
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 4rpx;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  color: #8E8E93;
+  border: none;
+  line-height: 1;
+  box-sizing: border-box;
+  z-index: 10;
+}
+
+.back-arrow-btn::after {
+  border: none;
+}
+
+.back-arrow-icon {
+  font-size: 36rpx;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.back-arrow-text {
+  font-size: 32rpx;
+  font-weight: 600;
+  line-height: 1;
+}
+
+/* Logo 区 */
+.logo-area {
+  flex: 1.8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 48rpx;
+}
+
+.logo-icon {
+  width: 224rpx;
+  height: 224rpx;
+  background: linear-gradient(135deg, #007AFF, #5856D6);
+  border-radius: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 64rpx;
+  box-shadow: 0 16rpx 48rpx rgba(0, 122, 255, 0.2);
+  position: relative;
+}
+
+.logo-emoji {
+  font-size: 112rpx;
+}
+
+.logo-badge {
+  position: absolute;
+  right: -16rpx;
+  top: -16rpx;
+  width: 80rpx;
+  height: 80rpx;
+  background: #FBBF24;
+  border-radius: 50%;
+  border: 8rpx solid #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 12rpx rgba(251, 191, 36, 0.4);
+}
+
+.badge-emoji {
+  font-size: 36rpx;
+}
+
+.logo-title {
+  font-size: 64rpx;
+  font-weight: 900;
+  color: #1C1C1E;
+  letter-spacing: 2rpx;
+}
+
+.logo-subtitle {
+  font-size: 28rpx;
+  color: #8E8E93;
+  margin-top: 16rpx;
+  font-weight: 500;
+  letter-spacing: 4rpx;
+}
+
+/* 登录操作区 */
+.login-action {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: 80rpx;
+  position: relative;
+}
+
+/* 气泡提示 */
+.tip-bubble {
+  position: absolute;
+  top: -20rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1C1C1E;
+  color: #FFFFFF;
+  font-size: 24rpx;
+  padding: 16rpx 32rpx;
+  border-radius: 24rpx;
+  white-space: nowrap;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tip-show {
+  opacity: 1;
+}
+
+.tip-arrow {
+  position: absolute;
+  bottom: -8rpx;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 16rpx;
+  height: 16rpx;
+  background: #1C1C1E;
+}
+
+/* 微信登录按钮 */
+.wechat-btn {
+  width: 100%;
+  height: 104rpx;
+  border-radius: 999rpx;
+  font-weight: 600;
+  font-size: 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F2F2F7;
+  color: #C7C7CC;
+  border: none;
+  line-height: 104rpx;
+  padding: 0 40rpx;
+  margin: 0;
+  letter-spacing: 1rpx;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.wechat-btn::after {
+  border: none;
+}
+
+.wechat-btn-active {
+  background: #07C160;
+  color: #FFFFFF;
+  box-shadow: 0 12rpx 32rpx rgba(7, 193, 96, 0.18);
+}
+
+.wechat-btn-active:active {
+  transform: scale(0.985);
+  opacity: 0.92;
+}
+
+.wechat-btn-text {
+  font-size: 32rpx;
+  font-weight: 600;
+  letter-spacing: 1rpx;
+}
+
+.guest-btn {
+  width: 100%;
+  height: 96rpx;
+  margin-top: 24rpx;
+  border-radius: 999rpx;
+  border: 2rpx solid #D1D1D6;
+  background: #FFFFFF;
+  color: #1C1C1E;
+  font-size: 30rpx;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.guest-btn::after {
+  border: none;
+}
+
+.btn-disabled {
+  opacity: 0.6;
+}
+
+/* 协议 */
+.agreement {
+  display: flex;
+  align-items: flex-start;
+  gap: 16rpx;
+  margin-top: 48rpx;
+  padding: 0 8rpx;
+}
+
+.checkbox {
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 50%;
+  border: 4rpx solid #E5E5EA;
+  background: #F9F9F9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 4rpx;
+}
+
+.checkbox-checked {
+  background: #007AFF;
+  border-color: #007AFF;
+}
+
+.check-mark {
+  color: #FFFFFF;
+  font-size: 24rpx;
+  font-weight: 900;
+}
+
+.agreement-text {
+  font-size: 24rpx;
+  color: #8E8E93;
+  line-height: 1.6;
+}
+
+.link {
+  color: #007AFF;
+  font-weight: 700;
+}
+
+.agreement-hint {
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  opacity: 0.6;
+}
+
+/* 底部 */
+.footer {
+  padding-bottom: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16rpx;
+}
+
+.footer-line {
+  width: 96rpx;
+  height: 2rpx;
+  background: #F2F2F7;
+}
+
+.footer-text {
+  font-size: 20rpx;
+  color: #C7C7CC;
+  font-weight: 700;
+  letter-spacing: 4rpx;
+  font-style: italic;
+  text-transform: uppercase;
+}

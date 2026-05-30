@@ -1,0 +1,10 @@
+<view class="tabbar-shell safe-bottom">
+  <view class="tabbar-wrap">
+    <view wx:for="{{list}}" wx:key="pagePath" class="tabbar-item {{selected === index ? 'tabbar-item-active' : ''}}" data-index="{{index}}" bindtap="switchTab">
+      <view class="tabbar-icon-badge {{selected === index ? 'tabbar-icon-badge-active' : ''}}">
+        <image class="tabbar-icon" src="{{selected === index ? item.selectedIconPath : item.iconPath}}" mode="aspectFit" />
+      </view>
+      <text class="tabbar-text" style="color: {{selected === index ? selectedColor : color}};">{{item.text}}</text>
+    </view>
+  </view>
+</view>

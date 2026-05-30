@@ -1,6 +1,5 @@
 package com.xiaoyouyingyu.security;
 
-import com.xiaoyouyingyu.entity.User;
 import com.xiaoyouyingyu.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -13,7 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
-import java.util.List;
+import java.util.ArrayList;
 
 @Component
 @RequiredArgsConstructor
@@ -30,9 +29,16 @@ public class JwtFilter extends OncePerRequestFilter {
             if (jwtUtils.isValid(token)) {
                 String username = jwtUtils.getUsername(token);
                 String role = jwtUtils.getRole(token);
-                var auth = new UsernamePasswordAuthenticationToken(
-                        username, null, List.of(new SimpleGrantedAuthority("ROLE_" + role)));
-                userRepository.findByUsername(username).ifPresent(user -> auth.setDetails(user));
+                var authorities = new ArrayList<SimpleGrantedAuthority>();
+                authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
+                var userOpt = userRepository.findByUsername(username);
+                userOpt.ifPresent(user -> {
+                    if (user.isMembershipActive()) {
+                        authorities.add(new SimpleGrantedAuthority("ROLE_MEMBER"));
+                    }
+                });
+                var auth = new UsernamePasswordAuthenticationToken(username, null, authorities);
+                userOpt.ifPresent(auth::setDetails);
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
         }

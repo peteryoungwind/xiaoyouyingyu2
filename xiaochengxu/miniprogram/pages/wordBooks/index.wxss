@@ -1,0 +1,15 @@
+.page-title { font-size: 46rpx; font-weight: 800; color: #1D1D1F; }
+.page-subtitle { margin-top: 10rpx; margin-bottom: 28rpx; font-size: 26rpx; color: #6E6E73; }
+.loading, .empty { padding: 120rpx 20rpx; text-align: center; color: #8E8E93; font-size: 28rpx; }
+.empty-title { font-size: 32rpx; font-weight: 700; color: #1D1D1F; }
+.empty-desc { margin-top: 10rpx; font-size: 26rpx; color: #8E8E93; }
+.book-list { display: flex; flex-direction: column; gap: 22rpx; }
+.book-card { background: #FFFFFF; border: 2rpx solid #ECECF0; border-radius: 30rpx; padding: 30rpx; box-shadow: 0 12rpx 30rpx rgba(17, 24, 39, 0.04); }
+.book-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20rpx; }
+.book-name { font-size: 34rpx; font-weight: 800; color: #1D1D1F; }
+.book-desc { margin-top: 10rpx; font-size: 24rpx; line-height: 1.5; color: #6E6E73; }
+.book-arrow { font-size: 48rpx; color: #C7C7CC; line-height: 1; }
+.book-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14rpx; margin-top: 26rpx; }
+.stat { background: #F5F5F7; border-radius: 20rpx; padding: 16rpx 8rpx; text-align: center; }
+.stat text:first-child { display: block; font-size: 28rpx; font-weight: 800; color: #1D1D1F; }
+.stat text:last-child { display: block; margin-top: 4rpx; font-size: 20rpx; color: #8E8E93; }
