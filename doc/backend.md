@@ -248,6 +248,7 @@ src/main/java/com/xiaoyouyingyu/
 - 下一词查询时优先返回到期复习词，没有到期复习词时返回未学新词。
 - `KNOWN` 会累加连续认识次数，并按 1 天、3 天、7 天安排复习。
 - 连续 4 次 `KNOWN` 后状态变为 `MASTERED`，`nextReviewAt` 置空。
+- `FUZZY` 会累加模糊次数，将连续认识次数重置为 0，并安排次日复习。
 - `UNKNOWN` 会将连续认识次数重置为 0，并安排次日复习。
 
 ## Entity 说明

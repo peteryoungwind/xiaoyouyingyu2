@@ -6,7 +6,8 @@ Page({
   data: {
     id: null,
     word: null,
-    loading: true
+    loading: true,
+    submitting: false
   },
 
   onLoad(options) {
@@ -34,5 +35,19 @@ Page({
 
   playAudio(e) {
     audio.play(e.currentTarget.dataset.url);
+  },
+
+  answer(e) {
+    if (!this.data.word || this.data.submitting) return;
+    const result = e.currentTarget.dataset.result;
+    this.setData({ submitting: true });
+    api.submitWordAnswer(this.data.word.id, result).then(() => {
+      this.setData({ submitting: false });
+      wx.showToast({ title: '已记录', icon: 'success' });
+    }).catch(err => {
+      console.error('Submit word detail answer failed:', err);
+      this.setData({ submitting: false });
+      auth.handleWordPracticeDenied(err && err.message ? err.message : '提交失败');
+    });
   }
 });

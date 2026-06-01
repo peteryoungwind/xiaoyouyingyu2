@@ -53,7 +53,7 @@ Page({
     const result = e.currentTarget.dataset.result;
     this.setData({ submitting: true });
     api.submitWordAnswer(this.data.word.id, result).then(res => {
-      if (result === 'UNKNOWN') {
+      if (result !== 'KNOWN') {
         this.setData({
           progress: res.bookProgress || this.data.progress,
           submitting: false,

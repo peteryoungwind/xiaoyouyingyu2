@@ -245,7 +245,7 @@ export const api = {
     request(`/word-practice/books/${bookId}/next?difficulty=${difficulty}&limit=${limit}`, { direct: true }),
   getPracticeWord: (wordId: number) =>
     request(`/word-practice/words/${wordId}`, { direct: true }),
-  submitPracticeAnswer: (wordId: number, result: 'KNOWN' | 'UNKNOWN') =>
+  submitPracticeAnswer: (wordId: number, result: 'KNOWN' | 'FUZZY' | 'UNKNOWN') =>
     request(`/word-practice/words/${wordId}/answer`, { method: 'POST', body: JSON.stringify({ result }), direct: true }),
 
   // Admin - Redeem Codes

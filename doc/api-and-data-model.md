@@ -227,11 +227,12 @@ Authorization: Bearer <token>
 }
 ```
 
-`result` 可取 `KNOWN` 或 `UNKNOWN`。
+`result` 可取 `KNOWN`、`FUZZY` 或 `UNKNOWN`。
 
 复习规则：
 
 - `KNOWN`：连续认识次数加 1；第 1、2、3 次分别安排 1 天、3 天、7 天后复习；连续 4 次认识后标记为 `MASTERED`。
+- `FUZZY`：模糊次数加 1，连续认识次数重置为 0，次日复习。
 - `UNKNOWN`：连续认识次数重置为 0，次日复习。
 
 ### 单词音频生成
@@ -527,6 +528,7 @@ AI 创建单词本走后台任务：接口先创建单词本和 `word_generation
 | `difficulty` | VARCHAR(20) | 冗余记录练习时单词难度 |
 | `study_count` | INT | 总练习次数 |
 | `known_count` | INT | 认识次数 |
+| `fuzzy_count` | INT | 模糊次数 |
 | `unknown_count` | INT | 不认识次数 |
 | `consecutive_known_count` | INT | 连续认识次数 |
 | `first_studied_at` | DATETIME | 首次学习时间 |

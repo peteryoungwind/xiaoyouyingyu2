@@ -43,4 +43,19 @@ class WordPracticeRuleTest {
         assertEquals(1, progress.getUnknownCount());
         assertEquals(now.plusDays(1), progress.getNextReviewAt());
     }
+
+    @Test
+    void fuzzyAnswerResetsConsecutiveKnownCountWithoutIncreasingUnknownCount() {
+        UserWordProgress progress = new UserWordProgress();
+        progress.setConsecutiveKnownCount(2);
+        LocalDateTime now = LocalDateTime.of(2026, 5, 25, 10, 0);
+
+        WordPracticeRule.apply(progress, WordPracticeResult.FUZZY, now);
+
+        assertEquals(UserWordStatus.REVIEWING, progress.getStatus());
+        assertEquals(0, progress.getConsecutiveKnownCount());
+        assertEquals(1, progress.getFuzzyCount());
+        assertEquals(0, progress.getUnknownCount());
+        assertEquals(now.plusDays(1), progress.getNextReviewAt());
+    }
 }

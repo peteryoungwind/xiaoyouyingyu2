@@ -50,6 +50,9 @@ public class UserWordProgress {
     @Column(name = "unknown_count", nullable = false)
     private int unknownCount = 0;
 
+    @Column(name = "fuzzy_count", nullable = false)
+    private int fuzzyCount = 0;
+
     @Column(name = "consecutive_known_count", nullable = false)
     private int consecutiveKnownCount = 0;
 

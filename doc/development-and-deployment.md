@@ -1,6 +1,6 @@
 # 开发与部署说明
 
-> 最后更新：2026-05-25
+> 最后更新：2026-06-01
 
 ## 本地开发环境
 
@@ -49,6 +49,22 @@ npm run dev
 2. 确认 `project.config.json` 中的 AppID 与实际小程序一致。
 3. `miniprogram/app.js` 中 `develop` 指向 `http://localhost:8080/api`，用于微信开发者工具本地联调。
 4. `trial` 和 `release` 指向生产 API；如需真机调试本地后端，需改成手机可访问的局域网地址或测试域名。
+
+## 本地话题生成上下文脚本
+
+项目本地 Codex skill `$xiaoyou-speaking-topics` 使用：
+
+```bash
+python3 .codex/skills/xiaoyou-speaking-topics/scripts/export_topic_context.py
+```
+
+该脚本会读取 `TopicCategoryConstants` 分类，并请求本地后端 `http://localhost:8080/api/topics` 与 `/api/topics/{id}` 导出近期话题样本。
+
+注意：
+
+- 运行前需先启动后端服务。
+- 如后端不在默认地址，可设置 `XIAOYOU_API_BASE` 或使用 `--base-url`。
+- 在 Codex 沙箱网络禁用环境中，脚本可能无法从 Python 进程访问 `localhost`。此时脚本会返回 `error_type: "sandbox_network_disabled"`，需要在外部终端运行，或在 Codex 中批准该脚本的提权运行。
 
 ## 数据库初始化
 

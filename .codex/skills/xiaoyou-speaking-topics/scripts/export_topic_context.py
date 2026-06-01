@@ -5,8 +5,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
-import subprocess
 import sys
 from collections import Counter
 from datetime import date, timedelta
@@ -19,6 +19,22 @@ from urllib.request import Request, urlopen
 PROJECT_ROOT = Path(__file__).resolve().parents[4]
 CATEGORY_FILE = PROJECT_ROOT / "src/main/java/com/xiaoyouyingyu/config/TopicCategoryConstants.java"
 DEFAULT_API_BASE = "http://localhost:8080/api"
+
+
+class BackendApiError(RuntimeError):
+    error_type = "backend_api_error"
+
+    def __init__(self, message: str, hint: str | None = None):
+        super().__init__(message)
+        self.hint = hint
+
+
+class SandboxNetworkError(BackendApiError):
+    error_type = "sandbox_network_disabled"
+
+
+class BackendUnavailableError(BackendApiError):
+    error_type = "backend_unavailable"
 
 
 def read_text(path: Path) -> str:
@@ -55,34 +71,28 @@ def api_get(api_base: str, path: str, params: dict[str, object] | None = None) -
     url = f"{api_base.rstrip('/')}/{path.lstrip('/')}"
     if params:
         url = f"{url}?{urlencode(params)}"
-    try:
-        result = subprocess.run(
-            ["curl", "-s", "--max-time", "12", url],
-            check=True,
-            capture_output=True,
-            text=True,
-        )
-        if not result.stdout.strip():
-            raise RuntimeError(f"Empty response from local backend API for {url}")
-        return json.loads(result.stdout)
-    except FileNotFoundError:
-        pass
-    except subprocess.CalledProcessError as exc:
-        detail = (exc.stderr or exc.stdout or str(exc)).strip()
-        raise RuntimeError(f"Cannot query local backend API at {url}: {detail}") from exc
-    except json.JSONDecodeError as exc:
-        raise RuntimeError(f"Local backend API returned non-JSON for {url}: {result.stdout[:200]}") from exc
 
-    # Fallback for environments where Python socket access is allowed but curl is unavailable.
     request = Request(url, headers={"Accept": "application/json"})
     try:
         with urlopen(request, timeout=12) as response:
             return json.loads(response.read().decode("utf-8"))
     except HTTPError as exc:
         detail = exc.read().decode("utf-8", errors="replace").strip()
-        raise RuntimeError(f"Backend API returned HTTP {exc.code} for {url}: {detail}") from exc
+        raise BackendApiError(f"Backend API returned HTTP {exc.code} for {url}: {detail}") from exc
     except URLError as exc:
-        raise RuntimeError(f"Cannot reach local backend API at {api_base}: {exc.reason}") from exc
+        reason = exc.reason
+        if isinstance(reason, PermissionError):
+            raise SandboxNetworkError(
+                f"Network access is blocked for this script process while querying {url}: {reason}",
+                "The local backend may be running, but Codex sandbox networking is disabled for this Python process. "
+                "Run the script outside the sandbox or approve an escalated run for the local export script.",
+            ) from exc
+        raise BackendUnavailableError(
+            f"Cannot reach local backend API at {url}: {reason}",
+            "Start the local Xiaoyou backend service, check the port/base URL, or set XIAOYOU_API_BASE/--base-url.",
+        ) from exc
+    except json.JSONDecodeError as exc:
+        raise BackendApiError(f"Local backend API returned non-JSON for {url}: {exc}") from exc
 
 
 def fetch_topic_page(api_base: str, page: int, size: int) -> dict[str, object]:
@@ -171,19 +181,22 @@ def main() -> int:
     parser.add_argument("--json", action="store_true", help="Print compact JSON instead of readable text.")
     args = parser.parse_args()
 
-    import os
-
     api_base = args.base_url or os.getenv("XIAOYOU_API_BASE") or DEFAULT_API_BASE
     categories = extract_categories()
     try:
         data = summarize(fetch_topics(api_base, args.limit, args.page_size), categories)
         data["api_base"] = api_base
     except Exception as exc:
+        default_hint = (
+            "Start the local Xiaoyou backend service or set XIAOYOU_API_BASE/--base-url, then rerun. "
+            "If unavailable, use local code/schema context and tell the user the live backend sample was unavailable."
+        )
         fallback = {
             "project_root": str(PROJECT_ROOT),
             "categories": categories,
+            "error_type": getattr(exc, "error_type", "unknown_error"),
             "error": str(exc),
-            "hint": "Start the local Xiaoyou backend service or set XIAOYOU_API_BASE/--base-url, then rerun. If unavailable, use local code/schema context and tell the user the live backend sample was unavailable.",
+            "hint": getattr(exc, "hint", None) or default_hint,
         }
         print(json.dumps(fallback, ensure_ascii=False, indent=None if args.json else 2))
         return 2

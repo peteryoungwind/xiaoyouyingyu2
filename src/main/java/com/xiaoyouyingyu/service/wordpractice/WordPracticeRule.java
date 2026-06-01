@@ -30,7 +30,11 @@ public final class WordPracticeRule {
             return;
         }
 
-        progress.setUnknownCount(progress.getUnknownCount() + 1);
+        if (result == WordPracticeResult.FUZZY) {
+            progress.setFuzzyCount(progress.getFuzzyCount() + 1);
+        } else {
+            progress.setUnknownCount(progress.getUnknownCount() + 1);
+        }
         progress.setConsecutiveKnownCount(0);
         progress.setStatus(UserWordStatus.REVIEWING);
         progress.setNextReviewAt(now.plusDays(1));

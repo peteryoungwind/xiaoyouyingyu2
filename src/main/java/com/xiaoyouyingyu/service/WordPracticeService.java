@@ -154,6 +154,7 @@ public class WordPracticeService {
         response.put("studyCount", progress.getStudyCount());
         response.put("knownCount", progress.getKnownCount());
         response.put("unknownCount", progress.getUnknownCount());
+        response.put("fuzzyCount", progress.getFuzzyCount());
         response.put("consecutiveKnownCount", progress.getConsecutiveKnownCount());
         response.put("firstStudiedAt", progress.getFirstStudiedAt());
         response.put("lastPracticedAt", progress.getLastPracticedAt());
