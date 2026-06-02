@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI 对话页原型</title>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <main class="stage">
+      <nav class="prototype-nav">
+        <a href="../index.html">原型目录</a>
+        <a href="./01-ai-dialog-setup.html">查看准备页</a>
+      </nav>
+
+      <section class="phone" aria-label="AI 对话页">
+        <div class="status-bar">
+          <span>9:41</span>
+          <span>●●●  5G  ▰</span>
+        </div>
+
+        <div class="chat-page">
+          <header class="chat-header">
+            <button aria-label="返回">‹</button>
+            <div>
+              <h1>如何适应新环境</h1>
+              <p>教学 · 初级 · 剩余 23 · 1/12</p>
+            </div>
+            <button aria-label="重新选择">↻</button>
+          </header>
+
+          <section class="empty-prompt">
+            <strong>说第一句吧</strong>
+            <span>可以用英文，也可以先中英混合表达。</span>
+          </section>
+
+          <section class="message-list" aria-label="对话消息">
+            <article class="message user">
+              <p>I moved to a new city last week. I feel a little nervous.</p>
+            </article>
+
+            <article class="message assistant">
+              <div class="assistant-toolbar">
+                <button>▶ 播放</button>
+                <button>显示文字</button>
+              </div>
+              <div class="audio-wave" aria-hidden="true">
+                <span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+              <aside class="coach-note">
+                <strong>点评</strong>
+                <p>表达很清楚。可以把 “a little nervous” 换成更自然的 “a bit overwhelmed”。</p>
+                <b>I feel a bit overwhelmed, but I’m trying to settle in.</b>
+                <span>我有点不知所措，但正在努力适应。</span>
+              </aside>
+            </article>
+
+            <article class="message user compact">
+              <p>How can I make friends quickly?</p>
+            </article>
+
+            <article class="message assistant thinking">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <p>AI 思考中</p>
+            </article>
+          </section>
+
+          <footer class="composer">
+            <textarea placeholder="输入你想说的话..."></textarea>
+            <div class="composer-actions">
+              <button class="voice-button">按住说话</button>
+              <button class="send-button">发送</button>
+            </div>
+            <button class="restart-link">重新选择主题</button>
+          </footer>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

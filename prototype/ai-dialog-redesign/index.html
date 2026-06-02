@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI 对话页面重构原型</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="review-page">
+    <main class="review-shell">
+      <section class="review-hero">
+        <p class="eyebrow">Xiaoyou English Prototype</p>
+        <h1>AI 对话页面重构原型</h1>
+        <p>
+          依据 <code>doc/prd/ai-dialog-miniapp-requirements-20260602.md</code> 和现有
+          <code>pages/aiDialogSetup</code>、<code>pages/aiDialogChat</code> 功能范围制作。
+        </p>
+      </section>
+
+      <section class="review-grid" aria-label="原型页面">
+        <a class="review-card" href="./pages/01-ai-dialog-setup.html">
+          <span class="review-number">01</span>
+          <strong>AI 对话准备页</strong>
+          <span>模式、难度、主题选择与开始按钮。</span>
+        </a>
+        <a class="review-card" href="./pages/02-ai-dialog-chat.html">
+          <span class="review-number">02</span>
+          <strong>AI 对话页</strong>
+          <span>消息流、语音回复、隐藏文本、教学点评和底部输入。</span>
+        </a>
+      </section>
+
+      <section class="review-notes">
+        <h2>评审顺序</h2>
+        <ol>
+          <li>先看准备页，确认顶部主操作、分组节奏和主题列表密度。</li>
+          <li>再看对话页，确认消息气泡、音频操作和输入区是否足够顺手。</li>
+          <li>确认后再进入小程序 WXML/WXSS 实现，不改变现有接口和页面状态逻辑。</li>
+        </ol>
+      </section>
+    </main>
+  </body>
+</html>

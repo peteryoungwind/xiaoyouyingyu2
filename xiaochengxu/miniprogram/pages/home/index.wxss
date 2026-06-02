@@ -187,143 +187,208 @@
   margin-bottom: 44rpx;
 }
 
-.word-entry {
-  display: flex;
-  align-items: center;
-  gap: 22rpx;
-  background: #FFFFFF;
-  border: 2rpx solid #ECECF0;
-  border-radius: 28rpx;
-  padding: 24rpx;
+.study-entry-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14rpx;
   margin-bottom: 24rpx;
-  box-shadow: 0 12rpx 30rpx rgba(17, 24, 39, 0.04);
 }
 
-.word-entry-icon {
-  width: 76rpx;
-  height: 76rpx;
-  border-radius: 24rpx;
-  background: #E8F5E9;
-  color: #1B7F3A;
-  font-size: 28rpx;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.word-entry-copy {
-  flex: 1;
+.study-entry-item {
   min-width: 0;
+  height: 154rpx;
+  padding: 18rpx 8rpx 16rpx;
+  box-sizing: border-box;
+  border-radius: 30rpx;
+  background: rgba(255, 255, 255, 0.92);
+  border: 2rpx solid rgba(229, 229, 234, 0.86);
+  box-shadow: 0 10rpx 28rpx rgba(17, 24, 39, 0.035);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
 }
 
-.word-entry-title {
-  font-size: 30rpx;
-  line-height: 1.3;
-  font-weight: 800;
-  color: #1D1D1F;
+.study-entry-item:active {
+  transform: scale(0.98);
 }
 
-.word-entry-desc {
-  margin-top: 6rpx;
+.study-entry-icon {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 25rpx;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.study-entry-title {
+  width: 100%;
   font-size: 22rpx;
-  line-height: 1.5;
-  color: #6E6E73;
+  line-height: 1.25;
+  font-weight: 600;
+  color: #1D1D1F;
+  text-align: center;
+  white-space: nowrap;
 }
 
-.word-entry-action {
-  height: 60rpx;
-  padding: 0 24rpx;
-  border-radius: 18rpx;
-  background: #1D1D1F;
-  color: #FFFFFF;
-  font-size: 24rpx;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+.study-entry-item.word .study-entry-icon {
+  background: #EAF7EE;
+  color: #2F8F55;
 }
 
-.ai-dialog-entry {
-  display: flex;
-  align-items: center;
-  gap: 22rpx;
-  background: #EEF5FF;
-  border: 2rpx solid rgba(0, 122, 255, 0.14);
-  border-radius: 28rpx;
-  padding: 24rpx;
-  margin-bottom: 24rpx;
-  box-shadow: 0 12rpx 30rpx rgba(0, 122, 255, 0.06);
+.study-entry-item.dialog .study-entry-icon {
+  background: #EAF3FF;
+  color: #3D8BFF;
 }
 
-.ai-dialog-icon {
-  width: 76rpx;
-  height: 76rpx;
-  border-radius: 24rpx;
-  background: #007AFF;
-  color: #FFFFFF;
-  font-size: 26rpx;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+.study-entry-item.article .study-entry-icon {
+  background: #EAF8F3;
+  color: #25A47B;
 }
 
-.ai-dialog-action {
-  height: 60rpx;
-  padding: 0 24rpx;
-  border-radius: 18rpx;
-  background: #007AFF;
-  color: #FFFFFF;
-  font-size: 24rpx;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+.study-entry-item.listening .study-entry-icon {
+  background: #F1EDFF;
+  color: #7A68D8;
 }
 
-.daily-article-entry {
+.icon-book {
+  width: 38rpx;
+  height: 34rpx;
+  position: relative;
   display: flex;
-  align-items: center;
-  gap: 22rpx;
-  background: #F0FBF7;
-  border: 2rpx solid rgba(15, 157, 112, 0.16);
-  border-radius: 28rpx;
-  padding: 24rpx;
-  margin-bottom: 24rpx;
-  box-shadow: 0 12rpx 30rpx rgba(15, 157, 112, 0.05);
+  gap: 4rpx;
 }
 
-.daily-article-icon {
-  width: 76rpx;
-  height: 76rpx;
-  border-radius: 24rpx;
-  background: #0F9D70;
-  color: #FFFFFF;
-  font-size: 28rpx;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+.icon-book-left,
+.icon-book-right {
+  width: 18rpx;
+  height: 34rpx;
+  box-sizing: border-box;
+  border: 3rpx solid currentColor;
+  background: rgba(255, 255, 255, 0.32);
 }
 
-.daily-article-action {
-  height: 60rpx;
-  padding: 0 24rpx;
-  border-radius: 18rpx;
-  background: #0F9D70;
-  color: #FFFFFF;
-  font-size: 24rpx;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+.icon-book-left {
+  border-radius: 8rpx 3rpx 3rpx 8rpx;
+}
+
+.icon-book-right {
+  border-radius: 3rpx 8rpx 8rpx 3rpx;
+}
+
+.icon-chat {
+  width: 40rpx;
+  height: 34rpx;
+  box-sizing: border-box;
+  border: 3rpx solid currentColor;
+  border-radius: 15rpx;
+  position: relative;
+}
+
+.icon-chat::after {
+  content: "";
+  position: absolute;
+  right: 7rpx;
+  bottom: -7rpx;
+  width: 12rpx;
+  height: 12rpx;
+  box-sizing: border-box;
+  border-right: 3rpx solid currentColor;
+  border-bottom: 3rpx solid currentColor;
+  background: inherit;
+  transform: rotate(38deg);
+  border-radius: 0 0 4rpx 0;
+}
+
+.icon-chat-line {
+  position: absolute;
+  left: 9rpx;
+  height: 3rpx;
+  border-radius: 999rpx;
+  background: currentColor;
+  opacity: 0.72;
+}
+
+.icon-chat-line.long {
+  top: 11rpx;
+  width: 20rpx;
+}
+
+.icon-chat-line.short {
+  top: 20rpx;
+  width: 14rpx;
+}
+
+.icon-article {
+  width: 34rpx;
+  height: 40rpx;
+  box-sizing: border-box;
+  border: 3rpx solid currentColor;
+  border-radius: 9rpx;
+  position: relative;
+}
+
+.icon-article-line {
+  position: absolute;
+  left: 7rpx;
+  width: 19rpx;
+  height: 3rpx;
+  border-radius: 999rpx;
+  background: currentColor;
+  opacity: 0.72;
+}
+
+.icon-article-line.title-line {
+  top: 10rpx;
+}
+
+.icon-article-line:not(.title-line):not(.narrow) {
+  top: 19rpx;
+}
+
+.icon-article-line.narrow {
+  top: 28rpx;
+  width: 13rpx;
+}
+
+.icon-headphone {
+  width: 42rpx;
+  height: 40rpx;
+  position: relative;
+}
+
+.icon-headphone-band {
+  position: absolute;
+  top: 2rpx;
+  left: 5rpx;
+  width: 32rpx;
+  height: 30rpx;
+  box-sizing: border-box;
+  border: 3rpx solid currentColor;
+  border-bottom: 0;
+  border-radius: 22rpx 22rpx 0 0;
+}
+
+.icon-headphone-ear {
+  position: absolute;
+  bottom: 2rpx;
+  width: 10rpx;
+  height: 18rpx;
+  border-radius: 7rpx;
+  background: currentColor;
+  opacity: 0.78;
+}
+
+.icon-headphone-ear.left {
+  left: 3rpx;
+}
+
+.icon-headphone-ear.right {
+  right: 3rpx;
 }
 
 .overview-card {

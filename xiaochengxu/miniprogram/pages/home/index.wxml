@@ -11,31 +11,45 @@
     </view>
   </view>
 
-  <view class="word-entry" bindtap="goToWordPractice">
-    <view class="word-entry-icon">Aa</view>
-    <view class="word-entry-copy">
-      <view class="word-entry-title">单词练习</view>
-      <view class="word-entry-desc">按记忆曲线复习主题词汇</view>
+  <view class="study-entry-grid">
+    <view class="study-entry-item word" bindtap="goToWordPractice">
+      <view class="study-entry-icon">
+        <view class="icon-book">
+          <view class="icon-book-left"></view>
+          <view class="icon-book-right"></view>
+        </view>
+      </view>
+      <view class="study-entry-title">单词练习</view>
     </view>
-    <view class="word-entry-action">开始</view>
-  </view>
-
-  <view class="ai-dialog-entry" bindtap="goToAiDialog">
-    <view class="ai-dialog-icon">AI</view>
-    <view class="word-entry-copy">
-      <view class="word-entry-title">AI 对话</view>
-      <view class="word-entry-desc">围绕主题进行语音/文字回合练习</view>
+    <view class="study-entry-item dialog" bindtap="goToAiDialog">
+      <view class="study-entry-icon">
+        <view class="icon-chat">
+          <view class="icon-chat-line long"></view>
+          <view class="icon-chat-line short"></view>
+        </view>
+      </view>
+      <view class="study-entry-title">AI 对话</view>
     </view>
-    <view class="ai-dialog-action">进入</view>
-  </view>
-
-  <view class="daily-article-entry" bindtap="goToDailyArticles">
-    <view class="daily-article-icon">外</view>
-    <view class="word-entry-copy">
-      <view class="word-entry-title">每日外刊</view>
-      <view class="word-entry-desc">听音频、读正文、看逐段翻译</view>
+    <view class="study-entry-item article" bindtap="goToDailyArticles">
+      <view class="study-entry-icon">
+        <view class="icon-article">
+          <view class="icon-article-line title-line"></view>
+          <view class="icon-article-line"></view>
+          <view class="icon-article-line narrow"></view>
+        </view>
+      </view>
+      <view class="study-entry-title">每日外刊</view>
     </view>
-    <view class="daily-article-action">阅读</view>
+    <view class="study-entry-item listening" bindtap="goToListeningPractice">
+      <view class="study-entry-icon">
+        <view class="icon-headphone">
+          <view class="icon-headphone-band"></view>
+          <view class="icon-headphone-ear left"></view>
+          <view class="icon-headphone-ear right"></view>
+        </view>
+      </view>
+      <view class="study-entry-title">听力练习</view>
+    </view>
   </view>
 
   <view class="overview-grid">

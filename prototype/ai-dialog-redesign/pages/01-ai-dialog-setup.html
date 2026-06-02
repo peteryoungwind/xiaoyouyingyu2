@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI 对话准备页原型</title>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <main class="stage">
+      <nav class="prototype-nav">
+        <a href="../index.html">原型目录</a>
+        <a href="./02-ai-dialog-chat.html">查看对话页</a>
+      </nav>
+
+      <section class="phone" aria-label="AI 对话准备页">
+        <div class="status-bar">
+          <span>9:41</span>
+          <span>●●●  5G  ▰</span>
+        </div>
+
+        <div class="setup-page">
+          <header class="setup-hero">
+            <p class="eyebrow">AI Dialog</p>
+            <h1>开始一段主题对话</h1>
+            <p>选择模式、难度和主题，然后用文字或语音开始练习。</p>
+            <button class="primary-button">开始对话</button>
+          </header>
+
+          <section class="quota-strip" aria-label="额度">
+            <div>
+              <span>今日剩余</span>
+              <strong>24 轮</strong>
+            </div>
+            <div>
+              <span>本次最多</span>
+              <strong>12 轮</strong>
+            </div>
+          </section>
+
+          <section class="control-card">
+            <div class="section-title">模式</div>
+            <div class="segmented">
+              <button class="active">教学模式</button>
+              <button>练习模式</button>
+            </div>
+            <p class="hint">每轮包含英文回复、中文点评和优化表达。</p>
+          </section>
+
+          <section class="control-card">
+            <div class="section-title">难度</div>
+            <div class="segmented">
+              <button class="active">初级</button>
+              <button>进阶</button>
+            </div>
+          </section>
+
+          <section class="control-card topic-card">
+            <div class="section-title">主题</div>
+            <div class="segmented">
+              <button class="active">已有主题</button>
+              <button>自定义</button>
+            </div>
+
+            <div class="search-field">
+              <span aria-hidden="true">⌕</span>
+              <input value="" placeholder="搜索主题" />
+              <button>搜索</button>
+            </div>
+
+            <div class="list-header">
+              <span>最近 5 条主题</span>
+              <span>已选 1 个</span>
+            </div>
+
+            <article class="topic-option selected">
+              <div>
+                <h2>如何适应新环境</h2>
+                <p>Adjusting to a New Environment</p>
+                <span>生活习惯</span>
+              </div>
+              <b>✓</b>
+            </article>
+
+            <article class="topic-option">
+              <div>
+                <h2>夸奖与鼓励</h2>
+                <p>Compliments and Encouragement</p>
+                <span>情绪心理</span>
+              </div>
+            </article>
+
+            <article class="topic-option">
+              <div>
+                <h2>周末计划</h2>
+                <p>Weekend Plans</p>
+                <span>日常生活</span>
+              </div>
+            </article>
+          </section>
+
+          <section class="state-preview">
+            <div>
+              <strong>自定义主题状态</strong>
+              <p>切换为自定义后展示 100 字以内输入区，未填写时按钮置灰。</p>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

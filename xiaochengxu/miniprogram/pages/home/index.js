@@ -145,6 +145,13 @@ Page({
     wx.navigateTo({ url: '/pages/dailyArticles/index' });
   },
 
+  goToListeningPractice() {
+    wx.showToast({
+      title: '听力练习暂未开放',
+      icon: 'none'
+    });
+  },
+
   goToLogin() {
     wx.navigateTo({ url: '/pages/login/index' });
   },
