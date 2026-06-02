@@ -5,6 +5,8 @@
     <view class="subtitle">选择模式、难度和主题，然后用文字或语音开始练习。</view>
   </view>
 
+  <button class="top-start-btn" bindtap="startDialog" disabled="{{configLoading || (config && !config.enabled)}}">开始对话</button>
+
   <view wx:if="{{error}}" class="notice">{{error}}</view>
 
   <view class="panel">
@@ -36,6 +38,8 @@
         <input value="{{keyword}}" bindinput="onKeywordInput" bindconfirm="onSearch" confirm-type="search" placeholder="搜索主题" placeholder-class="placeholder" />
         <view class="search-btn" bindtap="onSearch">搜索</view>
       </view>
+
+      <view class="list-guide">{{searched ? '搜索结果' : '最近 5 条主题'}}</view>
       <view wx:if="{{topics.length === 0 && !topicsLoading}}" class="empty">暂无主题，可切换为自定义主题。</view>
       <view wx:for="{{topics}}" wx:key="id" class="topic-item {{topicId === item.id ? 'selected' : ''}}" bindtap="selectTopic" data-id="{{item.id}}">
         <view class="topic-main">
@@ -59,5 +63,4 @@
     <text>单次最多：{{config.maxRoundsPerSession}} 轮</text>
   </view>
 
-  <button class="start-btn" bindtap="startDialog" disabled="{{configLoading || (config && !config.enabled)}}">开始对话</button>
 </view>

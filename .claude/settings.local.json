@@ -7,7 +7,9 @@
       "Bash(done)",
       "Bash(cd frontend:*)",
       "Bash(node -v && npm -v)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "WebFetch(domain:mp.weixin.qq.com)",
+      "WebSearch"
     ]
   }
 }

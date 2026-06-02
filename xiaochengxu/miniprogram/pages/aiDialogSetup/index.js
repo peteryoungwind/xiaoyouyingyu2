@@ -16,8 +16,9 @@ Page({
     keyword: '',
     topics: [],
     page: 0,
-    size: 10,
+    size: 5,
     hasMore: true,
+    searched: false,
     error: ''
   },
 
@@ -48,11 +49,12 @@ Page({
   loadTopics(reset) {
     if (this.data.topicsLoading) return;
     var page = reset ? 0 : this.data.page;
+    var keyword = this.data.keyword.trim();
     this.setData({ topicsLoading: true });
     api.getTopics({
       page: page,
-      size: this.data.size,
-      keyword: this.data.keyword
+      size: keyword ? 10 : 5,
+      keyword: keyword
     }).then(res => {
       var list = (res.content || []).map(t => {
         var tags = util.parseTags(t.tags);
@@ -70,7 +72,7 @@ Page({
       this.setData({
         topics: reset ? list : this.data.topics.concat(list),
         page: page + 1,
-        hasMore: (page + 1) < (res.totalPages || 0),
+        hasMore: !!keyword && (page + 1) < (res.totalPages || 0),
         selectedTopic: selected,
         topicsLoading: false
       });
@@ -96,6 +98,7 @@ Page({
   },
 
   onSearch() {
+    this.setData({ searched: !!this.data.keyword.trim() });
     this.loadTopics(true);
   },
 
