@@ -201,6 +201,23 @@ function getWordBookWords(bookId, difficulty) {
   return http.get('/word-practice/books/' + bookId + '/words?difficulty=' + (difficulty || 'BEGINNER'));
 }
 
+// ==================== Daily Articles ====================
+
+function getDailyArticles(params) {
+  var parts = [];
+  if (params) {
+    if (params.read !== undefined) parts.push('read=' + params.read);
+    if (params.page !== undefined) parts.push('page=' + params.page);
+    if (params.size !== undefined) parts.push('size=' + params.size);
+  }
+  var query = parts.length > 0 ? '?' + parts.join('&') : '';
+  return http.get('/daily-articles' + query);
+}
+
+function getDailyArticle(id) {
+  return http.get('/daily-articles/' + id);
+}
+
 module.exports = {
   // Auth
   login: login,
@@ -240,5 +257,8 @@ module.exports = {
   getWordDetail: getWordDetail,
   submitWordAnswer: submitWordAnswer,
   getWordBookProgress: getWordBookProgress,
-  getWordBookWords: getWordBookWords
+  getWordBookWords: getWordBookWords,
+  // Daily Articles
+  getDailyArticles: getDailyArticles,
+  getDailyArticle: getDailyArticle
 };

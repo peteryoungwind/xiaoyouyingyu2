@@ -29,6 +29,15 @@
     <view class="ai-dialog-action">进入</view>
   </view>
 
+  <view class="daily-article-entry" bindtap="goToDailyArticles">
+    <view class="daily-article-icon">外</view>
+    <view class="word-entry-copy">
+      <view class="word-entry-title">每日外刊</view>
+      <view class="word-entry-desc">听音频、读正文、看逐段翻译</view>
+    </view>
+    <view class="daily-article-action">阅读</view>
+  </view>
+
   <view class="overview-grid">
     <view class="overview-card">
       <view class="overview-label">主题总数</view>

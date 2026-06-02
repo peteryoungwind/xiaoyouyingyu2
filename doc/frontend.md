@@ -107,6 +107,7 @@ npm run start
 | `/learning-center/topic/[id]` | `src/app/learning-center/topic/[id]/page.tsx` | 单主题学习中心，AI 生成热身、词汇、表达、任务、点评 |
 | `/admin` | `src/app/admin/page.tsx` | 管理后台，AI 生成、手动创建、主题管理、用户管理、模型管理 |
 | `/admin/word-books` | `src/app/admin/word-books/page.tsx` | 单词训练后台，单词本、单词、AI 场景生成 |
+| `/admin/daily-articles` | `src/app/admin/daily-articles/page.tsx` | 每日外刊后台，库存维护、音频上传和今日推送 |
 | `/users` | `src/app/users/page.tsx` | 用户管理与会员操作 |
 | `/redeem-codes` | `src/app/redeem-codes/page.tsx` | 卡密生成、查询、禁用 |
 | `/settings` | `src/app/settings/page.tsx` | 修改密码、会员状态、卡密兑换、开通联系信息 |
@@ -180,6 +181,18 @@ npm run start
 
 - 非会员用户直接展示开通/兑换入口。
 
+## 每日外刊管理后台
+
+每日外刊的用户使用端在微信小程序，PC 前端不提供普通用户阅读列表和详情页。
+
+PC 管理端：
+
+- `/admin/daily-articles` 在侧边栏中显示为“外刊管理”，仅管理员可见。
+- 左侧支持按状态和是否已推送筛选外刊库存。
+- 右侧表单支持新增/编辑英文标题、中文标题、音频 URL、状态、段落、总结、词汇 JSON 和句型 JSON。
+- 支持上传音频文件，上传成功后把返回的 `/uploads/daily-articles/...` URL 写回音频 URL。
+- 支持启用、禁用、删除外刊，以及手动触发“生成今日外刊”。
+
 ## 管理后台功能
 
 `/admin` 有 5 个 tab：
@@ -222,6 +235,17 @@ npm run start
 - 管理后台创建口语主题成功后，会弹窗询问是否补充该主题相关词汇，支持选择目标单词本、初级/进阶数量和 AI 模型。
 
 新增接口封装位于 `frontend/src/lib/api.ts`，包括管理端单词本 API、单词 API、批量操作 API，以及用户端单词练习 API。
+
+每日外刊 PC 管理接口也位于 `frontend/src/lib/api.ts`：
+
+- `getAdminDailyArticles(params)`
+- `getAdminDailyArticle(id)`
+- `createDailyArticle(data)`
+- `updateDailyArticle(id, data)`
+- `updateDailyArticleStatus(id, status)`
+- `deleteDailyArticle(id)`
+- `publishTodayDailyArticle()`
+- `uploadDailyArticleAudio(file)`
 
 AI 对话配置接口也位于 `frontend/src/lib/api.ts`：
 

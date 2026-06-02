@@ -191,6 +191,37 @@ src/main/java/com/xiaoyouyingyu/
 
 权限由 `SecurityConfig` 要求有效登录态，控制器内统一读取并校验用户名；登录用户均可访问，不限制会员状态。
 
+### `DailyArticleController`
+
+路径前缀：`/api/daily-articles`
+
+负责用户端每日外刊功能：
+
+- 分页查询已推送外刊，支持 `read=true/false` 筛选已读或未读。
+- 查询外刊详情，返回音频、段落、总结、词汇和句型。
+- 用户进入详情时自动写入阅读记录，同一用户同一外刊只记录一次。
+
+权限：
+
+- 登录用户均可访问，不限制会员状态。
+- 非管理员不能访问未推送外刊。
+
+### `AdminDailyArticleController`
+
+路径前缀：`/api/admin/daily-articles`
+
+负责每日外刊管理：
+
+- 管理端分页查询全部外刊，支持按状态和是否已推送筛选。
+- 新增、编辑、删除外刊。
+- 更新外刊状态：`DRAFT`、`ENABLED`、`DISABLED`。
+- 上传音频文件到 `{app.upload.dir}/daily-articles/`，保存并返回 `/uploads/daily-articles/...` URL。
+- 手动触发今日外刊发布。
+
+权限：
+
+- 继承 `/api/admin/**` 规则，仅管理员可访问。
+
 ## Service 说明
 
 ### `AiService`
@@ -258,6 +289,19 @@ src/main/java/com/xiaoyouyingyu/
 
 ### `WordBookService` / `WordService` / `WordGenerationService`
 
+### `DailyArticleService`
+
+每日外刊核心业务服务：
+
+- `listForUser`：按已读/未读筛选已发布外刊。
+- `getUserDetail`：校验发布状态、返回详情并自动标记已读。
+- `listForAdmin` / `getAdminDetail`：管理端查看库存。
+- `create` / `update` / `changeStatus` / `delete`：维护主表和段落表。
+- `publishToday`：定时任务和手动触发共用的发布方法；若今日已有外刊或无候选外刊，会返回明确提示并不产生错误数据。
+- `uploadAudio`：保存音频文件并返回静态资源 URL。
+
+`DailyArticlePublishScheduler` 每天 `Asia/Shanghai` 06:00 调用 `publishToday`。当前通过单实例 `synchronized` 避免并发重复发布；多实例部署时建议增加数据库唯一约束或分布式锁。
+
 负责单词练习管理端业务：
 
 - `WordBookService`：单词本 CRUD、发布/下架、软删除和统计。
@@ -322,6 +366,9 @@ src/main/java/com/xiaoyouyingyu/
 | `WordTopicRepository` | 单词来源主题关联去重与展示 |
 | `UserWordProgressRepository` | 用户练习进度、到期复习词、进度统计 |
 | `WordGenerationTaskRepository` | 后台生成任务列表和任务状态持久化 |
+| `DailyArticleRepository` | 用户端已发布外刊列表、管理端筛选、今日发布检查和候选外刊查询 |
+| `DailyArticleParagraphRepository` | 按外刊 ID 查询、统计和替换段落 |
+| `DailyArticleReadRepository` | 用户阅读记录去重和删除 |
 
 ## 认证与授权
 
@@ -353,6 +400,7 @@ src/main/java/com/xiaoyouyingyu/
 - `/api/admin/**`：仅管理员。
 - `/api/learning/**`：会员、管理员或动态会员角色。
 - `/api/word-practice/**`：要求登录，由控制器读取并校验用户名；登录用户可用，不限制会员状态。
+- `/api/daily-articles/**`：要求登录；用户端只能读取已推送外刊，管理员可通过管理接口查看未推送内容。
 - `/uploads/**`：公开读取，用于小程序和 PC 前端播放本地音频。
 - 其他接口：要求登录。
 
@@ -373,6 +421,8 @@ src/main/java/com/xiaoyouyingyu/
 | `app.upload.dir` | 本地上传/音频保存目录，默认 `uploads` |
 
 单词音频保存路径以单词本为维度组织：`{app.upload.dir}/word-audio/{wordBookId}/{wordId}/`，对外 URL 为 `/uploads/word-audio/{wordBookId}/{wordId}/...`。
+
+每日外刊音频保存路径为 `{app.upload.dir}/daily-articles/`，对外 URL 为 `/uploads/daily-articles/...`。
 
 安全建议：
 

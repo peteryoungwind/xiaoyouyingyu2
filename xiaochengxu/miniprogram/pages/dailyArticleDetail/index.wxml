@@ -1,0 +1,55 @@
+<view class="page-container safe-bottom detail-page">
+  <view wx:if="{{loading}}" class="loading-wrap">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <view wx:elif="{{error}}" class="empty-state">
+    <view class="empty-icon">!</view>
+    <view class="empty-title">外刊不存在</view>
+    <view class="empty-desc">{{error}}</view>
+    <button class="retry-btn" bindtap="retry">重试</button>
+  </view>
+
+  <view wx:else>
+    <view class="article-hero">
+      <view class="article-date">{{article.publishedDate}}</view>
+      <view class="article-title">{{article.title}}</view>
+      <view class="article-title-zh" wx:if="{{article.titleZh}}">{{article.titleZh}}</view>
+      <view class="hero-actions">
+        <view wx:if="{{article.audioUrl}}" class="audio-btn" bindtap="playAudio">播放音频</view>
+        <view class="translate-btn {{showZh ? 'translate-btn-on' : ''}}" bindtap="toggleZh">{{showZh ? '隐藏中文' : '中文翻译'}}</view>
+      </view>
+    </view>
+
+    <view class="content-card">
+      <view wx:for="{{paragraphs}}" wx:key="id" class="paragraph">
+        <view class="paragraph-en" wx:if="{{item.contentEn}}">{{item.contentEn}}</view>
+        <view class="paragraph-zh" wx:if="{{showZh && item.contentZh}}">{{item.contentZh}}</view>
+      </view>
+    </view>
+
+    <view wx:if="{{article.summary}}" class="study-section">
+      <view class="section-title">文章总结</view>
+      <view class="summary-text">{{article.summary}}</view>
+    </view>
+
+    <view wx:if="{{vocabulary.length > 0}}" class="study-section">
+      <view class="section-title">重点词汇</view>
+      <view wx:for="{{vocabulary}}" wx:key="title" class="study-item">
+        <view class="study-title">{{item.title}}</view>
+        <view class="study-zh" wx:if="{{item.zh}}">{{item.zh}}</view>
+        <view class="study-example" wx:if="{{item.example}}">{{item.example}}</view>
+      </view>
+    </view>
+
+    <view wx:if="{{expressions.length > 0}}" class="study-section">
+      <view class="section-title">表达句型</view>
+      <view wx:for="{{expressions}}" wx:key="title" class="study-item">
+        <view class="study-title">{{item.title}}</view>
+        <view class="study-zh" wx:if="{{item.zh}}">{{item.zh}}</view>
+        <view class="study-example" wx:if="{{item.example}}">{{item.example}}</view>
+      </view>
+    </view>
+  </view>
+</view>

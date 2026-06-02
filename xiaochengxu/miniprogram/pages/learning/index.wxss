@@ -88,6 +88,52 @@
   flex-shrink: 0;
 }
 
+.daily-article-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24rpx;
+  background: #F0FBF7;
+  border: 2rpx solid rgba(15, 157, 112, 0.16);
+  border-radius: 30rpx;
+  padding: 30rpx;
+  margin-bottom: 28rpx;
+}
+
+.daily-article-title {
+  font-size: 34rpx;
+  line-height: 1.3;
+  font-weight: 800;
+  color: #1D1D1F;
+}
+
+.daily-article-desc {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  line-height: 1.5;
+  color: #3C695D;
+}
+
+.daily-article-btn {
+  height: 64rpx;
+  padding: 0 26rpx;
+  border-radius: 20rpx;
+  background: #0F9D70;
+  color: #FFFFFF;
+  font-size: 24rpx;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.daily-article-outline {
+  color: #0F9D70;
+  border: 2rpx solid rgba(15, 157, 112, 0.28);
+  background: #F0FBF7;
+}
+
 .stats-card {
   background: #FFFFFF; border-radius: 28rpx; padding: 40rpx;
   margin-bottom: 32rpx; display: flex; align-items: center; justify-content: center;

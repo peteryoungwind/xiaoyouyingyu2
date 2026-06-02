@@ -163,6 +163,126 @@ Authorization: Bearer <token>
 
 前端和小程序需要再解析 `content` 中的 JSON 字符串。
 
+## 每日外刊接口
+
+### 用户端
+
+路径前缀：`/api/daily-articles`
+
+权限：登录用户。
+
+| 方法 | 路径 | 说明 |
+| --- | --- | --- |
+| GET | `` | 分页查询已推送外刊，支持未读/已读 |
+| GET | `/{id}` | 查询外刊详情，并自动标记当前用户已读 |
+
+列表参数：
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `read` | boolean | `false` 查询未读，`true` 查询已读；默认 `false` |
+| `page` | number | 页码，从 0 开始，默认 0 |
+| `size` | number | 每页数量，默认 10 |
+
+列表项响应：
+
+```json
+{
+  "id": 1,
+  "title": "A New Way to Travel",
+  "titleZh": "旅行的新方式",
+  "publishedDate": "2026-06-02",
+  "read": false
+}
+```
+
+详情响应：
+
+```json
+{
+  "id": 1,
+  "title": "A New Way to Travel",
+  "titleZh": "旅行的新方式",
+  "audioUrl": "/uploads/daily-articles/example.mp3",
+  "summary": "文章总结",
+  "vocabulary": "[{\"word\":\"route\",\"zh\":\"路线\"}]",
+  "expressions": "[{\"template\":\"I would rather...\",\"zh\":\"我宁愿……\"}]",
+  "publishedDate": "2026-06-02",
+  "read": true,
+  "paragraphs": [
+    {
+      "id": 1,
+      "sortOrder": 1,
+      "contentEn": "English paragraph.",
+      "contentZh": "中文翻译。"
+    }
+  ]
+}
+```
+
+未登录访问返回 `401`。非管理员访问未推送外刊返回 `404`。
+
+### 管理端
+
+路径前缀：`/api/admin/daily-articles`
+
+权限：管理员。
+
+| 方法 | 路径 | 说明 |
+| --- | --- | --- |
+| GET | `` | 管理端分页查询外刊库存 |
+| GET | `/{id}` | 查询外刊详情 |
+| POST | `` | 新增外刊 |
+| PUT | `/{id}` | 更新外刊 |
+| PATCH | `/{id}/status` | 更新状态 |
+| PATCH | `/{id}/enable` | 启用 |
+| PATCH | `/{id}/disable` | 禁用 |
+| DELETE | `/{id}` | 删除外刊 |
+| POST | `/upload-audio` | 上传音频文件 |
+| POST | `/publish-today` | 手动触发今日外刊 |
+
+管理端列表参数：
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `status` | string | 可选：`DRAFT`、`ENABLED`、`DISABLED` |
+| `published` | boolean | 可选：是否已推送 |
+| `page` | number | 页码，从 0 开始，默认 0 |
+| `size` | number | 每页数量，默认 20 |
+
+保存请求：
+
+```json
+{
+  "title": "A New Way to Travel",
+  "titleZh": "旅行的新方式",
+  "audioUrl": "/uploads/daily-articles/example.mp3",
+  "summary": "文章总结",
+  "vocabulary": "[{\"word\":\"route\",\"zh\":\"路线\"}]",
+  "expressions": "[{\"template\":\"I would rather...\",\"zh\":\"我宁愿……\"}]",
+  "status": "ENABLED",
+  "paragraphs": [
+    {
+      "sortOrder": 1,
+      "contentEn": "English paragraph.",
+      "contentZh": "中文翻译。"
+    }
+  ]
+}
+```
+
+手动发布响应：
+
+```json
+{
+  "message": "今日外刊已生成",
+  "articleId": 1,
+  "publishedDate": "2026-06-02"
+}
+```
+
+当今日已有外刊时返回 `message = "今日外刊已存在"`；没有启用且未推送候选外刊时返回 `message = "没有可推送的外刊"`。
+
 ## AI 对话接口
 
 路径前缀：`/api/ai-dialog`
@@ -649,6 +769,47 @@ AI 创建单词本走后台任务：接口先创建单词本和 `word_generation
 | `updated_at` | DATETIME | 更新时间 |
 
 唯一约束：`user_id + word_id`。
+
+### `daily_articles`
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `id` | BIGINT | 主键 |
+| `title` | VARCHAR(300) | 英文标题 |
+| `title_zh` | VARCHAR(300) | 中文标题 |
+| `audio_url` | VARCHAR(1000) | 音频 URL，支持外部 URL 或上传后的 `/uploads/...` |
+| `summary` | TEXT | 文章总结 |
+| `vocabulary` | JSON | 重点词汇 JSON 字符串 |
+| `expressions` | JSON | 表达句型 JSON 字符串 |
+| `status` | VARCHAR(20) | `DRAFT`、`ENABLED`、`DISABLED` |
+| `published_date` | DATE | 发布日期；为空表示未推送 |
+| `created_at` | DATETIME | 创建时间 |
+| `updated_at` | DATETIME | 更新时间 |
+
+索引：`published_date`、`status + published_date`。
+
+### `daily_article_paragraphs`
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `id` | BIGINT | 主键 |
+| `article_id` | BIGINT | 外刊 ID |
+| `sort_order` | INT | 段落顺序，从 1 开始 |
+| `content_en` | TEXT | 英文正文段落 |
+| `content_zh` | TEXT | 中文翻译 |
+
+索引：`article_id + sort_order`。
+
+### `daily_article_reads`
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `id` | BIGINT | 主键 |
+| `article_id` | BIGINT | 外刊 ID |
+| `user_id` | BIGINT | 用户 ID |
+| `read_at` | DATETIME | 首次阅读时间 |
+
+唯一约束：`article_id + user_id`，用于避免重复阅读记录。
 
 ## 固定话题分类
 

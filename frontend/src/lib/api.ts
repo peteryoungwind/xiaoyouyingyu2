@@ -78,6 +78,42 @@ async function request(url: string, options?: RequestInitOptions) {
   return data;
 }
 
+async function upload(url: string, file: File, fieldName = 'file', options?: RequestInitOptions) {
+  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+  const headers: Record<string, string> = {};
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+
+  const body = new FormData();
+  body.append(fieldName, file);
+
+  const { direct, ...fetchOptions } = options || {};
+  const base = direct ? BACKEND_BASE : API_BASE;
+
+  let res: Response;
+  try {
+    res = await fetch(`${base}${url}`, { ...fetchOptions, method: 'POST', body, headers: { ...headers, ...fetchOptions?.headers } });
+  } catch {
+    throw new Error('服务连接失败，请稍后重试');
+  }
+
+  const text = await res.text();
+  let data: any = null;
+  if (text) {
+    try {
+      data = JSON.parse(text);
+    } catch {
+      data = null;
+    }
+  }
+
+  if (!res.ok) {
+    const message = data?.error || data?.message || text || `请求失败（${res.status}）`;
+    throw new ApiError(message, { status: res.status });
+  }
+
+  return data;
+}
+
 export const api = {
   // Auth
   login: (data: { username: string; password: string }) =>
@@ -122,6 +158,24 @@ export const api = {
   getStats: () => request('/topics/stats'),
   getCalendar: (year: number, month: number) =>
     request(`/topics/calendar?year=${year}&month=${month}`),
+
+  // Admin - Daily Articles
+  getAdminDailyArticles: (params: Record<string, string> = {}) =>
+    request(`/admin/daily-articles?${new URLSearchParams(params)}`),
+  getAdminDailyArticle: (id: number) =>
+    request(`/admin/daily-articles/${id}`),
+  createDailyArticle: (data: any) =>
+    request('/admin/daily-articles', { method: 'POST', body: JSON.stringify(data) }),
+  updateDailyArticle: (id: number, data: any) =>
+    request(`/admin/daily-articles/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+  updateDailyArticleStatus: (id: number, status: string) =>
+    request(`/admin/daily-articles/${id}/status`, { method: 'PATCH', body: JSON.stringify({ status }) }),
+  deleteDailyArticle: (id: number) =>
+    request(`/admin/daily-articles/${id}`, { method: 'DELETE' }),
+  publishTodayDailyArticle: () =>
+    request('/admin/daily-articles/publish-today', { method: 'POST' }),
+  uploadDailyArticleAudio: (file: File) =>
+    upload('/admin/daily-articles/upload-audio', file),
 
   // Admin - Topics
   createTopic: (data: any) =>

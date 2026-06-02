@@ -1,0 +1,47 @@
+<view class="page-container safe-bottom daily-page">
+  <view class="header-card">
+    <view class="header-label">Daily Articles</view>
+    <view class="header-title">每日外刊</view>
+    <view class="header-desc">听一段音频，读一篇短文，积累今天的表达。</view>
+  </view>
+
+  <view class="tabs">
+    <view class="tab {{!read ? 'tab-active' : ''}}" bindtap="switchTab" data-read="false">未读</view>
+    <view class="tab {{read ? 'tab-active' : ''}}" bindtap="switchTab" data-read="true">已读</view>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading-wrap">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <view wx:elif="{{error}}" class="empty-state">
+    <view class="empty-icon">!</view>
+    <view class="empty-title">加载失败</view>
+    <view class="empty-desc">{{error}}</view>
+    <button class="retry-btn" bindtap="retry">重试</button>
+  </view>
+
+  <view wx:elif="{{articles.length === 0}}" class="empty-state">
+    <view class="empty-icon">阅</view>
+    <view class="empty-title">{{read ? '暂无已读外刊' : '暂无未读外刊'}}</view>
+    <view class="empty-desc">{{read ? '读过的外刊会出现在这里' : '今天还没有新的未读外刊'}}</view>
+  </view>
+
+  <view wx:else class="article-list">
+    <view wx:for="{{articles}}" wx:key="id" class="article-card" bindtap="goToDetail" data-id="{{item.id}}">
+      <view class="article-main">
+        <view class="article-date">{{item.publishedDate}}</view>
+        <view class="article-title">{{item.title}}</view>
+        <view class="article-title-zh" wx:if="{{item.titleZh}}">{{item.titleZh}}</view>
+      </view>
+      <view class="article-arrow">›</view>
+    </view>
+  </view>
+
+  <view wx:if="{{loadingMore}}" class="loading-more">
+    <view class="loading-spinner-sm"></view>
+    <text>加载更多...</text>
+  </view>
+  <view wx:elif="{{!hasMore && articles.length > 0}}" class="no-more">没有更多了</view>
+</view>

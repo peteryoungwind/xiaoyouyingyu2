@@ -13,17 +13,19 @@
   - `doc/repository-overview.md`
   - `doc/backend.md`
   - `doc/frontend.md`
+  - `doc/miniapp.md`
   - `doc/api-and-data-model.md`
   - `doc/prd/daily-articles-requirements-20260602.md`
 - 后端沿用 Java 21、Spring Boot 3.2.5、Spring Security、Spring Data JPA、MySQL、Lombok。
-- PC 前端沿用 Next.js App Router、React Query、Tailwind CSS、Radix UI、Lucide React。
+- 小程序端沿用原生 WXML/WXSS/JS，通过 `xiaochengxu/miniprogram/utils/api.js` 和 `utils/request.js` 直连 Spring Boot REST API。
+- PC 端只实现管理后台，沿用 Next.js App Router、React Query、Tailwind CSS、Radix UI、Lucide React。
 - 认证沿用现有 JWT 和 `SecurityConfig`。
 - 文件访问沿用现有 `/uploads/**` 静态资源映射和 `app.upload.dir` 配置。
 - 长文本按段落拆表存储，不把整篇正文塞入主表 JSON。
 - 音频文件不存数据库 BLOB，只保存外部 URL 或上传后的访问 URL。
-- 先实现 PC 前端、PC 管理后台和后端闭环；小程序端不在 v1 范围内。
+- 功能使用端是微信小程序：首页入口、学习中心入口、列表页、详情页。
+- PC 不新增普通用户阅读页；PC 只新增管理员外刊管理页。
 - 每日推送逻辑集中放在 service，定时任务和手动触发复用同一方法。
-- 实现时保持与现有 `WordBook`、`AiDialog`、`AdminController` 等模块的分层和命名风格一致。
 
 ---
 
@@ -31,25 +33,26 @@
 
 ### V1 完成标志
 
-1. 首页存在“每日外刊”入口。
-2. 学习中心存在“每日外刊”入口。
-3. 未登录用户点击入口会进入登录引导或登录弹窗。
-4. 登录用户可以进入 `/daily-articles`。
+1. 小程序首页存在“每日外刊”入口。
+2. 小程序学习中心存在“每日外刊”入口。
+3. 未登录用户点击入口会进入登录引导或登录页。
+4. 登录用户可以进入小程序每日外刊列表页。
 5. 外刊列表默认展示未读文章。
 6. 外刊列表可以切换已读文章。
 7. 外刊列表展示英文标题、中文标题和更新日期，并按更新日期倒序排列。
-8. 用户进入外刊详情页后，该文章被标记为已读。
-9. 外刊详情页顶部展示音频播放器；无音频时不展示空播放器。
-10. 外刊详情页按段落展示英文正文。
-11. 右上方中文翻译按钮可以显示和隐藏逐段中文翻译。
-12. 文章总结、重点词汇和表达句型展示在正文下方；空字段不展示对应区块。
-13. 管理员可以新增、编辑、启用、禁用外刊。
-14. 管理员可以填写音频 URL，或上传音频文件并保存上传后的 URL。
-15. 管理员可以手动触发今日外刊。
-16. 后端每天早上 6 点自动随机推送一篇未推送且启用的外刊。
-17. 今日已有外刊时，定时任务和手动触发都不会重复推送。
-18. 没有候选外刊时，任务正常结束并给出明确日志或提示。
-19. 关键后端规则有单元测试或集成测试覆盖。
+8. 外刊列表支持下拉刷新和触底分页。
+9. 用户进入外刊详情页后，该文章被标记为已读。
+10. 外刊详情页顶部展示音频播放器；无音频时不展示空播放器。
+11. 外刊详情页按段落展示英文正文。
+12. 中文翻译按钮可以显示和隐藏逐段中文翻译。
+13. 文章总结、重点词汇和表达句型展示在正文下方；空字段不展示对应区块。
+14. 相对音频 URL 在小程序中能补全为可播放地址。
+15. PC 管理员可以新增、编辑、启用、禁用外刊。
+16. PC 管理员可以填写音频 URL，或上传音频文件并保存上传后的 URL。
+17. PC 管理员可以手动触发今日外刊。
+18. 后端每天早上 6 点自动随机推送一篇未推送且启用的外刊。
+19. 今日已有外刊时，定时任务和手动触发都不会重复推送。
+20. 没有候选外刊时，任务正常结束并给出明确日志或提示。
 
 ---
 
@@ -61,27 +64,31 @@
 
 ### Phase 2：后端 Repository 与核心 Service
 
-### Phase 3：后端用户端 API
+### Phase 3：后端小程序用户端 API
 
-### Phase 4：后端管理端 API 与音频上传
+### Phase 4：后端 PC 管理端 API 与音频上传
 
 ### Phase 5：每日推送定时任务
 
-### Phase 6：PC 前端 API 封装
+### Phase 6：小程序 API 封装与页面注册
 
-### Phase 7：PC 用户端页面与入口
+### Phase 7：小程序首页和学习中心入口
 
-### Phase 8：PC 管理后台页面
+### Phase 8：小程序外刊列表页
 
-### Phase 9：测试、联调与体验验收
+### Phase 9：小程序外刊详情页
 
-### Phase 10：文档同步与上线准备
+### Phase 10：PC 管理后台页面
+
+### Phase 11：测试、联调与体验验收
+
+### Phase 12：文档同步与上线准备
 
 ---
 
 ## 4. Phase 0：现状确认与实施边界
 
-### 4.1 阅读现有后端结构
+### 4.1 阅读后端结构
 
 任务：
 
@@ -100,37 +107,58 @@
 
 产出：
 
-- 明确每日外刊是否使用独立 Controller：
-  - 用户端建议：`DailyArticleController`
-  - 管理端建议：`AdminDailyArticleController`
-- 明确上传音频是否复用现有 `uploads` 根目录。
-- 明确是否需要对 `Application.java` 增加 `@EnableScheduling`。
+- 明确用户端建议使用 `DailyArticleController`。
+- 明确管理端建议使用 `AdminDailyArticleController`。
+- 明确上传音频复用现有 `uploads` 目录。
+- 明确需要对 `Application.java` 增加 `@EnableScheduling`。
 
-### 4.2 阅读 PC 前端结构
+### 4.2 阅读小程序结构
+
+任务：
+
+- 阅读：
+  - `xiaochengxu/miniprogram/app.json`
+  - `xiaochengxu/miniprogram/app.js`
+  - `xiaochengxu/miniprogram/utils/request.js`
+  - `xiaochengxu/miniprogram/utils/api.js`
+  - `xiaochengxu/miniprogram/utils/auth.js`
+  - `xiaochengxu/miniprogram/utils/audio.js`
+  - `xiaochengxu/miniprogram/pages/home/*`
+  - `xiaochengxu/miniprogram/pages/learning/*`
+  - `xiaochengxu/miniprogram/pages/wordBooks/*`
+  - `xiaochengxu/miniprogram/pages/wordDetail/*`
+  - `xiaochengxu/miniprogram/components/loading/*`
+  - `xiaochengxu/miniprogram/components/empty-state/*`
+
+产出：
+
+- 明确小程序入口卡片放在首页和学习中心哪个区域。
+- 明确每日外刊页面注册路径：
+  - `pages/dailyArticles/index`
+  - `pages/dailyArticleDetail/index`
+- 明确音频播放复用 `utils/audio.js`，还是使用页面内 `wx.createInnerAudioContext`。
+
+### 4.3 阅读 PC 管理后台结构
 
 任务：
 
 - 阅读：
   - `frontend/src/lib/api.ts`
   - `frontend/src/lib/auth.tsx`
-  - `frontend/src/app/page.tsx`
-  - `frontend/src/app/learning-center/page.tsx`
   - `frontend/src/app/admin/page.tsx`
   - `frontend/src/app/admin/word-books/page.tsx`
   - `frontend/src/components/sidebar.tsx`
-  - `frontend/src/components/auth-modal.tsx`
   - `frontend/src/components/toast-provider.tsx`
 
 产出：
 
-- 明确入口是页面内卡片还是侧边栏导航项。
-- 明确管理入口使用独立路由 `/admin/daily-articles`，还是合并到 `/admin` tab。
-- 推荐使用独立路由 `/admin/daily-articles`，避免继续膨胀现有 `/admin` 页面。
+- 明确管理入口使用独立路由 `/admin/daily-articles`。
+- 确认不新增 PC 普通用户阅读页面。
 
 验收：
 
 - 输出当前实现所需新增文件清单。
-- 确认没有把小程序页面纳入本次实现。
+- 确认小程序是功能使用端，PC 是管理端。
 
 ---
 
@@ -148,11 +176,6 @@
 建议文件：
 
 - `src/main/java/com/xiaoyouyingyu/entity/DailyArticleStatus.java`
-
-验收：
-
-- 枚举值与需求文档一致。
-- 状态命名避免与 `WordBookStatus` 混用。
 
 ### 5.2 新增实体：DailyArticle
 
@@ -210,12 +233,6 @@
 - `contentEn: String`
 - `contentZh: String`
 
-字段建议：
-
-- `articleId` 可直接用 Long，避免复杂双向关联；也可用 `@ManyToOne`，按项目现有风格决定。
-- `contentEn` 和 `contentZh` 使用 `@Lob` 或 `TEXT`。
-- `sortOrder` 从 1 开始。
-
 索引建议：
 
 - `article_id, sort_order`
@@ -268,8 +285,8 @@
 
 验收：
 
-- 用户端列表 DTO 不返回未推送管理字段。
-- 用户端详情 DTO 返回段落、总结、词汇、句型和 `read`。
+- 小程序列表 DTO 不返回未推送管理字段。
+- 小程序详情 DTO 返回段落、总结、词汇、句型和 `read`。
 - 管理端 DTO 返回状态、是否已推送、创建时间、更新时间等管理字段。
 
 ---
@@ -331,7 +348,7 @@
 
 关键业务规则：
 
-- 用户端只能访问 `publishedDate IS NOT NULL` 的文章。
+- 小程序用户端只能访问 `publishedDate IS NOT NULL` 的文章。
 - 用户进入详情时写入阅读记录。
 - 阅读记录写入必须幂等。
 - 管理端保存段落时建议整体替换该文章段落，再按请求顺序写入。
@@ -346,29 +363,9 @@
 - 管理员可以编辑已推送文章内容，但不会清空 `publishedDate`。
 - 手动触发和定时任务复用同一推送方法。
 
-### 6.3 随机选择策略
-
-建议实现：
-
-- 先查询所有候选 ID。
-- 候选为空时返回 `NO_CANDIDATE` 类型结果。
-- 使用 `ThreadLocalRandom.current().nextInt(candidateIds.size())` 选择一个 ID。
-- 重新按 ID 查询并在事务内设置 `publishedDate`。
-
-并发建议：
-
-- 在 service 方法开始和写入前都检查今日是否已有外刊。
-- 数据库层可考虑给 `published_date` 建唯一约束，但因为历史上每天最多一篇，`published_date` 唯一约束会更强；如果担心未来一天多篇扩展，则先不用唯一约束，改用事务内检查。
-- v1 推荐 service 层双重检查，并在测试中覆盖手动重复触发。
-
-验收：
-
-- 连续调用两次手动触发，第二次返回“今日外刊已存在”。
-- 候选池中多篇文章时只更新一篇。
-
 ---
 
-## 7. Phase 3：后端用户端 API
+## 7. Phase 3：后端小程序用户端 API
 
 ### 7.1 新增 Controller：DailyArticleController
 
@@ -388,7 +385,8 @@
 
 注意：
 
-- 当前 `SecurityConfig` 的 `.anyRequest().authenticated()` 已能兜底，但仍建议显式添加，便于后续维护。
+- 当前 `.anyRequest().authenticated()` 已能兜底，但仍建议显式添加，便于后续维护。
+- 该接口主要供小程序调用，也可被其他登录端复用。
 
 ### 7.2 GET `/api/daily-articles`
 
@@ -431,7 +429,7 @@
 
 ---
 
-## 8. Phase 4：后端管理端 API 与音频上传
+## 8. Phase 4：后端 PC 管理端 API 与音频上传
 
 ### 8.1 新增 Controller：AdminDailyArticleController
 
@@ -486,7 +484,7 @@
 - `status` 为空时默认保存为 `DRAFT`。
 - 段落数组为空时允许保存。
 - 保存时将段落按数组顺序写入，`sortOrder` 从 1 开始。
-- `vocabulary` 和 `expressions` 先按 JSON 字符串保存，后端不做复杂语义校验。
+- `vocabulary` 和 `expressions` 可按 JSON 字符串保存，后端不做复杂语义校验。
 - 若启用时没有英文标题或英文段落，可给出警告型提示；如果接口没有警告机制，可先不阻止保存。
 
 验收：
@@ -523,8 +521,8 @@
 实现要点：
 
 - 调用 `DailyArticleService.publishTodayIfNeeded("MANUAL")`。
-- 今日已有外刊时返回 `{ "error": "今日外刊已存在" }` 或统一错误响应。
-- 无候选外刊时返回 `{ "error": "没有可推送的外刊" }` 或统一错误响应。
+- 今日已有外刊时返回“今日外刊已存在”。
+- 无候选外刊时返回“没有可推送的外刊”。
 - 成功时返回文章 ID 和发布日期。
 
 验收：
@@ -553,10 +551,6 @@
 建议文件：
 
 - `src/main/java/com/xiaoyouyingyu/service/DailyArticlePublishScheduler.java`
-  或
-- `src/main/java/com/xiaoyouyingyu/config/DailyArticlePublishScheduler.java`
-
-建议使用 service 包，保持业务定时任务靠近业务 service。
 
 实现：
 
@@ -581,13 +575,278 @@ public void publishToday() {
 
 ---
 
-## 10. Phase 6：PC 前端 API 封装
+## 10. Phase 6：小程序 API 封装与页面注册
 
-### 10.1 扩展 `frontend/src/lib/api.ts`
+### 10.1 扩展 `xiaochengxu/miniprogram/utils/api.js`
+
+新增方法：
+
+- `getDailyArticles(params)`
+- `getDailyArticle(id)`
+
+建议参数：
+
+- `getDailyArticles({ status = 'unread', page = 0, size = 10 })`
+
+实现要点：
+
+- 复用 `utils/request.js`。
+- 不在页面里直接写 `wx.request`。
+- 401 由现有 request 封装处理并跳转登录。
+
+验收：
+
+- 小程序页面只调用 `api.js`。
+- token 自动携带。
+
+### 10.2 注册小程序页面
+
+修改文件：
+
+- `xiaochengxu/miniprogram/app.json`
+
+新增页面：
+
+- `pages/dailyArticles/index`
+- `pages/dailyArticleDetail/index`
+
+新增文件：
+
+- `xiaochengxu/miniprogram/pages/dailyArticles/index.js`
+- `xiaochengxu/miniprogram/pages/dailyArticles/index.wxml`
+- `xiaochengxu/miniprogram/pages/dailyArticles/index.wxss`
+- `xiaochengxu/miniprogram/pages/dailyArticles/index.json`
+- `xiaochengxu/miniprogram/pages/dailyArticleDetail/index.js`
+- `xiaochengxu/miniprogram/pages/dailyArticleDetail/index.wxml`
+- `xiaochengxu/miniprogram/pages/dailyArticleDetail/index.wxss`
+- `xiaochengxu/miniprogram/pages/dailyArticleDetail/index.json`
+
+验收：
+
+- 页面可通过 `wx.navigateTo` 打开。
+- 页面标题正确。
+
+### 10.3 音频 URL 补全工具
+
+建议：
+
+- 在 `utils/audio.js` 或 `utils/util.js` 增加 `resolveMediaUrl(url)`。
+- 如果 URL 以 `http://` 或 `https://` 开头，直接返回。
+- 如果 URL 以 `/uploads/` 开头，使用 `app.globalData.baseUrl` 去掉末尾 `/api` 后拼接。
+
+示例：
+
+```text
+baseUrl = https://xiaoyou-ky.top/api
+audioUrl = /uploads/daily-articles/a.mp3
+resolved = https://xiaoyou-ky.top/uploads/daily-articles/a.mp3
+```
+
+验收：
+
+- 外部 URL 可播放。
+- 后端上传返回的相对 URL 可播放。
+
+---
+
+## 11. Phase 7：小程序首页和学习中心入口
+
+### 11.1 首页入口
+
+修改文件：
+
+- `xiaochengxu/miniprogram/pages/home/index.js`
+- `xiaochengxu/miniprogram/pages/home/index.wxml`
+- `xiaochengxu/miniprogram/pages/home/index.wxss`
+
+实现要点：
+
+- 增加“每日外刊”入口卡片或功能按钮。
+- 使用现有首页视觉风格。
+- 点击时先检查登录。
+- 未登录跳转 `pages/login/index` 或使用现有登录引导方式。
+- 已登录跳转 `pages/dailyArticles/index`。
+
+验收：
+
+- 首页能看到每日外刊入口。
+- 未登录点击不能进入列表。
+- 已登录点击跳转正确。
+
+### 11.2 学习中心入口
+
+修改文件：
+
+- `xiaochengxu/miniprogram/pages/learning/index.js`
+- `xiaochengxu/miniprogram/pages/learning/index.wxml`
+- `xiaochengxu/miniprogram/pages/learning/index.wxss`
+
+实现要点：
+
+- 增加“每日外刊”入口。
+- 注意每日外刊只要求登录，不要求会员。
+- 不复用学习中心学习详情的会员拦截逻辑。
+
+验收：
+
+- 普通登录用户能从学习中心进入每日外刊。
+- 非会员用户不会被拦截。
+
+---
+
+## 12. Phase 8：小程序外刊列表页
+
+### 12.1 页面状态
+
+建议 data：
+
+- `activeTab: 'unread' | 'read'`
+- `articles: []`
+- `page: 0`
+- `size: 10`
+- `totalPages: 0`
+- `loading: false`
+- `loadingMore: false`
+- `refreshing: false`
+- `error: ''`
+- `hasMore: true`
+
+### 12.2 加载逻辑
+
+实现要点：
+
+- `onLoad` 默认加载未读。
+- tab 切换时重置 `page` 和 `articles`。
+- 下拉刷新重新加载当前 tab 第一页。
+- 触底加载下一页。
+- 接口失败时保留当前数据并展示错误提示。
+
+### 12.3 列表 UI
+
+展示字段：
+
+- 英文标题。
+- 中文标题。
+- 更新日期。
+
+交互：
+
+- 点击列表项跳转：
+  - `pages/dailyArticleDetail/index?id=<articleId>`
+- 详情页返回后，列表页需要刷新当前 tab，确保已读状态变化。
+  - 可在 `onShow` 中根据标记刷新。
+  - 或详情页返回时通过事件通道通知。
+
+验收：
+
+- 默认展示未读 tab。
+- 切换已读 tab 后展示已读列表。
+- 点击进入详情后返回，文章从未读移动到已读。
+- 空状态正确。
+- 下拉刷新和分页正确。
+
+---
+
+## 13. Phase 9：小程序外刊详情页
+
+### 13.1 页面状态
+
+建议 data：
+
+- `id`
+- `article`
+- `paragraphs`
+- `showTranslation: false`
+- `audioUrl`
+- `loading`
+- `error`
+- `vocabulary`
+- `expressions`
+
+### 13.2 详情加载
+
+实现要点：
+
+- `onLoad` 读取 `id`。
+- 调用 `api.getDailyArticle(id)`。
+- 后端返回成功即已标记已读。
+- 解析 `vocabulary` 和 `expressions`：
+  - 如果后端返回数组，直接使用。
+  - 如果后端返回字符串，尝试 `JSON.parse`。
+  - 解析失败时置为空数组，不影响正文。
+- 补全 `audioUrl`。
+
+验收：
+
+- 详情加载成功。
+- 阅读记录已写入。
+- 词汇和句型解析失败时页面不崩。
+
+### 13.3 音频播放
+
+实现选择：
+
+- 可使用原生 `<audio>` 组件。
+- 也可复用现有 `utils/audio.js` 播放工具。
+
+要求：
+
+- 音频显示在正文上方。
+- 无音频时不显示播放器。
+- 播放失败时提示“音频暂时无法播放”，正文仍可阅读。
+
+验收：
+
+- 外部音频 URL 可播放。
+- `/uploads/...` 相对 URL 可播放。
+
+### 13.4 翻译切换
+
+实现要点：
+
+- 页面右上方提供“中文翻译”按钮。
+- 默认隐藏中文翻译。
+- 点击后，在每段英文下方显示对应 `contentZh`。
+- 再次点击隐藏翻译。
+- 某段没有中文翻译时，该段不展示中文区域。
+
+验收：
+
+- 翻译默认隐藏。
+- 翻译切换稳定。
+- 翻译不遮挡英文正文。
+
+### 13.5 学习内容展示
+
+展示顺序：
+
+1. 文章总结。
+2. 重点词汇。
+3. 表达句型。
+
+空字段规则：
+
+- `summary` 为空时不展示总结区块。
+- `vocabulary` 为空数组时不展示重点词汇区块。
+- `expressions` 为空数组时不展示表达句型区块。
+
+验收：
+
+- 内容完整时展示正确。
+- 空内容时页面仍自然。
+
+---
+
+## 14. Phase 10：PC 管理后台页面
+
+### 14.1 PC API 封装
+
+修改文件：
+
+- `frontend/src/lib/api.ts`
 
 新增类型：
 
-- `DailyArticleListItem`
 - `DailyArticleParagraph`
 - `DailyArticleDetail`
 - `DailyArticleSavePayload`
@@ -596,8 +855,6 @@ public void publishToday() {
 
 新增方法：
 
-- `getDailyArticles(params)`
-- `getDailyArticle(id)`
 - `adminGetDailyArticles(params)`
 - `adminGetDailyArticle(id)`
 - `adminCreateDailyArticle(payload)`
@@ -606,131 +863,12 @@ public void publishToday() {
 - `adminUploadDailyArticleAudio(file)`
 - `adminPublishTodayDailyArticle()`
 
-上传注意：
+注意：
 
-- 上传接口不要设置 JSON `Content-Type`，使用 `FormData`。
-- 仍需自动附带 JWT。
+- PC 不需要新增普通用户 `getDailyArticles` 页面方法，除非前端管理页复用详情类型。
+- 上传接口使用 `FormData`，不要设置 JSON `Content-Type`。
 
-验收：
-
-- 用户端页面不直接写 fetch。
-- 管理端页面不直接拼接 token。
-- 401 仍走现有过期处理。
-
----
-
-## 11. Phase 7：PC 用户端页面与入口
-
-### 11.1 首页入口
-
-修改文件：
-
-- `frontend/src/app/page.tsx`
-
-实现要点：
-
-- 增加“每日外刊”入口卡片或按钮。
-- 未登录时点击显示登录弹窗。
-- 已登录时跳转 `/daily-articles`。
-- 可选展示：今日外刊或未读数量不作为 v1 强制项。
-
-验收：
-
-- 首页能看到入口。
-- 未登录点击不直接进入受保护页面。
-- 已登录点击跳转正确。
-
-### 11.2 学习中心入口
-
-修改文件：
-
-- `frontend/src/app/learning-center/page.tsx`
-
-实现要点：
-
-- 在学习中心入口区域增加“每日外刊”。
-- 注意每日外刊对所有登录用户开放，不复用学习中心会员限制。
-- 未登录时显示登录引导；普通登录用户也能进入。
-
-验收：
-
-- 普通登录用户能从学习中心进入每日外刊。
-- 非会员用户不会被学习中心原有会员逻辑误拦截。
-
-### 11.3 侧边栏入口，可选但推荐
-
-修改文件：
-
-- `frontend/src/components/sidebar.tsx`
-
-建议：
-
-- 增加普通用户可见导航项：
-  - `href: '/daily-articles'`
-  - `label: '每日外刊'`
-  - icon 可用 `Newspaper` 或 `BookOpenText`，从 `lucide-react` 引入。
-
-验收：
-
-- PC 左侧导航和移动底部导航都可看到每日外刊入口。
-- 入口不设置 `adminOnly`。
-
-### 11.4 新增外刊列表页
-
-建议文件：
-
-- `frontend/src/app/daily-articles/page.tsx`
-
-实现要点：
-
-- 使用 `useAuth()` 判断登录态。
-- 使用 React Query 调用 `api.getDailyArticles`。
-- 默认 tab 为 `unread`。
-- tab 切换时刷新对应列表。
-- 列表项展示英文标题、中文标题、更新日期。
-- 点击列表项进入 `/daily-articles/[id]`。
-- 空状态：
-  - 未读：`暂无未读外刊`
-  - 已读：`暂无已读外刊`
-- 错误状态提供重试。
-
-验收：
-
-- 默认未读。
-- 已读和未读切换正确。
-- 列表倒序展示。
-- 未登录用户看到登录引导。
-
-### 11.5 新增外刊详情页
-
-建议文件：
-
-- `frontend/src/app/daily-articles/[id]/page.tsx`
-
-实现要点：
-
-- 使用 React Query 调用 `api.getDailyArticle`。
-- 获取详情成功即后端已标记已读。
-- 页面右上方有中文翻译切换按钮。
-- 音频 URL 存在时展示 `<audio controls>`。
-- 按段落展示英文正文。
-- 翻译开启时，在每段英文下方展示 `contentZh`。
-- 下方展示总结、词汇和句型。
-- `vocabulary` 和 `expressions` 如果后端以 JSON 字符串返回，前端需要安全解析。
-
-验收：
-
-- 音频在正文上方。
-- 中文翻译默认隐藏。
-- 翻译按钮可切换。
-- 空字段不展示空卡片。
-- 页面正文宽度适合阅读。
-
----
-
-## 12. Phase 8：PC 管理后台页面
-
-### 12.1 新增管理路由
+### 14.2 新增管理路由
 
 建议文件：
 
@@ -751,7 +889,7 @@ public void publishToday() {
 - 管理员可以从侧边栏进入外刊管理。
 - 非管理员看不到该入口。
 
-### 12.2 管理端列表
+### 14.3 管理端列表
 
 实现要点：
 
@@ -785,12 +923,7 @@ public void publishToday() {
 - 筛选条件能生效。
 - 点击编辑能加载详情表单。
 
-### 12.3 新增/编辑表单
-
-建议实现：
-
-- 同一页面内使用抽屉、弹窗或页面内编辑面板。
-- 如果表单较长，建议使用独立编辑区或分段布局，不塞进过小弹窗。
+### 14.4 新增/编辑表单
 
 字段：
 
@@ -806,13 +939,13 @@ public void publishToday() {
   - 删除段落。
   - 上移/下移。
 - 文章总结。
-- 重点词汇 JSON 编辑区或结构化列表。
-- 表达句型 JSON 编辑区或结构化列表。
+- 重点词汇。
+- 表达句型。
 
 推荐 v1 表单策略：
 
 - 段落使用结构化列表编辑。
-- 重点词汇和表达句型可以先用结构化小表单，避免让管理员直接写 JSON。
+- 重点词汇和表达句型可以先用结构化小表单。
 - 如果工期紧，词汇和句型可先使用 JSON textarea，但必须提供格式提示和解析校验。
 
 验收：
@@ -822,7 +955,7 @@ public void publishToday() {
 - 编辑段落顺序后保存正确。
 - 启用和禁用状态可保存。
 
-### 12.4 手动触发今日外刊
+### 14.5 手动触发今日外刊
 
 实现要点：
 
@@ -839,14 +972,9 @@ public void publishToday() {
 
 ---
 
-## 13. Phase 9：测试、联调与体验验收
+## 15. Phase 11：测试、联调与体验验收
 
-### 13.1 后端测试
-
-建议新增测试目录：
-
-- `src/test/java/com/xiaoyouyingyu/service/`
-- `src/test/java/com/xiaoyouyingyu/controller/`
+### 15.1 后端测试
 
 重点测试：
 
@@ -872,52 +1000,51 @@ public void publishToday() {
 - 后端核心业务规则有测试覆盖。
 - Maven 测试通过或记录不可运行原因。
 
-### 13.2 前端联调
+### 15.2 小程序联调
 
 建议流程：
 
 1. 管理员登录 PC。
 2. 新增 3 篇外刊，其中 2 篇启用，1 篇禁用。
 3. 手动触发今日外刊。
-4. 普通用户登录。
-5. 从首页进入每日外刊。
+4. 普通用户登录小程序。
+5. 从小程序首页进入每日外刊。
 6. 确认未读列表有今日文章。
 7. 进入详情。
 8. 确认音频、英文正文、翻译按钮、总结、词汇、句型展示正确。
 9. 返回列表。
 10. 确认该文章进入已读 tab。
-11. 管理员重复触发今日外刊。
-12. 确认提示今日外刊已存在。
+11. 从小程序学习中心进入每日外刊。
+12. 确认普通登录用户不被会员权限拦截。
+13. 管理员重复触发今日外刊。
+14. 确认提示今日外刊已存在。
 
 验收：
 
 - 完成一轮端到端闭环。
-- 页面无明显布局溢出。
+- 小程序页面无明显布局溢出。
 - 空状态和错误状态可见。
+- 音频可播放。
 
-### 13.3 浏览器检查
+### 15.3 PC 管理后台联调
 
-如实现了前端页面，使用浏览器或 Playwright 检查：
+检查页面：
 
-- `/`
-- `/learning-center`
-- `/daily-articles`
-- `/daily-articles/[id]`
 - `/admin/daily-articles`
 
 检查重点：
 
-- 按钮文字不溢出。
-- 详情正文宽度可读。
-- 翻译显示后不遮挡正文。
-- 移动底部导航不遮挡列表底部内容。
-- 音频播放器正常显示。
+- 表格布局不溢出。
+- 长标题显示合理。
+- 段落编辑可用。
+- 上传音频后 URL 回填。
+- 手动触发结果 toast 清楚。
 
 ---
 
-## 14. Phase 10：文档同步与上线准备
+## 16. Phase 12：文档同步与上线准备
 
-### 14.1 文档同步
+### 16.1 文档同步
 
 实现完成后同步更新：
 
@@ -927,10 +1054,13 @@ public void publishToday() {
   - 增加 `DailyArticleService`
   - 增加定时任务说明
 - `doc/frontend.md`
-  - 增加 `/daily-articles`
-  - 增加 `/daily-articles/[id]`
-  - 增加 `/admin/daily-articles`
-  - 增加侧边栏入口说明
+  - 只增加 PC 管理后台 `/admin/daily-articles`
+  - 明确 PC 不提供普通用户外刊阅读页
+- `doc/miniapp.md`
+  - 增加 `pages/dailyArticles/index`
+  - 增加 `pages/dailyArticleDetail/index`
+  - 增加首页和学习中心入口说明
+  - 增加 `utils/api.js` 每日外刊接口封装
 - `doc/api-and-data-model.md`
   - 增加 `daily_articles`
   - 增加 `daily_article_paragraphs`
@@ -939,41 +1069,68 @@ public void publishToday() {
 - `doc/prd/daily-articles-requirements-20260602.md`
   - 如实现中调整了接口或字段，需要回写最终版本。
 
-### 14.2 上线前检查
+### 16.2 上线前检查
 
 检查项：
 
 - `app.upload.dir` 在生产环境可写。
 - `/uploads/**` 在生产环境可访问。
+- 小程序合法域名包含后端接口域名和音频资源域名。
 - 上传音频大小限制符合服务器配置。
 - 服务器时区或定时任务 zone 确认为 `Asia/Shanghai`。
 - 数据库 schema 已生成或迁移完成。
 - `@EnableScheduling` 已启用。
-- 管理员能看到外刊管理入口。
+- PC 管理员能看到外刊管理入口。
+- 小程序 `app.json` 页面注册正确。
 
 ---
 
-## 15. 推荐实现顺序
+## 17. 推荐实现顺序
 
 1. 后端实体、Repository、DTO。
 2. `DailyArticleService` 保存、列表、详情、阅读记录。
-3. 用户端 Controller。
-4. 管理端 Controller。
+3. 小程序用户端 Controller。
+4. PC 管理端 Controller。
 5. 音频上传。
 6. 手动触发今日外刊。
 7. 定时任务和 `@EnableScheduling`。
-8. `frontend/src/lib/api.ts` 类型和方法。
-9. 用户端入口、列表页、详情页。
-10. 管理端外刊列表和编辑表单。
-11. 后端测试。
-12. 前端联调和浏览器检查。
-13. 文档同步。
+8. 小程序 `utils/api.js` 方法和页面注册。
+9. 小程序首页、学习中心入口。
+10. 小程序外刊列表页。
+11. 小程序外刊详情页。
+12. PC 管理后台 API 封装。
+13. PC 管理后台外刊列表和编辑表单。
+14. 后端测试。
+15. 小程序联调和 PC 管理后台联调。
+16. 文档同步。
 
 ---
 
-## 16. 风险与处理建议
+## 18. 风险与处理建议
 
-### 16.1 阅读状态查询复杂度
+### 18.1 学习中心会员拦截误伤
+
+风险：
+
+- 当前学习中心部分功能限制会员，每日外刊要求所有登录用户可用。
+
+建议：
+
+- 每日外刊独立页面和独立接口使用 `authenticated()`。
+- 学习中心入口点击时只判断登录，不判断会员。
+
+### 18.2 小程序音频 URL 播放失败
+
+风险：
+
+- 后端上传返回 `/uploads/...` 相对路径，小程序不能直接播放相对路径。
+
+建议：
+
+- 小程序统一做媒体 URL 补全。
+- 上线前确认资源域名在微信小程序合法域名中。
+
+### 18.3 阅读状态查询复杂度
 
 风险：
 
@@ -982,9 +1139,9 @@ public void publishToday() {
 建议：
 
 - Repository 使用明确的 JPQL 或 native query。
-- 先用集成测试覆盖同一用户、不同用户、已读和未读的分页结果。
+- 用集成测试覆盖同一用户、不同用户、已读和未读的分页结果。
 
-### 16.2 定时任务重复发布
+### 18.4 定时任务重复发布
 
 风险：
 
@@ -996,7 +1153,7 @@ public void publishToday() {
 - 方法开始和更新前双重检查今日文章。
 - 如未来要求更强一致性，再增加 `published_date` 唯一约束或数据库锁。
 
-### 16.3 管理表单过长
+### 18.5 PC 管理表单过长
 
 风险：
 
@@ -1008,38 +1165,16 @@ public void publishToday() {
 - 段落编辑使用可增删的重复块。
 - 词汇和句型 v1 可先结构化列表或 JSON textarea，后续再优化编辑体验。
 
-### 16.4 音频上传与生产访问
-
-风险：
-
-- 本地上传目录在生产环境不可写，或反向代理没有暴露 `/uploads/**`。
-
-建议：
-
-- 上线前确认 `app.upload.dir`。
-- 如果生产使用对象存储，保持接口返回 URL 即可，前端不感知存储实现。
-
-### 16.5 学习中心会员拦截误伤
-
-风险：
-
-- 当前学习中心部分功能限制会员，每日外刊要求所有登录用户可用。
-
-建议：
-
-- 每日外刊独立路由和独立接口使用 `authenticated()`。
-- 学习中心入口点击时只判断登录，不判断会员。
-
 ---
 
-## 17. 最小可交付切片
+## 19. 最小可交付切片
 
 如果需要先快速上线一个最小版本，建议按以下切片交付：
 
 1. 后端三张表、用户端列表/详情、阅读记录。
-2. 管理端新增/编辑外刊，只支持音频 URL，不做上传。
+2. PC 管理端新增/编辑外刊，只支持音频 URL，不做上传。
 3. 手动触发今日外刊。
-4. 用户端首页入口、列表页、详情页。
-5. 再补音频上传和每日 6 点定时任务。
+4. 小程序 `utils/api.js`、首页入口、列表页、详情页。
+5. 再补学习中心入口、音频上传和每日 6 点定时任务。
 
-该切片可以先验证核心阅读闭环，但完整 v1 仍必须补齐音频上传和定时任务。
+该切片可以先验证小程序阅读闭环，但完整 v1 仍必须补齐学习中心入口、音频上传和定时任务。

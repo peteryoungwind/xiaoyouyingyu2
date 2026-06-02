@@ -1,6 +1,6 @@
 # 微信小程序说明
 
-> 最后更新：2026-05-25
+> 最后更新：2026-06-02
 
 ## 代码位置
 
@@ -55,6 +55,8 @@ flowchart LR
 - 单词本详情：`pages/wordBookDetail/index`
 - 单词练习：`pages/wordPractice/index`
 - 单词详情：`pages/wordDetail/index`
+- 每日外刊列表：`pages/dailyArticles/index`
+- 每日外刊详情：`pages/dailyArticleDetail/index`
 - 登录：`pages/login/index`
 - 注册：`pages/register/index`
 - 设置：`pages/settings/index`
@@ -118,6 +120,7 @@ flowchart LR
 - 学习：主题详情、热身、词汇、表达、任务、点评。
 - 会员：会员状态、联系方式、卡密兑换。
 - 单词练习：已发布单词本、单词本详情、下一词、单词详情、提交认识/模糊/不认识、进度。
+- 每日外刊：未读/已读列表、外刊详情并自动标记已读。
 
 ## 页面说明
 
@@ -134,12 +137,50 @@ flowchart LR
 | 单词本详情 | `pages/wordBookDetail/index` | 初级/进阶切换、总词数、已学、待复习、已掌握和开始练习入口 |
 | 单词练习 | `pages/wordPractice/index` | 先展示英文单词和美式/英式发音胶囊，用户选择认识/模糊/不认识；模糊和不认识会在当前页展开详情 |
 | 单词详情 | `pages/wordDetail/index` | 使用与练习页一致的沉浸式渐变详情样式，展示释义、音标、词性、句型、例句、来源和发音入口 |
+| 每日外刊列表 | `pages/dailyArticles/index` | 未读/已读 tab、下拉刷新、触底分页、跳转详情 |
+| 每日外刊详情 | `pages/dailyArticleDetail/index` | 音频播放、英文段落、中文翻译开关、总结、重点词汇和表达句型 |
 | 登录 | `pages/login/index` | 微信登录，调用 `wx.login` 后传 code 到后端 |
 | 注册 | `pages/register/index` | 用户名密码注册 |
 | 我的 | `pages/profile/index` | 用户信息、会员状态、设置、兑换、PC 登录确认 |
 | 设置 | `pages/settings/index` | 改用户名、改密码、微信用户首次设置密码、会员联系信息 |
 | 兑换 | `pages/redeem/index` | 卡密兑换与会员状态刷新 |
 | 日历 | `pages/calendar/index` | 按月份查看话题日期分布 |
+
+## 每日外刊流程
+
+小程序首页和学习中心均提供“每日外刊”入口。
+
+权限：
+
+- 未登录点击入口跳转登录页。
+- 已登录用户可使用每日外刊，不限制会员状态。
+
+列表页 `pages/dailyArticles/index`：
+
+- 默认请求未读外刊。
+- 支持未读/已读 tab 切换。
+- 支持下拉刷新和触底分页。
+- 展示英文标题、中文标题和更新日期。
+- 点击列表项进入 `pages/dailyArticleDetail/index?id=<articleId>`。
+
+详情页 `pages/dailyArticleDetail/index`：
+
+- 调用详情接口后，后端自动把当前用户标记为已读。
+- 顶部展示发布日期、英文标题、中文标题、播放音频按钮和中文翻译开关。
+- 正文按段落展示英文；开启中文翻译后，在英文段落下方展示对应中文。
+- 文章总结、重点词汇和表达句型为空时不展示。
+- `vocabulary` 和 `expressions` 是 JSON 字符串，页面会解析失败兜底为空列表。
+
+接口：
+
+- `GET /api/daily-articles?read=false&page=0&size=10`：未读外刊列表。
+- `GET /api/daily-articles?read=true&page=0&size=10`：已读外刊列表。
+- `GET /api/daily-articles/{id}`：外刊详情，并自动标记当前用户已读。
+
+音频：
+
+- 音频 URL 可能是 `/uploads/daily-articles/...` 站点相对路径。
+- 页面复用 `utils/audio.js`，播放前会用当前环境 API 地址去掉 `/api` 后补全为静态资源 URL。
 
 ## 组件说明
 

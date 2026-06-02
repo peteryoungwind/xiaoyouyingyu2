@@ -6,6 +6,7 @@
     <view class="empty-title">登录后开启学习之旅</view>
     <view class="empty-desc">学习中心提供热身、词汇、表达、练习任务等丰富内容</view>
     <button class="btn btn-primary btn-block mt-32" bindtap="goToLogin">去登录</button>
+    <button class="btn daily-article-outline btn-block mt-16" bindtap="goToDailyArticles">每日外刊</button>
     <button class="btn btn-outline btn-block mt-16" bindtap="browseAsGuest">以游客身份浏览</button>
   </view>
 
@@ -36,11 +37,20 @@
     </view>
 
     <button class="btn btn-gold btn-block mt-24" bindtap="goToRedeem">卡密兑换</button>
+    <button class="btn daily-article-outline btn-block mt-16" bindtap="goToDailyArticles">进入每日外刊</button>
     <button class="btn btn-primary btn-block mt-16" bindtap="goToAiDialog">进入 AI 对话</button>
   </view>
 
   <!-- Member content -->
   <view wx:else>
+    <view class="daily-article-card" bindtap="goToDailyArticles">
+      <view>
+        <view class="daily-article-title">每日外刊</view>
+        <view class="daily-article-desc">听音频、读正文、看逐段翻译，完成今天的输入练习</view>
+      </view>
+      <view class="daily-article-btn">阅读</view>
+    </view>
+
     <view class="ai-dialog-card" bindtap="goToAiDialog">
       <view>
         <view class="ai-dialog-title">AI 对话</view>

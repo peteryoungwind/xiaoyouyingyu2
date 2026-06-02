@@ -12,6 +12,8 @@
     "pages/wordBookDetail/index",
     "pages/wordPractice/index",
     "pages/wordDetail/index",
+    "pages/dailyArticles/index",
+    "pages/dailyArticleDetail/index",
     "pages/login/index",
     "pages/register/index",
     "pages/settings/index",

@@ -137,6 +137,14 @@ Page({
     wx.navigateTo({ url: '/pages/aiDialogSetup/index' });
   },
 
+  goToDailyArticles() {
+    if (!app.checkLogin()) {
+      wx.navigateTo({ url: '/pages/login/index' });
+      return;
+    }
+    wx.navigateTo({ url: '/pages/dailyArticles/index' });
+  },
+
   goToLogin() {
     wx.navigateTo({ url: '/pages/login/index' });
   },
