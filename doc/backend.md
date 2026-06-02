@@ -105,6 +105,22 @@ src/main/java/com/xiaoyouyingyu/
 - `SecurityConfig` 中限制为 `PREMIUM_USER`、`ADMIN` 或动态会员角色 `MEMBER`。
 - 后端会员判定统一由 `User.isMembershipActive()` 提供，`ADMIN`、`PREMIUM_USER` 和未过期会员都会被视为会员。
 
+### `AiDialogController`
+
+路径前缀：`/api/ai-dialog`
+
+负责小程序 AI 对话练习：
+
+- 获取 AI 对话配置摘要和当天剩余额度。
+- 接收用户单轮消息，按主题、模式、难度和页面内历史上下文调用 AI。
+- 返回结构化英文回复、可选中文点评/优化表达和 TTS 音频 URL。
+- 预留语音识别兜底接口 `/speech-to-text`；当前 v1 以小程序端识别或文字输入为主，后端 ASR 暂未启用。
+
+权限：
+
+- 登录用户即可访问，不限制会员状态。
+- 对话内容不落库；只保存每日用量。
+
 ### `MembershipController`
 
 路径前缀：`/api`
@@ -153,6 +169,16 @@ src/main/java/com/xiaoyouyingyu/
 
 - 全局 TTS 模型配置查询、新增、更新、删除和设置默认；前端统一放在 `/admin` 的“模型管理”中维护。
 
+### `AdminAiDialogController`
+
+路径前缀：`/api/admin/ai-dialog`
+
+负责管理员维护 AI 对话全局配置：
+
+- 查看和更新启用状态、文本模型、TTS 模型、音色、温度、单次最大轮数和每日发送轮数。
+- 维护教学初级、教学进阶、练习初级、练习进阶四套系统提示词。
+- 支持恢复内置默认提示词。
+
 ### `WordPracticeController`
 
 路径前缀：`/api/word-practice`
@@ -183,6 +209,7 @@ src/main/java/com/xiaoyouyingyu/
 - `generateExpressions`：学习中心表达模板。
 - `generateTasks`：学习中心练习任务。
 - `reviewAnswer`：点评用户回答。
+- `generateStructuredReply`：供 AI 对话服务传入自定义 system prompt、上下文和温度，复用现有模型解析与 OpenAI 兼容调用。
 
 模型选择：
 
@@ -251,6 +278,15 @@ src/main/java/com/xiaoyouyingyu/
 - `FUZZY` 会累加模糊次数，将连续认识次数重置为 0，并安排次日复习。
 - `UNKNOWN` 会将连续认识次数重置为 0，并安排次日复习。
 
+### `AiDialogConfigService` / `AiDialogUsageService` / `AiDialogService`
+
+负责 AI 对话闭环：
+
+- `AiDialogConfigService`：读取唯一全局配置；数据库无配置时返回内置默认配置；保存管理员配置并校验温度、轮数和四套提示词。
+- `AiDialogUsageService`：按用户和 `Asia/Shanghai` 自然日统计成功发送轮数；AI 调用成功后才扣减额度；并发更新使用数据库行锁。
+- `AiDialogService`：校验主题、模式、难度、单次轮数和每日额度；构造主题上下文；解析 AI JSON；返回结构化回复。
+- `AiDialogAudioService`：复用 TTS 模型为 AI 英文回复生成临时音频到 `/uploads/ai-dialog/`；TTS 失败时返回 `audioUrl=null`，对话文本结构仍正常返回。
+
 ## Entity 说明
 
 | 实体 | 表 | 说明 |
@@ -258,6 +294,8 @@ src/main/java/com/xiaoyouyingyu/
 | `User` | `users` | 用户、角色、微信 openid、会员状态 |
 | `Topic` | `topics` | 英语口语主题、标签、日期、问题 JSON |
 | `AiModel` | `ai_models` | AI API 供应商/模型配置 |
+| `AiDialogConfig` | `ai_dialog_config` | AI 对话全局配置、模型选择、轮数限制和四套提示词 |
+| `AiDialogUsage` | `ai_dialog_usage` | 用户每日 AI 对话发送轮数统计，不保存对话内容 |
 | `RedeemCode` | `redeem_codes` | 会员卡密 |
 | `MembershipRecord` | `membership_records` | 会员变更流水 |
 | `TtsModel` | `tts_models` | TTS 供应商、模型、语音、输出格式和默认模型配置，支持 OpenAI 兼容模型与 Qwen-TTS 并存 |

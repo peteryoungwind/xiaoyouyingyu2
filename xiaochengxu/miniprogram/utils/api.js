@@ -139,6 +139,20 @@ function reviewAnswer(titleEn, titleZh, taskTitle, answer, mode) {
   });
 }
 
+// ==================== AI Dialog ====================
+
+function getAiDialogConfig() {
+  return http.get('/ai-dialog/config');
+}
+
+function sendAiDialogMessage(data) {
+  return http.post('/ai-dialog/message', data);
+}
+
+function speechToText(data) {
+  return http.post('/ai-dialog/speech-to-text', data || {});
+}
+
 // ==================== Membership ====================
 
 function getMembership() {
@@ -211,6 +225,10 @@ module.exports = {
   generateExpressions: generateExpressions,
   generateTasks: generateTasks,
   reviewAnswer: reviewAnswer,
+  // AI Dialog
+  getAiDialogConfig: getAiDialogConfig,
+  sendAiDialogMessage: sendAiDialogMessage,
+  speechToText: speechToText,
   // Membership
   getMembership: getMembership,
   getMembershipContact: getMembershipContact,

@@ -48,6 +48,46 @@
   flex-shrink: 0;
 }
 
+.ai-dialog-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24rpx;
+  background: #EEF5FF;
+  border: 2rpx solid rgba(0, 122, 255, 0.16);
+  border-radius: 30rpx;
+  padding: 30rpx;
+  margin-bottom: 28rpx;
+}
+
+.ai-dialog-title {
+  font-size: 34rpx;
+  line-height: 1.3;
+  font-weight: 800;
+  color: #1D1D1F;
+}
+
+.ai-dialog-desc {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  line-height: 1.5;
+  color: #42607A;
+}
+
+.ai-dialog-btn {
+  height: 64rpx;
+  padding: 0 26rpx;
+  border-radius: 20rpx;
+  background: #007AFF;
+  color: #FFFFFF;
+  font-size: 24rpx;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
 .stats-card {
   background: #FFFFFF; border-radius: 28rpx; padding: 40rpx;
   margin-bottom: 32rpx; display: flex; align-items: center; justify-content: center;

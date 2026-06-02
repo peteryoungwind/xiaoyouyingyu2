@@ -129,6 +129,14 @@ Page({
     wx.navigateTo({ url: '/pages/wordBooks/index' });
   },
 
+  goToAiDialog() {
+    if (!app.checkLogin()) {
+      wx.navigateTo({ url: '/pages/login/index' });
+      return;
+    }
+    wx.navigateTo({ url: '/pages/aiDialogSetup/index' });
+  },
+
   goToLogin() {
     wx.navigateTo({ url: '/pages/login/index' });
   },

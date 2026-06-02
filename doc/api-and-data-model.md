@@ -163,6 +163,114 @@ Authorization: Bearer <token>
 
 前端和小程序需要再解析 `content` 中的 JSON 字符串。
 
+## AI 对话接口
+
+路径前缀：`/api/ai-dialog`
+
+权限：登录用户。普通 `USER`、`PREMIUM_USER`、`ADMIN` 和未过期会员均可使用，不要求会员权限。
+
+| 方法 | 路径 | 说明 |
+| --- | --- | --- |
+| GET | `/config` | 获取启用状态、单次最大轮数、每日轮数限制和当天剩余额度 |
+| POST | `/message` | 发送一轮用户消息并获取 AI 回复 |
+| POST | `/speech-to-text` | 语音识别兜底接口，v1 预留，当前返回未启用提示 |
+
+### 配置摘要响应
+
+```json
+{
+  "enabled": true,
+  "maxRoundsPerSession": 12,
+  "dailyMessageLimit": 30,
+  "remainingToday": 29
+}
+```
+
+### 发送消息请求
+
+```json
+{
+  "sessionId": "client-session-id",
+  "topicSource": "SYSTEM",
+  "topicId": 1,
+  "customTopic": "",
+  "mode": "TEACHING",
+  "difficulty": "BEGINNER",
+  "roundCount": 0,
+  "message": "I usually go for a walk after work.",
+  "history": [
+    { "role": "user", "content": "Hello" },
+    { "role": "assistant", "content": "Hi! What would you like to talk about?" }
+  ]
+}
+```
+
+字段取值：
+
+- `topicSource`：`SYSTEM` 或 `CUSTOM`。
+- `mode`：`TEACHING` 或 `PRACTICE`。
+- `difficulty`：`BEGINNER` 或 `ADVANCED`。
+- `roundCount`：当前页面已成功发送的用户消息轮数；达到配置的单次最大轮数后后端拒绝继续发送。
+
+### 发送消息响应
+
+```json
+{
+  "remainingToday": 28,
+  "audioUrl": "/uploads/ai-dialog/xxxx.mp3",
+  "reply": {
+    "replyEn": "That sounds like a healthy way to relax.",
+    "feedbackZh": "表达清楚，可以补充原因让内容更完整。",
+    "betterExpressionEn": "I usually take a walk after work to clear my mind.",
+    "betterExpressionZh": "clear my mind 表示放松头脑，更自然。",
+    "nextPromptEn": "Where do you usually go for your walk?"
+  }
+}
+```
+
+说明：
+
+- 对话内容不保存到数据库，`history` 只用于当前请求上下文。
+- 每次 AI 调用成功后才增加当天用量；调用失败不扣次数。
+- `audioUrl` 可能为空，表示 TTS 未配置或生成失败，客户端应降级展示文字。
+- 每日额度用尽返回 `429`，响应包含 `remainingToday: 0`。
+- AI 对话关闭或模型响应异常返回 `503`。
+
+## AI 对话管理接口
+
+路径前缀：`/api/admin/ai-dialog`
+
+权限：管理员。
+
+| 方法 | 路径 | 说明 |
+| --- | --- | --- |
+| GET | `/config` | 获取完整 AI 对话配置 |
+| PUT | `/config` | 更新 AI 对话配置 |
+| POST | `/config/reset-prompts` | 恢复四套内置默认提示词 |
+
+可配置字段：
+
+- `enabled`
+- `aiModelId`
+- `asrModelId`
+- `ttsModelId`
+- `ttsVoice`
+- `speechProvider`
+- `ttsProvider`
+- `temperature`
+- `maxRoundsPerSession`
+- `dailyMessageLimit`
+- `teachingBeginnerPrompt`
+- `teachingAdvancedPrompt`
+- `practiceBeginnerPrompt`
+- `practiceAdvancedPrompt`
+
+校验：
+
+- `temperature` 必须在 `0` 到 `2` 之间。
+- `maxRoundsPerSession` 和 `dailyMessageLimit` 必须大于 `0`。
+- 四套提示词不能为空。
+
 ## 单词练习接口
 
 ### 管理端单词接口
@@ -250,6 +358,8 @@ Authorization: Bearer <token>
 - 例句英式发音：`/uploads/word-audio/{wordBookId}/{wordId}/example-uk.{format}`
 
 如果音频生成失败，单词文本仍会保存，`audio_status` 置为 `FAILED`，`audio_error` 记录错误，管理员可通过批量重新生成接口重试。
+
+AI 对话回复音频会复用 `tts_models` 中的可用模型，生成到 `/uploads/ai-dialog/`。该音频为即时播放辅助，不保存会话内容。
 
 AI 创建单词本走后台任务：接口先创建单词本和 `word_generation_tasks` 记录，再异步执行“生成单词、保存单词、生成音频”。前端刷新页面不影响任务执行，可通过任务查询接口展示阶段、百分比、已保存单词数和音频生成进度。
 

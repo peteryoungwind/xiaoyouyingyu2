@@ -6,6 +6,8 @@
     "pages/profile/index",
     "pages/topicDetail/index",
     "pages/learningTopic/index",
+    "pages/aiDialogSetup/index",
+    "pages/aiDialogChat/index",
     "pages/wordBooks/index",
     "pages/wordBookDetail/index",
     "pages/wordPractice/index",

@@ -36,10 +36,19 @@
     </view>
 
     <button class="btn btn-gold btn-block mt-24" bindtap="goToRedeem">卡密兑换</button>
+    <button class="btn btn-primary btn-block mt-16" bindtap="goToAiDialog">进入 AI 对话</button>
   </view>
 
   <!-- Member content -->
   <view wx:else>
+    <view class="ai-dialog-card" bindtap="goToAiDialog">
+      <view>
+        <view class="ai-dialog-title">AI 对话</view>
+        <view class="ai-dialog-desc">选择主题后，和 AI 进行回合制口语练习</view>
+      </view>
+      <view class="ai-dialog-btn">进入</view>
+    </view>
+
     <view class="word-practice-card" bindtap="goToWordPractice">
       <view>
         <view class="word-practice-title">单词练习</view>

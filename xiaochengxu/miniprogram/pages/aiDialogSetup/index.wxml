@@ -1,0 +1,63 @@
+<view class="page safe-bottom">
+  <view class="header">
+    <view class="eyebrow">AI Dialog</view>
+    <view class="title">开始一段主题对话</view>
+    <view class="subtitle">选择模式、难度和主题，然后用文字或语音开始练习。</view>
+  </view>
+
+  <view wx:if="{{error}}" class="notice">{{error}}</view>
+
+  <view class="panel">
+    <view class="label">模式</view>
+    <view class="segmented">
+      <view class="segment {{mode === 'TEACHING' ? 'active' : ''}}" bindtap="setMode" data-value="TEACHING">教学模式</view>
+      <view class="segment {{mode === 'PRACTICE' ? 'active' : ''}}" bindtap="setMode" data-value="PRACTICE">练习模式</view>
+    </view>
+    <view class="hint">{{mode === 'TEACHING' ? '每轮包含英文回复、中文点评和优化表达。' : '保持英文自然对话，不主动中文纠错。'}}</view>
+  </view>
+
+  <view class="panel">
+    <view class="label">难度</view>
+    <view class="segmented">
+      <view class="segment {{difficulty === 'BEGINNER' ? 'active' : ''}}" bindtap="setDifficulty" data-value="BEGINNER">初级</view>
+      <view class="segment {{difficulty === 'ADVANCED' ? 'active' : ''}}" bindtap="setDifficulty" data-value="ADVANCED">进阶</view>
+    </view>
+  </view>
+
+  <view class="panel">
+    <view class="label">主题</view>
+    <view class="segmented">
+      <view class="segment {{topicSource === 'SYSTEM' ? 'active' : ''}}" bindtap="setTopicSource" data-value="SYSTEM">已有主题</view>
+      <view class="segment {{topicSource === 'CUSTOM' ? 'active' : ''}}" bindtap="setTopicSource" data-value="CUSTOM">自定义</view>
+    </view>
+
+    <view wx:if="{{topicSource === 'SYSTEM'}}" class="topic-picker">
+      <view class="search-box">
+        <input value="{{keyword}}" bindinput="onKeywordInput" bindconfirm="onSearch" confirm-type="search" placeholder="搜索主题" placeholder-class="placeholder" />
+        <view class="search-btn" bindtap="onSearch">搜索</view>
+      </view>
+      <view wx:if="{{topics.length === 0 && !topicsLoading}}" class="empty">暂无主题，可切换为自定义主题。</view>
+      <view wx:for="{{topics}}" wx:key="id" class="topic-item {{topicId === item.id ? 'selected' : ''}}" bindtap="selectTopic" data-id="{{item.id}}">
+        <view class="topic-main">
+          <view class="topic-title">{{item.titleZh || item.title}}</view>
+          <view class="topic-sub">{{item.title}}</view>
+          <view wx:if="{{item.tagsText}}" class="topic-tags">{{item.tagsText}}</view>
+        </view>
+        <view class="check">{{topicId === item.id ? '✓' : ''}}</view>
+      </view>
+      <view wx:if="{{topicsLoading}}" class="loading">加载中...</view>
+    </view>
+
+    <view wx:else class="custom-box">
+      <textarea maxlength="100" value="{{customTopic}}" bindinput="onCustomTopicInput" placeholder="输入你想练习的主题，例如：Working from home" placeholder-class="placeholder" />
+      <view class="counter">{{customTopic.length}}/100</view>
+    </view>
+  </view>
+
+  <view class="config-row" wx:if="{{config}}">
+    <text>今日剩余额度：{{config.remainingToday}}</text>
+    <text>单次最多：{{config.maxRoundsPerSession}} 轮</text>
+  </view>
+
+  <button class="start-btn" bindtap="startDialog" disabled="{{configLoading || (config && !config.enabled)}}">开始对话</button>
+</view>

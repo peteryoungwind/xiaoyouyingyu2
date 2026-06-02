@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api, isAuthExpiredError } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
@@ -42,6 +42,23 @@ interface TtsModelType {
   isDefault: boolean;
 }
 
+interface AiDialogConfigType {
+  enabled: boolean;
+  aiModelId?: number | null;
+  asrModelId?: number | null;
+  ttsModelId?: number | null;
+  ttsVoice?: string | null;
+  speechProvider?: string | null;
+  ttsProvider?: string | null;
+  temperature: number;
+  maxRoundsPerSession: number;
+  dailyMessageLimit: number;
+  teachingBeginnerPrompt: string;
+  teachingAdvancedPrompt: string;
+  practiceBeginnerPrompt: string;
+  practiceAdvancedPrompt: string;
+}
+
 const emptyTtsForm = {
   name: '',
   baseUrl: '',
@@ -53,6 +70,23 @@ const emptyTtsForm = {
   outputFormat: 'wav',
   enabled: true,
   isDefault: false,
+};
+
+const emptyAiDialogForm: AiDialogConfigType = {
+  enabled: true,
+  aiModelId: null,
+  asrModelId: null,
+  ttsModelId: null,
+  ttsVoice: '',
+  speechProvider: 'miniapp-native',
+  ttsProvider: 'configured-tts-model',
+  temperature: 0.7,
+  maxRoundsPerSession: 12,
+  dailyMessageLimit: 30,
+  teachingBeginnerPrompt: '',
+  teachingAdvancedPrompt: '',
+  practiceBeginnerPrompt: '',
+  practiceAdvancedPrompt: '',
 };
 
 // ===================== AI Generation Steps =====================
@@ -92,6 +126,9 @@ export default function AdminPage() {
   const [showTtsForm, setShowTtsForm] = useState(false);
   const [editingTts, setEditingTts] = useState<TtsModelType | null>(null);
   const [ttsForm, setTtsForm] = useState(emptyTtsForm);
+  const [aiDialogForm, setAiDialogForm] = useState<AiDialogConfigType>(emptyAiDialogForm);
+  const [aiDialogSaving, setAiDialogSaving] = useState(false);
+  const [aiDialogMessage, setAiDialogMessage] = useState('');
 
   // ===== Manual form state =====
   const emptyForm = { title: '', titleZh: '', tags: '', eventDate: new Date().toISOString().split('T')[0], questions: [{ en: '', zh: '' }] };
@@ -128,12 +165,33 @@ export default function AdminPage() {
     enabled: isAdmin,
   });
 
+  const { data: aiDialogConfig, refetch: refetchAiDialogConfig } = useQuery({
+    queryKey: ['ai-dialog-config'],
+    queryFn: () => api.getAiDialogConfig(),
+    enabled: isAdmin && tab === 'models',
+  });
+
   const { data: wordBooksPage } = useQuery({
     queryKey: ['admin-word-books-for-supplement'],
     queryFn: () => api.getWordBooks({ page: '0', size: '100' }),
     enabled: isAdmin,
   });
   const wordBooks = wordBooksPage?.content || [];
+
+  useEffect(() => {
+    if (aiDialogConfig) {
+      setAiDialogForm({
+        ...emptyAiDialogForm,
+        ...aiDialogConfig,
+        aiModelId: aiDialogConfig.aiModelId ?? null,
+        asrModelId: aiDialogConfig.asrModelId ?? null,
+        ttsModelId: aiDialogConfig.ttsModelId ?? null,
+        ttsVoice: aiDialogConfig.ttsVoice || '',
+        speechProvider: aiDialogConfig.speechProvider || 'miniapp-native',
+        ttsProvider: aiDialogConfig.ttsProvider || 'configured-tts-model',
+      });
+    }
+  }, [aiDialogConfig]);
 
   // ===== Mutations =====
   const deleteTopic = useMutation({
@@ -379,6 +437,45 @@ export default function AdminPage() {
     } catch (err: any) {
       if (isAuthExpiredError(err)) return;
       alert(err.message || '设置失败');
+    }
+  };
+
+  const handleSaveAiDialogConfig = async () => {
+    setAiDialogSaving(true);
+    setAiDialogMessage('');
+    try {
+      await api.updateAiDialogConfig({
+        ...aiDialogForm,
+        aiModelId: aiDialogForm.aiModelId || null,
+        asrModelId: aiDialogForm.asrModelId || null,
+        ttsModelId: aiDialogForm.ttsModelId || null,
+        temperature: Number(aiDialogForm.temperature),
+        maxRoundsPerSession: Number(aiDialogForm.maxRoundsPerSession),
+        dailyMessageLimit: Number(aiDialogForm.dailyMessageLimit),
+      });
+      setAiDialogMessage('AI 对话配置已保存');
+      refetchAiDialogConfig();
+    } catch (err: any) {
+      if (isAuthExpiredError(err)) return;
+      setAiDialogMessage(err.message || '保存失败');
+    } finally {
+      setAiDialogSaving(false);
+    }
+  };
+
+  const handleResetAiDialogPrompts = async () => {
+    if (!confirm('确定恢复四套默认提示词？')) return;
+    setAiDialogSaving(true);
+    setAiDialogMessage('');
+    try {
+      await api.resetAiDialogPrompts();
+      setAiDialogMessage('默认提示词已恢复');
+      refetchAiDialogConfig();
+    } catch (err: any) {
+      if (isAuthExpiredError(err)) return;
+      setAiDialogMessage(err.message || '恢复失败');
+    } finally {
+      setAiDialogSaving(false);
     }
   };
 
@@ -875,6 +972,113 @@ export default function AdminPage() {
                     <p className="break-all">API：{model.baseUrl}</p>
                     <p className="break-all">Provider：{model.provider || 'openai'}</p>
                   </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="space-y-3 rounded-apple-lg bg-white p-4 shadow-sm">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <h2 className="text-sm font-semibold text-gray-900">AI 对话配置</h2>
+                <p className="mt-1 text-xs text-gray-400">小程序 AI 对话的模型、轮数额度和四套系统提示词。</p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <button onClick={handleResetAiDialogPrompts} disabled={aiDialogSaving}
+                  className="rounded-apple bg-gray-100 px-3 py-2 text-xs text-gray-600 hover:bg-gray-200 disabled:opacity-50">
+                  恢复默认提示词
+                </button>
+                <button onClick={handleSaveAiDialogConfig} disabled={aiDialogSaving}
+                  className="flex items-center gap-1.5 rounded-apple bg-gray-900 px-4 py-2 text-xs text-white hover:bg-gray-800 disabled:opacity-50">
+                  {aiDialogSaving && <Loader2 size={13} className="animate-spin" />}
+                  保存配置
+                </button>
+              </div>
+            </div>
+
+            {aiDialogMessage && (
+              <div className={`rounded-apple px-3 py-2 text-sm ${aiDialogMessage.includes('失败') || aiDialogMessage.includes('必须') ? 'bg-red-50 text-red-600' : 'bg-blue-50 text-blue-700'}`}>
+                {aiDialogMessage}
+              </div>
+            )}
+
+            <div className="grid gap-3 sm:grid-cols-3">
+              <label className="flex items-center gap-2 rounded-apple bg-gray-50 px-3 py-2 text-sm text-gray-600">
+                <input type="checkbox" checked={aiDialogForm.enabled}
+                  onChange={e => setAiDialogForm(f => ({ ...f, enabled: e.target.checked }))}
+                  className="rounded" />
+                启用 AI 对话
+              </label>
+              <div>
+                <label className="mb-1 block text-xs text-gray-500">温度</label>
+                <input type="number" min={0} max={2} step={0.1} value={aiDialogForm.temperature}
+                  onChange={e => setAiDialogForm(f => ({ ...f, temperature: Number(e.target.value) }))}
+                  className="w-full rounded-apple bg-gray-100 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-200" />
+              </div>
+              <div>
+                <label className="mb-1 block text-xs text-gray-500">单次最大轮数</label>
+                <input type="number" min={1} value={aiDialogForm.maxRoundsPerSession}
+                  onChange={e => setAiDialogForm(f => ({ ...f, maxRoundsPerSession: Number(e.target.value) }))}
+                  className="w-full rounded-apple bg-gray-100 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-200" />
+              </div>
+              <div>
+                <label className="mb-1 block text-xs text-gray-500">每日发送轮数</label>
+                <input type="number" min={1} value={aiDialogForm.dailyMessageLimit}
+                  onChange={e => setAiDialogForm(f => ({ ...f, dailyMessageLimit: Number(e.target.value) }))}
+                  className="w-full rounded-apple bg-gray-100 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-200" />
+              </div>
+              <div>
+                <label className="mb-1 block text-xs text-gray-500">文本 AI 模型</label>
+                <select value={aiDialogForm.aiModelId || ''}
+                  onChange={e => setAiDialogForm(f => ({ ...f, aiModelId: e.target.value ? Number(e.target.value) : null }))}
+                  className="w-full rounded-apple bg-gray-100 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-200">
+                  <option value="">默认模型</option>
+                  {(aiModels || []).map((model: AiModelType) => <option key={model.id} value={model.id}>{model.name}</option>)}
+                </select>
+              </div>
+              <div>
+                <label className="mb-1 block text-xs text-gray-500">TTS 模型</label>
+                <select value={aiDialogForm.ttsModelId || ''}
+                  onChange={e => setAiDialogForm(f => ({ ...f, ttsModelId: e.target.value ? Number(e.target.value) : null }))}
+                  className="w-full rounded-apple bg-gray-100 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-200">
+                  <option value="">默认 TTS</option>
+                  {(ttsModels || []).map((model: TtsModelType) => <option key={model.id} value={model.id}>{model.name}</option>)}
+                </select>
+              </div>
+              <div>
+                <label className="mb-1 block text-xs text-gray-500">TTS 音色</label>
+                <input value={aiDialogForm.ttsVoice || ''}
+                  onChange={e => setAiDialogForm(f => ({ ...f, ttsVoice: e.target.value }))}
+                  placeholder="alloy / Cherry"
+                  className="w-full rounded-apple bg-gray-100 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-200" />
+              </div>
+              <div>
+                <label className="mb-1 block text-xs text-gray-500">语音识别提供方</label>
+                <input value={aiDialogForm.speechProvider || ''}
+                  onChange={e => setAiDialogForm(f => ({ ...f, speechProvider: e.target.value }))}
+                  className="w-full rounded-apple bg-gray-100 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-200" />
+              </div>
+              <div>
+                <label className="mb-1 block text-xs text-gray-500">语音合成提供方</label>
+                <input value={aiDialogForm.ttsProvider || ''}
+                  onChange={e => setAiDialogForm(f => ({ ...f, ttsProvider: e.target.value }))}
+                  className="w-full rounded-apple bg-gray-100 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-200" />
+              </div>
+            </div>
+
+            <div className="grid gap-3 lg:grid-cols-2">
+              {[
+                ['teachingBeginnerPrompt', '教学模式 · 初级'],
+                ['teachingAdvancedPrompt', '教学模式 · 进阶'],
+                ['practiceBeginnerPrompt', '练习模式 · 初级'],
+                ['practiceAdvancedPrompt', '练习模式 · 进阶'],
+              ].map(([key, label]) => (
+                <div key={key}>
+                  <label className="mb-1 block text-xs text-gray-500">{label}</label>
+                  <textarea value={(aiDialogForm as any)[key] || ''}
+                    onChange={e => setAiDialogForm(f => ({ ...f, [key]: e.target.value }))}
+                    rows={8}
+                    className="w-full rounded-apple bg-gray-100 px-3 py-2 font-mono text-xs leading-relaxed outline-none focus:ring-2 focus:ring-gray-200" />
                 </div>
               ))}
             </div>

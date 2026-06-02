@@ -121,6 +121,13 @@ Page({
   browseAsGuest() { wx.switchTab({ url: '/pages/topics/index' }); },
   goToRedeem() { wx.navigateTo({ url: '/pages/redeem/index' }); },
   goToWordPractice() { wx.navigateTo({ url: '/pages/wordBooks/index' }); },
+  goToAiDialog() {
+    if (!app.checkLogin()) {
+      wx.navigateTo({ url: '/pages/login/index' });
+      return;
+    }
+    wx.navigateTo({ url: '/pages/aiDialogSetup/index' });
+  },
 
   onPullDownRefresh() { this.refreshState(); wx.stopPullDownRefresh(); },
 

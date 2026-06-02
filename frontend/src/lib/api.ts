@@ -217,6 +217,11 @@ export const api = {
     request(`/admin/tts-models/${id}`, { method: 'DELETE' }),
   setDefaultTtsModel: (id: number) =>
     request(`/admin/tts-models/${id}/default`, { method: 'PATCH' }),
+  getAiDialogConfig: () => request('/admin/ai-dialog/config'),
+  updateAiDialogConfig: (data: any) =>
+    request('/admin/ai-dialog/config', { method: 'PUT', body: JSON.stringify(data), direct: true }),
+  resetAiDialogPrompts: () =>
+    request('/admin/ai-dialog/config/reset-prompts', { method: 'POST', direct: true }),
 
   // Learning Center
   getLearningTopic: (id: number) => request(`/learning/topic/${id}`, { direct: true }),

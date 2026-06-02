@@ -1,0 +1,184 @@
+const app = getApp();
+const api = require('../../utils/api');
+
+function uuid() {
+  return Date.now() + '-' + Math.random().toString(16).slice(2);
+}
+
+Page({
+  data: {
+    sessionId: '',
+    mode: 'TEACHING',
+    difficulty: 'BEGINNER',
+    topicSource: 'SYSTEM',
+    topicId: null,
+    customTopic: '',
+    topicTitle: '',
+    topicTitleZh: '',
+    config: null,
+    remainingToday: 0,
+    roundCount: 0,
+    messages: [],
+    inputText: '',
+    sending: false,
+    recording: false,
+    error: ''
+  },
+
+  onLoad(options) {
+    if (!app.checkLogin()) {
+      wx.navigateTo({ url: '/pages/login/index' });
+      return;
+    }
+    this.audio = wx.createInnerAudioContext();
+    this.recorder = wx.getRecorderManager();
+    this.recorder.onStop(() => {
+      this.setData({ recording: false });
+      wx.showToast({ title: '录音完成，请编辑文本发送', icon: 'none' });
+    });
+    this.recorder.onError(() => {
+      this.setData({ recording: false });
+      wx.showToast({ title: '录音失败，请使用文字输入', icon: 'none' });
+    });
+    this.setData({
+      sessionId: uuid(),
+      mode: options.mode || 'TEACHING',
+      difficulty: options.difficulty || 'BEGINNER',
+      topicSource: options.topicSource || 'SYSTEM',
+      topicId: options.topicId ? Number(options.topicId) : null,
+      customTopic: decodeURIComponent(options.customTopic || ''),
+      topicTitle: decodeURIComponent(options.topicTitle || ''),
+      topicTitleZh: decodeURIComponent(options.topicTitleZh || '')
+    });
+    this.loadConfig();
+  },
+
+  onUnload() {
+    if (this.audio) this.audio.destroy();
+  },
+
+  loadConfig() {
+    api.getAiDialogConfig().then(res => {
+      this.setData({
+        config: res,
+        remainingToday: res.remainingToday || 0,
+        error: res.enabled === false ? 'AI 对话暂不可用，请稍后再试' : ''
+      });
+    }).catch(err => {
+      this.setData({ error: err.message || '配置加载失败' });
+    });
+  },
+
+  onInput(e) {
+    this.setData({ inputText: e.detail.value });
+  },
+
+  startRecord() {
+    if (this.data.recording) return;
+    this.setData({ recording: true });
+    this.recorder.start({ duration: 60000, format: 'mp3' });
+  },
+
+  stopRecord() {
+    if (!this.data.recording) return;
+    this.recorder.stop();
+  },
+
+  sendMessage() {
+    var text = this.data.inputText.trim();
+    if (!text || this.data.sending) return;
+    if (!this.data.config || this.data.config.enabled === false) {
+      wx.showToast({ title: 'AI 对话暂不可用', icon: 'none' });
+      return;
+    }
+    if (this.data.remainingToday <= 0) {
+      wx.showToast({ title: '今日额度已用尽', icon: 'none' });
+      return;
+    }
+    if (this.data.roundCount >= this.data.config.maxRoundsPerSession) {
+      wx.showToast({ title: '本次练习已完成，请重新开始', icon: 'none' });
+      return;
+    }
+
+    var userMessage = { id: uuid(), role: 'user', content: text };
+    var thinkingMessage = { id: uuid(), role: 'assistant', thinking: true };
+    var nextMessages = this.data.messages.concat([userMessage, thinkingMessage]);
+    this.setData({ messages: nextMessages, inputText: '', sending: true, error: '' });
+
+    api.sendAiDialogMessage({
+      sessionId: this.data.sessionId,
+      topicSource: this.data.topicSource,
+      topicId: this.data.topicId,
+      customTopic: this.data.customTopic,
+      mode: this.data.mode,
+      difficulty: this.data.difficulty,
+      roundCount: this.data.roundCount,
+      message: text,
+      history: this.buildHistory(nextMessages)
+    }).then(res => {
+      var reply = res.reply || {};
+      var assistantMessage = {
+        id: thinkingMessage.id,
+        role: 'assistant',
+        reply: reply,
+        content: reply.replyEn || '',
+        audioUrl: res.audioUrl || '',
+        showText: false,
+        thinking: false
+      };
+      var messages = this.data.messages.map(m => m.id === thinkingMessage.id ? assistantMessage : m);
+      this.setData({
+        messages: messages,
+        remainingToday: res.remainingToday,
+        roundCount: this.data.roundCount + 1,
+        sending: false
+      });
+      this.playAudio(assistantMessage);
+    }).catch(err => {
+      var messages = this.data.messages.filter(m => m.id !== thinkingMessage.id);
+      this.setData({ messages: messages, sending: false, error: err.message || 'AI 回复失败' });
+      wx.showToast({ title: err.message || 'AI 回复失败', icon: 'none' });
+    });
+  },
+
+  buildHistory(messages) {
+    return messages.filter(m => !m.thinking).map(m => {
+      if (m.role === 'assistant') {
+        var content = m.content || '';
+        if (m.reply && m.reply.nextPromptEn) content += '\n' + m.reply.nextPromptEn;
+        return { role: 'assistant', content: content };
+      }
+      return { role: 'user', content: m.content };
+    });
+  },
+
+  toggleText(e) {
+    var id = e.currentTarget.dataset.id;
+    var messages = this.data.messages.map(m => {
+      if (m.id === id) {
+        m.showText = !m.showText;
+      }
+      return m;
+    });
+    this.setData({ messages: messages });
+  },
+
+  replayAudio(e) {
+    var id = e.currentTarget.dataset.id;
+    var message = this.data.messages.find(m => m.id === id);
+    this.playAudio(message);
+  },
+
+  playAudio(message) {
+    if (!message || !message.audioUrl) return;
+    var base = app.globalData.baseUrl.replace(/\/api$/, '');
+    var src = message.audioUrl.indexOf('http') === 0 ? message.audioUrl : base + message.audioUrl;
+    this.audio.stop();
+    this.audio.src = src;
+    this.audio.play();
+  },
+
+  restart() {
+    wx.redirectTo({ url: '/pages/aiDialogSetup/index' });
+  }
+});

@@ -418,6 +418,10 @@ public class AiService {
         return callAi(modelId, systemPrompt, "主题：%s（%s）".formatted(titleEn, titleZh), null);
     }
 
+    public String generateStructuredReply(Long modelId, String systemPrompt, String userPrompt, List<Map<String, String>> history, Double temperature) {
+        return callAi(modelId, systemPrompt, userPrompt, history, temperature);
+    }
+
     private ResolvedAiConfig resolveAiConfig(Long modelId) {
         if (modelId != null) {
             AiModel aiModel = aiModelRepository.findById(modelId).orElse(null);
@@ -438,6 +442,10 @@ public class AiService {
     // ===================== 统一 AI 调用方法 =====================
 
     private String callAi(Long modelId, String systemPrompt, String userPrompt, List<Map<String, String>> history) {
+        return callAi(modelId, systemPrompt, userPrompt, history, null);
+    }
+
+    private String callAi(Long modelId, String systemPrompt, String userPrompt, List<Map<String, String>> history, Double temperature) {
         try {
             ResolvedAiConfig config = resolveAiConfig(modelId);
 
@@ -448,7 +456,12 @@ public class AiService {
             }
             messages.add(Map.of("role", "user", "content", userPrompt));
 
-            Map<String, Object> body = Map.of("model", config.modelName(), "messages", messages);
+            Map<String, Object> body = new LinkedHashMap<>();
+            body.put("model", config.modelName());
+            body.put("messages", messages);
+            if (temperature != null) {
+                body.put("temperature", temperature);
+            }
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(config.apiUrl()))
                     .header("Content-Type", "application/json")

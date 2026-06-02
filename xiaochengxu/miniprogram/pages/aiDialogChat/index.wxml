@@ -1,0 +1,56 @@
+<view class="chat-page safe-bottom">
+  <view class="top-card">
+    <view class="topic-name">{{customTopic || topicTitleZh || topicTitle || 'AI 对话练习'}}</view>
+    <view class="meta-row">
+      <text>{{mode === 'TEACHING' ? '教学' : '练习'}}</text>
+      <text>{{difficulty === 'BEGINNER' ? '初级' : '进阶'}}</text>
+      <text>剩余 {{remainingToday}}</text>
+      <text>{{roundCount}}/{{config.maxRoundsPerSession || '-'}}</text>
+    </view>
+  </view>
+
+  <view wx:if="{{error}}" class="error-box">{{error}}</view>
+
+  <scroll-view class="message-list" scroll-y="true">
+    <view wx:if="{{messages.length === 0}}" class="empty-chat">
+      <view class="empty-title">说第一句吧</view>
+      <view class="empty-desc">可以用英文，也可以先中英混合表达。</view>
+    </view>
+
+    <view wx:for="{{messages}}" wx:key="id" class="message-row {{item.role === 'user' ? 'user-row' : 'assistant-row'}}">
+      <view class="bubble {{item.role === 'user' ? 'user-bubble' : 'assistant-bubble'}}">
+        <block wx:if="{{item.thinking}}">
+          <view class="thinking">AI 思考中...</view>
+        </block>
+        <block wx:elif="{{item.role === 'user'}}">
+          <view class="message-text">{{item.content}}</view>
+        </block>
+        <block wx:else>
+          <view class="assistant-actions">
+            <view class="mini-btn" bindtap="replayAudio" data-id="{{item.id}}">播放</view>
+            <view class="mini-btn" bindtap="toggleText" data-id="{{item.id}}">{{item.showText ? '隐藏文字' : '显示文字'}}</view>
+          </view>
+          <view wx:if="{{item.showText}}" class="message-text english">{{item.reply.replyEn}}</view>
+          <view wx:if="{{item.showText && item.reply.nextPromptEn}}" class="next-prompt">{{item.reply.nextPromptEn}}</view>
+          <view wx:if="{{mode === 'TEACHING' && item.reply.feedbackZh}}" class="feedback">
+            <view class="feedback-title">点评</view>
+            <view>{{item.reply.feedbackZh}}</view>
+            <view wx:if="{{item.reply.betterExpressionEn}}" class="better">{{item.reply.betterExpressionEn}}</view>
+            <view wx:if="{{item.reply.betterExpressionZh}}" class="better-zh">{{item.reply.betterExpressionZh}}</view>
+          </view>
+        </block>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="input-bar">
+    <textarea class="input" value="{{inputText}}" bindinput="onInput" auto-height maxlength="1000" placeholder="输入你想说的话..." placeholder-class="placeholder" />
+    <view class="input-actions">
+      <view class="record-btn {{recording ? 'recording' : ''}}" bindtouchstart="startRecord" bindtouchend="stopRecord">{{recording ? '松开' : '语音'}}</view>
+      <view class="send-btn {{!inputText || sending ? 'disabled' : ''}}" bindtap="sendMessage">{{sending ? '发送中' : '发送'}}</view>
+    </view>
+    <view wx:if="{{roundCount >= config.maxRoundsPerSession}}" class="limit-line">本次练习已完成，可以重新开始。</view>
+    <view wx:if="{{remainingToday <= 0}}" class="limit-line">今日额度已用尽，明天再来练习。</view>
+    <view class="restart" bindtap="restart">重新选择主题</view>
+  </view>
+</view>

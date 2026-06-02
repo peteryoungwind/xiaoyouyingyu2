@@ -49,6 +49,8 @@ flowchart LR
 - 我的：`pages/profile/index`
 - 话题详情：`pages/topicDetail/index`
 - 学习详情：`pages/learningTopic/index`
+- AI 对话准备页：`pages/aiDialogSetup/index`
+- AI 对话页：`pages/aiDialogChat/index`
 - 单词本列表：`pages/wordBooks/index`
 - 单词本详情：`pages/wordBookDetail/index`
 - 单词练习：`pages/wordPractice/index`
@@ -126,6 +128,8 @@ flowchart LR
 | 话题详情 | `pages/topicDetail/index` | 展示主题、问题、会员学习入口 |
 | 学习列表 | `pages/learning/index` | 会员学习入口、主题筛选、非会员开通提示 |
 | 学习详情 | `pages/learningTopic/index` | AI 热身、词汇、表达、任务、回答点评 |
+| AI 对话准备 | `pages/aiDialogSetup/index` | 登录用户选择教学/练习模式、初级/进阶难度、系统主题或自定义主题 |
+| AI 对话 | `pages/aiDialogChat/index` | 当前页面内存中保持上下文，发送文字消息，播放 AI 音频，按需显示 AI 回复文字和教学点评 |
 | 单词本列表 | `pages/wordBooks/index` | 展示已发布单词本、词数和个人进度 |
 | 单词本详情 | `pages/wordBookDetail/index` | 初级/进阶切换、总词数、已学、待复习、已掌握和开始练习入口 |
 | 单词练习 | `pages/wordPractice/index` | 先展示英文单词和美式/英式发音胶囊，用户选择认识/模糊/不认识；模糊和不认识会在当前页展开详情 |
@@ -197,6 +201,31 @@ sequenceDiagram
 - 调用 AI 点评。
 
 接口需要会员权限。若后端返回无权限，小程序应引导登录、兑换或开通会员。
+
+## AI 对话流程
+
+小程序首页和学习中心均提供“AI 对话”入口。
+
+权限：
+
+- 未登录点击入口跳转登录页。
+- 已登录用户可使用 AI 对话，不限制会员状态。
+
+准备页 `pages/aiDialogSetup/index`：
+
+- 调用 `/api/ai-dialog/config` 获取启用状态、单次最大轮数、每日轮数限制和当天剩余额度。
+- 支持教学/练习模式切换。
+- 支持初级/进阶难度切换。
+- 支持选择已有系统主题，也支持输入 100 字以内的自定义主题。
+
+对话页 `pages/aiDialogChat/index`：
+
+- 对话历史只保存在当前页面内存中，退出页面后清空。
+- 每发送一条用户消息调用 `/api/ai-dialog/message`，成功后当天剩余额度减少 1。
+- AI 回复默认隐藏正文，用户点击“显示文字”后展示。
+- 教学模式展示中文点评、优化表达和解释；练习模式默认只展示英文对话内容。
+- 如果后端返回 `audioUrl`，小程序会自动播放 AI 英文回复并支持重播；如果 TTS 生成失败，则降级为文字展示。
+- 语音输入按钮已接入录音状态与权限反馈；当前 v1 主要依赖文字输入或后续接入的小程序端语音识别，后端 ASR 兜底接口暂预留。
 
 ## 单词练习流程
 
