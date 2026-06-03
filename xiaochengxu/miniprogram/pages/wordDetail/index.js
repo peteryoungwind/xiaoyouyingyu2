@@ -49,5 +49,12 @@ Page({
       this.setData({ submitting: false });
       auth.handleWordPracticeDenied(err && err.message ? err.message : '提交失败');
     });
+  },
+
+  goBack() {
+    wx.navigateBack({
+      delta: 1,
+      fail: () => wx.redirectTo({ url: '/pages/wordBooks/index' })
+    });
   }
 });

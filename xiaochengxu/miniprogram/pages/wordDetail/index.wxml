@@ -1,6 +1,15 @@
-<view class="page-container safe-bottom word-detail-page">
+<view class="word-detail-page safe-bottom">
   <view wx:if="{{loading}}" class="loading">加载中...</view>
   <view wx:elif="{{word}}" class="detail-shell">
+    <view class="top-card">
+      <view class="round-icon" bindtap="goBack">‹</view>
+      <view class="book-meta">
+        <view class="page-title">单词详情</view>
+        <view class="page-subtitle">查看释义、例句和发音</view>
+      </view>
+      <view class="round-icon" bindtap="playAudio" data-url="{{word.audioUsUrl || word.audioUkUrl}}">▶</view>
+    </view>
+
     <view class="word-hero">
       <view class="word-title">{{word.word}}</view>
       <view class="phonetic-row" wx:if="{{word.phonetic || word.audioUkUrl || word.audioUsUrl}}">
@@ -16,23 +25,30 @@
       </view>
     </view>
 
-    <view class="definition-block" wx:if="{{word.definitionZh || word.partOfSpeech}}">
-      <text wx:if="{{word.partOfSpeech}}" class="pos">{{word.partOfSpeech}}</text>
-      <text class="definition-text">{{word.definitionZh}}</text>
-    </view>
-    <view class="definition-en" wx:if="{{word.definitionEn}}">{{word.definitionEn}}</view>
-
-    <view class="example-card" wx:if="{{word.exampleEn || word.exampleZh}}">
-      <view class="example-sentence" wx:if="{{word.exampleEn}}">
-        <view class="sentence-audio" bindtap="playAudio" data-url="{{word.exampleAudioUsUrl || word.exampleAudioUkUrl}}">
-          <image class="audio-icon" src="/images/icons/volume.svg" mode="aspectFit" />
-        </view>
-        <text class="example-en">{{word.exampleEn}}</text>
+    <view class="detail-card" wx:if="{{word.definitionZh || word.partOfSpeech || word.definitionEn}}">
+      <view class="section-title">释义</view>
+      <view class="definition-block" wx:if="{{word.definitionZh || word.partOfSpeech}}">
+        <text wx:if="{{word.partOfSpeech}}" class="pos">{{word.partOfSpeech}}</text>
+        <text class="definition-text">{{word.definitionZh}}</text>
       </view>
-      <view class="example-zh" wx:if="{{word.exampleZh}}">{{word.exampleZh}}</view>
+      <view class="definition-en" wx:if="{{word.definitionEn}}">{{word.definitionEn}}</view>
     </view>
 
-    <view class="pattern-card" wx:if="{{word.commonPatterns || word.sourceScene || word.sourceTopicTitle}}">
+    <view class="detail-card" wx:if="{{word.exampleEn || word.exampleZh}}">
+      <view class="section-title">例句</view>
+      <view class="example-card">
+        <view class="example-sentence" wx:if="{{word.exampleEn}}">
+          <view class="sentence-audio" bindtap="playAudio" data-url="{{word.exampleAudioUsUrl || word.exampleAudioUkUrl}}">
+            <image class="audio-icon" src="/images/icons/volume.svg" mode="aspectFit" />
+          </view>
+          <text class="example-en">{{word.exampleEn}}</text>
+        </view>
+        <view class="example-zh" wx:if="{{word.exampleZh}}">{{word.exampleZh}}</view>
+      </view>
+    </view>
+
+    <view class="detail-card" wx:if="{{word.commonPatterns || word.sourceScene || word.sourceTopicTitle}}">
+      <view class="section-title">常用搭配</view>
       <view class="pattern-content" wx:if="{{word.commonPatterns}}">{{word.commonPatterns}}</view>
       <view class="source-line" wx:if="{{word.sourceScene || word.sourceTopicTitle}}">
         来源：{{word.sourceScene || word.sourceTopicTitle}}
@@ -42,15 +58,12 @@
     <view class="answer-row">
       <view class="answer-btn known {{submitting ? 'disabled' : ''}}" bindtap="answer" data-result="KNOWN">
         <text>认识</text>
-        <view class="answer-mark"></view>
       </view>
       <view class="answer-btn fuzzy {{submitting ? 'disabled' : ''}}" bindtap="answer" data-result="FUZZY">
         <text>模糊</text>
-        <view class="answer-mark"></view>
       </view>
       <view class="answer-btn unknown {{submitting ? 'disabled' : ''}}" bindtap="answer" data-result="UNKNOWN">
         <text>不认识</text>
-        <view class="answer-mark"></view>
       </view>
     </view>
   </view>

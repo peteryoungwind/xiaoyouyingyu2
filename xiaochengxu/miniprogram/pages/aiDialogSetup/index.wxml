@@ -7,6 +7,17 @@
 
   <button class="top-start-btn" bindtap="startDialog" disabled="{{configLoading || (config && !config.enabled)}}">开始对话</button>
 
+  <view class="config-row" wx:if="{{config}}">
+    <view class="quota-card">
+      <text>今日剩余</text>
+      <view>{{config.remainingToday}} 轮</view>
+    </view>
+    <view class="quota-card">
+      <text>本次最多</text>
+      <view>{{config.maxRoundsPerSession}} 轮</view>
+    </view>
+  </view>
+
   <view wx:if="{{error}}" class="notice">{{error}}</view>
 
   <view class="panel">
@@ -56,11 +67,6 @@
       <textarea maxlength="100" value="{{customTopic}}" bindinput="onCustomTopicInput" placeholder="输入你想练习的主题，例如：Working from home" placeholder-class="placeholder" />
       <view class="counter">{{customTopic.length}}/100</view>
     </view>
-  </view>
-
-  <view class="config-row" wx:if="{{config}}">
-    <text>今日剩余额度：{{config.remainingToday}}</text>
-    <text>单次最多：{{config.maxRoundsPerSession}} 轮</text>
   </view>
 
 </view>

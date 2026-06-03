@@ -1,14 +1,28 @@
-<view class="page-container safe-bottom">
+<view class="word-book-detail-page safe-bottom">
   <view wx:if="{{loading}}" class="loading">加载中...</view>
   <view wx:elif="{{book}}">
-    <view class="book-hero">
-      <view class="book-name">{{book.name}}</view>
-      <view class="book-desc">{{book.description || book.scene || '暂无描述'}}</view>
+    <view class="top-card">
+      <view class="round-icon" bindtap="goBack">‹</view>
+      <view class="book-meta">
+        <view class="book-name">{{book.name}}</view>
+        <view class="book-desc">{{book.description || book.scene || '暂无描述'}}</view>
+      </view>
+      <view class="round-icon" bindtap="loadBook">↻</view>
     </view>
 
-    <view class="segmented">
-      <view class="segment {{difficulty === 'BEGINNER' ? 'active' : ''}}" bindtap="switchDifficulty" data-difficulty="BEGINNER">初级</view>
-      <view class="segment {{difficulty === 'ADVANCED' ? 'active' : ''}}" bindtap="switchDifficulty" data-difficulty="ADVANCED">进阶</view>
+    <view class="study-hero">
+      <view class="eyebrow">Today</view>
+      <view class="hero-title">先复习，再学习新词</view>
+      <view class="hero-desc">系统会优先给出到期复习词，没有到期复习词时进入新词。</view>
+      <button class="start-btn" bindtap="startPractice">开始练习</button>
+    </view>
+
+    <view class="control-card">
+      <view class="section-title">难度</view>
+      <view class="segmented">
+        <view class="segment {{difficulty === 'BEGINNER' ? 'active' : ''}}" bindtap="switchDifficulty" data-difficulty="BEGINNER">初级</view>
+        <view class="segment {{difficulty === 'ADVANCED' ? 'active' : ''}}" bindtap="switchDifficulty" data-difficulty="ADVANCED">进阶</view>
+      </view>
     </view>
 
     <view class="progress-grid">
@@ -17,7 +31,5 @@
       <view class="progress-card"><text>{{book.progress.dueReview || 0}}</text><text>待复习</text></view>
       <view class="progress-card"><text>{{book.progress.mastered || 0}}</text><text>已掌握</text></view>
     </view>
-
-    <button class="start-btn" bindtap="startPractice">开始练习</button>
   </view>
 </view>

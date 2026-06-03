@@ -68,10 +68,16 @@
           </section>
 
           <footer class="composer">
-            <textarea placeholder="输入你想说的话..."></textarea>
-            <div class="composer-actions">
-              <button class="voice-button">按住说话</button>
-              <button class="send-button">发送</button>
+            <div class="composer-shell voice-default">
+              <button class="mode-toggle" aria-label="切换到文字输入">
+                <span class="keyboard-icon" aria-hidden="true">
+                  <span></span><span></span><span></span>
+                  <span></span><span></span><span></span>
+                  <span></span>
+                </span>
+              </button>
+              <button class="voice-input-control">按住说话</button>
+              <button class="send-button muted" aria-label="识别后发送">↑</button>
             </div>
             <button class="restart-link">重新选择主题</button>
           </footer>

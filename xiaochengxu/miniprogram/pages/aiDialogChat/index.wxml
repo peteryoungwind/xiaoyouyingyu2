@@ -1,12 +1,11 @@
 <view class="chat-page safe-bottom">
   <view class="top-card">
-    <view class="topic-name">{{customTopic || topicTitleZh || topicTitle || 'AI 对话练习'}}</view>
-    <view class="meta-row">
-      <text>{{mode === 'TEACHING' ? '教学' : '练习'}}</text>
-      <text>{{difficulty === 'BEGINNER' ? '初级' : '进阶'}}</text>
-      <text>剩余 {{remainingToday}}</text>
-      <text>{{roundCount}}/{{config.maxRoundsPerSession || '-'}}</text>
+    <view class="round-icon" bindtap="goBack">‹</view>
+    <view class="topic-meta">
+      <view class="topic-name">{{customTopic || topicTitleZh || topicTitle || 'AI 对话练习'}}</view>
+      <view class="meta-line">{{mode === 'TEACHING' ? '教学' : '练习'}} · {{difficulty === 'BEGINNER' ? '初级' : '进阶'}} · 剩余 {{remainingToday}} · {{roundCount}}/{{config.maxRoundsPerSession || '-'}}</view>
     </view>
+    <view class="round-icon" bindtap="restart">↻</view>
   </view>
 
   <view wx:if="{{error}}" class="error-box">{{error}}</view>
@@ -20,12 +19,20 @@
     <view wx:for="{{messages}}" wx:key="id" class="message-row {{item.role === 'user' ? 'user-row' : 'assistant-row'}}">
       <view class="bubble {{item.role === 'user' ? 'user-bubble' : 'assistant-bubble'}}">
         <block wx:if="{{item.thinking}}">
-          <view class="thinking">AI 思考中...</view>
+          <view class="thinking">
+            <view class="dot"></view>
+            <view class="dot"></view>
+            <view class="dot"></view>
+            <text>AI 思考中</text>
+          </view>
         </block>
         <block wx:elif="{{item.role === 'user'}}">
           <view class="message-text">{{item.content}}</view>
         </block>
         <block wx:else>
+          <view wx:if="{{item.audioUrl}}" class="audio-wave" bindtap="replayAudio" data-id="{{item.id}}">
+            <view></view><view></view><view></view><view></view><view></view><view></view>
+          </view>
           <view class="assistant-actions">
             <view class="mini-btn" bindtap="replayAudio" data-id="{{item.id}}">播放</view>
             <view class="mini-btn" bindtap="toggleText" data-id="{{item.id}}">{{item.showText ? '隐藏文字' : '显示文字'}}</view>
@@ -44,10 +51,26 @@
   </scroll-view>
 
   <view class="input-bar">
-    <textarea class="input" value="{{inputText}}" bindinput="onInput" auto-height maxlength="1000" placeholder="输入你想说的话..." placeholder-class="placeholder" />
-    <view class="input-actions">
-      <view class="record-btn {{recording ? 'recording' : ''}}" bindtouchstart="startRecord" bindtouchend="stopRecord">{{recording ? '松开' : '语音'}}</view>
-      <view class="send-btn {{!inputText || sending ? 'disabled' : ''}}" bindtap="sendMessage">{{sending ? '发送中' : '发送'}}</view>
+    <view class="composer-shell">
+      <view class="mode-toggle" bindtap="toggleInputMode">
+        <block wx:if="{{inputMode === 'voice'}}">
+          <view class="keyboard-icon">
+            <view></view><view></view><view></view>
+            <view></view><view></view><view></view>
+            <view></view>
+          </view>
+        </block>
+        <block wx:else>
+          <view class="voice-icon">
+            <view></view><view></view><view></view>
+          </view>
+        </block>
+      </view>
+
+      <textarea wx:if="{{inputMode === 'text'}}" class="input" value="{{inputText}}" bindinput="onInput" auto-height maxlength="1000" placeholder="输入你想说的话..." placeholder-class="placeholder" />
+      <view wx:else class="voice-input {{recording ? 'recording' : ''}}" bindtouchstart="startRecord" bindtouchend="stopRecord">{{recording ? '松开结束' : '按住说话'}}</view>
+
+      <view class="send-btn {{!inputText || sending ? 'disabled' : ''}}" bindtap="sendMessage">{{sending ? '…' : '↑'}}</view>
     </view>
     <view wx:if="{{roundCount >= config.maxRoundsPerSession}}" class="limit-line">本次练习已完成，可以重新开始。</view>
     <view wx:if="{{remainingToday <= 0}}" class="limit-line">今日额度已用尽，明天再来练习。</view>

@@ -25,7 +25,18 @@ Page({
   loadBooks() {
     this.setData({ loading: true });
     api.getWordBooks().then(res => {
-      this.setData({ books: res || [], loading: false });
+      const books = (res || []).map(book => {
+        const stats = book.stats || {};
+        const progress = book.progress || {};
+        const total = (stats.beginnerWords || 0) + (stats.advancedWords || 0);
+        const learned = progress.learned || 0;
+        return Object.assign({}, book, {
+          stats,
+          progress,
+          progressPercent: total > 0 ? Math.min(100, Math.round((learned / total) * 100)) : 0
+        });
+      });
+      this.setData({ books, loading: false });
     }).catch(err => {
       console.error('Load word books failed:', err);
       this.setData({ loading: false });

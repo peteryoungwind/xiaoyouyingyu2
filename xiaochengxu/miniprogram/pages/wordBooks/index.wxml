@@ -1,23 +1,40 @@
-<view class="page-container safe-bottom">
-  <view class="page-title">选择单词本</view>
-  <view class="page-subtitle">到期复习优先，新词随后出现。</view>
+<view class="word-books-page safe-bottom">
+  <view class="page-hero">
+    <view class="eyebrow">Word Practice</view>
+    <view class="page-title">选择单词本</view>
+    <view class="page-subtitle">到期复习优先，新词随后出现。</view>
+  </view>
+
+  <view class="summary-strip" wx:if="{{books.length > 0}}">
+    <view class="summary-card">
+      <text>今日待复习</text>
+      <view>{{books[0].progress.dueReview || 0}}</view>
+    </view>
+    <view class="summary-card">
+      <text>已掌握</text>
+      <view>{{books[0].progress.mastered || 0}}</view>
+    </view>
+  </view>
 
   <view wx:if="{{loading}}" class="loading">加载中...</view>
 
   <view wx:elif="{{books.length > 0}}" class="book-list">
     <view wx:for="{{books}}" wx:key="id" class="book-card" bindtap="goToBook" data-id="{{item.id}}">
-      <view class="book-header">
+      <view class="book-top">
         <view>
           <view class="book-name">{{item.name}}</view>
           <view class="book-desc">{{item.description || item.scene || '暂无描述'}}</view>
         </view>
         <view class="book-arrow">›</view>
       </view>
-      <view class="book-stats">
-        <view class="stat"><text>{{item.stats.beginnerWords || 0}}</text><text>初级词</text></view>
-        <view class="stat"><text>{{item.stats.advancedWords || 0}}</text><text>进阶词</text></view>
-        <view class="stat"><text>{{item.progress.learned || 0}}</text><text>已学</text></view>
-        <view class="stat"><text>{{item.progress.mastered || 0}}</text><text>掌握</text></view>
+      <view class="progress-track">
+        <view style="width: {{item.progressPercent}}%;"></view>
+      </view>
+      <view class="metric-grid">
+        <view><text>{{item.stats.beginnerWords || 0}}</text><text>初级词</text></view>
+        <view><text>{{item.stats.advancedWords || 0}}</text><text>进阶词</text></view>
+        <view><text>{{item.progress.learned || 0}}</text><text>已学</text></view>
+        <view><text>{{item.progress.mastered || 0}}</text><text>掌握</text></view>
       </view>
     </view>
   </view>

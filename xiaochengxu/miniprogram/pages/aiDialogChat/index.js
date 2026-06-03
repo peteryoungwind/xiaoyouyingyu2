@@ -20,6 +20,7 @@ Page({
     roundCount: 0,
     messages: [],
     inputText: '',
+    inputMode: 'voice',
     sending: false,
     recording: false,
     error: ''
@@ -33,7 +34,7 @@ Page({
     this.audio = wx.createInnerAudioContext();
     this.recorder = wx.getRecorderManager();
     this.recorder.onStop(() => {
-      this.setData({ recording: false });
+      this.setData({ recording: false, inputMode: 'text' });
       wx.showToast({ title: '录音完成，请编辑文本发送', icon: 'none' });
     });
     this.recorder.onError(() => {
@@ -71,6 +72,12 @@ Page({
 
   onInput(e) {
     this.setData({ inputText: e.detail.value });
+  },
+
+  toggleInputMode() {
+    this.setData({
+      inputMode: this.data.inputMode === 'voice' ? 'text' : 'voice'
+    });
   },
 
   startRecord() {
@@ -180,5 +187,12 @@ Page({
 
   restart() {
     wx.redirectTo({ url: '/pages/aiDialogSetup/index' });
+  },
+
+  goBack() {
+    wx.navigateBack({
+      delta: 1,
+      fail: () => this.restart()
+    });
   }
 });

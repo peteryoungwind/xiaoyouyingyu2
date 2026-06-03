@@ -8,11 +8,19 @@
   </view>
 
   <view wx:elif="{{word}}" class="practice-shell">
-    <view class="progress-line" wx:if="{{progress}}">
-      已学 {{progress.learned || 0}} / {{progress.total || 0}} · 待复习 {{progress.dueReview || 0}} · 掌握 {{progress.mastered || 0}}
+    <view class="top-card">
+      <view class="round-icon" bindtap="goBack">‹</view>
+      <view class="book-meta">
+        <view class="book-name">单词练习</view>
+        <view class="progress-line" wx:if="{{progress}}">
+          {{difficulty === 'BEGINNER' ? '初级' : '进阶'}} · 已学 {{progress.learned || 0}}/{{progress.total || 0}} · 待复习 {{progress.dueReview || 0}}
+        </view>
+      </view>
+      <view class="round-icon" bindtap="loadNext">↻</view>
     </view>
 
     <view class="word-hero">
+      <view class="review-chip">到期复习</view>
       <view class="word">{{word.word}}</view>
       <view class="phonetic-row" wx:if="{{word.phonetic || word.audioUkUrl || word.audioUsUrl}}">
         <view class="pron-chip" wx:if="{{word.audioUsUrl}}" bindtap="playAudio" data-url="{{word.audioUsUrl}}">
@@ -33,6 +41,7 @@
     </view>
 
     <view class="inline-detail" wx:if="{{detailVisible}}">
+      <view class="detail-title">答错后展开状态</view>
       <view class="definition-block" wx:if="{{word.definitionZh || word.partOfSpeech}}">
         <text wx:if="{{word.partOfSpeech}}" class="pos">{{word.partOfSpeech}}</text>
         <text class="definition-text">{{word.definitionZh}}</text>
@@ -57,30 +66,21 @@
       </view>
     </view>
 
-    <view class="recall-tip" wx:if="{{!detailVisible}}">
-      <text>瞬间想起词义，选「认识」</text>
-      <text>不确定或没想起，选「模糊」或「不认识」</text>
-    </view>
-
     <view class="answer-row" wx:if="{{!detailVisible}}">
       <view class="answer-btn known {{submitting ? 'disabled' : ''}}" bindtap="answer" data-result="KNOWN">
         <text>认识</text>
-        <view class="answer-mark"></view>
       </view>
       <view class="answer-btn fuzzy {{submitting ? 'disabled' : ''}}" bindtap="answer" data-result="FUZZY">
         <text>模糊</text>
-        <view class="answer-mark"></view>
       </view>
       <view class="answer-btn unknown {{submitting ? 'disabled' : ''}}" bindtap="answer" data-result="UNKNOWN">
         <text>不认识</text>
-        <view class="answer-mark"></view>
       </view>
     </view>
 
     <view class="next-area" wx:if="{{detailVisible}}">
       <view class="next-btn" bindtap="loadNext">
         <text>下一词</text>
-        <view class="answer-mark"></view>
       </view>
     </view>
   </view>

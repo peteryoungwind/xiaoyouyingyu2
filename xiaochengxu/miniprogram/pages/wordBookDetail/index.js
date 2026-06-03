@@ -41,5 +41,12 @@ Page({
     wx.navigateTo({
       url: '/pages/wordPractice/index?bookId=' + this.data.id + '&difficulty=' + this.data.difficulty
     });
+  },
+
+  goBack() {
+    wx.navigateBack({
+      delta: 1,
+      fail: () => wx.redirectTo({ url: '/pages/wordBooks/index' })
+    });
   }
 });

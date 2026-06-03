@@ -71,5 +71,12 @@ Page({
 
   playAudio(e) {
     audio.play(e.currentTarget.dataset.url);
+  },
+
+  goBack() {
+    wx.navigateBack({
+      delta: 1,
+      fail: () => wx.redirectTo({ url: '/pages/wordBooks/index' })
+    });
   }
 });
