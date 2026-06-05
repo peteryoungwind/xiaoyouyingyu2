@@ -1,6 +1,6 @@
 # 接口与数据模型
 
-> 最后更新：2026-05-25
+> 最后更新：2026-06-05
 
 ## 基础约定
 
@@ -163,6 +163,91 @@ Authorization: Bearer <token>
 
 前端和小程序需要再解析 `content` 中的 JSON 字符串。
 
+## 口语热身接口
+
+路径前缀：`/api/spoken-warmup`
+
+权限：登录用户。普通 `USER`、`PREMIUM_USER`、`ADMIN` 和未过期会员均可使用，不要求会员权限。
+
+| 方法 | 路径 | 说明 |
+| --- | --- | --- |
+| GET | `/topic/{id}` | 获取口语热身主题详情 |
+| POST | `/warmup` | 生成 1 段热身介绍和 3 个热身问题 |
+| POST | `/vocabulary` | 生成 10 个核心词汇 |
+| POST | `/sentence-patterns` | 生成 6 个句型模板 |
+| POST | `/idiomatic-expressions` | 生成 6 个地道表达 |
+| POST | `/tasks` | 生成 3 个模拟问答任务 |
+| POST | `/review` | 点评用户回答 |
+| POST | `/speech-to-text` | 上传真实录音文件并返回 ASR 识别文本 |
+
+### 口语热身生成请求
+
+```json
+{
+  "titleEn": "After-work Time",
+  "titleZh": "下班后的时间安排",
+  "mode": "beginner",
+  "exclude": "可选，本次页面已生成内容，用于重新生成去重"
+}
+```
+
+### 口语热身点评请求
+
+```json
+{
+  "titleEn": "After-work Time",
+  "titleZh": "下班后的时间安排",
+  "mode": "beginner",
+  "taskTitle": "Short Answer",
+  "taskDescription": "Describe what you usually do after work.",
+  "answer": "I usually take a walk after work.",
+  "inputMode": "voice"
+}
+```
+
+点评响应仍包装在 `content` 字符串中，内部 JSON 包含：
+
+```json
+{
+  "score": 85,
+  "strengths": ["..."],
+  "improvements": ["..."],
+  "corrections": [
+    {
+      "original": "I very like walking.",
+      "corrected": "I really like walking.",
+      "explanationZh": "like 前通常不用 very 修饰。"
+    }
+  ],
+  "improvedAnswer": "...",
+  "encouragement": "..."
+}
+```
+
+### 语音转文字请求
+
+```http
+POST /api/spoken-warmup/speech-to-text
+Content-Type: multipart/form-data
+Authorization: Bearer <token>
+```
+
+字段：
+
+- `audioFile`：用户本次录音文件。
+- `topicId`：可选。
+- `mode`：可选，`beginner` 或 `advanced`。
+
+响应：
+
+```json
+{
+  "text": "I usually take a walk after work."
+}
+```
+
+语音识别结果必须来自用户本次真实录音。空识别结果、ASR 配置缺失或第三方错误会返回错误响应；后端不保存录音文件。
+
 ## 每日外刊接口
 
 ### 用户端
@@ -293,7 +378,7 @@ Authorization: Bearer <token>
 | --- | --- | --- |
 | GET | `/config` | 获取启用状态、单次最大轮数、每日轮数限制和当天剩余额度 |
 | POST | `/message` | 发送一轮用户消息并获取 AI 回复 |
-| POST | `/speech-to-text` | 语音识别兜底接口，v1 预留，当前返回未启用提示 |
+| POST | `/speech-to-text` | 上传真实录音文件并返回 ASR 识别文本 |
 
 ### 配置摘要响应
 

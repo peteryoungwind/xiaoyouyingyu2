@@ -43,30 +43,6 @@
 
   <!-- Member content -->
   <view wx:else>
-    <view class="daily-article-card" bindtap="goToDailyArticles">
-      <view>
-        <view class="daily-article-title">每日外刊</view>
-        <view class="daily-article-desc">听音频、读正文、看逐段翻译，完成今天的输入练习</view>
-      </view>
-      <view class="daily-article-btn">阅读</view>
-    </view>
-
-    <view class="ai-dialog-card" bindtap="goToAiDialog">
-      <view>
-        <view class="ai-dialog-title">AI 对话</view>
-        <view class="ai-dialog-desc">选择主题后，和 AI 进行回合制口语练习</view>
-      </view>
-      <view class="ai-dialog-btn">进入</view>
-    </view>
-
-    <view class="word-practice-card" bindtap="goToWordPractice">
-      <view>
-        <view class="word-practice-title">单词练习</view>
-        <view class="word-practice-desc">先回忆，再反馈，连续 4 次认识后标记掌握</view>
-      </view>
-      <view class="word-practice-btn">进入</view>
-    </view>
-
     <!-- Stats -->
     <view class="stats-card">
       <view class="stat-block">

@@ -88,11 +88,62 @@ function patch(url, data) {
   return request(url, 'PATCH', data);
 }
 
+function upload(url, filePath, name, formData) {
+  return new Promise(function (resolve, reject) {
+    var baseUrl = app.globalData.baseUrl;
+    var token = app.globalData.token || wx.getStorageSync('token');
+    var header = {};
+    if (token) {
+      if (!app.globalData.token) {
+        app.globalData.token = token;
+      }
+      header['Authorization'] = 'Bearer ' + token;
+    }
+
+    wx.uploadFile({
+      url: baseUrl + url,
+      filePath: filePath,
+      name: name || 'file',
+      formData: formData || {},
+      header: header,
+      success: function (res) {
+        var data = res.data;
+        try {
+          data = data ? JSON.parse(data) : {};
+        } catch (e) {}
+
+        if (res.statusCode === 401) {
+          require('./auth').handleAuthExpired();
+          reject({ code: res.statusCode, message: '登录已过期，请重新登录', data: data });
+          return;
+        }
+
+        if (res.statusCode >= 200 && res.statusCode < 300) {
+          resolve(data);
+          return;
+        }
+
+        var errMsg = '上传失败';
+        if (data && data.error) {
+          errMsg = data.error;
+        } else if (data && data.message) {
+          errMsg = data.message;
+        }
+        reject({ code: res.statusCode, message: errMsg, data: data });
+      },
+      fail: function (err) {
+        reject({ code: -1, message: '上传失败，请检查网络', detail: err });
+      }
+    });
+  });
+}
+
 module.exports = {
   request: request,
   get: get,
   post: post,
   put: put,
   del: del,
-  patch: patch
+  patch: patch,
+  upload: upload
 };

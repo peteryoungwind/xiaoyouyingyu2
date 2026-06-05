@@ -4,12 +4,14 @@ import com.xiaoyouyingyu.dto.aidialog.AiDialogMessageRequest;
 import com.xiaoyouyingyu.entity.User;
 import com.xiaoyouyingyu.repository.UserRepository;
 import com.xiaoyouyingyu.service.AiDialogService;
+import com.xiaoyouyingyu.service.SpeechToTextService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import java.util.Map;
 
 @RestController
@@ -17,6 +19,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AiDialogController {
     private final AiDialogService aiDialogService;
+    private final SpeechToTextService speechToTextService;
     private final UserRepository userRepository;
 
     @GetMapping("/config")
@@ -31,10 +34,9 @@ public class AiDialogController {
         return ResponseEntity.ok(aiDialogService.sendMessage(user.getId(), request));
     }
 
-    @PostMapping("/speech-to-text")
-    public ResponseEntity<?> speechToText() {
-        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
-                .body(Map.of("error", "语音识别兜底接口暂未启用，请先使用小程序端识别或文字输入"));
+    @PostMapping(value = "/speech-to-text", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> speechToText(@RequestParam("audioFile") MultipartFile audioFile) {
+        return ResponseEntity.ok(Map.of("text", speechToTextService.transcribe(audioFile)));
     }
 
     private User currentUser(Authentication auth) {

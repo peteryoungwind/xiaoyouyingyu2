@@ -55,6 +55,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/uploads/**").permitAll()
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/learning/**").hasAnyRole("PREMIUM_USER", "ADMIN", "MEMBER")
+                .requestMatchers("/api/spoken-warmup/**").authenticated()
                 .requestMatchers("/api/word-practice/**").authenticated()
                 .requestMatchers("/api/ai-dialog/**").authenticated()
                 .anyRequest().authenticated()

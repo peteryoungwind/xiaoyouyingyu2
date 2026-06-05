@@ -1,0 +1,53 @@
+<view class="page-container safe-bottom warmup-page">
+  <view class="warmup-hero">
+    <view class="warmup-title">口语热身</view>
+    <view class="warmup-subtitle">选择一个主题，实时生成词汇、句型、表达和模拟练习。</view>
+  </view>
+
+  <view class="search-card">
+    <view class="search-row">
+      <input class="search-input" placeholder="搜索主题关键词" placeholder-class="placeholder" value="{{keyword}}" bindinput="onSearchInput" bindconfirm="onSearch" />
+      <view class="search-btn" bindtap="onSearch">搜索</view>
+    </view>
+
+    <view class="date-row">
+      <picker mode="date" value="{{startDate}}" bindchange="onStartDateChange">
+        <view class="date-pill">{{startDate || '开始日期'}}</view>
+      </picker>
+      <picker mode="date" value="{{endDate}}" bindchange="onEndDateChange">
+        <view class="date-pill">{{endDate || '结束日期'}}</view>
+      </picker>
+      <view wx:if="{{startDate || endDate}}" class="date-clear" bindtap="clearDates">清除</view>
+    </view>
+
+    <view class="tag-grid">
+      <view class="tag-pill {{selectedTag === '' ? 'active all' : ''}}" bindtap="onTagTap" data-tag="">全部</view>
+      <view wx:for="{{tags}}" wx:key="name" class="tag-pill {{selectedTag === item.name ? 'active' : ''}}" bindtap="onTagTap" data-tag="{{item.name}}">
+        {{item.name}}
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="state-wrap">加载中...</view>
+  <view wx:elif="{{error}}" class="state-wrap">
+    <view>{{error}}</view>
+    <view class="retry-btn" bindtap="retry">重试</view>
+  </view>
+  <view wx:elif="{{topics.length === 0}}" class="state-wrap">暂无匹配主题</view>
+
+  <view wx:else class="topic-list">
+    <view wx:for="{{topics}}" wx:key="id" class="topic-card" bindtap="goToDetail" data-id="{{item.id}}">
+      <view class="topic-title">{{item.titleZh || item.title}}</view>
+      <view class="topic-sub">{{item.title}}</view>
+      <view class="topic-meta">
+        <text>{{item.eventDate}}</text>
+      </view>
+      <view wx:if="{{item.tagList.length > 0}}" class="topic-tags">
+        <text wx:for="{{item.tagList}}" wx:key="*this" class="topic-tag">{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{loadingMore}}" class="state-wrap small">加载更多...</view>
+  <view wx:if="{{!loading && !loadingMore && page >= totalPages && topics.length > 0}}" class="state-wrap small">没有更多数据</view>
+</view>

@@ -139,6 +139,65 @@ function reviewAnswer(titleEn, titleZh, taskTitle, answer, mode) {
   });
 }
 
+// ==================== Spoken Warmup ====================
+
+function getSpokenWarmupTopic(id) {
+  return http.get('/spoken-warmup/topic/' + id);
+}
+
+function generateSpokenWarmup(titleEn, titleZh, mode, exclude) {
+  return http.post('/spoken-warmup/warmup', {
+    titleEn: titleEn,
+    titleZh: titleZh,
+    mode: mode,
+    exclude: exclude || ''
+  });
+}
+
+function generateSpokenWarmupVocabulary(titleEn, titleZh, mode, exclude) {
+  return http.post('/spoken-warmup/vocabulary', {
+    titleEn: titleEn,
+    titleZh: titleZh,
+    mode: mode,
+    exclude: exclude || ''
+  });
+}
+
+function generateSentencePatterns(titleEn, titleZh, mode, exclude) {
+  return http.post('/spoken-warmup/sentence-patterns', {
+    titleEn: titleEn,
+    titleZh: titleZh,
+    mode: mode,
+    exclude: exclude || ''
+  });
+}
+
+function generateIdiomaticExpressions(titleEn, titleZh, mode, exclude) {
+  return http.post('/spoken-warmup/idiomatic-expressions', {
+    titleEn: titleEn,
+    titleZh: titleZh,
+    mode: mode,
+    exclude: exclude || ''
+  });
+}
+
+function generateSpokenWarmupTasks(titleEn, titleZh, mode, exclude) {
+  return http.post('/spoken-warmup/tasks', {
+    titleEn: titleEn,
+    titleZh: titleZh,
+    mode: mode,
+    exclude: exclude || ''
+  });
+}
+
+function reviewWarmupAnswer(data) {
+  return http.post('/spoken-warmup/review', data);
+}
+
+function spokenWarmupSpeechToText(filePath, data) {
+  return http.upload('/spoken-warmup/speech-to-text', filePath, 'audioFile', data || {});
+}
+
 // ==================== AI Dialog ====================
 
 function getAiDialogConfig() {
@@ -242,6 +301,15 @@ module.exports = {
   generateExpressions: generateExpressions,
   generateTasks: generateTasks,
   reviewAnswer: reviewAnswer,
+  // Spoken Warmup
+  getSpokenWarmupTopic: getSpokenWarmupTopic,
+  generateSpokenWarmup: generateSpokenWarmup,
+  generateSpokenWarmupVocabulary: generateSpokenWarmupVocabulary,
+  generateSentencePatterns: generateSentencePatterns,
+  generateIdiomaticExpressions: generateIdiomaticExpressions,
+  generateSpokenWarmupTasks: generateSpokenWarmupTasks,
+  reviewWarmupAnswer: reviewWarmupAnswer,
+  spokenWarmupSpeechToText: spokenWarmupSpeechToText,
   // AI Dialog
   getAiDialogConfig: getAiDialogConfig,
   sendAiDialogMessage: sendAiDialogMessage,

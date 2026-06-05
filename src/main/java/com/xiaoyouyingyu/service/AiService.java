@@ -243,7 +243,7 @@ public class AiService {
                 ## 模式：%s
 
                 ## 要求
-                - 生成 12-15 个与主题紧密相关的词汇/短语
+                - 生成恰好 10 个与主题紧密相关的词汇/短语
                 - 按分类组织：基础词汇、高频短语、观点表达词、连接词
                 %s%s
 
@@ -261,12 +261,86 @@ public class AiService {
                     }
                   ]
                 }
-                只返回 JSON，不要其他内容。
+                生成恰好 10 个 vocabulary items。只返回 JSON，不要其他内容。
                 """.formatted(
                 beginner ? "初级" : "进阶",
                 beginner ? "- 不要生成太基础的词汇（如 like, good, big, happy 等小学水平的词），要生成实用但有一定含金量的词汇和短语\n- 优先选择日常口语中高频使用、但中国学生不太熟悉的地道表达和短语\n- 例句简短，中文释义清晰明确" : "- 增加地道表达和同义替换\n- 增加高阶词汇",
                 excludeRule
         );
+        return callAi(modelId, systemPrompt, "主题：%s（%s）".formatted(titleEn, titleZh), null);
+    }
+
+    // ===================== 口语热身：生成句型模板 =====================
+
+    public String generateSentencePatterns(Long modelId, String titleEn, String titleZh, String mode, String exclude) {
+        boolean beginner = "beginner".equals(mode);
+        String excludeRule = (exclude != null && !exclude.isBlank())
+                ? "\n\n## 去重规则（非常重要！）\n以下句型模板已经生成过，本次绝对不能再出现相同或高度相似的模板结构，必须生成全新的句型：\n【已有内容】" + exclude
+                : "";
+        String systemPrompt = """
+                你是一位专业英语口语教研老师。根据给定主题，生成可以直接套用的口语句型模板。
+
+                ## 模式：%s
+
+                ## 要求
+                - 生成恰好 6 个句型模板
+                - 每个模板都要适合围绕当前主题开口表达
+                - 初级模板要短、清晰、容易替换关键词
+                - 进阶模板要包含原因、转折、让步、比较、假设等逻辑关系
+                %s
+
+                ## 输出格式
+                必须返回严格 JSON：
+                {
+                  "sentencePatterns": [
+                    {
+                      "pattern": "I tend to ... when ...",
+                      "zh": "中文解释",
+                      "useCase": "适用场景",
+                      "example": "套用当前主题后的英文例句",
+                      "exampleZh": "例句中文解释"
+                    }
+                  ]
+                }
+                生成恰好 6 个 sentencePatterns。只返回 JSON，不要其他内容。
+                """.formatted(beginner ? "初级" : "进阶", excludeRule);
+        return callAi(modelId, systemPrompt, "主题：%s（%s）".formatted(titleEn, titleZh), null);
+    }
+
+    // ===================== 口语热身：生成地道表达 =====================
+
+    public String generateIdiomaticExpressions(Long modelId, String titleEn, String titleZh, String mode, String exclude) {
+        boolean beginner = "beginner".equals(mode);
+        String excludeRule = (exclude != null && !exclude.isBlank())
+                ? "\n\n## 去重规则（非常重要！）\n以下地道表达已经生成过，本次绝对不能再出现这些表达或高度相似表达，必须生成全新的表达：\n【已有内容】" + exclude
+                : "";
+        String systemPrompt = """
+                你是一位专业英语口语教研老师。根据给定主题，生成能提升自然度的主题相关地道表达。
+
+                ## 模式：%s
+
+                ## 要求
+                - 生成恰好 6 个地道表达
+                - 表达必须适合真实口语场景，不要过度书面化
+                - 初级表达要常用、低风险、容易开口
+                - 进阶表达要更自然，可以包含固定搭配、语气表达或观点表达
+                %s
+
+                ## 输出格式
+                必须返回严格 JSON：
+                {
+                  "idiomaticExpressions": [
+                    {
+                      "expression": "It depends on the situation.",
+                      "zh": "中文含义",
+                      "usage": "使用说明",
+                      "example": "套用当前主题后的英文例句",
+                      "exampleZh": "例句中文解释"
+                    }
+                  ]
+                }
+                生成恰好 6 个 idiomaticExpressions。只返回 JSON，不要其他内容。
+                """.formatted(beginner ? "初级" : "进阶", excludeRule);
         return callAi(modelId, systemPrompt, "主题：%s（%s）".formatted(titleEn, titleZh), null);
     }
 
@@ -340,7 +414,7 @@ public class AiService {
                     }
                   ]
                 }
-                生成 4-5 个任务，难度递进。只返回 JSON，不要其他内容。
+                生成恰好 3 个任务，难度递进。只返回 JSON，不要其他内容。
                 """.formatted(
                 beginner ? "初级" : "进阶",
                 beginner ?
@@ -354,11 +428,19 @@ public class AiService {
     // ===================== 学习中心：AI 点评 =====================
 
     public String reviewAnswer(Long modelId, String titleEn, String titleZh, String taskTitle, String userAnswer, String mode) {
+        return reviewAnswer(modelId, titleEn, titleZh, taskTitle, "", userAnswer, mode, "");
+    }
+
+    public String reviewAnswer(Long modelId, String titleEn, String titleZh, String taskTitle, String taskDescription, String userAnswer, String mode, String inputMode) {
+        if (userAnswer == null || userAnswer.isBlank()) {
+            throw new IllegalArgumentException("回答不能为空");
+        }
         boolean beginner = "beginner".equals(mode);
         String systemPrompt = """
                 你是一位专业英语口语教练。请对用户的口语练习回答进行点评。
 
                 ## 模式：%s
+                ## 输入方式：%s
 
                 ## 点评要求
                 %s
@@ -370,16 +452,18 @@ public class AiService {
                   "strengths": ["优点1", "优点2"],
                   "improvements": ["改进建议1", "改进建议2"],
                   "corrections": [
-                    { "original": "用户原句", "corrected": "更自然的表达", "explanation": "说明" }
+                    { "original": "用户原句", "corrected": "更自然的表达", "explanationZh": "中文说明" }
                   ],
+                  "improvedAnswer": "优化后的英文参考回答",
                   "encouragement": "鼓励性总结"
                 }
                 只返回 JSON，不要其他内容。
                 """.formatted(
                 beginner ? "初级" : "进阶",
+                inputMode == null || inputMode.isBlank() ? "text" : inputMode,
                 beginner ? "- 聚焦最关键的错误\n- 语气鼓励\n- 建议具体直接" : "- 关注地道性、逻辑性、简洁性\n- 提供高阶表达替换\n- 评估思维深度"
         );
-        String userPrompt = "主题：%s（%s）\n任务：%s\n\n用户回答：\n%s".formatted(titleEn, titleZh, taskTitle, userAnswer);
+        String userPrompt = "主题：%s（%s）\n任务：%s\n任务说明：%s\n\n用户回答：\n%s".formatted(titleEn, titleZh, taskTitle, taskDescription, userAnswer);
         return callAi(modelId, systemPrompt, userPrompt, null);
     }
 
@@ -399,16 +483,11 @@ public class AiService {
                 必须返回严格的 JSON：
                 {
                   "introduction": "主题简介（英文）",
-                  "introductionZh": "主题简介（中文）",
                   "warmupQuestions": [
                     { "en": "简单热身问题?", "zh": "中文翻译?" }
-                  ],
-                  "keywords": [
-                    { "word": "关键词", "zh": "中文" }
-                  ],
-                  "speakingTips": ["角度提示1", "角度提示2"]
+                  ]
                 }
-                热身问题 3 个，关键词 5-6 个，角度提示 3-4 个。%s%s
+                生成 1 段 introduction 和恰好 3 个 warmupQuestions。%s%s
                 只返回 JSON，不要其他内容。
                 """.formatted(
                 beginner ? "初级" : "进阶",

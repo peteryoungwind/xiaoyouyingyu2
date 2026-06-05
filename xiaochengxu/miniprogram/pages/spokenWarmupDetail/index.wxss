@@ -1,0 +1,309 @@
+.detail-page {
+  background: #F5F5F7;
+}
+
+.state-wrap {
+  padding: 90rpx 0;
+  text-align: center;
+  color: #8E8E93;
+  font-size: 28rpx;
+}
+
+.topic-card,
+.module-card {
+  margin-bottom: 22rpx;
+  padding: 30rpx;
+  border-radius: 30rpx;
+  background: #FFFFFF;
+  border: 2rpx solid #E5E5EA;
+  box-shadow: 0 14rpx 36rpx rgba(17, 24, 39, 0.04);
+}
+
+.topic-title {
+  font-size: 36rpx;
+  line-height: 1.3;
+  font-weight: 800;
+  color: #1D1D1F;
+}
+
+.topic-sub {
+  margin-top: 10rpx;
+  font-size: 26rpx;
+  line-height: 1.45;
+  color: #6E6E73;
+}
+
+.topic-tags {
+  margin-top: 18rpx;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10rpx;
+}
+
+.tag {
+  height: 42rpx;
+  padding: 0 16rpx;
+  border-radius: 999rpx;
+  background: #F4F8FF;
+  color: #007AFF;
+  font-size: 22rpx;
+  line-height: 42rpx;
+}
+
+.mode-switch {
+  margin-bottom: 22rpx;
+  padding: 8rpx;
+  border-radius: 24rpx;
+  background: #FFFFFF;
+  display: flex;
+  gap: 8rpx;
+}
+
+.mode-btn {
+  flex: 1;
+  height: 72rpx;
+  border-radius: 18rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6E6E73;
+  font-size: 28rpx;
+  font-weight: 700;
+}
+
+.mode-btn.active {
+  background: #007AFF;
+  color: #FFFFFF;
+}
+
+.module-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.module-title {
+  font-size: 31rpx;
+  font-weight: 800;
+  color: #1D1D1F;
+}
+
+.module-arrow {
+  color: #007AFF;
+  font-size: 24rpx;
+  font-weight: 700;
+}
+
+.module-body {
+  margin-top: 24rpx;
+}
+
+.actions {
+  display: flex;
+  gap: 16rpx;
+  margin-bottom: 20rpx;
+}
+
+.mini-btn {
+  height: 66rpx;
+  margin: 0;
+  padding: 0 26rpx;
+  border-radius: 999rpx;
+  background: #F4F8FF;
+  color: #007AFF;
+  border: 2rpx solid #D8E8FF;
+  font-size: 25rpx;
+  font-weight: 700;
+  line-height: 66rpx;
+}
+
+.mini-btn.primary,
+.submit-btn {
+  background: #007AFF;
+  border-color: #007AFF;
+  color: #FFFFFF;
+}
+
+.mini-btn.outline {
+  margin-top: 18rpx;
+  width: 180rpx;
+}
+
+.hint,
+.error-text {
+  color: #8E8E93;
+  font-size: 25rpx;
+  line-height: 1.6;
+}
+
+.error-text {
+  color: #D92D20;
+}
+
+.paragraph,
+.qa-en,
+.item-example,
+.task-current {
+  font-size: 28rpx;
+  line-height: 1.65;
+  color: #1D1D1F;
+}
+
+.qa-item,
+.learn-item,
+.task-item {
+  margin-top: 18rpx;
+  padding: 22rpx;
+  border-radius: 22rpx;
+  background: #F8F9FB;
+}
+
+.qa-zh,
+.item-zh,
+.item-note {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  line-height: 1.55;
+  color: #6E6E73;
+}
+
+.item-main {
+  font-size: 29rpx;
+  line-height: 1.45;
+  font-weight: 800;
+  color: #1D1D1F;
+}
+
+.item-example {
+  margin-top: 12rpx;
+}
+
+.practice-card {
+  border-color: #BFDBFE;
+}
+
+.input-switch {
+  margin-top: 24rpx;
+  padding: 8rpx;
+  background: #F5F5F7;
+  border-radius: 999rpx;
+  display: flex;
+}
+
+.switch-btn {
+  flex: 1;
+  height: 62rpx;
+  border-radius: 999rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6E6E73;
+  font-size: 25rpx;
+  font-weight: 700;
+}
+
+.switch-btn.active {
+  background: #FFFFFF;
+  color: #007AFF;
+  box-shadow: 0 8rpx 20rpx rgba(17, 24, 39, 0.06);
+}
+
+.voice-panel {
+  margin-top: 22rpx;
+  text-align: center;
+}
+
+.record-btn {
+  height: 96rpx;
+  border-radius: 999rpx;
+  background: #EAF3FF;
+  color: #007AFF;
+  font-size: 30rpx;
+  font-weight: 800;
+  line-height: 96rpx;
+}
+
+.record-btn.recording {
+  background: #FFF5F5;
+  color: #D92D20;
+}
+
+.voice-hint {
+  margin-top: 12rpx;
+  color: #8E8E93;
+  font-size: 23rpx;
+}
+
+.answer-input {
+  margin-top: 22rpx;
+  width: 100%;
+  min-height: 190rpx;
+  padding: 22rpx;
+  box-sizing: border-box;
+  border-radius: 22rpx;
+  background: #F8F9FB;
+  color: #1D1D1F;
+  font-size: 27rpx;
+  line-height: 1.55;
+}
+
+.submit-btn {
+  margin-top: 20rpx;
+  height: 78rpx;
+  border-radius: 999rpx;
+  font-size: 28rpx;
+  font-weight: 800;
+  line-height: 78rpx;
+}
+
+.review-card {
+  text-align: left;
+}
+
+.review-score {
+  text-align: center;
+  font-size: 72rpx;
+  font-weight: 900;
+  color: #007AFF;
+}
+
+.review-score-label {
+  text-align: center;
+  color: #8E8E93;
+  font-size: 23rpx;
+}
+
+.review-section {
+  margin-top: 26rpx;
+}
+
+.review-title {
+  font-size: 28rpx;
+  font-weight: 800;
+  color: #1D1D1F;
+  margin-bottom: 12rpx;
+}
+
+.review-line,
+.correction,
+.encouragement {
+  margin-top: 10rpx;
+  padding: 18rpx;
+  border-radius: 18rpx;
+  background: #F8F9FB;
+  color: #1D1D1F;
+  font-size: 25rpx;
+  line-height: 1.55;
+}
+
+.corrected {
+  margin-top: 8rpx;
+  color: #007AFF;
+  font-weight: 700;
+}
+
+.encouragement {
+  margin-top: 24rpx;
+  background: #F4F8FF;
+  color: #005BBB;
+}

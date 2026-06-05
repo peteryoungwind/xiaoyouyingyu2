@@ -2,6 +2,8 @@ package com.xiaoyouyingyu.controller;
 
 import com.xiaoyouyingyu.repository.TopicRepository;
 import com.xiaoyouyingyu.service.AiService;
+import com.xiaoyouyingyu.dto.LearningGenerateRequest;
+import com.xiaoyouyingyu.dto.LearningReviewRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,33 +24,45 @@ public class LearningController {
     }
 
     @PostMapping("/warmup")
-    public ResponseEntity<?> generateWarmup(@RequestBody Map<String, String> body) {
+    public ResponseEntity<?> generateWarmup(@RequestBody LearningGenerateRequest body) {
         return ResponseEntity.ok(Map.of("content",
-                aiService.generateWarmup(null, body.get("titleEn"), body.get("titleZh"), body.get("mode"), body.get("exclude"))));
+                aiService.generateWarmup(null, body.getTitleEn(), body.getTitleZh(), body.getMode(), body.getExclude())));
     }
 
     @PostMapping("/vocabulary")
-    public ResponseEntity<?> generateVocabulary(@RequestBody Map<String, String> body) {
+    public ResponseEntity<?> generateVocabulary(@RequestBody LearningGenerateRequest body) {
         return ResponseEntity.ok(Map.of("content",
-                aiService.generateVocabulary(null, body.get("titleEn"), body.get("titleZh"), body.get("mode"), body.get("exclude"))));
+                aiService.generateVocabulary(null, body.getTitleEn(), body.getTitleZh(), body.getMode(), body.getExclude())));
     }
 
     @PostMapping("/expressions")
-    public ResponseEntity<?> generateExpressions(@RequestBody Map<String, String> body) {
+    public ResponseEntity<?> generateExpressions(@RequestBody LearningGenerateRequest body) {
         return ResponseEntity.ok(Map.of("content",
-                aiService.generateExpressions(null, body.get("titleEn"), body.get("titleZh"), body.get("mode"), body.get("exclude"))));
+                aiService.generateExpressions(null, body.getTitleEn(), body.getTitleZh(), body.getMode(), body.getExclude())));
+    }
+
+    @PostMapping("/sentence-patterns")
+    public ResponseEntity<?> generateSentencePatterns(@RequestBody LearningGenerateRequest body) {
+        return ResponseEntity.ok(Map.of("content",
+                aiService.generateSentencePatterns(null, body.getTitleEn(), body.getTitleZh(), body.getMode(), body.getExclude())));
+    }
+
+    @PostMapping("/idiomatic-expressions")
+    public ResponseEntity<?> generateIdiomaticExpressions(@RequestBody LearningGenerateRequest body) {
+        return ResponseEntity.ok(Map.of("content",
+                aiService.generateIdiomaticExpressions(null, body.getTitleEn(), body.getTitleZh(), body.getMode(), body.getExclude())));
     }
 
     @PostMapping("/tasks")
-    public ResponseEntity<?> generateTasks(@RequestBody Map<String, String> body) {
+    public ResponseEntity<?> generateTasks(@RequestBody LearningGenerateRequest body) {
         return ResponseEntity.ok(Map.of("content",
-                aiService.generateTasks(null, body.get("titleEn"), body.get("titleZh"), body.get("mode"), body.get("exclude"))));
+                aiService.generateTasks(null, body.getTitleEn(), body.getTitleZh(), body.getMode(), body.getExclude())));
     }
 
     @PostMapping("/review")
-    public ResponseEntity<?> reviewAnswer(@RequestBody Map<String, String> body) {
+    public ResponseEntity<?> reviewAnswer(@RequestBody LearningReviewRequest body) {
         return ResponseEntity.ok(Map.of("content",
-                aiService.reviewAnswer(null, body.get("titleEn"), body.get("titleZh"),
-                        body.get("taskTitle"), body.get("answer"), body.get("mode"))));
+                aiService.reviewAnswer(null, body.getTitleEn(), body.getTitleZh(),
+                        body.getTaskTitle(), body.getTaskDescription(), body.getAnswer(), body.getMode(), body.getInputMode())));
     }
 }

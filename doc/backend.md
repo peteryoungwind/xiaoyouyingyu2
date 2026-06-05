@@ -1,6 +1,6 @@
 # 后端说明
 
-> 最后更新：2026-05-25
+> 最后更新：2026-06-05
 
 ## 代码位置
 
@@ -105,6 +105,26 @@ src/main/java/com/xiaoyouyingyu/
 - `SecurityConfig` 中限制为 `PREMIUM_USER`、`ADMIN` 或动态会员角色 `MEMBER`。
 - 后端会员判定统一由 `User.isMembershipActive()` 提供，`ADMIN`、`PREMIUM_USER` 和未过期会员都会被视为会员。
 
+### `SpokenWarmupController`
+
+路径前缀：`/api/spoken-warmup`
+
+负责微信小程序“口语热身”模块：
+
+- 获取口语热身主题详情。
+- 生成热身介绍。
+- 生成 10 个核心词汇。
+- 生成 6 个句型模板。
+- 生成 6 个地道表达。
+- 生成 3 个模拟问答任务。
+- 点评用户通过语音或文字提交的英文回答。
+- 接收小程序录音文件并调用真实 ASR 能力返回识别文本。
+
+权限：
+
+- 登录用户即可访问，不限制会员状态。
+- V1 不保存 AI 生成内容、用户回答或录音文件。
+
 ### `AiDialogController`
 
 路径前缀：`/api/ai-dialog`
@@ -114,7 +134,7 @@ src/main/java/com/xiaoyouyingyu/
 - 获取 AI 对话配置摘要和当天剩余额度。
 - 接收用户单轮消息，按主题、模式、难度和页面内历史上下文调用 AI。
 - 返回结构化英文回复、可选中文点评/优化表达和 TTS 音频 URL。
-- 预留语音识别兜底接口 `/speech-to-text`；当前 v1 以小程序端识别或文字输入为主，后端 ASR 暂未启用。
+- 提供真实语音识别接口 `/speech-to-text`，复用 `SpeechToTextService` 上传本次录音并返回转写文本。
 
 权限：
 
@@ -238,6 +258,8 @@ src/main/java/com/xiaoyouyingyu/
 - `generateWarmup`：学习中心热身内容。
 - `generateVocabulary`：学习中心词汇。
 - `generateExpressions`：学习中心表达模板。
+- `generateSentencePatterns`：口语热身句型模板。
+- `generateIdiomaticExpressions`：口语热身地道表达。
 - `generateTasks`：学习中心练习任务。
 - `reviewAnswer`：点评用户回答。
 - `generateStructuredReply`：供 AI 对话服务传入自定义 system prompt、上下文和温度，复用现有模型解析与 OpenAI 兼容调用。
@@ -251,6 +273,17 @@ src/main/java/com/xiaoyouyingyu/
 
 - AI 被要求返回严格 JSON 字符串。
 - Controller 将 JSON 字符串包装为 `{ "content": "..." }` 返回给前端。
+
+### `SpeechToTextService`
+
+负责真实语音转文字：
+
+- 接收 `MultipartFile` 录音文件。
+- 优先读取后台默认 AI 模型的 API Key 和 API 地址。
+- 若未配置 `app.asr.api-url`，会从 OpenAI 兼容 Chat Completions 地址推导 `/audio/transcriptions`。
+- 默认 ASR 模型为 `app.asr.model`，未配置时使用 `whisper-1`。
+- 识别结果必须来自本次录音；空结果、第三方错误或配置缺失会返回明确错误。
+- 不保存录音文件。
 
 ### `MembershipService`
 

@@ -1,0 +1,181 @@
+<view class="page-container safe-bottom detail-page">
+  <view wx:if="{{loading}}" class="state-wrap">加载中...</view>
+
+  <block wx:elif="{{topic}}">
+    <view class="topic-card">
+      <view class="topic-title">{{topic.titleZh || topic.title}}</view>
+      <view class="topic-sub">{{topic.title}}</view>
+      <view class="topic-tags" wx:if="{{tagList.length > 0}}">
+        <text wx:for="{{tagList}}" wx:key="*this" class="tag">{{item}}</text>
+      </view>
+    </view>
+
+    <view class="mode-switch">
+      <view class="mode-btn {{mode === 'beginner' ? 'active' : ''}}" bindtap="onModeChange" data-mode="beginner">初级</view>
+      <view class="mode-btn {{mode === 'advanced' ? 'active' : ''}}" bindtap="onModeChange" data-mode="advanced">进阶</view>
+    </view>
+
+    <view class="module-card">
+      <view class="module-header" bindtap="toggleSection" data-section="warmup">
+        <view class="module-title">热身介绍</view>
+        <view class="module-arrow">{{expanded.warmup ? '收起' : '展开'}}</view>
+      </view>
+      <view wx:if="{{expanded.warmup}}" class="module-body">
+        <view class="actions">
+          <button class="mini-btn primary" bindtap="onGenerateWarmup" loading="{{loadingMap.warmup}}">{{currentContent.warmup ? '重新生成' : '生成'}}</button>
+          <button wx:if="{{currentContent.warmup}}" class="mini-btn" bindtap="onRefreshWarmup" loading="{{loadingMap.warmup}}">换一批</button>
+        </view>
+        <view wx:if="{{errorMap.warmup}}" class="error-text">{{errorMap.warmup}}</view>
+        <view wx:if="{{currentContent.warmup}}" class="content-block">
+          <view class="paragraph">{{currentContent.warmup.introduction}}</view>
+          <view wx:for="{{currentContent.warmup.warmupQuestions}}" wx:key="index" class="qa-item">
+            <view class="qa-en">Q{{index + 1}}. {{item.en || item}}</view>
+            <view wx:if="{{item.zh}}" class="qa-zh">{{item.zh}}</view>
+          </view>
+        </view>
+        <view wx:elif="{{!loadingMap.warmup}}" class="hint">点击生成主题热身介绍和问题。</view>
+      </view>
+    </view>
+
+    <view class="module-card">
+      <view class="module-header" bindtap="toggleSection" data-section="vocabulary">
+        <view class="module-title">核心词汇</view>
+        <view class="module-arrow">{{expanded.vocabulary ? '收起' : '展开'}}</view>
+      </view>
+      <view wx:if="{{expanded.vocabulary}}" class="module-body">
+        <view class="actions">
+          <button class="mini-btn primary" bindtap="onGenerateVocabulary" loading="{{loadingMap.vocabulary}}">{{currentContent.vocabulary ? '重新生成' : '生成'}}</button>
+          <button wx:if="{{currentContent.vocabulary}}" class="mini-btn" bindtap="onRefreshVocabulary" loading="{{loadingMap.vocabulary}}">换一批</button>
+        </view>
+        <view wx:if="{{errorMap.vocabulary}}" class="error-text">{{errorMap.vocabulary}}</view>
+        <view wx:if="{{currentContent.vocabulary && currentContent.vocabulary.vocabulary}}" class="item-list">
+          <view wx:for="{{currentContent.vocabulary.vocabulary}}" wx:key="index" class="learn-item">
+            <view class="item-main">{{item.word}}</view>
+            <view class="item-zh">{{item.zh}}</view>
+            <view wx:if="{{item.example}}" class="item-example">{{item.example}}</view>
+            <view wx:if="{{item.exampleZh}}" class="item-note">{{item.exampleZh}}</view>
+          </view>
+        </view>
+        <view wx:elif="{{!loadingMap.vocabulary}}" class="hint">点击生成 10 个主题词汇。</view>
+      </view>
+    </view>
+
+    <view class="module-card">
+      <view class="module-header" bindtap="toggleSection" data-section="sentencePatterns">
+        <view class="module-title">句型模板</view>
+        <view class="module-arrow">{{expanded.sentencePatterns ? '收起' : '展开'}}</view>
+      </view>
+      <view wx:if="{{expanded.sentencePatterns}}" class="module-body">
+        <view class="actions">
+          <button class="mini-btn primary" bindtap="onGenerateSentencePatterns" loading="{{loadingMap.sentencePatterns}}">{{currentContent.sentencePatterns ? '重新生成' : '生成'}}</button>
+          <button wx:if="{{currentContent.sentencePatterns}}" class="mini-btn" bindtap="onRefreshSentencePatterns" loading="{{loadingMap.sentencePatterns}}">换一批</button>
+        </view>
+        <view wx:if="{{errorMap.sentencePatterns}}" class="error-text">{{errorMap.sentencePatterns}}</view>
+        <view wx:if="{{currentContent.sentencePatterns && currentContent.sentencePatterns.sentencePatterns}}" class="item-list">
+          <view wx:for="{{currentContent.sentencePatterns.sentencePatterns}}" wx:key="index" class="learn-item">
+            <view class="item-main">{{item.pattern}}</view>
+            <view class="item-zh">{{item.zh}}</view>
+            <view wx:if="{{item.useCase}}" class="item-note">{{item.useCase}}</view>
+            <view wx:if="{{item.example}}" class="item-example">{{item.example}}</view>
+            <view wx:if="{{item.exampleZh}}" class="item-note">{{item.exampleZh}}</view>
+          </view>
+        </view>
+        <view wx:elif="{{!loadingMap.sentencePatterns}}" class="hint">点击生成 6 个可套用句型。</view>
+      </view>
+    </view>
+
+    <view class="module-card">
+      <view class="module-header" bindtap="toggleSection" data-section="idiomaticExpressions">
+        <view class="module-title">地道表达</view>
+        <view class="module-arrow">{{expanded.idiomaticExpressions ? '收起' : '展开'}}</view>
+      </view>
+      <view wx:if="{{expanded.idiomaticExpressions}}" class="module-body">
+        <view class="actions">
+          <button class="mini-btn primary" bindtap="onGenerateIdiomaticExpressions" loading="{{loadingMap.idiomaticExpressions}}">{{currentContent.idiomaticExpressions ? '重新生成' : '生成'}}</button>
+          <button wx:if="{{currentContent.idiomaticExpressions}}" class="mini-btn" bindtap="onRefreshIdiomaticExpressions" loading="{{loadingMap.idiomaticExpressions}}">换一批</button>
+        </view>
+        <view wx:if="{{errorMap.idiomaticExpressions}}" class="error-text">{{errorMap.idiomaticExpressions}}</view>
+        <view wx:if="{{currentContent.idiomaticExpressions && currentContent.idiomaticExpressions.idiomaticExpressions}}" class="item-list">
+          <view wx:for="{{currentContent.idiomaticExpressions.idiomaticExpressions}}" wx:key="index" class="learn-item">
+            <view class="item-main">{{item.expression}}</view>
+            <view class="item-zh">{{item.zh}}</view>
+            <view wx:if="{{item.usage}}" class="item-note">{{item.usage}}</view>
+            <view wx:if="{{item.example}}" class="item-example">{{item.example}}</view>
+            <view wx:if="{{item.exampleZh}}" class="item-note">{{item.exampleZh}}</view>
+          </view>
+        </view>
+        <view wx:elif="{{!loadingMap.idiomaticExpressions}}" class="hint">点击生成 6 个地道表达。</view>
+      </view>
+    </view>
+
+    <view class="module-card">
+      <view class="module-header" bindtap="toggleSection" data-section="tasks">
+        <view class="module-title">模拟问答</view>
+        <view class="module-arrow">{{expanded.tasks ? '收起' : '展开'}}</view>
+      </view>
+      <view wx:if="{{expanded.tasks}}" class="module-body">
+        <view class="actions">
+          <button class="mini-btn primary" bindtap="onGenerateTasks" loading="{{loadingMap.tasks}}">{{currentContent.tasks ? '重新生成' : '生成'}}</button>
+          <button wx:if="{{currentContent.tasks}}" class="mini-btn" bindtap="onRefreshTasks" loading="{{loadingMap.tasks}}">换一批</button>
+        </view>
+        <view wx:if="{{errorMap.tasks}}" class="error-text">{{errorMap.tasks}}</view>
+        <view wx:if="{{currentContent.tasks && currentContent.tasks.tasks}}" class="item-list">
+          <view wx:for="{{currentContent.tasks.tasks}}" wx:key="index" class="task-item">
+            <view class="item-main">{{item.titleZh || item.title}}</view>
+            <view class="item-example">{{item.prompt || item.description}}</view>
+            <view wx:if="{{item.promptZh || item.descriptionZh}}" class="item-note">{{item.promptZh || item.descriptionZh}}</view>
+            <button class="mini-btn outline" bindtap="onSelectTask" data-index="{{index}}">开始练习</button>
+          </view>
+        </view>
+        <view wx:elif="{{!loadingMap.tasks}}" class="hint">点击生成 3 个模拟问答任务。</view>
+      </view>
+    </view>
+
+    <view wx:if="{{selectedTask}}" id="practice-input" class="module-card practice-card">
+      <view class="module-title">提交回答</view>
+      <view class="task-current">{{selectedTask.prompt || selectedTask.description || selectedTask.title}}</view>
+      <view wx:if="{{selectedTask.promptZh || selectedTask.descriptionZh}}" class="item-note">{{selectedTask.promptZh || selectedTask.descriptionZh}}</view>
+
+      <view class="input-switch">
+        <view class="switch-btn {{inputMode === 'voice' ? 'active' : ''}}" bindtap="switchInputMode" data-mode="voice">语音</view>
+        <view class="switch-btn {{inputMode === 'text' ? 'active' : ''}}" bindtap="switchInputMode" data-mode="text">文字</view>
+      </view>
+
+      <view wx:if="{{inputMode === 'voice'}}" class="voice-panel">
+        <button class="record-btn {{recording ? 'recording' : ''}}" bindtouchstart="startRecord" bindtouchend="stopRecord" loading="{{loadingMap.speech}}">
+          {{recording ? '松开结束' : '按住说英语'}}
+        </button>
+        <view class="voice-hint">识别后可在下方编辑文本。</view>
+      </view>
+
+      <textarea class="answer-input" value="{{answerText}}" bindinput="onAnswerInput" placeholder="语音识别文本或手动输入回答" maxlength="2000" />
+      <button class="submit-btn" bindtap="submitReview" loading="{{loadingMap.review}}">提交点评</button>
+    </view>
+
+    <view wx:if="{{reviewData}}" id="review-panel" class="module-card review-card">
+      <view class="review-score">{{reviewData.score || 0}}</view>
+      <view class="review-score-label">AI 点评分</view>
+      <view class="review-section" wx:if="{{reviewData.strengths}}">
+        <view class="review-title">优点</view>
+        <view wx:for="{{reviewData.strengths}}" wx:key="index" class="review-line">{{item}}</view>
+      </view>
+      <view class="review-section" wx:if="{{reviewData.improvements}}">
+        <view class="review-title">改进建议</view>
+        <view wx:for="{{reviewData.improvements}}" wx:key="index" class="review-line">{{item}}</view>
+      </view>
+      <view class="review-section" wx:if="{{reviewData.corrections}}">
+        <view class="review-title">纠错</view>
+        <view wx:for="{{reviewData.corrections}}" wx:key="index" class="correction">
+          <view>{{item.original}}</view>
+          <view class="corrected">{{item.corrected}}</view>
+          <view class="item-note">{{item.explanationZh || item.explanation}}</view>
+        </view>
+      </view>
+      <view class="review-section" wx:if="{{reviewData.improvedAnswer}}">
+        <view class="review-title">优化回答</view>
+        <view class="paragraph">{{reviewData.improvedAnswer}}</view>
+      </view>
+      <view wx:if="{{reviewData.encouragement}}" class="encouragement">{{reviewData.encouragement}}</view>
+    </view>
+  </block>
+</view>
