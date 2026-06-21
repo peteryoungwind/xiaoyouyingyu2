@@ -5,20 +5,16 @@
       <view class="round-icon" bindtap="goBack">‹</view>
       <view class="book-meta">
         <view class="book-name">{{book.name}}</view>
-        <view class="book-desc">{{book.description || book.scene || '暂无描述'}}</view>
+        <view wx:if="{{book.description || book.scene}}" class="book-desc">{{book.description || book.scene}}</view>
       </view>
       <view class="round-icon" bindtap="loadBook">↻</view>
     </view>
 
     <view class="study-hero">
-      <view class="eyebrow">Today</view>
-      <view class="hero-title">先复习，再学习新词</view>
-      <view class="hero-desc">系统会优先给出到期复习词，没有到期复习词时进入新词。</view>
       <button class="start-btn" bindtap="startPractice">开始练习</button>
     </view>
 
     <view class="control-card">
-      <view class="section-title">难度</view>
       <view class="segmented">
         <view class="segment {{difficulty === 'BEGINNER' ? 'active' : ''}}" bindtap="switchDifficulty" data-difficulty="BEGINNER">初级</view>
         <view class="segment {{difficulty === 'ADVANCED' ? 'active' : ''}}" bindtap="switchDifficulty" data-difficulty="ADVANCED">进阶</view>

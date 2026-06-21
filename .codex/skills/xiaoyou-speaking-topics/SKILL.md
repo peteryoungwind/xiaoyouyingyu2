@@ -48,11 +48,18 @@ After the user chooses one proposed topic:
 
 - Generate exactly 8 questions.
 - Use the selected topic's category tag.
-- Provide each question in English with a concise Chinese translation.
-- Order questions from easiest and most conversational to more reflective.
-- Keep early questions answerable in one or two simple sentences.
-- Make later questions invite reasons, tradeoffs, comparisons, values, or behavior change.
-- Keep questions tied to everyday life. Avoid questions that are too abstract, too technical, too private, or too detailed.
+- Design the questions for English corner, book club, or small-group discussion settings.
+- Write the questions in Chinese only.
+- Do not make the questions knowledge quizzes, comprehension checks, or fact-recall prompts.
+- Do not stop at surface opinions or simple experience sharing.
+- Make every question open-ended, with no standard answer and enough room for further thinking and discussion.
+- Order the questions progressively: start from personal experience and concrete daily scenarios, then move gradually toward values, psychological state, relationships with society, and self-growth.
+- Keep the questions tied to everyday life while leaving space for deeper reflection.
+- Use natural, conversational language, like friends chatting, but with enough depth to spark meaningful exchange.
+- Avoid language that feels overly academic, formal, abstract, technical, private, or detailed.
+- After each question, add 1-2 short follow-up prompts in Chinese that directly continue the question and invite the speaker to go further.
+- The follow-up prompts should feel like natural next questions, not explanations, teaching notes, or descriptions of how to answer.
+- Prefer follow-up forms such as "是A、B，还是C？", "你觉得这是因为...，还是因为...？", "是什么让你的想法发生了变化？", or "这个方法是真的有效，还是更多给自己一种心理安慰？".
 - Do not generate a new set of 5 topics unless the user asks for another round.
 
 ## Output Shape
@@ -71,8 +78,8 @@ For the 8-question stage, use:
 Topic: English Title / 中文标题
 Tag: 分类标签
 
-1. English question?
-   中文问题？
+1. 中文讨论问题？
+   中文延续追问？可以是选择式、原因式、变化式或反思式追问。
 ```
 
 Keep the tone natural and usable for speaking practice. Do not add database implementation details unless relevant to a failure or the user asks.

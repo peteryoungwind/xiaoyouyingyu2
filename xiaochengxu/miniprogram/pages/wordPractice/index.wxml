@@ -2,8 +2,7 @@
   <view wx:if="{{loading}}" class="loading">加载中...</view>
 
   <view wx:elif="{{completed}}" class="complete-card">
-    <view class="complete-title">今天这一组完成了</view>
-    <view class="complete-desc">没有到期复习词，也没有新的已发布单词。</view>
+    <view class="complete-title">已完成</view>
     <button class="secondary-btn" bindtap="loadNext">再检查一次</button>
   </view>
 
@@ -20,7 +19,6 @@
     </view>
 
     <view class="word-hero">
-      <view class="review-chip">到期复习</view>
       <view class="word">{{word.word}}</view>
       <view class="phonetic-row" wx:if="{{word.phonetic || word.audioUkUrl || word.audioUsUrl}}">
         <view class="pron-chip" wx:if="{{word.audioUsUrl}}" bindtap="playAudio" data-url="{{word.audioUsUrl}}">
@@ -41,7 +39,6 @@
     </view>
 
     <view class="inline-detail" wx:if="{{detailVisible}}">
-      <view class="detail-title">答错后展开状态</view>
       <view class="definition-block" wx:if="{{word.definitionZh || word.partOfSpeech}}">
         <text wx:if="{{word.partOfSpeech}}" class="pos">{{word.partOfSpeech}}</text>
         <text class="definition-text">{{word.definitionZh}}</text>

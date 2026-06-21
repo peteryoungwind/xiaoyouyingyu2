@@ -5,7 +5,6 @@
       <view class="round-icon" bindtap="goBack">‹</view>
       <view class="book-meta">
         <view class="page-title">单词详情</view>
-        <view class="page-subtitle">查看释义、例句和发音</view>
       </view>
       <view class="round-icon" bindtap="playAudio" data-url="{{word.audioUsUrl || word.audioUkUrl}}">▶</view>
     </view>
@@ -26,7 +25,6 @@
     </view>
 
     <view class="detail-card" wx:if="{{word.definitionZh || word.partOfSpeech || word.definitionEn}}">
-      <view class="section-title">释义</view>
       <view class="definition-block" wx:if="{{word.definitionZh || word.partOfSpeech}}">
         <text wx:if="{{word.partOfSpeech}}" class="pos">{{word.partOfSpeech}}</text>
         <text class="definition-text">{{word.definitionZh}}</text>
@@ -35,7 +33,6 @@
     </view>
 
     <view class="detail-card" wx:if="{{word.exampleEn || word.exampleZh}}">
-      <view class="section-title">例句</view>
       <view class="example-card">
         <view class="example-sentence" wx:if="{{word.exampleEn}}">
           <view class="sentence-audio" bindtap="playAudio" data-url="{{word.exampleAudioUsUrl || word.exampleAudioUkUrl}}">
@@ -48,7 +45,6 @@
     </view>
 
     <view class="detail-card" wx:if="{{word.commonPatterns || word.sourceScene || word.sourceTopicTitle}}">
-      <view class="section-title">常用搭配</view>
       <view class="pattern-content" wx:if="{{word.commonPatterns}}">{{word.commonPatterns}}</view>
       <view class="source-line" wx:if="{{word.sourceScene || word.sourceTopicTitle}}">
         来源：{{word.sourceScene || word.sourceTopicTitle}}

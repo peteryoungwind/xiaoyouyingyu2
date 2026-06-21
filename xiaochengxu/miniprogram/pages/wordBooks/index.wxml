@@ -1,8 +1,6 @@
 <view class="word-books-page safe-bottom">
   <view class="page-hero">
-    <view class="eyebrow">Word Practice</view>
-    <view class="page-title">选择单词本</view>
-    <view class="page-subtitle">到期复习优先，新词随后出现。</view>
+    <view class="page-title">单词本</view>
   </view>
 
   <view class="summary-strip" wx:if="{{books.length > 0}}">
@@ -23,7 +21,7 @@
       <view class="book-top">
         <view>
           <view class="book-name">{{item.name}}</view>
-          <view class="book-desc">{{item.description || item.scene || '暂无描述'}}</view>
+          <view wx:if="{{item.description || item.scene}}" class="book-desc">{{item.description || item.scene}}</view>
         </view>
         <view class="book-arrow">›</view>
       </view>
@@ -41,6 +39,5 @@
 
   <view wx:else class="empty">
     <view class="empty-title">暂无已发布单词本</view>
-    <view class="empty-desc">稍后再来看看</view>
   </view>
 </view>
