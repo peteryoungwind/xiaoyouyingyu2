@@ -5,19 +5,65 @@
       <view class="round-icon" bindtap="goBack">‹</view>
       <view class="book-meta">
         <view class="book-name">{{book.name}}</view>
-        <view wx:if="{{book.description || book.scene}}" class="book-desc">{{book.description || book.scene}}</view>
+        <view class="book-desc">{{difficultyLabel}} · 当前词书</view>
       </view>
-      <view class="round-icon" bindtap="loadBook">↻</view>
+      <view class="round-icon" bindtap="loadBook">⟳</view>
     </view>
 
-    <view class="study-hero">
-      <button class="start-btn" bindtap="startPractice">开始练习</button>
+    <view class="hub-hero">
+      <view class="hub-top">
+        <view class="hub-copy">
+          <view class="eyebrow">Current Book</view>
+          <view class="hub-title">{{book.name}}</view>
+          <view class="hub-desc">{{bookDescription}}</view>
+        </view>
+        <view class="progress-badge">
+          <text>{{progressPercent}}%</text>
+          <view>进度</view>
+        </view>
+      </view>
+
+      <view class="mode-row">
+        <view class="segmented">
+          <view class="segment {{difficulty === 'BEGINNER' ? 'active' : ''}}" bindtap="switchDifficulty" data-difficulty="BEGINNER">初级</view>
+          <view class="segment {{difficulty === 'ADVANCED' ? 'active' : ''}}" bindtap="switchDifficulty" data-difficulty="ADVANCED">进阶</view>
+        </view>
+        <view class="switch-book-btn" bindtap="goToBooks">换词书</view>
+      </view>
+
+      <button class="start-btn" bindtap="startPractice">开始今日练习</button>
     </view>
 
-    <view class="control-card">
-      <view class="segmented">
-        <view class="segment {{difficulty === 'BEGINNER' ? 'active' : ''}}" bindtap="switchDifficulty" data-difficulty="BEGINNER">初级</view>
-        <view class="segment {{difficulty === 'ADVANCED' ? 'active' : ''}}" bindtap="switchDifficulty" data-difficulty="ADVANCED">进阶</view>
+    <view class="quick-stats">
+      <view><text>{{dueReview}}</text><text>待复习</text></view>
+      <view><text>{{remainingNew}}</text><text>新词</text></view>
+      <view><text>{{mastered}}</text><text>已掌握</text></view>
+    </view>
+
+    <view class="plan-card">
+      <view class="card-heading">
+        <view>
+          <view class="eyebrow">Plan</view>
+          <view class="section-title">今日练习安排</view>
+        </view>
+      </view>
+      <view class="task-list">
+        <view class="task-row">
+          <view class="task-icon review">1</view>
+          <view>
+            <view class="task-title">先复习到期词</view>
+            <view class="task-desc">{{dueReview}} 个，预计 {{reviewMinutes}} 分钟</view>
+          </view>
+          <view class="task-arrow">›</view>
+        </view>
+        <view class="task-row">
+          <view class="task-icon new">2</view>
+          <view>
+            <view class="task-title">再学习新词</view>
+            <view class="task-desc">{{remainingNew}} 个，答错后自动展开释义</view>
+          </view>
+          <view class="task-arrow">›</view>
+        </view>
       </view>
     </view>
 

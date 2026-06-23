@@ -1,6 +1,7 @@
 const app = getApp();
 const api = require('../../utils/api');
 const util = require('../../utils/util');
+const wordPractice = require('../../utils/wordPractice');
 
 function isAuthExpiredError(err) {
   return err && err.code === 401;
@@ -120,7 +121,13 @@ Page({
   goToLogin() { wx.navigateTo({ url: '/pages/login/index' }); },
   browseAsGuest() { wx.switchTab({ url: '/pages/topics/index' }); },
   goToRedeem() { wx.navigateTo({ url: '/pages/redeem/index' }); },
-  goToWordPractice() { wx.navigateTo({ url: '/pages/wordBooks/index' }); },
+  goToWordPractice() {
+    if (!app.checkLogin()) {
+      wx.navigateTo({ url: '/pages/login/index' });
+      return;
+    }
+    wordPractice.navigateToEntry();
+  },
   goToDailyArticles() {
     if (!app.checkLogin()) {
       wx.navigateTo({ url: '/pages/login/index' });

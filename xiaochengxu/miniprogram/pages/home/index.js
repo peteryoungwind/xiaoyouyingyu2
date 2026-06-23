@@ -1,5 +1,6 @@
 const api = require('../../utils/api');
 const util = require('../../utils/util');
+const wordPractice = require('../../utils/wordPractice');
 const app = getApp();
 
 const ICON_BGS = ['#FFF3E0', '#E5F1FF', '#E8F5E9', '#FCE4EC', '#EDE7F6', '#E0F7FA'];
@@ -126,7 +127,7 @@ Page({
       wx.navigateTo({ url: '/pages/login/index' });
       return;
     }
-    wx.navigateTo({ url: '/pages/wordBooks/index' });
+    wordPractice.navigateToEntry();
   },
 
   goToAiDialog() {

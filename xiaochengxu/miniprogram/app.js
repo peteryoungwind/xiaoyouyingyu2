@@ -100,6 +100,7 @@ App({
     wx.removeStorageSync('membershipActive');
     wx.removeStorageSync('membershipExpireAt');
     wx.removeStorageSync('hasPassword');
+    wx.removeStorageSync('recentWordPracticeBook');
   },
 
   checkLogin() {

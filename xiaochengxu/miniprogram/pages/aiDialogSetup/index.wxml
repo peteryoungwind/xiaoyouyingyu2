@@ -20,34 +20,67 @@
 
   <view wx:if="{{error}}" class="notice">{{error}}</view>
 
-  <view class="panel">
-    <view class="label">模式</view>
-    <view class="segmented">
-      <view class="segment {{mode === 'TEACHING' ? 'active' : ''}}" bindtap="setMode" data-value="TEACHING">教学模式</view>
-      <view class="segment {{mode === 'PRACTICE' ? 'active' : ''}}" bindtap="setMode" data-value="PRACTICE">练习模式</view>
+  <view class="selector-panel">
+    <view class="choice-header">
+      <view class="label">选择模式</view>
+      <view class="choice-meta">回复方式</view>
     </view>
-    <view class="hint">{{mode === 'TEACHING' ? '每轮包含英文回复、中文点评和优化表达。' : '保持英文自然对话，不主动中文纠错。'}}</view>
+    <view class="choice-grid">
+      <view class="choice-card {{mode === 'TEACHING' ? 'active' : ''}}" bindtap="setMode" data-value="TEACHING">
+        <view class="choice-name">教学模式</view>
+        <view class="choice-desc">英文回复后补充中文点评和优化表达。</view>
+        <view wx:if="{{mode === 'TEACHING'}}" class="choice-check">✓</view>
+      </view>
+      <view class="choice-card {{mode === 'PRACTICE' ? 'active' : ''}}" bindtap="setMode" data-value="PRACTICE">
+        <view class="choice-name">练习模式</view>
+        <view class="choice-desc">更少提示，保留真实对话节奏。</view>
+        <view wx:if="{{mode === 'PRACTICE'}}" class="choice-check">✓</view>
+      </view>
+    </view>
   </view>
 
-  <view class="panel">
-    <view class="label">难度</view>
-    <view class="segmented">
-      <view class="segment {{difficulty === 'BEGINNER' ? 'active' : ''}}" bindtap="setDifficulty" data-value="BEGINNER">初级</view>
-      <view class="segment {{difficulty === 'ADVANCED' ? 'active' : ''}}" bindtap="setDifficulty" data-value="ADVANCED">进阶</view>
+  <view class="selector-panel">
+    <view class="choice-header">
+      <view class="label">选择难度</view>
+      <view class="choice-meta">语言复杂度</view>
+    </view>
+    <view class="choice-grid">
+      <view class="choice-card {{difficulty === 'BEGINNER' ? 'active' : ''}}" bindtap="setDifficulty" data-value="BEGINNER">
+        <view class="choice-name">初级</view>
+        <view class="choice-desc">短句、常用词，适合先开口。</view>
+        <view wx:if="{{difficulty === 'BEGINNER'}}" class="choice-check">✓</view>
+      </view>
+      <view class="choice-card {{difficulty === 'ADVANCED' ? 'active' : ''}}" bindtap="setDifficulty" data-value="ADVANCED">
+        <view class="choice-name">进阶</view>
+        <view class="choice-desc">更自然的表达和观点展开。</view>
+        <view wx:if="{{difficulty === 'ADVANCED'}}" class="choice-check">✓</view>
+      </view>
     </view>
   </view>
 
-  <view class="panel">
-    <view class="label">主题</view>
-    <view class="segmented">
-      <view class="segment {{topicSource === 'SYSTEM' ? 'active' : ''}}" bindtap="setTopicSource" data-value="SYSTEM">已有主题</view>
-      <view class="segment {{topicSource === 'CUSTOM' ? 'active' : ''}}" bindtap="setTopicSource" data-value="CUSTOM">自定义</view>
+  <view class="selector-panel">
+    <view class="choice-header">
+      <view class="label">选择主题</view>
+      <view class="choice-meta">对话内容</view>
+    </view>
+    <view class="topic-tabs">
+      <view class="topic-tab {{topicSource === 'SYSTEM' ? 'active' : ''}}" bindtap="setTopicSource" data-value="SYSTEM">已有主题</view>
+      <view class="topic-tab {{topicSource === 'CUSTOM' ? 'active' : ''}}" bindtap="setTopicSource" data-value="CUSTOM">自定义主题</view>
     </view>
 
     <view wx:if="{{topicSource === 'SYSTEM'}}" class="topic-picker">
       <view class="search-box">
         <input value="{{keyword}}" bindinput="onKeywordInput" bindconfirm="onSearch" confirm-type="search" placeholder="搜索主题" placeholder-class="placeholder" />
         <view class="search-btn" bindtap="onSearch">搜索</view>
+      </view>
+
+      <view wx:if="{{selectedTopic}}" class="topic-picked">
+        <view class="topic-picked-mark">✓</view>
+        <view class="topic-main">
+          <view class="topic-title">{{selectedTopic.titleZh || selectedTopic.title}}</view>
+          <view class="topic-sub">{{selectedTopic.title}}</view>
+          <view wx:if="{{selectedTopic.tagsText}}" class="topic-tags">{{selectedTopic.tagsText}}</view>
+        </view>
       </view>
 
       <view class="list-guide">{{searched ? '搜索结果' : '最近 5 条主题'}}</view>

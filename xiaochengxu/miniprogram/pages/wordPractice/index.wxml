@@ -1,44 +1,88 @@
 <view class="page-container safe-bottom practice-page {{detailVisible ? 'detail-mode' : 'recall-mode'}}">
   <view wx:if="{{loading}}" class="loading">加载中...</view>
 
-  <view wx:elif="{{completed}}" class="complete-card">
-    <view class="complete-title">已完成</view>
-    <button class="secondary-btn" bindtap="loadNext">再检查一次</button>
+  <view wx:elif="{{completed}}" class="review-page">
+    <view class="review-header">
+      <view class="round-icon" bindtap="goBack">‹</view>
+      <view class="review-title-wrap">
+        <view class="eyebrow">Review</view>
+        <view class="review-title">练习复盘</view>
+      </view>
+      <view class="round-icon" bindtap="goBack">×</view>
+    </view>
+
+    <view class="result-card">
+      <view class="eyebrow">Today</view>
+      <view class="result-title">本轮完成 {{sessionStats.total}} 个单词</view>
+      <view class="result-desc">认识 {{sessionStats.known}} 个，模糊 {{sessionStats.fuzzy}} 个，不认识 {{sessionStats.unknown}} 个。系统已自动安排下一次复习。</view>
+      <view class="score-row">
+        <view><text>{{sessionStats.familiarRate}}%</text><text>熟悉率</text></view>
+        <view><text>+{{sessionStats.total}}</text><text>本轮记录</text></view>
+      </view>
+    </view>
+
+    <view class="result-card switch-card">
+      <view class="card-row">
+        <view>
+          <view class="eyebrow">Current Book</view>
+          <view class="section-title">继续当前词书</view>
+        </view>
+        <view class="text-action" bindtap="goToBooks">换词书</view>
+      </view>
+      <view class="book-summary">
+        <view>
+          <view class="book-summary-name">{{bookTitle}}</view>
+          <view class="book-summary-desc">{{reviewSummary}}</view>
+        </view>
+        <view class="active-mark">✓</view>
+      </view>
+    </view>
+
+    <view class="review-actions">
+      <view class="secondary-btn" bindtap="goBack">回到总览</view>
+      <view class="next-btn" bindtap="loadNext">继续练习</view>
+    </view>
   </view>
 
   <view wx:elif="{{word}}" class="practice-shell">
     <view class="top-card">
       <view class="round-icon" bindtap="goBack">‹</view>
       <view class="book-meta">
-        <view class="book-name">单词练习</view>
-        <view class="progress-line" wx:if="{{progress}}">
-          {{difficulty === 'BEGINNER' ? '初级' : '进阶'}} · 已学 {{progress.learned || 0}}/{{progress.total || 0}} · 待复习 {{progress.dueReview || 0}}
-        </view>
+        <view class="book-name">{{bookTitle}}</view>
+        <view class="progress-line">{{headerSubtitle}}</view>
       </view>
-      <view class="round-icon" bindtap="loadNext">↻</view>
+      <view class="round-icon" bindtap="goToBooks">⋯</view>
     </view>
 
-    <view class="word-hero">
+    <view class="progress-track">
+      <view style="width: {{progressPercent}}%;"></view>
+    </view>
+
+    <view class="word-hero {{detailVisible ? 'compact' : ''}}">
+      <view class="review-chip {{lastResultClass}}">{{wordChipText}}</view>
       <view class="word">{{word.word}}</view>
       <view class="phonetic-row" wx:if="{{word.phonetic || word.audioUkUrl || word.audioUsUrl}}">
         <view class="pron-chip" wx:if="{{word.audioUsUrl}}" bindtap="playAudio" data-url="{{word.audioUsUrl}}">
-          <text>美</text>
+          <text>美音</text>
           <image class="audio-icon" src="/images/icons/volume.svg" mode="aspectFit" />
         </view>
         <view class="pron-chip" wx:if="{{word.audioUkUrl}}" bindtap="playAudio" data-url="{{word.audioUkUrl}}">
-          <text>英</text>
+          <text>英音</text>
           <image class="audio-icon" src="/images/icons/volume.svg" mode="aspectFit" />
         </view>
         <text wx:if="{{word.phonetic}}" class="phonetic">{{word.phonetic}}</text>
       </view>
+      <view wx:if="{{!detailVisible}}" class="recall-tip">先在心里说出中文含义和一个使用场景，再选择记忆状态。</view>
     </view>
 
     <view class="recall-hints" wx:if="{{!detailVisible}}">
       <view class="hint-line"></view>
       <view class="hint-line short"></view>
+      <view class="hint-line tiny"></view>
     </view>
 
     <view class="inline-detail" wx:if="{{detailVisible}}">
+      <view class="eyebrow">Meaning</view>
       <view class="definition-block" wx:if="{{word.definitionZh || word.partOfSpeech}}">
         <text wx:if="{{word.partOfSpeech}}" class="pos">{{word.partOfSpeech}}</text>
         <text class="definition-text">{{word.definitionZh}}</text>
@@ -56,6 +100,7 @@
       </view>
 
       <view class="pattern-card" wx:if="{{word.commonPatterns || word.sourceScene || word.sourceTopicTitle}}">
+        <view class="eyebrow" wx:if="{{word.commonPatterns}}">Pattern</view>
         <view class="pattern-content" wx:if="{{word.commonPatterns}}">{{word.commonPatterns}}</view>
         <view class="source-line" wx:if="{{word.sourceScene || word.sourceTopicTitle}}">
           来源：{{word.sourceScene || word.sourceTopicTitle}}
@@ -76,9 +121,8 @@
     </view>
 
     <view class="next-area" wx:if="{{detailVisible}}">
-      <view class="next-btn" bindtap="loadNext">
-        <text>下一词</text>
-      </view>
+      <view class="secondary-btn" bindtap="markFocus">加入重点复习</view>
+      <view class="next-btn" bindtap="loadNext">下一词</view>
     </view>
   </view>
 </view>

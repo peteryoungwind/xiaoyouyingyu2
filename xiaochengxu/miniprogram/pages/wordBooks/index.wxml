@@ -1,6 +1,10 @@
 <view class="word-books-page safe-bottom">
   <view class="page-hero">
-    <view class="page-title">单词本</view>
+    <view>
+      <view class="eyebrow">Switch Book</view>
+      <view class="page-title">切换词书</view>
+      <view class="page-desc">选择一个词书后直接开始练习，下次进入会自动继续这个词书。</view>
+    </view>
   </view>
 
   <view class="summary-strip" wx:if="{{books.length > 0}}">
@@ -23,7 +27,7 @@
           <view class="book-name">{{item.name}}</view>
           <view wx:if="{{item.description || item.scene}}" class="book-desc">{{item.description || item.scene}}</view>
         </view>
-        <view class="book-arrow">›</view>
+        <view class="book-arrow">练</view>
       </view>
       <view class="progress-track">
         <view style="width: {{item.progressPercent}}%;"></view>

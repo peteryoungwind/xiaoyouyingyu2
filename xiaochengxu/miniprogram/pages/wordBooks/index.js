@@ -1,5 +1,6 @@
 const api = require('../../utils/api');
 const auth = require('../../utils/auth');
+const wordPractice = require('../../utils/wordPractice');
 
 Page({
   data: {
@@ -45,7 +46,9 @@ Page({
   },
 
   goToBook(e) {
-    wx.navigateTo({ url: '/pages/wordBookDetail/index?id=' + e.currentTarget.dataset.id });
+    const bookId = e.currentTarget.dataset.id;
+    wordPractice.saveRecentBook(bookId, 'BEGINNER');
+    wx.navigateTo({ url: '/pages/wordPractice/index?bookId=' + bookId + '&difficulty=BEGINNER' });
   },
 
   onPullDownRefresh() {
