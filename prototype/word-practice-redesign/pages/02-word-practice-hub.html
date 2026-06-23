@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>单词练习总览原型</title>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <main class="stage">
+      <nav class="prototype-nav">
+        <a href="../index.html">原型目录</a>
+        <a href="./03-word-recall.html">下一页</a>
+      </nav>
+
+      <section class="phone" aria-label="单词练习总览">
+        <div class="status-bar">
+          <span>9:41</span>
+          <span>5G  100%</span>
+        </div>
+
+        <div class="mobile-page">
+          <header class="page-header">
+            <div class="page-title">
+              <p class="eyebrow">Word Practice</p>
+              <h1>单词练习</h1>
+              <p>继续当前词书，也可以随时切换。</p>
+            </div>
+            <button class="icon-button" aria-label="设置">⚙</button>
+          </header>
+
+          <section class="hub-hero">
+            <div class="card-row">
+              <div>
+                <p class="eyebrow">Current Book</p>
+                <h2>日常生活高频词</h2>
+                <p class="subtle-text">到期复习优先，然后自动补充新词。</p>
+              </div>
+              <div class="progress-ring"><span>64%</span></div>
+            </div>
+
+            <div class="mode-row">
+              <div class="segmented">
+                <button class="active">初级</button>
+                <button>进阶</button>
+              </div>
+              <button class="secondary-button">换词书</button>
+            </div>
+
+            <button class="primary-button">开始今日练习</button>
+          </section>
+
+          <section class="mini-stats" aria-label="学习统计">
+            <div><strong>18</strong><span>待复习</span></div>
+            <div><strong>8</strong><span>新词</span></div>
+            <div><strong>126</strong><span>已掌握</span></div>
+          </section>
+
+          <section class="glass-card">
+            <div class="card-row">
+              <div>
+                <p class="eyebrow">Plan</p>
+                <h2>今日练习安排</h2>
+              </div>
+              <button class="text-button">全部</button>
+            </div>
+            <div class="task-list">
+              <article class="task-row">
+                <div class="task-icon" style="color: #1646a5; background: #eaf1ff;">1</div>
+                <div>
+                  <h3>先复习到期词</h3>
+                  <p>18 个，预计 4 分钟</p>
+                </div>
+                <b>›</b>
+              </article>
+              <article class="task-row">
+                <div class="task-icon" style="color: #13795b; background: #e9f8f1;">2</div>
+                <div>
+                  <h3>再学习新词</h3>
+                  <p>8 个，答错后自动展开释义</p>
+                </div>
+                <b>›</b>
+              </article>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

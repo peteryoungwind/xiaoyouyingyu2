@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI 对话选择模块 Demo</title>
+    <style>
+      :root {
+        --blue: #1677ff;
+        --blue-strong: #0b63e5;
+        --blue-soft: #edf6ff;
+        --mint: #16a37b;
+        --mint-soft: #eaf8f2;
+        --amber: #c77916;
+        --amber-soft: #fff5e6;
+        --ink: #17181c;
+        --muted: #6c7280;
+        --subtle: #9aa1ad;
+        --line: #e8edf4;
+        --line-strong: #d7e3f2;
+        --page: #f6f8fb;
+        --panel: #ffffff;
+        --panel-soft: #fbfcff;
+        --shadow: 0 14px 36px rgba(31, 43, 68, 0.09);
+        --shadow-blue: 0 14px 24px rgba(22, 119, 255, 0.24);
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 20% 0%, rgba(22, 119, 255, 0.12), transparent 30%),
+          linear-gradient(180deg, #ffffff 0%, #f3f6fb 58%, #edf2f8 100%);
+      }
+
+      button,
+      input {
+        font: inherit;
+      }
+
+      button {
+        border: 0;
+      }
+
+      .stage {
+        min-height: 100vh;
+        display: grid;
+        place-items: start center;
+        padding: 28px 14px 44px;
+      }
+
+      .phone {
+        width: min(390px, 100%);
+        min-height: 844px;
+        overflow: hidden;
+        border: 1px solid rgba(23, 24, 28, 0.08);
+        border-radius: 34px;
+        background: var(--page);
+        box-shadow: 0 28px 80px rgba(31, 43, 68, 0.18);
+      }
+
+      .top-bar {
+        height: 58px;
+        display: grid;
+        grid-template-columns: 44px 1fr 92px;
+        align-items: center;
+        padding: 0 10px;
+        background: rgba(255, 255, 255, 0.88);
+        backdrop-filter: blur(14px);
+      }
+
+      .back {
+        width: 32px;
+        height: 32px;
+        display: grid;
+        place-items: center;
+        color: var(--ink);
+        font-size: 30px;
+        line-height: 1;
+        background: transparent;
+      }
+
+      .top-bar h1 {
+        margin: 0;
+        text-align: center;
+        font-size: 17px;
+        font-weight: 700;
+      }
+
+      .capsule {
+        height: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        border: 1px solid rgba(23, 24, 28, 0.12);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.72);
+        font-weight: 900;
+      }
+
+      .page {
+        padding: 24px 18px 28px;
+      }
+
+      .hero {
+        padding: 4px 0 14px;
+      }
+
+      .eyebrow {
+        margin: 0 0 8px;
+        color: var(--blue);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .hero h2 {
+        margin: 0;
+        font-size: 30px;
+        line-height: 1.14;
+        letter-spacing: 0;
+      }
+
+      .hero p {
+        margin: 10px 0 0;
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.55;
+      }
+
+      .setup-panel {
+        margin-top: 12px;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: var(--shadow);
+      }
+
+      .choice-group {
+        padding: 14px 14px 16px;
+        border-top: 1px solid var(--line);
+      }
+
+      .choice-group:first-child {
+        border-top: 0;
+      }
+
+      .choice-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+
+      .choice-title strong {
+        font-size: 15px;
+      }
+
+      .choice-title span {
+        color: var(--subtle);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .choice-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+
+      .choice-card {
+        min-height: 78px;
+        position: relative;
+        display: grid;
+        align-content: center;
+        gap: 7px;
+        padding: 15px 38px 15px 14px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        text-align: left;
+        color: var(--ink);
+        background: var(--panel-soft);
+      }
+
+      .choice-card.active {
+        border-color: rgba(22, 119, 255, 0.52);
+        background: linear-gradient(180deg, #f8fbff 0%, #eef6ff 100%);
+        box-shadow: inset 0 0 0 1px rgba(22, 119, 255, 0.08);
+      }
+
+      .choice-card.active::after {
+        content: "✓";
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 20px;
+        height: 20px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        color: #fff;
+        background: var(--blue);
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .choice-card strong {
+        font-size: 16px;
+        line-height: 1.2;
+      }
+
+      .choice-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.35;
+      }
+
+      .topic-tabs {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        padding: 4px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: #f2f5f9;
+      }
+
+      .topic-tabs button {
+        height: 38px;
+        border-radius: 12px;
+        color: var(--muted);
+        background: transparent;
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      .topic-tabs .active {
+        color: var(--blue);
+        background: #fff;
+        box-shadow: 0 4px 12px rgba(31, 43, 68, 0.08);
+      }
+
+      .search-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        height: 48px;
+        margin-top: 12px;
+        padding: 0 7px 0 14px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: #f7f9fc;
+      }
+
+      .search-row input {
+        min-width: 0;
+        flex: 1;
+        border: 0;
+        outline: 0;
+        color: var(--ink);
+        background: transparent;
+        font-size: 14px;
+      }
+
+      .search-row button {
+        height: 34px;
+        padding: 0 13px;
+        border-radius: 12px;
+        color: #fff;
+        background: var(--ink);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .topic-picked {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 12px;
+        padding: 13px;
+        border: 1px solid rgba(22, 119, 255, 0.38);
+        border-radius: 18px;
+        background: #f4f9ff;
+      }
+
+      .topic-mark {
+        width: 36px;
+        height: 36px;
+        display: grid;
+        place-items: center;
+        flex: 0 0 auto;
+        border-radius: 13px;
+        color: var(--amber);
+        background: var(--amber-soft);
+        font-weight: 900;
+      }
+
+      .topic-picked div {
+        min-width: 0;
+        flex: 1;
+      }
+
+      .topic-picked h4 {
+        margin: 0;
+        font-size: 16px;
+        line-height: 1.25;
+      }
+
+      .topic-picked p {
+        margin: 4px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.35;
+      }
+
+      .change-topic {
+        height: 32px;
+        padding: 0 11px;
+        border-radius: 999px;
+        color: var(--blue);
+        background: #fff;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .recent-title {
+        margin: 14px 2px 8px;
+        color: var(--subtle);
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .topic-list {
+        display: grid;
+        gap: 8px;
+      }
+
+      .topic-row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 13px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: #fff;
+      }
+
+      .topic-row strong {
+        display: block;
+        font-size: 15px;
+        line-height: 1.25;
+      }
+
+      .topic-row span {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .topic-row b {
+        padding: 5px 8px;
+        border-radius: 999px;
+        color: var(--subtle);
+        background: #f3f5f8;
+        font-size: 11px;
+      }
+
+      .start-bar {
+        position: sticky;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 14px -18px -28px;
+        padding: 13px 18px 20px;
+        border-top: 1px solid rgba(232, 237, 244, 0.88);
+        background: rgba(246, 248, 251, 0.88);
+        backdrop-filter: blur(14px);
+      }
+
+      .start-copy {
+        min-width: 0;
+        flex: 1;
+      }
+
+      .start-copy strong {
+        display: block;
+        font-size: 14px;
+      }
+
+      .start-copy span {
+        display: block;
+        margin-top: 3px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .start {
+        width: 124px;
+        height: 50px;
+        border-radius: 18px;
+        color: #fff;
+        background: linear-gradient(180deg, #1c86ff 0%, var(--blue-strong) 100%);
+        box-shadow: var(--shadow-blue);
+        font-size: 16px;
+        font-weight: 900;
+      }
+
+      .notes {
+        width: min(390px, 100%);
+        margin-top: 16px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      .notes strong {
+        color: var(--ink);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="stage">
+      <section class="phone" aria-label="AI 对话选择模块重设计 Demo">
+        <header class="top-bar">
+          <button class="back" aria-label="返回">‹</button>
+          <h1>AI 对话</h1>
+          <div class="capsule" aria-hidden="true">
+            <span>•••</span>
+            <span>◎</span>
+          </div>
+        </header>
+
+        <div class="page">
+          <section class="hero">
+            <p class="eyebrow">AI Dialog</p>
+            <h2>开始一段主题对话</h2>
+            <p>先完成练习配置，再用文字或语音进入对话。</p>
+          </section>
+
+          <section class="setup-panel">
+            <section class="choice-group" aria-label="选择模式">
+              <div class="choice-title">
+                <strong>选择模式</strong>
+                <span>回复方式</span>
+              </div>
+              <div class="choice-grid">
+                <button class="choice-card active">
+                  <strong>教学模式</strong>
+                  <p>英文回复后补充中文点评和优化表达。</p>
+                </button>
+                <button class="choice-card">
+                  <strong>练习模式</strong>
+                  <p>更少提示，保留真实对话节奏。</p>
+                </button>
+              </div>
+            </section>
+
+            <section class="choice-group" aria-label="选择难度">
+              <div class="choice-title">
+                <strong>选择难度</strong>
+                <span>语言复杂度</span>
+              </div>
+              <div class="choice-grid">
+                <button class="choice-card active">
+                  <strong>初级</strong>
+                  <p>短句、常用词，适合先开口。</p>
+                </button>
+                <button class="choice-card">
+                  <strong>进阶</strong>
+                  <p>更自然的表达和观点展开。</p>
+                </button>
+              </div>
+            </section>
+
+            <section class="choice-group" aria-label="选择主题">
+              <div class="choice-title">
+                <strong>选择主题</strong>
+                <span>对话内容</span>
+              </div>
+
+              <div class="topic-tabs" role="tablist" aria-label="主题来源">
+                <button class="active">已有主题</button>
+                <button>自定义主题</button>
+              </div>
+
+              <div class="search-row">
+                <input placeholder="搜索主题，例如：旅行、工作、消费" />
+                <button>搜索</button>
+              </div>
+
+              <div class="topic-picked">
+                <span class="topic-mark">✓</span>
+                <div>
+                  <h4>消费习惯</h4>
+                  <p>Spending Habits · 消费科技</p>
+                </div>
+                <button class="change-topic">更换</button>
+              </div>
+
+              <div class="recent-title">最近 5 条主题</div>
+              <div class="topic-list">
+                <div class="topic-row">
+                  <div>
+                    <strong>成为一个靠谱的人</strong>
+                    <span>Becoming a Reliable Person</span>
+                  </div>
+                  <b>生活</b>
+                </div>
+                <div class="topic-row">
+                  <div>
+                    <strong>如何拒绝别人</strong>
+                    <span>How to Say No Politely</span>
+                  </div>
+                  <b>沟通</b>
+                </div>
+              </div>
+            </section>
+          </section>
+
+          <section class="start-bar">
+            <div class="start-copy">
+              <strong>今日剩余 30 轮</strong>
+              <span>本次最多 12 轮</span>
+            </div>
+            <button class="start">开始对话</button>
+          </section>
+        </div>
+      </section>
+
+      <aside class="notes">
+        <strong>设计方向：</strong>把原来的三条横向分段控件改成独立选择卡片，每个选项都有解释和明确选中态；主题区域保留搜索与最近主题，但先展示当前已选主题，减少用户进入列表的感觉。
+      </aside>
+    </main>
+  </body>
+</html>

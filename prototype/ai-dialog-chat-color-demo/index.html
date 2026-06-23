@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI 对话详情页彩色 Demo</title>
+    <style>
+      :root {
+        --blue: #1677ff;
+        --blue-deep: #075bd8;
+        --cyan: #14b8c8;
+        --mint: #20b486;
+        --green: #38c172;
+        --orange: #f59e0b;
+        --rose: #f05f8b;
+        --violet: #7c5cff;
+        --ink: #17181c;
+        --muted: #687184;
+        --soft: #9aa3b5;
+        --line: #e7edf5;
+        --page: #f4f8fb;
+        --panel: #ffffff;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 16% 8%, rgba(22, 119, 255, 0.14), transparent 28%),
+          radial-gradient(circle at 82% 18%, rgba(32, 180, 134, 0.15), transparent 26%),
+          linear-gradient(180deg, #fff 0%, #f3f7fc 56%, #edf4f7 100%);
+      }
+
+      button,
+      textarea {
+        border: 0;
+        font: inherit;
+      }
+
+      .stage {
+        min-height: 100vh;
+        display: grid;
+        place-items: start center;
+        gap: 18px;
+        padding: 28px 14px 44px;
+      }
+
+      .phone {
+        width: min(390px, 100%);
+        min-height: 844px;
+        overflow: hidden;
+        border: 1px solid rgba(23, 24, 28, 0.08);
+        border-radius: 34px;
+        background:
+          radial-gradient(circle at 18% 12%, rgba(22, 119, 255, 0.12), transparent 28%),
+          radial-gradient(circle at 92% 26%, rgba(240, 95, 139, 0.1), transparent 24%),
+          linear-gradient(180deg, #fbfdff 0%, var(--page) 54%, #eef4f8 100%);
+        box-shadow: 0 28px 80px rgba(31, 43, 68, 0.18);
+      }
+
+      .top-bar {
+        height: 58px;
+        display: grid;
+        grid-template-columns: 44px 1fr 92px;
+        align-items: center;
+        padding: 0 10px;
+        background: rgba(255, 255, 255, 0.74);
+        backdrop-filter: blur(18px);
+      }
+
+      .back {
+        width: 34px;
+        height: 34px;
+        display: grid;
+        place-items: center;
+        color: var(--ink);
+        background: transparent;
+        font-size: 30px;
+        line-height: 1;
+      }
+
+      .top-bar h1 {
+        margin: 0;
+        text-align: center;
+        font-size: 17px;
+        font-weight: 700;
+      }
+
+      .capsule {
+        height: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        border: 1px solid rgba(23, 24, 28, 0.12);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.72);
+        font-weight: 900;
+      }
+
+      .chat {
+        min-height: 786px;
+        padding: 12px 14px 148px;
+        position: relative;
+      }
+
+      .topic-card {
+        position: sticky;
+        top: 8px;
+        z-index: 2;
+        display: grid;
+        grid-template-columns: 42px 1fr 42px;
+        gap: 12px;
+        align-items: center;
+        padding: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.78);
+        border-radius: 24px;
+        color: #fff;
+        background:
+          linear-gradient(135deg, rgba(22, 119, 255, 0.96) 0%, rgba(124, 92, 255, 0.92) 52%, rgba(20, 184, 200, 0.92) 100%);
+        box-shadow: 0 18px 36px rgba(22, 119, 255, 0.26);
+      }
+
+      .circle-btn {
+        width: 42px;
+        height: 42px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.18);
+        font-size: 25px;
+        font-weight: 900;
+      }
+
+      .topic-main {
+        min-width: 0;
+      }
+
+      .topic-name {
+        margin: 0;
+        overflow: hidden;
+        color: #fff;
+        font-size: 19px;
+        line-height: 1.25;
+        font-weight: 900;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .meta-line {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 8px;
+      }
+
+      .meta-pill {
+        padding: 4px 8px;
+        border-radius: 999px;
+        color: rgba(255, 255, 255, 0.95);
+        background: rgba(255, 255, 255, 0.16);
+        font-size: 11px;
+        font-weight: 800;
+      }
+
+      .progress-mini {
+        margin-top: 11px;
+        height: 6px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      .progress-mini span {
+        display: block;
+        width: 18%;
+        height: 100%;
+        border-radius: inherit;
+        background: #fff;
+      }
+
+      .coach-panel {
+        margin: 16px 4px 12px;
+        padding: 16px;
+        border: 1px solid rgba(231, 237, 245, 0.72);
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.74);
+        box-shadow: 0 12px 30px rgba(31, 43, 68, 0.08);
+      }
+
+      .coach-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .coach-avatar {
+        width: 44px;
+        height: 44px;
+        flex: 0 0 auto;
+        display: grid;
+        place-items: center;
+        border-radius: 16px;
+        color: #fff;
+        background: linear-gradient(135deg, var(--orange), var(--rose));
+        font-size: 20px;
+        font-weight: 900;
+      }
+
+      .coach-panel h2 {
+        margin: 0;
+        font-size: 21px;
+        line-height: 1.25;
+      }
+
+      .coach-panel p {
+        margin: 7px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .prompt-chips {
+        display: flex;
+        gap: 8px;
+        margin-top: 14px;
+        overflow: hidden;
+      }
+
+      .prompt-chip {
+        min-width: 0;
+        flex: 1;
+        padding: 9px 10px;
+        border-radius: 15px;
+        color: var(--blue-deep);
+        background: #edf6ff;
+        font-size: 12px;
+        font-weight: 800;
+        text-align: center;
+      }
+
+      .prompt-chip:nth-child(2) {
+        color: #08755e;
+        background: #eaf8f2;
+      }
+
+      .prompt-chip:nth-child(3) {
+        color: #9a5708;
+        background: #fff4e5;
+      }
+
+      .message-list {
+        display: grid;
+        gap: 14px;
+        padding: 4px 2px 24px;
+      }
+
+      .message-row {
+        display: flex;
+      }
+
+      .message-row.user {
+        justify-content: flex-end;
+      }
+
+      .bubble {
+        max-width: 84%;
+        padding: 14px 15px;
+        border-radius: 22px;
+        box-shadow: 0 10px 24px rgba(31, 43, 68, 0.07);
+      }
+
+      .user .bubble {
+        color: #fff;
+        border-bottom-right-radius: 8px;
+        background: linear-gradient(135deg, var(--blue) 0%, var(--cyan) 100%);
+      }
+
+      .assistant .bubble {
+        border: 1px solid var(--line);
+        border-bottom-left-radius: 8px;
+        background: #fff;
+      }
+
+      .bubble p {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.55;
+      }
+
+      .assistant-tools {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 11px;
+      }
+
+      .audio-pill {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 10px;
+        border-radius: 999px;
+        color: var(--blue);
+        background: #edf6ff;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .audio-bars {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        height: 18px;
+      }
+
+      .audio-bars span {
+        width: 3px;
+        border-radius: 999px;
+        background: var(--blue);
+      }
+
+      .audio-bars span:nth-child(1) { height: 8px; }
+      .audio-bars span:nth-child(2) { height: 15px; }
+      .audio-bars span:nth-child(3) { height: 11px; }
+      .audio-bars span:nth-child(4) { height: 18px; }
+
+      .text-toggle {
+        padding: 7px 10px;
+        border-radius: 999px;
+        color: #08755e;
+        background: #eaf8f2;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .feedback-card {
+        margin-top: 12px;
+        padding: 13px;
+        border-radius: 18px;
+        background:
+          linear-gradient(180deg, rgba(234, 248, 242, 0.92), rgba(255, 255, 255, 0.9));
+        border: 1px solid #ccebdd;
+      }
+
+      .feedback-title {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        color: #0d805f;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .feedback-card p {
+        margin-top: 8px;
+        color: #325447;
+        font-size: 13px;
+      }
+
+      .better-expression {
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 14px;
+        color: var(--ink);
+        background: #fff;
+        font-size: 13px;
+        font-weight: 800;
+        line-height: 1.45;
+      }
+
+      .thinking {
+        width: 142px;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        color: var(--muted);
+        background: #fff;
+      }
+
+      .thinking span {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--blue), var(--mint));
+      }
+
+      .input-bar {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 12px 14px 20px;
+        border-top: 1px solid rgba(231, 237, 245, 0.76);
+        background: rgba(255, 255, 255, 0.86);
+        backdrop-filter: blur(18px);
+        box-shadow: 0 -16px 34px rgba(31, 43, 68, 0.08);
+      }
+
+      .composer {
+        display: grid;
+        grid-template-columns: 44px 1fr 44px;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .tool-btn,
+      .send-btn {
+        width: 44px;
+        height: 44px;
+        display: grid;
+        place-items: center;
+        border-radius: 16px;
+      }
+
+      .tool-btn {
+        color: var(--blue);
+        background: #edf6ff;
+      }
+
+      .keyboard {
+        width: 24px;
+        height: 18px;
+        padding: 3px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2px;
+        border: 2px solid currentColor;
+        border-radius: 5px;
+      }
+
+      .keyboard span {
+        width: 4px;
+        height: 3px;
+        border-radius: 999px;
+        background: currentColor;
+      }
+
+      .keyboard span:last-child {
+        width: 12px;
+      }
+
+      .voice-pad {
+        min-width: 0;
+        height: 54px;
+        display: grid;
+        place-items: center;
+        border-radius: 20px;
+        color: var(--ink);
+        background:
+          linear-gradient(#fff, #fff) padding-box,
+          linear-gradient(135deg, rgba(22, 119, 255, 0.42), rgba(32, 180, 134, 0.42)) border-box;
+        border: 1px solid transparent;
+        font-size: 16px;
+        font-weight: 900;
+        box-shadow: inset 0 -1px 0 rgba(31, 43, 68, 0.04);
+      }
+
+      .send-btn {
+        color: #fff;
+        background: linear-gradient(135deg, var(--blue), var(--violet));
+        font-size: 25px;
+        font-weight: 900;
+      }
+
+      .restart-link {
+        display: block;
+        margin: 11px auto 0;
+        color: var(--muted);
+        background: transparent;
+        font-size: 13px;
+        font-weight: 750;
+      }
+
+      .review-note {
+        width: min(390px, 100%);
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      .review-note strong {
+        color: var(--ink);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="stage">
+      <section class="phone" aria-label="AI 对话详情页彩色 Demo">
+        <header class="top-bar">
+          <button class="back" aria-label="返回">‹</button>
+          <h1>对话练习</h1>
+          <div class="capsule" aria-hidden="true">
+            <span>•••</span>
+            <span>◎</span>
+          </div>
+        </header>
+
+        <div class="chat">
+          <section class="topic-card">
+            <button class="circle-btn" aria-label="返回主题选择">‹</button>
+            <div class="topic-main">
+              <h2 class="topic-name">消费习惯</h2>
+              <div class="meta-line">
+                <span class="meta-pill">教学模式</span>
+                <span class="meta-pill">初级</span>
+                <span class="meta-pill">剩余 30</span>
+                <span class="meta-pill">2/12</span>
+              </div>
+              <div class="progress-mini" aria-hidden="true"><span></span></div>
+            </div>
+            <button class="circle-btn" aria-label="重新开始">↻</button>
+          </section>
+
+          <section class="coach-panel">
+            <div class="coach-row">
+              <div class="coach-avatar">AI</div>
+              <div>
+                <h2>说第一句吧</h2>
+                <p>可以用英文，也可以先中英混合表达。AI 会接住你的表达，再帮你变自然。</p>
+              </div>
+            </div>
+            <div class="prompt-chips">
+              <div class="prompt-chip">I usually spend money on...</div>
+              <div class="prompt-chip">我想聊一下网购</div>
+              <div class="prompt-chip">Ask me a question</div>
+            </div>
+          </section>
+
+          <section class="message-list" aria-label="消息示例">
+            <article class="message-row user">
+              <div class="bubble">
+                <p>I often buy small things online, but sometimes I don't really need them.</p>
+              </div>
+            </article>
+
+            <article class="message-row assistant">
+              <div class="bubble">
+                <div class="assistant-tools">
+                  <button class="audio-pill">
+                    <span class="audio-bars" aria-hidden="true">
+                      <span></span><span></span><span></span><span></span>
+                    </span>
+                    播放
+                  </button>
+                  <button class="text-toggle">显示文字</button>
+                </div>
+                <p>That is very common. What usually makes you click “buy now”?</p>
+                <div class="feedback-card">
+                  <div class="feedback-title">✨ 教学点评</div>
+                  <p>表达很清楚。可以把 “small things” 换成更具体的 “little impulse purchases”。</p>
+                  <div class="better-expression">
+                    I sometimes make little impulse purchases online.
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="message-row user">
+              <div class="bubble">
+                <p>Maybe discounts and free shipping.</p>
+              </div>
+            </article>
+
+            <article class="message-row assistant">
+              <div class="bubble thinking">
+                <span></span><span></span><span></span>
+                <p>AI 思考中</p>
+              </div>
+            </article>
+          </section>
+
+          <footer class="input-bar">
+            <div class="composer">
+              <button class="tool-btn" aria-label="切换到文字输入">
+                <span class="keyboard" aria-hidden="true">
+                  <span></span><span></span><span></span>
+                  <span></span><span></span><span></span>
+                  <span></span>
+                </span>
+              </button>
+              <button class="voice-pad">按住说话</button>
+              <button class="send-btn" aria-label="发送">↑</button>
+            </div>
+            <button class="restart-link">重新选择主题</button>
+          </footer>
+        </div>
+      </section>
+
+      <aside class="review-note">
+        <strong>设计方向：</strong>保留现有对话页的信息结构，但把顶部主题卡、空状态、AI 点评和底部输入区做成更有色彩的练习界面。真实落代码时可继续复用现有消息数据和事件。
+      </aside>
+    </main>
+  </body>
+</html>

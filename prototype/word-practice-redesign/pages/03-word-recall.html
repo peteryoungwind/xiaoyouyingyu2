@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>回忆练习原型</title>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <main class="stage">
+      <nav class="prototype-nav">
+        <a href="./02-word-practice-hub.html">上一页</a>
+        <a href="./04-word-reveal.html">答后展开</a>
+      </nav>
+
+      <section class="phone" aria-label="回忆练习">
+        <div class="status-bar">
+          <span>9:41</span>
+          <span>5G  100%</span>
+        </div>
+
+        <div class="practice-page">
+          <header class="toolbar">
+            <button class="round-button" aria-label="返回">‹</button>
+            <div class="toolbar-title">
+              <h1>日常生活高频词</h1>
+              <p>初级 · 第 7/26 个</p>
+            </div>
+            <button class="round-button" aria-label="更多">⋯</button>
+          </header>
+
+          <div class="progress-line"><i style="width: 27%"></i></div>
+
+          <section class="word-card">
+            <span class="chip">到期复习 · 上次模糊</span>
+            <h2>adjust</h2>
+            <div class="phonetic">
+              <button class="sound-pill">美音</button>
+              <button class="sound-pill">英音</button>
+              <span>/əˈdʒʌst/</span>
+            </div>
+            <p>先在心里说出中文含义和一个使用场景，再选择记忆状态。</p>
+            <div class="hint-lines" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </section>
+
+          <section class="answer-bar">
+            <button class="known">认识</button>
+            <button class="fuzzy">模糊</button>
+            <button class="unknown">不认识</button>
+          </section>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
