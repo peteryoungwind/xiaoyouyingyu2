@@ -19,6 +19,12 @@ Page({
     remainingToday: 0,
     roundCount: 0,
     messages: [],
+    promptChips: [
+      { text: 'Can you ask me first?' },
+      { text: '我先用中文说想法' },
+      { text: 'I want to try in English.' }
+    ],
+    progressPercent: 0,
     inputText: '',
     inputMode: 'voice',
     sending: false,
@@ -63,6 +69,7 @@ Page({
       this.setData({
         config: res,
         remainingToday: res.remainingToday || 0,
+        progressPercent: this.calculateProgress(this.data.roundCount, res.maxRoundsPerSession),
         error: res.enabled === false ? 'AI 对话暂不可用，请稍后再试' : ''
       });
     }).catch(err => {
@@ -77,6 +84,13 @@ Page({
   toggleInputMode() {
     this.setData({
       inputMode: this.data.inputMode === 'voice' ? 'text' : 'voice'
+    });
+  },
+
+  usePrompt(e) {
+    this.setData({
+      inputMode: 'text',
+      inputText: e.currentTarget.dataset.text || ''
     });
   },
 
@@ -130,7 +144,7 @@ Page({
         reply: reply,
         content: reply.replyEn || '',
         audioUrl: res.audioUrl || '',
-        showText: false,
+        showText: true,
         thinking: false
       };
       var messages = this.data.messages.map(m => m.id === thinkingMessage.id ? assistantMessage : m);
@@ -138,6 +152,7 @@ Page({
         messages: messages,
         remainingToday: res.remainingToday,
         roundCount: this.data.roundCount + 1,
+        progressPercent: this.calculateProgress(this.data.roundCount + 1, this.data.config.maxRoundsPerSession),
         sending: false
       });
       this.playAudio(assistantMessage);
@@ -183,6 +198,11 @@ Page({
     this.audio.stop();
     this.audio.src = src;
     this.audio.play();
+  },
+
+  calculateProgress(roundCount, maxRounds) {
+    if (!maxRounds) return 0;
+    return Math.min(100, Math.round((roundCount / maxRounds) * 100));
   },
 
   restart() {

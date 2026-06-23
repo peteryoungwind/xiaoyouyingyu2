@@ -3,7 +3,15 @@
     <view class="round-icon" bindtap="goBack">‹</view>
     <view class="topic-meta">
       <view class="topic-name">{{customTopic || topicTitleZh || topicTitle || 'AI 对话练习'}}</view>
-      <view class="meta-line">{{mode === 'TEACHING' ? '教学' : '练习'}} · {{difficulty === 'BEGINNER' ? '初级' : '进阶'}} · 剩余 {{remainingToday}} · {{roundCount}}/{{config.maxRoundsPerSession || '-'}}</view>
+      <view class="meta-line">
+        <view class="meta-pill">{{mode === 'TEACHING' ? '教学模式' : '练习模式'}}</view>
+        <view class="meta-pill">{{difficulty === 'BEGINNER' ? '初级' : '进阶'}}</view>
+        <view class="meta-pill">剩余 {{remainingToday}}</view>
+        <view class="meta-pill">{{roundCount}}/{{config.maxRoundsPerSession || '-'}}</view>
+      </view>
+      <view class="progress-track">
+        <view class="progress-fill" style="width: {{progressPercent}}%;"></view>
+      </view>
     </view>
     <view class="round-icon" bindtap="restart">↻</view>
   </view>
@@ -13,7 +21,10 @@
   <scroll-view class="message-list" scroll-y="true">
     <view wx:if="{{messages.length === 0}}" class="empty-chat">
       <view class="empty-title">说第一句吧</view>
-      <view class="empty-desc">可以用英文，也可以先中英混合表达。</view>
+      <view class="empty-desc">可以用英文，也可以先中英混合表达。AI 会接住你的表达，再帮你变自然。</view>
+      <view class="prompt-chips">
+        <view wx:for="{{promptChips}}" wx:key="text" class="prompt-chip" bindtap="usePrompt" data-text="{{item.text}}">{{item.text}}</view>
+      </view>
     </view>
 
     <view wx:for="{{messages}}" wx:key="id" class="message-row {{item.role === 'user' ? 'user-row' : 'assistant-row'}}">
@@ -30,19 +41,21 @@
           <view class="message-text">{{item.content}}</view>
         </block>
         <block wx:else>
-          <view wx:if="{{item.audioUrl}}" class="audio-wave" bindtap="replayAudio" data-id="{{item.id}}">
-            <view></view><view></view><view></view><view></view><view></view><view></view>
-          </view>
           <view class="assistant-actions">
-            <view class="mini-btn" bindtap="replayAudio" data-id="{{item.id}}">播放</view>
-            <view class="mini-btn" bindtap="toggleText" data-id="{{item.id}}">{{item.showText ? '隐藏文字' : '显示文字'}}</view>
+            <view wx:if="{{item.audioUrl}}" class="audio-pill" bindtap="replayAudio" data-id="{{item.id}}">
+              <view class="audio-bars">
+                <view></view><view></view><view></view><view></view>
+              </view>
+              <text>播放</text>
+            </view>
+            <view class="text-toggle" bindtap="toggleText" data-id="{{item.id}}">{{item.showText ? '隐藏文字' : '显示文字'}}</view>
           </view>
           <view wx:if="{{item.showText}}" class="message-text english">{{item.reply.replyEn}}</view>
           <view wx:if="{{item.showText && item.reply.nextPromptEn}}" class="next-prompt">{{item.reply.nextPromptEn}}</view>
           <view wx:if="{{mode === 'TEACHING' && item.reply.feedbackZh}}" class="feedback">
-            <view class="feedback-title">点评</view>
+            <view class="feedback-title">教学点评</view>
             <view>{{item.reply.feedbackZh}}</view>
-            <view wx:if="{{item.reply.betterExpressionEn}}" class="better">{{item.reply.betterExpressionEn}}</view>
+            <view wx:if="{{item.reply.betterExpressionEn}}" class="better">“{{item.reply.betterExpressionEn}}”</view>
             <view wx:if="{{item.reply.betterExpressionZh}}" class="better-zh">{{item.reply.betterExpressionZh}}</view>
           </view>
         </block>
