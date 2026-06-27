@@ -63,7 +63,7 @@ public class WordGenerationTaskService {
             update(taskId, WordGenerationTaskStatus.RUNNING, WordGenerationTaskStage.GENERATING_WORDS, 10, "生成单词中", null);
             WordBook book = wordBookService.getRequired(bookId);
             List<Word> candidates = type == WordGenerationTaskType.SCENE
-                    ? wordGenerationService.generateSceneCandidates(body)
+                    ? wordGenerationService.generateSceneCandidates(book, body)
                     : wordGenerationService.generateTopicCandidates(book, body);
 
             updateTotals(taskId, candidates.size(), 0, 0, "保存单词中");

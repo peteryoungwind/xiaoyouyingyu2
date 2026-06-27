@@ -336,10 +336,33 @@
 
   </block>
 
+  <!-- Login required -->
+  <view wx:elif="{{!loading && accessState === 'loginRequired'}}" class="access-state">
+    <view class="empty-icon">🔐</view>
+    <view class="access-title">请先登录</view>
+    <view class="access-desc">登录后可使用主题学习和 AI 生成内容</view>
+    <button class="btn btn-primary btn-block mt-32" bindtap="goToLogin">去登录</button>
+  </view>
+
+  <!-- Membership required -->
+  <view wx:elif="{{!loading && accessState === 'memberRequired'}}" class="access-state">
+    <view class="empty-icon">🔒</view>
+    <view class="access-title">开通会员，解锁主题学习</view>
+    <view class="access-desc">会员可使用热身、词汇、表达、练习任务和 AI 点评</view>
+    <button class="btn btn-gold btn-block mt-32" bindtap="goToRedeem">卡密兑换</button>
+    <button class="btn btn-outline btn-block mt-16" bindtap="goToLearning">返回学习中心</button>
+  </view>
+
   <!-- Topic not found -->
   <view wx:elif="{{!loading}}" class="loading-container">
     <view class="empty-icon">😕</view>
     <text class="loading-text">未找到该主题</text>
   </view>
+
+  <membership-modal
+    visible="{{showMembershipModal}}"
+    expired="{{membershipExpired}}"
+    bind:close="onMembershipModalClose"
+  />
 
 </view>

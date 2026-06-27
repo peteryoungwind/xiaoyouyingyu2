@@ -163,6 +163,192 @@ Authorization: Bearer <token>
 
 前端和小程序需要再解析 `content` 中的 JSON 字符串。
 
+## 跟读精听接口
+
+路径前缀：`/api/shadowing-lessons`
+
+权限：
+
+- 列表和详情公开可访问。
+- 游客详情只返回媒体、简介和基础元信息，不返回完整 `content`。
+- 登录用户详情返回完整 `content`，并自动写入学习记录。
+- 句级点评、翻译练习点评和语音转文字接口要求登录，不要求会员权限。
+
+| 方法 | 路径 | 权限 | 说明 |
+| --- | --- | --- | --- |
+| GET | `` | 公开 | 分页查询跟读精听资源，登录用户可按学习状态筛选 |
+| GET | `/{id}` | 公开 | 查询详情；游客试看，登录用户完整内容 |
+| POST | `/{id}/sentences/{sentenceIndex}/review` | 登录用户 | 上传单句录音并返回 ASR + AI 点评 |
+| POST | `/{id}/translation-review` | 登录用户 | 提交中文翻译练习的英文回答并返回 AI 点评与优化 |
+| POST | `/speech-to-text` | 登录用户 | 上传练习录音并返回 ASR 识别文本 |
+
+### 列表参数
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `learned` | boolean | 是否查询已学习资源；游客查询 `true` 返回空列表 |
+| `page` | number | 页码，从 0 开始，默认 0 |
+| `size` | number | 每页数量，默认 10，最大 50 |
+
+### 列表响应项
+
+```json
+{
+  "id": 1,
+  "title": "How to Say Sunny and Dreary Weather",
+  "titleZh": "阳光明媚、天气阴沉怎么说？",
+  "description": "围绕天气、心情和日常准备的原声片段。",
+  "category": null,
+  "topic": "天气季节",
+  "sourceName": "Sydney Serena",
+  "thumbnailUrl": "https://cdn.lingohow.cn/images/thumbnails/EP1.webp",
+  "publishedDate": "2024-08-19",
+  "sentenceCount": 6,
+  "expressionCount": 10,
+  "learned": false
+}
+```
+
+### 详情响应
+
+游客响应：
+
+```json
+{
+  "id": 1,
+  "title": "How to Say Sunny and Dreary Weather",
+  "titleZh": "阳光明媚、天气阴沉怎么说？",
+  "description": "围绕天气、心情和日常准备的原声片段。",
+  "category": null,
+  "topic": "天气季节",
+  "thumbnailUrl": "https://cdn.lingohow.cn/images/thumbnails/EP1.webp",
+  "videoUrl": "https://cdn.lingohow.cn/videos/episodes-mp4/EP1.mp4",
+  "audioUrl": "https://cdn.lingohow.cn/audio/episodes/EP1.mp3",
+  "previewOnly": true,
+  "learned": false,
+  "content": null
+}
+```
+
+登录用户响应会将 `previewOnly` 设为 `false`、`learned` 设为 `true`，并返回结构化 `content`。
+
+列表和详情响应中的 `title`、`titleZh` 是面向用户的展示标题；后端会移除标题内的 `Episode + 序号` 片段。`sourceName` 为通用导入标记 `Lingohow` 时不返回，`category` 为通用栏目名 `300期油管地道口语` 时不返回，避免在小程序列表页和详情页展示这些导入来源标记。
+
+### `content` 结构
+
+```json
+{
+  "challenge": { "zhText": "中文挑战文本", "tips": ["大胆开口练习"] },
+  "transcript": { "en": "English transcript.", "zh": "中文对照。" },
+  "sentences": [
+    {
+      "index": 0,
+      "startSec": 0.3,
+      "endSec": 4.4,
+      "en": "I just got out of the shower.",
+      "zh": "我刚洗完澡。",
+      "phonetic": "/.../",
+      "highlights": [{ "text": "got out of the shower", "zh": "洗完澡" }]
+    }
+  ],
+  "expressions": [
+    {
+      "text": "get out of the shower",
+      "phonetic": "/.../",
+      "type": "phrasal verb",
+      "definitionZh": "洗完澡",
+      "exampleEn": "I just got out of the shower."
+    }
+  ],
+  "cloze": {
+    "enFullText": "完整英文",
+    "zhPromptText": "用于翻译练习的中文提示",
+    "answers": ["got out of the shower"]
+  }
+}
+```
+
+### 句级点评请求
+
+```http
+POST /api/shadowing-lessons/1/sentences/0/review
+Content-Type: multipart/form-data
+Authorization: Bearer <token>
+```
+
+字段：
+
+- `audioFile`：本次录音文件。
+- `referenceText`：可选，前端显示的原句；后端仍会按 `lessonId + sentenceIndex` 从 `contentJson` 校验原句。
+- `durationMs`：可选，录音时长毫秒。
+
+响应：
+
+```json
+{
+  "recognizedText": "I just got out of the shower.",
+  "overallScore": 88,
+  "pronunciationScore": 86,
+  "fluencyScore": 84,
+  "accuracyScore": 94,
+  "strengths": ["句子主干完整"],
+  "improvements": ["让 out of the 连读更自然"],
+  "suggestedPractice": ["out of the shower"],
+  "encouragement": "这句读得很稳，再读一遍会更顺。"
+}
+```
+
+后端保存识别文本、分数和反馈 JSON，不保存长期录音文件 URL。
+
+### 翻译练习点评请求
+
+```http
+POST /api/shadowing-lessons/1/translation-review
+Content-Type: application/json
+Authorization: Bearer <token>
+```
+
+请求：
+
+```json
+{
+  "promptZh": "我刚洗完澡，吹干头发。",
+  "referenceText": "I just got out of the shower, I dried my hair.",
+  "userAnswer": "I just got out of the shower and dried my hair.",
+  "inputMode": "voice"
+}
+```
+
+响应：
+
+```json
+{
+  "content": "{\"score\":90,\"strengths\":[\"意思完整\"],\"improvements\":[\"可以更自然地处理并列动作\"],\"corrections\":[],\"improvedAnswer\":\"I just got out of the shower and dried my hair.\",\"encouragement\":\"表达已经很清楚，继续保持。\"}"
+}
+```
+
+`promptZh` 和 `referenceText` 为空时，后端会尝试从详情 `content.cloze.zhPromptText` 和 `content.cloze.enFullText` 兜底读取。
+
+### 跟读精听语音转文字请求
+
+```http
+POST /api/shadowing-lessons/speech-to-text
+Content-Type: multipart/form-data
+Authorization: Bearer <token>
+```
+
+字段：
+
+- `audioFile`：本次翻译练习录音文件。
+
+响应：
+
+```json
+{
+  "text": "I just got out of the shower and dried my hair."
+}
+```
+
 ## 口语热身接口
 
 路径前缀：`/api/spoken-warmup`
@@ -290,8 +476,12 @@ Authorization: Bearer <token>
   "titleZh": "旅行的新方式",
   "audioUrl": "/uploads/daily-articles/example.mp3",
   "summary": "文章总结",
-  "vocabulary": "[{\"word\":\"route\",\"zh\":\"路线\"}]",
-  "expressions": "[{\"template\":\"I would rather...\",\"zh\":\"我宁愿……\"}]",
+  "vocabulary": "[{\"word\":\"route\",\"phoneticUk\":\"ruːt\",\"phoneticUs\":\"ruːt\",\"pos\":\"n.\",\"meaning\":\"路线\",\"example\":\"The route follows the river.\",\"exampleZh\":\"这条路线沿河而行。\"}]",
+  "expressions": "[{\"expression\":\"I would rather...\",\"meaning\":\"我宁愿……\",\"example\":\"I would rather take the train.\"}]",
+  "difficultyStars": 3,
+  "wordCount": 670,
+  "sourceName": "纽约时报",
+  "keySentences": "[{\"sentence\":\"English long sentence.\",\"translation\":\"中文翻译。\",\"analysis\":\"句子结构解析。\"}]",
   "publishedDate": "2026-06-02",
   "read": true,
   "paragraphs": [
@@ -305,7 +495,7 @@ Authorization: Bearer <token>
 }
 ```
 
-未登录访问返回 `401`。非管理员访问未推送外刊返回 `404`。
+`vocabulary`、`expressions`、`keySentences` 均为 JSON 数组字符串；旧记录缺少 `difficultyStars`、`wordCount`、`sourceName`、`keySentences` 时返回 `null`，小程序端隐藏对应模块。未登录访问返回 `401`。非管理员访问未推送外刊返回 `404`。
 
 ### 管理端
 
@@ -524,8 +714,8 @@ Authorization: Bearer <token>
 
 | 方法 | 路径 | 说明 |
 | --- | --- | --- |
-| GET | `/books` | 查询已发布单词本与当前用户初级进度 |
-| GET | `/books/{bookId}` | 查询单词本详情与指定难度进度 |
+| GET | `/books` | 查询已发布单词本与当前用户在词书所属等级下的进度 |
+| GET | `/books/{bookId}` | 查询单词本详情与词书所属等级进度 |
 | GET | `/books/{bookId}/next` | 获取下一批练习词，优先到期复习词 |
 | GET | `/words/{wordId}` | 查询已发布单词详情 |
 | POST | `/words/{wordId}/answer` | 提交认识/不认识 |
@@ -541,6 +731,13 @@ Authorization: Bearer <token>
 ```
 
 `result` 可取 `KNOWN`、`FUZZY` 或 `UNKNOWN`。
+
+单词本等级规则：
+
+- `word_books.level` 取值为 `BEGINNER` 或 `ADVANCED`。
+- 一个单词本只能属于一个等级，用户端接口返回的 `progress.difficulty` 与词书 `level` 保持一致。
+- 用户端接口仍兼容 `difficulty` 查询参数，但后端会以词书 `level` 为准查询练习词和进度。
+- 新增、编辑、AI 生成单词时，单词 `difficulty` 会被强制设置为所属词书等级，避免同一本词书混入初级和进阶单词。
 
 复习规则：
 
@@ -745,6 +942,7 @@ AI 创建单词本走后台任务：接口先创建单词本和 `word_generation
 | `name` | VARCHAR(120) | 单词本名称 |
 | `description` | VARCHAR(1000) | 描述 |
 | `scene` | VARCHAR(500) | 适用场景 |
+| `level` | VARCHAR(20) | 单词本等级：`BEGINNER`、`ADVANCED`；默认 `BEGINNER` |
 | `status` | VARCHAR(20) | `DRAFT`、`PUBLISHED`、`OFFLINE` |
 | `deleted` | BOOLEAN | 软删除 |
 | `created_by` | BIGINT | 创建人 |
@@ -866,12 +1064,18 @@ AI 创建单词本走后台任务：接口先创建单词本和 `word_generation
 | `summary` | TEXT | 文章总结 |
 | `vocabulary` | JSON | 重点词汇 JSON 字符串 |
 | `expressions` | JSON | 表达句型 JSON 字符串 |
+| `difficulty_stars` | INT | 精读难度星级，1-5，可空 |
+| `word_count` | INT | 英文词数，可空 |
+| `source_name` | VARCHAR(200) | 素材来源名称，可空 |
+| `key_sentences` | JSON | 长难句解析 JSON 字符串 |
 | `status` | VARCHAR(20) | `DRAFT`、`ENABLED`、`DISABLED` |
 | `published_date` | DATE | 发布日期；为空表示未推送 |
 | `created_at` | DATETIME | 创建时间 |
 | `updated_at` | DATETIME | 更新时间 |
 
 索引：`published_date`、`status + published_date`。
+
+每日外刊精读素材通过脚本导入。单篇素材模板位于 `doc/generated/daily-article-intensive-reading.template.json`，单篇导入脚本位于 `scripts/import_daily_article_intensive_reading.java`；微信公众号 Markdown 批量转换和导入脚本位于 `scripts/import_daily_articles_from_weixin_md.java`，批量 JSON 输出目录为 `doc/generated/daily-articles-intensive-reading-batch`。脚本默认写入 `status=ENABLED`，`publishedDate=null` 时由每日 06:00 定时任务推送；若写入具体日期，则表示该素材已推送。
 
 ### `daily_article_paragraphs`
 
@@ -895,6 +1099,63 @@ AI 创建单词本走后台任务：接口先创建单词本和 `word_generation
 | `read_at` | DATETIME | 首次阅读时间 |
 
 唯一约束：`article_id + user_id`，用于避免重复阅读记录。
+
+### `shadowing_lessons`
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `id` | BIGINT | 主键 |
+| `title` | VARCHAR(255) | 英文标题或页面标题 |
+| `title_zh` | VARCHAR(255) | 中文标题 |
+| `description` | TEXT | 资源简介 |
+| `episode_no` | VARCHAR(50) | 集数编号，如 `EP1` |
+| `category` | VARCHAR(100) | 栏目 |
+| `topic` | VARCHAR(100) | 主题 |
+| `source_name` | VARCHAR(100) | 来源作者或来源名称 |
+| `source_url` | VARCHAR(1000) | 来源页面 URL，用于导入去重 |
+| `thumbnail_url` | VARCHAR(1000) | 封面图 |
+| `video_url` | VARCHAR(1000) | 独立视频地址 |
+| `audio_url` | VARCHAR(1000) | 独立音频地址 |
+| `published_date` | DATE | 发布日期 |
+| `sentence_count` | INT | 句子数 |
+| `expression_count` | INT | 表达数 |
+| `content_json` | LONGTEXT | 精听挑战、原文、句子、表达、填空 JSON |
+| `status` | VARCHAR(20) | `DRAFT`、`PUBLISHED`、`DISABLED` |
+| `created_at` | DATETIME | 创建时间 |
+| `updated_at` | DATETIME | 更新时间 |
+
+索引：`status + published_date`、`source_url`、`episode_no`。
+
+### `user_shadowing_lesson_records`
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `id` | BIGINT | 主键 |
+| `user_id` | BIGINT | 用户 ID |
+| `lesson_id` | BIGINT | 跟读精听资源 ID |
+| `first_opened_at` | DATETIME | 首次打开时间 |
+| `last_opened_at` | DATETIME | 最近打开时间 |
+
+唯一约束：`user_id + lesson_id`。
+
+### `shadowing_review_records`
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `id` | BIGINT | 主键 |
+| `user_id` | BIGINT | 用户 ID |
+| `lesson_id` | BIGINT | 跟读精听资源 ID |
+| `sentence_index` | INT | 句子索引，0-based |
+| `reference_text` | TEXT | 原句英文 |
+| `recognized_text` | TEXT | ASR 识别文本 |
+| `overall_score` | INT | 总分 |
+| `pronunciation_score` | INT | 发音分 |
+| `fluency_score` | INT | 流利度 |
+| `accuracy_score` | INT | 准确度 |
+| `feedback_json` | LONGTEXT | AI 原始反馈 JSON |
+| `created_at` | DATETIME | 创建时间 |
+
+不保存长期录音 URL。
 
 ## 固定话题分类
 

@@ -1,0 +1,212 @@
+{
+  "title" : "California startup\\x26#39;s plan to sell sunlight at night sparks controversy",
+  "titleZh" : "“夜间阳光”按需配送，科幻小说照进现实了",
+  "audioUrl" : "https://res.wx.qq.com/voice/getvoice?mediaid=MzU3MTAwNTY5Ml8yMjQ3NDk2NDU1",
+  "difficultyStars" : 3,
+  "wordCount" : 664,
+  "sourceName" : "SFGATE",
+  "summary" : "试想夜空之中，卫星携带巨大的反射镜，将阳光反射至地球，在夜色中如同人造月亮般熠熠生辉。位于洛杉矶县的一家初创公司正等待监管批准，希望将这一设想变为现实，并计划将这种光源作为一种服务出售，用来在夜间照亮地球上的特定区域。潜在应用场景包括太阳能发电场、工业作业现场、农田、城市街道、国防行动乃至大型公共活动。\n\n来源：SFGATE；作者：Anna FitzGerald Guth；原文发布时间：2026-03-13 20:00:00",
+  "status" : "ENABLED",
+  "publishedDate" : null,
+  "paragraphs" : [ {
+    "sortOrder" : 1,
+    "contentEn" : "Imagine a night sky where satellites, saddled with huge mirrors reflecting sunlight, shine like artificial moons. A startup in Los Angeles County is awaiting regulatory clearance to make that dream a reality, with plans to sell the light to illuminate areas on Earth at night. These locations could include solar farms, industrial worksites, agricultural fields, city streets, defense operations and even public events.",
+    "contentZh" : "试想夜空之中，卫星携带巨大的反射镜，将阳光反射至地球，在夜色中如同人造月亮般熠熠生辉。位于洛杉矶县的一家初创公司正等待监管批准，希望将这一设想变为现实，并计划将这种光源作为一种服务出售，用来在夜间照亮地球上的特定区域。潜在应用场景包括太阳能发电场、工业作业现场、农田、城市街道、国防行动乃至大型公共活动。"
+  }, {
+    "sortOrder" : 2,
+    "contentEn" : "Reflect Orbital’s proposal to deliver “a spot of sunlight on-demand” has sparked significant disapproval among some scientists, who fear disruptions for all living things. “From our perspective, this is clearly an unprecedented assault on the nighttime environment,” Ruskin Hartley, the CEO of DarkSky International, told SFGATE. “Everything we know about the impact of light at night shows that it has a tremendous impact on ecology, on wildlife, plants, animals, fish, and, of course, on humans as well. We’re extremely concerned that this [will] go forward.” The Federal Communications Commission is deliberating whether to license the first test satellite after a public comment period closed on Monday.",
+    "contentZh" : "Reflect Orbital公司提出的“按需提供定点日光”计划，引发了部分科学家的强烈反对，他们担心这一做法可能对所有生物造成干扰。国际暗天协会首席执行官拉斯金·哈特利在接受SFGATE采访时表示：“在我们看来，这无疑是对夜间环境一次史无前例的破坏。目前所有的相关研究都表明，夜间光照会对生态系统产生巨大影响，波及野生动物、植物、鱼类，当然也包括人类。我们非常担心这个项目最终会被推进。”目前，美国联邦通信委员会（FCC）正在审议是否向其首颗测试卫星发放许可，此前，针对该项目的公众意见征询期已于本周一结束。"
+  }, {
+    "sortOrder" : 3,
+    "contentEn" : "The prototype would bear a 60-foot-wide mirror, capable of lighting up a 3-mile-wide circle on Earth, according to Reflect Orbital. By 2029, the startup is aiming to deploy 1,000 satellites, and by 2035, 50,000. An hour of light could cost a minimum of $5,000. “I’m really excited to bring the most powerful resource in the entire solar system into everybody’s daily life in all the ways that matter the most to people,” Ben Nowack, the founder and CEO of Reflect Orbital, told SFGATE. “The sun powers 99% of life on Earth. It grows all the plants. We use a ton of sunlight in solar power, but we can’t use it at night. So I’m really excited to bring solar energy to nighttime.”",
+    "contentZh" : "据Reflect Orbital公司介绍，其原型卫星将搭载一面宽60英尺的反射镜，可在地球表面形成直径约3英里的照明区域。该初创公司计划到2029年部署1000颗卫星，并在2035年前将规模扩大至5万颗。其夜间光照服务的最低价格约为每小时5000美元。Reflect Orbital创始人兼首席执行官本·诺瓦克在接受SFGATE采访时表示：“能将整个太阳系中最强大的资源，以最贴近人们核心需求的方式引入大众的日常生活，我对此非常兴奋。太阳为地球上99%的生命提供能量。滋养万物生长。我们已在日间通过太阳能发电大量利用阳光，而夜晚却无法使用。所以，我十分期待将太阳能带到黑夜之中。”"
+  }, {
+    "sortOrder" : 4,
+    "contentEn" : "Public concerns have included that the reflection could scramble astronomy, aviation and the natural light rhythms on Earth — and also that the light could leak out from the intended locations. But regulators aren’t necessarily considering all those potential impacts: The FCC typically considers satellites in space exempt from the National Environmental Policy Act, according to Hartley.",
+    "contentZh" : "外界的担忧包括，这种反射光可能干扰天文观测、航空活动与地球的自然光照周期——此外，光线也可能从预定照射区域溢散到周边环境。然而，监管机构未必会将所有这些潜在影响都纳入审查范畴：哈特利表示，美国联邦通信委员会通常认为太空中的卫星不适用于《国家环境政策法》（NEPA）。"
+  }, {
+    "sortOrder" : 5,
+    "contentEn" : "Joanna Fong-Isariyawongse, a neurologist at the University of Pittsburgh who focuses on sleep and circadian rhythms, highlighted implications of Reflect Orbital’s proposal for human health. “This sounds appealing, but in reality, it comes at a real cost to our health,” she wrote in an email to SFGATE. “The parallel to [daylight saving time] is striking: both represent deliberate interventions that misalign human (and animal) biology with the natural light-dark cycle. We have spent decades documenting the cardiovascular, metabolic, and cognitive harms that follow even a one-hour clock shift each spring.”",
+    "contentZh" : "匹兹堡大学神经学家、睡眠与昼夜节律研究员乔安娜·方-伊萨里亚翁塞指出，Reflect Orbital公司的计划可能对人类健康产生负面影响。她在发给SFGATE的邮件中写道：“这个设想听来颇具吸引力，实际上却可能让我们的健康付出实在的代价。它与夏令时有着惊人的相似之处：二者都是人为干预，使人类乃至动物的生物节律偏离自然的昼夜循环。数十年来，我们已经反复记录到，每年春天哪怕只是将时钟拨快一小时，也会对心血管、代谢与认知功能造成损害。”"
+  }, {
+    "sortOrder" : 6,
+    "contentEn" : "Jamie Zeitzer, Ph.D., a Stanford psychiatry and behavioral sciences professor who has studied daylight saving time, was primarily concerned about indirect impacts on humans. “Insects and plants can be very sensitive to such light and it could be extraordinarily disruptive to the food webs on the planet,” he wrote to SFGATE. “I also agree that it can, as current levels of artificial light already do, disrupt migration patterns. So, from a biology perspective, this seems like a truly terrible idea.”",
+    "contentZh" : "斯坦福大学精神病学与行为科学教授杰米·蔡策尔博士曾研究过夏令时问题，他更关注这一项目可能对人类产生的间接影响。他在发给SFGATE的邮件中写道：“昆虫和植物对这类光源非常敏感，这可能会对地球上的食物网造成极大的扰动。同时，我也认为它会像现有的人造光那样，干扰生物的迁徙规律。因此，从生物学角度来看，这似乎是一个非常糟糕的主意。”"
+  }, {
+    "sortOrder" : 7,
+    "contentEn" : "Reflect Orbital’s website lists three main safety measures baked into the design of the technology, highlighting that it can contain and quickly turn off the light — and also avoid research observatories or protected habitats. The light cannot start fires, it says. “They’re missing a lot of nuance in the technology,” Nowack said of the company’s critics. “When a customer requests sunlight, we can rotate the satellite, light up that spot and provide that service,” he added. “And I think a lot of folks just completely missed that. They’re like, ‘Oh, wow, these satellites are going to be lighting everything up. It must be all the time. It must be all night.’ That’s not the case at all. They’re nominally off.”",
+    "contentZh" : "Reflect Orbital在其官网上列出了该技术设计时内置的三项主要安全措施，强调系统能将光束限制在指定区域内并可快速关闭——同时还能避开科研观测站和受保护的栖息地。网站还表示，这种光照不会引发火灾。针对外界的批评，诺瓦克回应道：“很多人忽略了这项技术中的一些关键细节。”他补充说：“当客户提出日照需求时，我们可以通过旋转卫星，将光束投射到指定地点并提供服务。我认为很多人完全误解了这一点。他们会觉得：‘这些卫星会照亮所有地方，而且肯定一直亮着，整晚都在发光。’但事实并非如此。默认情况下，这些卫星是关闭的。”"
+  } ],
+  "vocabulary" : [ {
+    "word" : "saddle",
+    "phoneticUk" : "ˈsæd(ə)l",
+    "phoneticUs" : "ˈsæd(ə)l",
+    "pos" : "",
+    "meaning" : "n. 马鞍；（自行车或摩托车的）车座；（动物的）脊肉\nv. 给（马）装鞍；（驯马师）使（马）参加比赛；使承担（责任、任务），使负重担；跨上马鞍",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "clearance",
+    "phoneticUk" : "ˈklɪərəns",
+    "phoneticUs" : "ˈklɪrəns",
+    "pos" : "n.",
+    "meaning" : "审核批准；（飞机起降的）许可，准许；间距，间隙；清理，清除；（足球等中使对方不能破门的）解围；（银行支票的）结算，兑现",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "illuminate",
+    "phoneticUk" : "ɪˈluːmɪneɪt",
+    "phoneticUs" : "ɪˈluːmɪneɪt",
+    "pos" : "v.",
+    "meaning" : "照射，照亮；阐明，解释；使容光焕发；用彩灯装饰；用金、银等彩色图案装饰（书稿的书页或首词第一个字母）",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "disruption",
+    "phoneticUk" : "dɪsˈrʌpʃn",
+    "phoneticUs" : "dɪsˈrʌpʃn",
+    "pos" : "n.",
+    "meaning" : "扰乱，中断",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "unprecedented",
+    "phoneticUk" : "ʌnˈpresɪdentɪd",
+    "phoneticUs" : "ʌnˈpresɪdentɪd",
+    "pos" : "adj.",
+    "meaning" : "前所未有的，史无前例的；（大小、数量、程度等）前所未知的，空前的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "assault",
+    "phoneticUk" : "əˈsɔːlt",
+    "phoneticUs" : "əˈsɔːlt",
+    "pos" : "",
+    "meaning" : "n. （军事）袭击，攻击；人身攻击，侵犯人身（罪）；抨击；闯关，冲击（难关）\nv. 袭击，殴打；使（感官）难受",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "deliberate",
+    "phoneticUk" : "dɪˈlɪbərət",
+    "phoneticUs" : "dɪˈlɪbərət",
+    "pos" : "",
+    "meaning" : "adj. 故意的，蓄意的；从容的，小心翼翼的；深思熟虑的\nv. 仔细考虑，认真商讨",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "prototype",
+    "phoneticUk" : "ˈprəʊtətaɪp",
+    "phoneticUs" : "ˈproʊtətaɪp",
+    "pos" : "",
+    "meaning" : "n. （新型汽车、机器等的）原型，雏形；典型，范例；蓝本，最初形态；（电子）原型滤波网络；（生物、天体等的）原始型；（建筑、汽车等的）全真模型\nv. 制作（产品的）原型",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "deploy",
+    "phoneticUk" : "dɪˈplɔɪ",
+    "phoneticUs" : "dɪˈplɔɪ",
+    "pos" : "v.",
+    "meaning" : "部署，调度；利用",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "scramble",
+    "phoneticUk" : "ˈskræmb(ə)l",
+    "phoneticUs" : "ˈskræmb(ə)l",
+    "pos" : "",
+    "meaning" : "n. 争夺；争抢；爬；抢占\nv. 争夺；争抢；（迅速而吃力地）爬；抢占",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "aviation",
+    "phoneticUk" : "ˌeɪviˈeɪʃ(ə)n",
+    "phoneticUs" : "ˌeɪviˈeɪʃn",
+    "pos" : "n.",
+    "meaning" : "航空，飞行（术）；航空工业，飞机工业",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "circadian rhythms",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "n.",
+    "meaning" : "生物钟节律：指人类和动物生物钟的生理节律，即一天内周期性变化的生理和行为活动",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "intervention",
+    "phoneticUk" : "ˌɪntəˈvenʃ(ə)n",
+    "phoneticUs" : "ˌɪntərˈvenʃ(ə)n",
+    "pos" : "n.",
+    "meaning" : "干预，介入；调停，斡旋；（为改善情况尤指病痛采取的）措施，做法",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "cardiovascular",
+    "phoneticUk" : "ˌkɑːdiəʊˈvæskjələ(r)",
+    "phoneticUs" : "ˌkɑːrdioʊˈvæskjələr",
+    "pos" : "adj.",
+    "meaning" : "心血管的；心脏强化运动的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "metabolic",
+    "phoneticUk" : "ˌmetəˈbɒlɪk",
+    "phoneticUs" : "ˌmetəˈbɑːlɪk",
+    "pos" : "adj.",
+    "meaning" : "新陈代谢的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "extraordinarily",
+    "phoneticUk" : "ɪkˈstrɔːdnrəli",
+    "phoneticUs" : "ɪkˌstrɔːrdəˈnerəli",
+    "pos" : "adv.",
+    "meaning" : "极其，极端地；非常奇怪地，不寻常地",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "migration",
+    "phoneticUk" : "maɪˈɡreɪʃn",
+    "phoneticUs" : "maɪˈɡreɪʃ(ə)n",
+    "pos" : "n.",
+    "meaning" : "移民，迁徙；（计算机系统的）改变，（程序或硬件的）迁移，转移",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "contain",
+    "phoneticUk" : "kənˈteɪn",
+    "phoneticUs" : "kənˈteɪn",
+    "pos" : "v.",
+    "meaning" : "包含，容纳；遏制，防止……蔓延；抑制（感情）",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "nuance",
+    "phoneticUk" : "ˈnjuːɑːns",
+    "phoneticUs" : "ˈnuːɑːns",
+    "pos" : "",
+    "meaning" : "n. 细微差别\nv. 使产生细微差别",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "nominally",
+    "phoneticUk" : "ˈnɒmɪnəli",
+    "phoneticUs" : "ˈnɑːmɪnəli",
+    "pos" : "adv.",
+    "meaning" : "名义上地；有名无实地",
+    "example" : "",
+    "exampleZh" : ""
+  } ],
+  "expressions" : [ {
+    "expression" : "Everything we know about the impact of …… shows that it has a tremendous impact on ……",
+    "meaning" : "我们目前掌握的所有证据都显示，……会对……带来显著影响。",
+    "example" : "Everything we know about the impact of social media shows that it has a tremendous impact on attention spans.",
+    "exampleZh" : "现有研究表明，社交媒体会对人的注意力持续时间产生巨大影响。"
+  } ],
+  "keySentences" : [ {
+    "sentence" : "Everything we know about the impact of …… shows that it has a tremendous impact on ……",
+    "translation" : "我们目前掌握的所有证据都显示，……会对……带来显著影响。",
+    "analysis" : "写作积累句型\n例句：Everything we know about the impact of social media shows that it has a tremendous impact on attention spans.\n翻译：现有研究表明，社交媒体会对人的注意力持续时间产生巨大影响。"
+  } ]
+}

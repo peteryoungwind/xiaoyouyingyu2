@@ -1,0 +1,208 @@
+{
+  "title" : "Your Phone Pinging Hijacks Your Brain for 7 Seconds, Study Finds",
+  "titleZh" : "手机通知响一声，你的注意力就丢7秒",
+  "audioUrl" : "https://res.wx.qq.com/voice/getvoice?mediaid=MzU3MTAwNTY5Ml8yMjQ3NDk2NTM3",
+  "difficultyStars" : 3,
+  "wordCount" : 835,
+  "sourceName" : "CNET",
+  "summary" : "手机收到新消息时发出的轻响或震动，往往令人难以忽视。但《计算机与人类行为》杂志6月刊即将发表的一项新研究指出，在需要集中精力完成任务时，这类提示可能会带来干扰。研究发现，每收到一条消息通知，人们的注意力平均会被打断7秒。研究结果还表明，通知中呈现的信息类型同样关键。与个人的相关性越强，造成的注意力分散就越大。\n\n来源：CNET；作者：Julian Dossett；原文发布时间：2026-03-23 20:00:00",
+  "status" : "ENABLED",
+  "publishedDate" : null,
+  "paragraphs" : [ {
+    "sortOrder" : 1,
+    "contentEn" : "The soft ping or buzz on your phone that lets you know a new message has arrived is hard to ignore. But it can mean trouble when it's time to concentrate on a task, according to a new study that will be published in the June issue of the journal Computers in Human Behavior. The study found that whenever we receive a message notification, it interrupts our concentration for 7 seconds. It turns out that the type of information that we see in the notification also matters. The more personally relevant the notification, the larger the distraction.",
+    "contentZh" : "手机收到新消息时发出的轻响或震动，往往令人难以忽视。但《计算机与人类行为》杂志6月刊即将发表的一项新研究指出，在需要集中精力完成任务时，这类提示可能会带来干扰。研究发现，每收到一条消息通知，人们的注意力平均会被打断7秒。研究结果还表明，通知中呈现的信息类型同样关键。与个人的相关性越强，造成的注意力分散就越大。"
+  }, {
+    "sortOrder" : 2,
+    "contentEn" : "\"This interruption likely arises from several mechanisms, such as [a notification's] perceptual prominence, the conditioning acquired through repeated exposure, and the possible social significance,\" Hippolyte Fournier, a postdoctoral fellow at the University of Lausanne in Switzerland and the study's first author, told CNET. While 7 seconds may not seem like much, we get a lot of notifications throughout the day, and those seconds can add up. \"We observed that both the volume of notifications and how often individuals check their smartphones were linked to greater disruption,\" Fournier said. \"This pattern suggests that the fragmented nature of smartphone use, rather than simply total usage duration, may be a key factor in understanding how digital technologies influence attentional processes.\"",
+    "contentZh" : "瑞士洛桑大学博士后、该研究第一作者伊波利特·富尼耶在接受CNET采访时表示：“这种干扰很可能源于多种机制，比如通知在感知上的显著性、反复接触后形成的条件化反应，以及其潜在的社交意义。”7秒看似不长，但由于人们每天会收到大量通知，这些碎片时间的累积效应不容小觑。富尼耶说：“我们观察到，通知数量越多、查看手机的频率越高，个体受到的干扰就越明显。这一模式表明，相比单纯的使用时长，智能手机使用的碎片化特征，或许才是理解数字技术如何影响注意力过程的关键因素。”"
+  }, {
+    "sortOrder" : 3,
+    "contentEn" : "The study used a Stroop task, a test that measures how quickly you can process information and how well you can focus. Colored words flash across a screen for the test. The font of each word is one color, but the text of the word is a different color. So the word \"blue\" might be written in green font. You have to identify the font color and ignore the color that the word spells out. The researchers recruited 180 university students for the study. The students were randomly split up into three groups. All students received a Stroop task, and notifications popped up on the screen as they completed the test. But the researchers slightly changed the experiment for each group.",
+    "contentZh" : "这项研究采用了斯特鲁普任务（Stroop task），一种用于衡量信息处理速度和注意力集中能力的测试。在实验中，屏幕上会快速呈现表示不同颜色的单词。每个单词的字体颜色与其词义所指的颜色并不一致。例如，“blue”（蓝色）一词可能以绿色字体显示。受试者需要判断字体的实际颜色，同时忽略单词本身所指的颜色。研究团队共招募了180名大学生。将其随机分为三组。所有参与者都需完成斯特鲁普任务，且在测试过程中，屏幕上会弹出消息通知。不过，研究团队对各组的实验条件进行了细微调整。"
+  }, {
+    "sortOrder" : 4,
+    "contentEn" : "The researchers told the first group that the screen was mirroring their personal phones, so the students thought they were seeing their real notifications. The second group saw pop-ups on the screen that looked like real social media notifications, but the group knew they were false. This helped the researchers test how learned habits impact attention, without personal relevance. The third group saw only blurry notifications, with illegible text. The researchers used this test to determine how the visual distraction of an unexpected pop-up affected the group's attention.",
+    "contentZh" : "研究人员告知第一组参与者，实验屏幕正在镜像他们的个人手机，从而使他们认为看到的是自己的真实消息通知。第二组参与者的屏幕上会弹出看似真实的社交媒体通知，但他们明确知道这些信息是虚构的。这一设置使研究人员能够在排除个人相关性的情况下，测试习得性使用习惯对注意力的影响。第三组参与者看到的则只是模糊不清、文字无法辨认的通知。通过这种方式，研究人员可以评估突发弹窗带来的视觉干扰会如何影响注意力表现。"
+  }, {
+    "sortOrder" : 5,
+    "contentEn" : "The notifications slowed students' ability to process information by about 7 seconds across all three groups. But for students who thought they were getting real notifications, the delay was more pronounced. \"Although it is well documented that notifications can automatically attract attention, far less is understood about the cognitive processes that drive this attentional capture and the reasons why some people may be more susceptible than others,\" Fournier said. \"Our objective was to gain a better understanding of both the underlying mechanisms and the individual differences that could account for this variability in sensitivity.\"",
+    "contentZh" : "结果显示，三个小组的参与者在收到消息通知后，处理信息的速度均出现了约7秒的迟滞。而对于那些认为自己收到的是真实通知的参与者，这种延迟更为明显。富尼耶表示：“尽管已有充分证据表明，消息通知会不由自主地吸引注意力，但对于触发这种注意捕获的具体认知过程，以及为何有些人比其他人更容易受到影响，目前仍缺乏深入理解。我们的研究旨在进一步厘清其背后的机制，并探究是哪些个体差异，导致人们对干扰的敏感度各不相同。”"
+  }, {
+    "sortOrder" : 6,
+    "contentEn" : "In the US, 90% of all people own a smartphone, according to Pew Research, and a Harmony Healthcare IT study found that we spend over 5 hours a day using them. But how long we spend on our phones may not matter as much as how often we check our notifications. \"In a lab study designed to mimic real-life notification exposure, we found that the frequency of notifications and checking habits mattered more than total screen time,\" Fabian Ringeval, another of the paper's authors, wrote in a LinkedIn post. \"The more often we interact with our phones, the more vulnerable our attention becomes to interruption.\"",
+    "contentZh" : "皮尤研究中心的数据显示，美国90%的人口拥有智能手机；此外，Harmony Healthcare IT的一项研究发现，人们每天使用手机的时长超过5小时。不过，相比手机使用总时长，人们查看通知的频率或许更为关键。该论文的另一位作者法比安·林格瓦尔在领英上写道：“在一项旨在模拟日常消息通知场景的实验室研究中，我们发现，通知的出现频率以及用户查看手机的习惯，比单纯的屏幕使用时长更具影响力。操作手机越频繁，注意力就越容易受到干扰。”"
+  }, {
+    "sortOrder" : 7,
+    "contentEn" : "Anna Lembke, a psychiatry professor at Stanford, told CNET that the study mirrors what she sees clinically and in research literature, \"namely that the level of engagement -- for example how many notifications a person gets and how quickly they respond to notifications -- is as big a predictor, or an even bigger predictor, of harmful, problematic use than time spent.\" Researchers found that study participants received about 100 notifications per day. So the notifications we get on our phones could be slowing down our cognitive abilities through near-constant distraction.",
+    "contentZh" : "斯坦福大学精神病学教授安娜·伦布克在接受CNET采访时表示，这项研究与她在临床实践及相关文献中的观察一致，她说：“也就是说，相比使用时长，用户的互动程度——例如接收通知的数量以及对通知的响应速度——在预测有害或问题性使用行为方面，是一个同等重要、甚至更为关键的指标。”研究人员提到，参与实验的受试者平均每天会收到约100条通知。由此可见，手机通知带来的近乎持续的干扰，可能正在削弱我们的认知能力。"
+  }, {
+    "sortOrder" : 8,
+    "contentEn" : "\"In everyday situations that require continuous attention -- like driving or learning -- even short slowdowns can add up,\" Ringeval wrote. \"Our findings suggest that improving digital well-being may be less about 'using our phones less' and more about reducing unnecessary interruptions.\" Lembke said it's fair to worry about how smartphone notifications impact our attention, \"which is why platforms for minors should silence notifications by default and make it difficult to re-activate notifications without parental consent, and why adults should electively turn off notifications to improve concentration and well-being, with rare exceptions for safety reasons.\"",
+    "contentZh" : "林格瓦尔写道：“在需要持续注意力的日常情境中——例如驾车或学习——即使是短暂的迟滞，累积起来也会产生影响。我们的研究表明，改善数字健康的关键，或许不在于‘少用手机’，而在于减少不必要的干扰。”伦布克表示，人们有理由担心智能手机通知对注意力的影响，她指出：“因此，面向未成年人的平台应默认关闭通知，并在未经家长同意的情况下，增加重新开启通知的难度；同时，成年人也应有意识地关闭通知，以提升专注力和整体福祉，仅在有安全考虑等少数情形下保留例外。”"
+  } ],
+  "vocabulary" : [ {
+    "word" : "buzz",
+    "phoneticUk" : "bʌz",
+    "phoneticUs" : "bʌz",
+    "pos" : "",
+    "meaning" : "n. 嗡嗡声；传闻；蜂鸣声；唧唧喳喳的谈话声\nv. 发出嗡嗡声；发出蜂鸣声；充满兴奋（或活动等）；用蜂鸣器（发信号）",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "interrupt",
+    "phoneticUk" : "ˌɪntəˈrʌpt",
+    "phoneticUs" : "ˌɪntəˈrʌpt",
+    "pos" : "v.",
+    "meaning" : "打断，打扰；使暂停，使中断；阻断，遮挡",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "mechanism",
+    "phoneticUk" : "ˈmekənɪzəm",
+    "phoneticUs" : "ˈmekənɪzəm",
+    "pos" : "n.",
+    "meaning" : "机械装置，机件；途径，方法；（生物体内的）机制，构造；机械论；（产生自然现象等的）物理过程",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "perceptual",
+    "phoneticUk" : "pəˈseptʃuəl",
+    "phoneticUs" : "pərˈseptʃuəl",
+    "pos" : "adj.",
+    "meaning" : "知觉的，感知的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "prominence",
+    "phoneticUk" : "ˈprɒmɪnəns",
+    "phoneticUs" : "ˈprɑːmɪnəns",
+    "pos" : "n.",
+    "meaning" : "重要，著名；突起，凸出；（尤指地形或身体部位）凸出物；日珥",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "fragmented",
+    "phoneticUk" : "fræɡˈmentɪd",
+    "phoneticUs" : "ˈfræɡmentɪd",
+    "pos" : "adj.",
+    "meaning" : "支离破碎的，分裂的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "randomly",
+    "phoneticUk" : "ˈrændəmli",
+    "phoneticUs" : "ˈrændəmli",
+    "pos" : "adj.",
+    "meaning" : "（统计）随机地；胡乱地，任意地",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "slightly",
+    "phoneticUk" : "ˈslaɪtli",
+    "phoneticUs" : "ˈslaɪtli",
+    "pos" : "adv.",
+    "meaning" : "稍微，轻微地；（指某人身材）纤弱地，瘦小地",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "relevance",
+    "phoneticUk" : "ˈreləvəns",
+    "phoneticUs" : "ˈreləvəns",
+    "pos" : "n.",
+    "meaning" : "相关性，实用性，意义",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "blurry",
+    "phoneticUk" : "ˈblɜːri",
+    "phoneticUs" : "ˈblɜːri",
+    "pos" : "adj.",
+    "meaning" : "模糊不清的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "illegible",
+    "phoneticUk" : "ɪˈledʒəb(ə)l",
+    "phoneticUs" : "ɪˈledʒəb(ə)l",
+    "pos" : "adj.",
+    "meaning" : "难辨认的；字迹模糊的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "susceptible",
+    "phoneticUk" : "səˈseptəb(ə)l",
+    "phoneticUs" : "səˈseptəb(ə)l",
+    "pos" : "adj.",
+    "meaning" : "易得病的，易受影响的；（人）易受感动的，易动感情的；可能有······的，容许······的；<正式>（尤指想法或陈述）能被理解（或证明、解释）的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "variability",
+    "phoneticUk" : "ˌveəriəˈbɪləti",
+    "phoneticUs" : "ˌveriəˈbɪləti",
+    "pos" : "n.",
+    "meaning" : "可变性，变化性；[生物][数] 变异性",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "mimic",
+    "phoneticUk" : "ˈmɪmɪk",
+    "phoneticUs" : "ˈmɪmɪk",
+    "pos" : "v.",
+    "meaning" : "模仿（人的言行举止）；模拟（外观或效果）；模拟（另一种植物或动物）；（药）模拟（另一物质）的生理作用；（疾病）表现出（另一疾病）的症状",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "vulnerable",
+    "phoneticUk" : "ˈvʌlnərəbl",
+    "phoneticUs" : "ˈvʌlnərəb(ə)l",
+    "pos" : "adj.",
+    "meaning" : "（身体或精神）脆弱的，易受伤的；（事物、人或地方）易受攻击的，易受伤害的；易患病的；（桥牌）有局方的，有身价的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "clinically",
+    "phoneticUk" : "ˈklɪnɪkli",
+    "phoneticUs" : "ˈklɪnɪkli",
+    "pos" : "adv.",
+    "meaning" : "临床地；门诊部地；不偏不倚；通过临床诊断",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "predictor",
+    "phoneticUk" : "prɪˈdɪktə(r)",
+    "phoneticUs" : "prɪˈdɪktər",
+    "pos" : "n.",
+    "meaning" : "<正式>预测器，预示物；预言者",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "consent",
+    "phoneticUk" : "kənˈsent",
+    "phoneticUs" : "kənˈsent",
+    "pos" : "",
+    "meaning" : "n. 许可，允许；同意，赞同；正式批准文件，批文\nv. 赞同，准许，同意",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "electively",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "美/ ɪˈlektɪvli /\nadv. 可选地；选举地",
+    "example" : "",
+    "exampleZh" : ""
+  } ],
+  "expressions" : [ {
+    "expression" : "Although it is well documented that ……, far less is understood about ……",
+    "meaning" : "尽管已有充分证据表明……，但对于……，目前仍缺乏深入理解。",
+    "example" : "Although it is well documented that artificial intelligence can drastically boost productivity, far less is understood about the ethical dilemmas that accompany its widespread adoption.",
+    "exampleZh" : "尽管人工智能可以大幅提高生产力这一事实已有充分记录，但人们对其广泛应用所伴随的伦理困境却知之甚少。"
+  } ],
+  "keySentences" : [ {
+    "sentence" : "Although it is well documented that ……, far less is understood about ……",
+    "translation" : "尽管已有充分证据表明……，但对于……，目前仍缺乏深入理解。",
+    "analysis" : "写作积累句型\n例句：Although it is well documented that artificial intelligence can drastically boost productivity, far less is understood about the ethical dilemmas that accompany its widespread adoption.\n翻译：尽管人工智能可以大幅提高生产力这一事实已有充分记录，但人们对其广泛应用所伴随的伦理困境却知之甚少。"
+  } ]
+}

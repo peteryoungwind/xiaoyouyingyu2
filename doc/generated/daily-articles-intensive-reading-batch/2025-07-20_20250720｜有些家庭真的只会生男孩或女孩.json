@@ -1,0 +1,264 @@
+{
+  "title" : "A child’s biological sex may not always be a random 50-50 chance",
+  "titleZh" : "有些家庭真的只会生男孩或女孩",
+  "audioUrl" : "https://res.wx.qq.com/voice/getvoice?mediaid=MzU3MTAwNTY5Ml8yMjQ3NDk0NTk4",
+  "difficultyStars" : 4,
+  "wordCount" : 714,
+  "sourceName" : "科学新闻",
+  "summary" : "部分人可能天生就更倾向于生育某一性别的孩子。7月18日发表在《科学进展》上的一项最新研究为这一现象提供了科学依据。虽然在整体人口层面，生男孩和女孩的概率大致与抛硬币相同，但对不少个体而言——特别是那些初次生育年龄较晚的父母——生育结果往往会更偏向某一特定性别。\n\n来源：科学新闻；作者：Jake Buehler；原文发布时间：2025-07-20 20:00:00",
+  "status" : "ENABLED",
+  "publishedDate" : null,
+  "paragraphs" : [ {
+    "sortOrder" : 1,
+    "contentEn" : "Some people may be predisposed to having children of just one sex. That’s the conclusion of new findings published July 18 in Science Advances. While the chances of having a male or female child across whole populations may resemble a coin flip, for many individuals — especially those who have their first child later in life — the odds might be skewed toward one outcome.",
+    "contentZh" : "部分人可能天生就更倾向于生育某一性别的孩子。7月18日发表在《科学进展》上的一项最新研究为这一现象提供了科学依据。虽然在整体人口层面，生男孩和女孩的概率大致与抛硬币相同，但对不少个体而言——特别是那些初次生育年龄较晚的父母——生育结果往往会更偏向某一特定性别。"
+  }, {
+    "sortOrder" : 2,
+    "contentEn" : "The probability of conceiving and birthing a male or female child is theoretically about 50-50. This is because at least initially, equal proportions of sperm cells carry X and Y sex chromosomes, which are a major — though certainly not the only — factor determining sexual development in humans.",
+    "contentZh" : "从理论上讲，生育男孩或女孩的概率应该是对半开。这是因为至少在最初阶段，携带X染色体和Y染色体的精子数量大致相当，而这两类染色体是决定人类性别发育的主要因素——但肯定不是唯一因素。"
+  }, {
+    "sortOrder" : 3,
+    "contentEn" : "But reproductive epidemiologist Jorge Chavarro and his colleagues were interested in the frequent cases of people having multiple children of a single sex. The team compiled data from the Nurse’s Health Study, an ongoing series of epidemiological studies analyzing the pregnancies and births of over 58,000 people from 1956 to 2015. Around a third of families had siblings all of the same sex. Of those, more than expected had three, four or five kids — assuming a standard coin flip probability of male or female children.",
+    "contentZh" : "不过，生殖流行病学家豪尔赫·查瓦罗和同事们关注的却是另一种常见现象：有些家庭会连续生育多个性别相同的孩子。为此，研究团队汇总分析了“护士健康研究”的数据，这是一项从1956年持续至2015年的流行病学研究，涵盖了超过5.8万名参与者的怀孕与分娩记录。结果显示，约三分之一的家庭中所有子女的性别完全一致。值得注意的是，生育三个、四个甚至五个同性别子女的家庭数量，远高于基于“抛硬币”概率模型的理论预期值。"
+  }, {
+    "sortOrder" : 4,
+    "contentEn" : "Each individual family may have a “unique probability” of having babies of a specific sex, says Chavarro, of the Harvard T.H. Chan School of Public Health in Boston. However, that probability varies family to family across the whole population, says Chavarro. So it mostly balances out to a 50-50 chance at that larger scale.",
+    "contentZh" : "波士顿哈佛大学陈曾熙公共卫生学院的查瓦罗指出，每个家庭在生育特定性别孩子方面，可能存在自己“独特的概率倾向”。不过查瓦罗解释说，在整个群体层面，不同家庭的这种概率并不相同。但这些差异大多会相互抵消，因此总体上仍趋近于五五开。"
+  }, {
+    "sortOrder" : 5,
+    "contentEn" : "Families susceptible to birthing one sex may continue having children until they eventually have a child of the other sex. Some families may also cease having children after two if they have a male and a female. But when the analyses accounted for this, the team still found clustering of sexes within families, particularly for people who were older at the birth of their first child.",
+    "contentZh" : "一些倾向于生某一性别的家庭，可能会因为希望拥有不同性别的孩子而不断生育。而另一些已经生育一儿一女的家庭则可能会选择不再生育。但即便将这些行为纳入分析，研究团队发现，同一家庭中子女性别高度一致的现象依然存在，这种现象在初次生育年龄较大的父母中尤为明显。"
+  }, {
+    "sortOrder" : 6,
+    "contentEn" : "Higher maternal age may increase the likelihood of single-sex sibling sets due to biological factors related to reproductive aging. For example, the vaginal environment may become a bit more acidic with age during the reproductive years. And that may favor sperm carrying an X chromosome, the team says. They’re slightly larger than Y sperm and may have more buffering chemicals for surviving the acidic surroundings.",
+    "contentZh" : "产妇年龄较大之所以会增加生育同一性别子女的可能性，或许与生殖系统老化相关的生物学因素有关。举例来说，育龄期内的阴道环境可能会随年龄而变得更偏酸性，这种变化或许更有利于携带X染色体的精子。因为X精子比Y精子体积稍大，且可能含有更多缓冲酸性的化学物质，从而在这样的环境中更容易存活。"
+  }, {
+    "sortOrder" : 7,
+    "contentEn" : "Another factor could be the phase of the menstrual cycle that prepares an egg for release from the ovary. It shortens with age. That may create conditions in the cervical mucus or oviduct fluid that favor the survival of sperm carrying a Y chromosome. The ultimate impact on the skew toward one sex or another may vary depending on what biological factors are most dominant for that individual as they age.",
+    "contentZh" : "另一个潜在影响因素可能与月经周期中卵巢准备排卵的阶段有关。该阶段的持续时间会随年龄增长而缩短。研究认为，这种变化可能会改变宫颈黏液或输卵管液的理化特性，从而形成更有利于Y染色体精子存活的环境。至于最终会偏向哪一性别，则可能取决于个体在年龄增长过程中，哪些生物因素在其体内占据主导地位。"
+  }, {
+    "sortOrder" : 8,
+    "contentEn" : "Chavarro and his colleagues also analyzed genetic data from a subset of study participants and found two gene variants associated with having children of just one sex — one for all male and one for all female. It’s unclear what the genes do, but they aren’t known to be associated with reproductive traits, so their influence is mysterious for now.",
+    "contentZh" : "此外，查瓦罗和他的同事还对部分研究参与者的基因数据进行了分析，鉴定出两种与生育单一性别后代相关的基因变异体——其中一种与只生男孩相关，另一种则与只生女孩相关。虽然这两种基因的具体功能机制目前尚不明确，但研究团队认为它们与传统生殖性状无关，因此，其潜在作用机制仍有待探索。"
+  }, {
+    "sortOrder" : 9,
+    "contentEn" : "Nicola Barban, a demographer at the University of Bologna in Italy, says the research provides “valuable insights,” but more work is needed. “This research underscores that investigating biological factors alone is insufficient to fully explain reproductive patterns.” But Brendan Zietsch, a behavioral geneticist at the University of Queensland in Brisbane, Australia, isn’t convinced by the findings. “We previously showed in a much larger sample, comprising the entire Swedish population born after 1931, that there is no tendency for individual families to have [just] boys or girls.”",
+    "contentZh" : "意大利博洛尼亚大学的人口学家尼古拉·巴尔班评价称，这项研究提供了“一些有价值的见解”，但仍需更多后续研究加以验证。他指出：“这项研究恰恰表明，仅从生物学因素的角度切入，难以全面解释人类的生育模式。”不过，澳大利亚昆士兰大学的行为遗传学家布伦丹·齐奇对研究结果持保留态度。他表示：“我们此前曾在一个规模更大的研究中发现（研究涵盖了1931年后出生的全部瑞典人口），单个家庭并不存在只生男孩或只生女孩的倾向性。”"
+  }, {
+    "sortOrder" : 10,
+    "contentEn" : "Zietsch says studies claiming genetic associations with offspring sex ratios need replication in another sample. Chavarro would like to see this approach replicated in another population. Ninety-five percent of the study’s participants were white and predominantly from the United States. Paternal information could also be crucial; it’s possible the partner’s paternal age is causing the skew and not maternal age, since partners tend to be fairly close in age. The study is the “first draft of biological explanation,” Chavarro says, with many avenues ready to explore.",
+    "contentZh" : "齐奇指出，凡是声称遗传因素与子女的性别比例存在关联的研究，都需要在独立样本中加以重复验证。查瓦罗也表示，希望这项研究能在其他人群中得到复制。目前研究对象中有95%为白人，且主要来自美国。此外，父亲一方的相关信息也可能至关重要；由于伴侣年龄通常接近，导致性别比例偏差的也许并不是母亲的年龄，而是父亲的年龄。查瓦罗认为，这项研究只是对可能的生物机制给出的一份“初步草案”，未来仍有大量问题有待深入探究。"
+  } ],
+  "vocabulary" : [ {
+    "word" : "predisposed",
+    "phoneticUk" : "ˌpriːdɪˈspəʊzd",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "adj. 先有倾向的，先有意向的\nv. 预先有倾向的；预先处置好的（predispose 的过去分词）",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "coin flip",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "n.",
+    "meaning" : "抛硬币：一种随机决策的方式，通过抛硬币来决定两个选项之间的选择",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "skew",
+    "phoneticUk" : "skjuː",
+    "phoneticUs" : "skjuː",
+    "pos" : "",
+    "meaning" : "v. 偏离，歪斜；歪曲，使有误差；使曲解，使存有偏见；（统计）使（分布）偏态，使不匀称；斜视\nn. 斜角，倾斜；（对特定人或对象的）偏见；（统计）偏态，偏斜性\nadj. 歪斜的；（数）异面的，（曲线）不在一个平面的；（统计）偏态的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "conceive",
+    "phoneticUk" : "kənˈsiːv",
+    "phoneticUs" : "kənˈsiːv",
+    "pos" : "v.",
+    "meaning" : "构思，设想；使受孕，怀孕",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "sperm",
+    "phoneticUk" : "spɜːm",
+    "phoneticUs" : "spɜːrm",
+    "pos" : "n.",
+    "meaning" : "精子；精液；鲸蜡油",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "chromosome",
+    "phoneticUk" : "ˈkrəʊməsəʊm",
+    "phoneticUs" : "ˈkroʊməsoʊm",
+    "pos" : "n.",
+    "meaning" : "染色体",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "compile",
+    "phoneticUk" : "kəmˈpaɪl",
+    "phoneticUs" : "kəmˈpaɪl",
+    "pos" : "v.",
+    "meaning" : "汇编，编纂；编译（电脑程式）；收集，搜集（信息，资料）；累积（得分）",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "sibling",
+    "phoneticUk" : "ˈsɪblɪŋ",
+    "phoneticUs" : "ˈsɪblɪŋ",
+    "pos" : "n.",
+    "meaning" : "<正式>兄弟姐妹",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "balance out",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "1. 抵消，平衡：使（不同或相反的事物）变得不那么强大、显著等；补偿\n2. 相等，平衡：成为或变得相等或平衡",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "susceptible",
+    "phoneticUk" : "səˈseptəb(ə)l",
+    "phoneticUs" : "səˈseptəb(ə)l",
+    "pos" : "adj.",
+    "meaning" : "易得病的，易受影响的；（人）易受感动的，易动感情的；可能有······的，容许······的；<正式>（尤指想法或陈述）能被理解（或证明、解释）的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "clustering",
+    "phoneticUk" : "ˈklʌstərɪŋ",
+    "phoneticUs" : "ˈklʌstərɪŋ",
+    "pos" : "",
+    "meaning" : "n. 聚集，收集；分类归并；聚类装饰（房间装饰）\nv. 使成群（cluster 的现在分词）",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "maternal",
+    "phoneticUk" : "məˈtɜːn(ə)l",
+    "phoneticUs" : "məˈtɜːrn(ə)l",
+    "pos" : "adj.",
+    "meaning" : "慈母般的；作为母亲的；母系的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "vaginal",
+    "phoneticUk" : "vəˈdʒaɪnl",
+    "phoneticUs" : "vəˈdʒaɪnl",
+    "pos" : "adj.",
+    "meaning" : "[解剖] 阴道的；叶鞘的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "buffering",
+    "phoneticUk" : "ˈbʌfərɪŋ",
+    "phoneticUs" : "ˈbʌfərɪŋ",
+    "pos" : "",
+    "meaning" : "n. 缓冲作用；缓冲记忆装置；减震\nv. 用缓冲液处理；减轻；缓解（buffer 的 ing 形式）",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "menstrual",
+    "phoneticUk" : "ˈmenstruəl",
+    "phoneticUs" : "ˈmenstruəl",
+    "pos" : "adj.",
+    "meaning" : "月经的；每月的；一月一次的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "ovary",
+    "phoneticUk" : "ˈəʊvəri",
+    "phoneticUs" : "ˈoʊvəri",
+    "pos" : "n.",
+    "meaning" : "[植] 子房；[解剖] 卵巢",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "cervicalmucus",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "n.",
+    "meaning" : "宫颈粘液：女性生殖系统中宫颈腺分泌的一种液体，其量和质地会随着月经周期的变化而变化。它在生育期间起到保护和帮助精子进入子宫的作用",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "oviduct",
+    "phoneticUk" : "ˈəʊvɪdʌkt",
+    "phoneticUs" : "ˈoʊvɪdʌkt",
+    "pos" : "n.",
+    "meaning" : "[解剖] 输卵管",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "subset",
+    "phoneticUk" : "ˈsʌbset",
+    "phoneticUs" : "ˈsʌbset",
+    "pos" : "n.",
+    "meaning" : "[数] 子集；子设备；小团体",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "variant",
+    "phoneticUk" : "ˈveəriənt",
+    "phoneticUs" : "ˈveriənt",
+    "pos" : "",
+    "meaning" : "n. 变种，变形；（单词拼写或读音的）变异，变体\nadj. 不同的，变体的，变种的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "underscore",
+    "phoneticUk" : "ˌʌndəˈskɔː(r)",
+    "phoneticUs" : "ˌʌndərˈskɔːr",
+    "pos" : "",
+    "meaning" : "v. 强调；在……的下面划线\nn. （尤指为强调）下划线；（打字机或电脑键盘上的字符）下划线",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "offspring",
+    "phoneticUk" : "ˈɒfsprɪŋ",
+    "phoneticUs" : "ˈɔːfsprɪŋ",
+    "pos" : "n.",
+    "meaning" : "（人的）后代，子女；（动物的）幼崽，崽兽；结果，产物",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "replicate",
+    "phoneticUk" : "ˈreplɪkeɪt",
+    "phoneticUs" : "ˈreplɪkeɪt",
+    "pos" : "",
+    "meaning" : "v. 重复，复制；（遗传物质或生物）自我繁殖，自我复制；复证（实验或试验以得出一致的结果）\nn. 复制品；（乐）高（或低）八度反复音\nadj. 复制的；（实验或试验）复现的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "predominant",
+    "phoneticUk" : "prɪˈdɒmɪnənt",
+    "phoneticUs" : "prɪˈdɑːmɪnənt",
+    "pos" : "adj.",
+    "meaning" : "明显的；占主导地位的，占支配地位的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "paternal",
+    "phoneticUk" : "pəˈtɜːnl",
+    "phoneticUs" : "pəˈtɜːrnl",
+    "pos" : "adj.",
+    "meaning" : "父亲的；父亲般关爱的；父系的",
+    "example" : "",
+    "exampleZh" : ""
+  } ],
+  "expressions" : [ {
+    "expression" : "The ultimate impact on …… may vary depending on what …… factors are most dominant for ……",
+    "meaning" : "对…… 的最终影响可能会有所不同，这取决于哪些…… 因素对…… 最为关键。",
+    "example" : "The ultimate impact on students' academic performance may vary depending on what learning habit factors are most dominant for teenagers.",
+    "exampleZh" : "对学生学业成绩的最终影响可能会有所不同，这取决于哪些学习习惯因素对青少年最为关键。"
+  } ],
+  "keySentences" : [ {
+    "sentence" : "The ultimate impact on …… may vary depending on what …… factors are most dominant for ……",
+    "translation" : "对…… 的最终影响可能会有所不同，这取决于哪些…… 因素对…… 最为关键。",
+    "analysis" : "写作积累句型\n例句：The ultimate impact on students' academic performance may vary depending on what learning habit factors are most dominant for teenagers.\n翻译：对学生学业成绩的最终影响可能会有所不同，这取决于哪些学习习惯因素对青少年最为关键。"
+  } ]
+}

@@ -110,6 +110,7 @@ public class AdminWordBookController {
         book.setName(String.valueOf(body.get("name")));
         book.setDescription(body.get("description") == null ? null : String.valueOf(body.get("description")));
         book.setScene(body.get("scene") == null ? null : String.valueOf(body.get("scene")));
+        book.setLevel(parseLevel(body.get("level")));
         book.setStatus(WordBookStatus.DRAFT);
         WordBook savedBook = wordBookService.create(book, currentUserId(auth));
 
@@ -124,6 +125,7 @@ public class AdminWordBookController {
         book.setName(String.valueOf(body.get("name")));
         book.setDescription(body.get("description") == null ? null : String.valueOf(body.get("description")));
         book.setScene(body.get("scene") == null ? null : String.valueOf(body.get("scene")));
+        book.setLevel(parseLevel(body.get("level")));
         book.setStatus(WordBookStatus.DRAFT);
         WordBook savedBook = wordBookService.create(book, currentUserId(auth));
 
@@ -175,5 +177,12 @@ public class AdminWordBookController {
             return null;
         }
         return userRepository.findByUsername((String) auth.getPrincipal()).map(User::getId).orElse(null);
+    }
+
+    private WordBookLevel parseLevel(Object value) {
+        if (value == null || String.valueOf(value).isBlank()) {
+            return WordBookLevel.BEGINNER;
+        }
+        return "ADVANCED".equalsIgnoreCase(String.valueOf(value)) ? WordBookLevel.ADVANCED : WordBookLevel.BEGINNER;
     }
 }

@@ -1,0 +1,268 @@
+{
+  "title" : "Can AI ‘feel’ guilt?",
+  "titleZh" : "如果人工智能拥有内疚感，会更值得信任吗",
+  "audioUrl" : "https://res.wx.qq.com/voice/getvoice?mediaid=MzU3MTAwNTY5Ml8yMjQ3NDk0NzY1",
+  "difficultyStars" : 3,
+  "wordCount" : 693,
+  "sourceName" : "科学新闻",
+  "summary" : "某些科幻作品常将机器人描绘成冷酷无情的机械造物，一心只想操控人类傀儡。但人工智能的发展未必只能走这条路。人类之所以进化出愤怒、悲伤、感恩等情绪，是为了帮助我们思考、交流，并建立彼此间的信任。先进的人工智能或许也能拥有类似的能力。研究人员在7月30日发表于《皇家学会界面杂志》的报告中指出，在一类简易软件智能体（类似《模拟人生》中的角色，但更为简化）组成的群体中，表现出“内疚”的特点，是一种能让自己获益、也能促进合作的、可持续的生存策略。\n\n来源：科学新闻；作者：Matthew Hutson；原文发布时间：2025-08-04 20:00:00",
+  "status" : "ENABLED",
+  "publishedDate" : null,
+  "paragraphs" : [ {
+    "sortOrder" : 1,
+    "contentEn" : "Some sci-fi scenarios depict robots as cold-hearted clankers eager to manipulate human stooges. But that’s not the only possible path for artificial intelligence. Humans have evolved emotions like anger, sadness and gratitude to help us think, interact and build mutual trust. Advanced AI could do the same. In populations of simple software agents (like characters in “The Sims” but much, much simpler), having “guilt” can be a stable strategy that benefits them and increases cooperation, researchers report July 30 in Journal of the Royal Society Interface.",
+    "contentZh" : "某些科幻作品常将机器人描绘成冷酷无情的机械造物，一心只想操控人类傀儡。但人工智能的发展未必只能走这条路。人类之所以进化出愤怒、悲伤、感恩等情绪，是为了帮助我们思考、交流，并建立彼此间的信任。先进的人工智能或许也能拥有类似的能力。研究人员在7月30日发表于《皇家学会界面杂志》的报告中指出，在一类简易软件智能体（类似《模拟人生》中的角色，但更为简化）组成的群体中，表现出“内疚”的特点，是一种能让自己获益、也能促进合作的、可持续的生存策略。"
+  }, {
+    "sortOrder" : 2,
+    "contentEn" : "Emotions are not just subjective feelings but bundles of cognitive biases, physiological responses and behavioral tendencies. When we harm someone, we often feel compelled to pay a penance, perhaps as a signal to others that we won’t offend again. This drive for self-punishment can be called guilt, and it’s how the researchers programmed it into their agents. The question was whether those that had it would be outcompeted by those that didn’t, say Theodor Cimpeanu, a computer scientist at the University of Stirling in Scotland, and colleagues.",
+    "contentZh" : "情绪不仅是主观感受，更是由认知偏差、生理反应和行为倾向构成的复合机制。当我们伤害了他人时，往往会产生一种必须补偿的冲动，这或许是在向外界传递“我们不再重犯”的信号。这种自我惩罚的驱动力被定义为“内疚感”，并据此将内疚机制植入了智能体的程序中。苏格兰斯特灵大学的计算机科学家西奥多·辛佩努及其同事表示，他们想探究的问题是，在竞争环境中，具备内疚机制的智能体是否会被那些不具备这一机制的智能体所淘汰。"
+  }, {
+    "sortOrder" : 3,
+    "contentEn" : "The agents played a two-player game with their neighbors called iterated prisoner’s dilemma. The game has roots in game theory, a mathematical framework for analyzing multiple decision makers’ choices based on their preferences and individual strategies. On each turn, each player “cooperates” (plays nice) or “defects” (acts selfishly). In the short term, you win the most points by defecting, but that tends to make your partner start defecting, so everyone is better off cooperating in the long run. The AI agents couldn’t feel guilt as richly as humans do but experienced it as a self-imposed penalty that nudges them to cooperate after selfish behavior.",
+    "contentZh" : "在实验中，这些智能体会与周围相邻的智能体进行一种名为“重复囚徒困境”的双人游戏。这款游戏的理论基础来自博弈论——一个用于分析多个决策者如何根据自身偏好和策略做出选择的数学框架。每轮游戏中，玩家可以选择“合作”（采取友好行为）或“背叛”（追求自身利益）。从短期来看，选择“背叛”有可能获得更高分数，但这样做往往也会导致对方选择背叛；相比之下，长期维持合作才更有利于双方。这些人工智能智能体并不具备人类那种复杂的内疚情感，它们所具备的“内疚感”被设计成一种自我施加的惩罚机制：在自私行为发生后促使它们回归合作。"
+  }, {
+    "sortOrder" : 4,
+    "contentEn" : "The researchers ran several simulations with different settings and social network structures. In each, the 900 players were each assigned one of six strategies defining their tendency to defect and to feel and respond to guilt. In one strategy, nicknamed DGCS for technical reasons, the agent felt guilt after defecting, meaning that it gave up points until it cooperated again.",
+    "contentZh" : "研究人员在不同的参数设定和社交网络结构下进行了多轮模拟实验。每次实验中，900个智能体玩家分别被分配六种策略之一，这些策略决定了它们在游戏中的背叛倾向、内疚感受能力、对内疚的反应模式。其中一种因技术原因而被命名为“DGCS”的策略规定，智能体在选择背离行为后会启动“内疚机制”，表现为持续放弃得分，直到它们重新选择合作为止。"
+  }, {
+    "sortOrder" : 5,
+    "contentEn" : "Critically, the AI agent felt guilt (lost points) only if it received information that its partner was also paying a guilt price after defecting. This prevented the agent from being a patsy, thus enforcing cooperation in others. (In the real world, seeing guilt in others can be tricky, but costly apologies are a good sign.)",
+    "contentZh" : "但关键机制在于，只有当人工智能智能体获知其合作者在做出背叛选择之后也因“内疚”而付出了代价时，才会启动自身的“内疚机制”（即主动损失积分）。这一设定避免了智能体在合作中单方面让步，从而有助于推动他人也做出合作行为。（在现实生活中，人类并不总能清晰感知他人的内疚情绪，但那些需要付出实际代价的道歉通常是一个可靠的信号。）"
+  }, {
+    "sortOrder" : 6,
+    "contentEn" : "The simulations didn’t model how guiltlike behavior might first emerge — only whether it could survive and spread once introduced. After each turn, agents could copy a neighbor’s strategy, with a probability of imitation based on neighbors’ cumulative score. In many scenarios — particularly when guilt was relatively low-cost and agents interacted with only their neighbors — DGCS became the dominant strategy, and most interactions became cooperative, the researchers found.",
+    "contentZh" : "这些模拟实验并没有探讨类“内疚”行为最初是如何产生的——而是聚焦于一旦这种机制被引入后，是否能够存续并逐渐扩散。在每一轮博弈结束后，智能体可以选择模仿其邻居的策略，模仿的概率取决于邻居的累计得分。研究人员发现，在很多模拟设定中——特别是设定内疚代价较低、且智能体仅与相邻个体互动的情况下——“DGCS”策略往往会成为主导，使大多数互动转向合作模式。"
+  }, {
+    "sortOrder" : 7,
+    "contentEn" : "We may want to program the capacity for guilt or other emotions into AIs. “Maybe it’s easier to trust when you have a feeling that the agent also thinks in the same way that you think,” Cimpeanu says. We may also witness emotions — at least the functional aspects, even if not the conscious ones — emerge on their own in groups of AIs if they can mutate or self-program, he says. As AIs proliferate, they could comprehend the cold logic to human warmth.",
+    "contentZh" : "未来，我们或许会有意将内疚或其他情绪机制编入人工智能系统。辛佩努表示：“当你感觉一个智能体的思考方式与你相似时，信任也许会更容易建立。”他还指出，如果人工智能具备变异或自我编程的能力，我们甚至可能看到情绪的自然涌现——即便不具备意识，至少具备情绪的功能性特征。随着人工智能的广泛应用，它们也许终将理解支撑人类温情的那套理性逻辑。"
+  }, {
+    "sortOrder" : 8,
+    "contentEn" : "But there are caveats, says Sarita Rosenstock, a philosopher at The University of Melbourne in Australia who was not involved in the work but has used game theory to study guilt’s evolution. First, simulations embody many assumptions, so one can’t draw strong conclusions from a single study. But this paper contributes “an exploration of the possibility space,” highlighting areas where guilt is and is not sustainable, she says.",
+    "contentZh" : "不过，澳大利亚墨尔本大学的哲学家萨里塔·罗森斯托克提出了一些需要注意的地方，虽然她并未参与该研究，但此前曾运用博弈论研究内疚感的演化。首先，模拟实验往往基于大量前提假设，因此无法仅凭一项研究就得出明确结论。但她认为，这项研究的意义在于“对可能性空间的探索”，帮明确界定了内疚机制可持续与不可持续的条件情景。"
+  }, {
+    "sortOrder" : 9,
+    "contentEn" : "Second, it’s hard to map simulations like these to the real world. What counts as a verifiable cost for an AI, besides paying actual money from a coffer? If you talk to a present-day chatbot, she says, “it’s basically free for it to say I’m sorry.” With no transparency into its innards, a misaligned AI might feign remorse, only to trespass again.",
+    "contentZh" : "其次，这类模拟实验要映射到现实世界，并不容易。对于人工智能来说，除了让它付出真金白银般的代价，还有什么能算是“可验证的代价”？罗森斯托克解释说，和如今的聊天机器人对话时，“它说一句对不起几乎是零成本的。”由于我们无法了解其内部运行机制，一个与人类意图不一致的人工智能或许会假装悔过，但实际上可能只是伺机再次越界。"
+  } ],
+  "vocabulary" : [ {
+    "word" : "scenario",
+    "phoneticUk" : "səˈnɑːriəʊ",
+    "phoneticUs" : "səˈnærioʊ",
+    "pos" : "n.",
+    "meaning" : "设想，可能发生的情况 ；（电影、戏剧等的）剧情梗概；（艺术或文学作品中的）场景",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "depict",
+    "phoneticUk" : "dɪˈpɪkt",
+    "phoneticUs" : "dɪˈpɪkt",
+    "pos" : "v.",
+    "meaning" : "描述，描绘",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "clanker",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "n.",
+    "meaning" : "发出叮当声的东西；<俚>（无关紧要的）谎言，小谎",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "stooge",
+    "phoneticUk" : "stuːdʒ",
+    "phoneticUs" : "stuːdʒ",
+    "pos" : "",
+    "meaning" : "n. 喜剧里的配角或丑角；助手；傀儡；密探\nvi. 充当配角；巡航",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "compel",
+    "phoneticUk" : "kəmˈpel",
+    "phoneticUs" : "kəmˈpel",
+    "pos" : "v.",
+    "meaning" : "强迫，迫使；使发生，促使；<文>驱赶",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "penance",
+    "phoneticUk" : "ˈpenəns",
+    "phoneticUs" : "ˈpenəns",
+    "pos" : "",
+    "meaning" : "n. 忏悔；苦修；苦差事\nv. 使忏悔；使苦修",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "mathematical",
+    "phoneticUk" : "ˌmæθəˈmætɪk(ə)l",
+    "phoneticUs" : "ˌmæθəˈmætɪk(ə)l",
+    "pos" : "adj.",
+    "meaning" : "有关数学的；具有数学头脑的；精确的，完整的；可能性极小的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "selfishly",
+    "phoneticUk" : "ˈselfɪʃli",
+    "phoneticUs" : "ˈselfɪʃli",
+    "pos" : "adv.",
+    "meaning" : "自私地",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "nudge",
+    "phoneticUk" : "nʌdʒ",
+    "phoneticUs" : "nʌdʒ",
+    "pos" : "",
+    "meaning" : "v. 用肘轻触（某人以引起注意）；轻推移动，推开；用胳膊肘挤开往前走；接近，靠近（某程度或数量）；劝说，鼓励\nn. （肘部的）轻推，碰；说服",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "nickname",
+    "phoneticUk" : "ˈnɪkneɪm",
+    "phoneticUs" : "ˈnɪkneɪm",
+    "pos" : "",
+    "meaning" : "n. 绰号，外号\nv. 给……起绰号；叫错名字",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "patsy",
+    "phoneticUk" : "ˈpætsi",
+    "phoneticUs" : "ˈpætsi",
+    "pos" : "n.",
+    "meaning" : "懦夫（复数 patsies）；容易受骗的人",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "enforce",
+    "phoneticUk" : "ɪnˈfɔːs",
+    "phoneticUs" : "ɪnˈfɔːrs",
+    "pos" : "v.",
+    "meaning" : "实施，执行（法律、规章）；强迫，迫使；<旧>竭力使人接受（要求，论点）",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "tricky",
+    "phoneticUk" : "ˈtrɪki",
+    "phoneticUs" : "ˈtrɪki",
+    "pos" : "adj.",
+    "meaning" : "难对付的，棘手的；狡猾的，诡计多端的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "imitation",
+    "phoneticUk" : "ˌɪmɪˈteɪʃn",
+    "phoneticUs" : "ˌɪmɪˈteɪʃn",
+    "pos" : "",
+    "meaning" : "n. 模仿，仿效；滑稽模仿；仿制品，赝品；乐句重复\nadj. 人造的，仿制的，伪造的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "conscious",
+    "phoneticUk" : "ˈkɒnʃəs",
+    "phoneticUs" : "ˈkɑːnʃəs",
+    "pos" : "adj.",
+    "meaning" : "意识到的；神志清醒的，有知觉的；关注的；刻意的，慎重的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "on one's own",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "adv.",
+    "meaning" : "独立地，自己一个人地：指某人独自、独立地完成某事，没有他人的帮助或陪伴",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "mutate",
+    "phoneticUk" : "mjuːˈteɪt",
+    "phoneticUs" : "ˈmjuːteɪt",
+    "pos" : "",
+    "meaning" : "vi. 变化，产生突变\nvt. 改变，使突变",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "proliferate",
+    "phoneticUk" : "prəˈlɪfəreɪt",
+    "phoneticUs" : "prəˈlɪfəreɪt",
+    "pos" : "v.",
+    "meaning" : "<正式>（在数或量上）激增，猛增；使（细胞、组织、结构等）增生，速生",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "caveat",
+    "phoneticUk" : "ˈkæviæt",
+    "phoneticUs" : "ˈkæviæt",
+    "pos" : "n.",
+    "meaning" : "<正式>警告，限制性条款；<法律>预告登记（尤指遗嘱检验中，非告知本人而不得进行某行为的通知）",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "embody",
+    "phoneticUk" : "ɪmˈbɒdi",
+    "phoneticUs" : "",
+    "pos" : "v.",
+    "meaning" : "具体表现，体现；收录，包括；<古>（尤指为军事目的）组织",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "verifiable",
+    "phoneticUk" : "ˈverɪfaɪəb(ə)l",
+    "phoneticUs" : "ˈverɪfaɪəb(ə)l",
+    "pos" : "adj.",
+    "meaning" : "可证实的，可核实的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "coffer",
+    "phoneticUk" : "ˈkɒfə(r)",
+    "phoneticUs" : "ˈkɔːfər",
+    "pos" : "",
+    "meaning" : "n. 围堰；保险箱；金库；资金\nvt. 把……放进箱柜；用平顶镶板装饰",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "innards",
+    "phoneticUk" : "ˈɪnədz",
+    "phoneticUs" : "ˈɪnərdz",
+    "pos" : "n.",
+    "meaning" : "内脏；内部结构",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "feign",
+    "phoneticUk" : "feɪn",
+    "phoneticUs" : "feɪn",
+    "pos" : "",
+    "meaning" : "vt. 假装；装作；捏造；想象\nvi. 假装；装作；作假；佯作",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "remorse",
+    "phoneticUk" : "rɪˈmɔːs",
+    "phoneticUs" : "rɪˈmɔːrs",
+    "pos" : "n.",
+    "meaning" : "懊悔，自责",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "trespass",
+    "phoneticUk" : "ˈtrespəs",
+    "phoneticUs" : "ˈtrespæs",
+    "pos" : "",
+    "meaning" : "v. 擅自进入，侵入（他人土地或建筑物）；<古>伤害，冒犯；不公正地对待；干涉，插手\nn. 擅闯私地，非法进入；<旧>罪过",
+    "example" : "",
+    "exampleZh" : ""
+  } ],
+  "expressions" : [ {
+    "expression" : "Some …… scenarios depict …… as ……. But that’s not the only possible path for ……",
+    "meaning" : "一些……场景将……描绘成……。但这并非……唯一可能的发展路径。",
+    "example" : "Some parenting guides depict strict discipline as the key to raising successful children. But that’s not the only possible path for child development.",
+    "exampleZh" : "一些育儿指南将严格管教视为培养成功孩子的关键，但儿童成长的路径远不止这一种。"
+  } ],
+  "keySentences" : [ {
+    "sentence" : "Some …… scenarios depict …… as ……. But that’s not the only possible path for ……",
+    "translation" : "一些……场景将……描绘成……。但这并非……唯一可能的发展路径。",
+    "analysis" : "写作积累句型\n例句：Some parenting guides depict strict discipline as the key to raising successful children. But that’s not the only possible path for child development.\n翻译：一些育儿指南将严格管教视为培养成功孩子的关键，但儿童成长的路径远不止这一种。"
+  } ]
+}

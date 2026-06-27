@@ -223,6 +223,10 @@ public class DailyArticleService {
                 .summary(article.getSummary())
                 .vocabulary(article.getVocabulary())
                 .expressions(article.getExpressions())
+                .difficultyStars(normalizeDifficultyStars(article.getDifficultyStars()))
+                .wordCount(normalizeWordCount(article.getWordCount()))
+                .sourceName(blankToNull(article.getSourceName()))
+                .keySentences(blankToNull(article.getKeySentences()))
                 .publishedDate(article.getPublishedDate())
                 .read(read)
                 .paragraphs(paragraphRepository.findByArticleIdOrderBySortOrderAscIdAsc(article.getId()).stream()
@@ -242,6 +246,20 @@ public class DailyArticleService {
 
     private String blankToNull(String value) {
         return isBlank(value) ? null : value.trim();
+    }
+
+    private Integer normalizeDifficultyStars(Integer value) {
+        if (value == null) {
+            return null;
+        }
+        return Math.max(1, Math.min(5, value));
+    }
+
+    private Integer normalizeWordCount(Integer value) {
+        if (value == null || value <= 0) {
+            return null;
+        }
+        return value;
     }
 
     private boolean isBlank(String value) {

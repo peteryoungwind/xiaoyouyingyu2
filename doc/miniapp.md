@@ -57,6 +57,8 @@ flowchart LR
 - 单词详情：`pages/wordDetail/index`
 - 每日外刊列表：`pages/dailyArticles/index`
 - 每日外刊详情：`pages/dailyArticleDetail/index`
+- 跟读精听列表：`pages/shadowingLessons/index`
+- 跟读精听详情：`pages/shadowingLessonDetail/index`
 - 口语热身主题列表：`pages/spokenWarmup/index`
 - 口语热身详情：`pages/spokenWarmupDetail/index`
 - 登录：`pages/login/index`
@@ -121,6 +123,7 @@ flowchart LR
 - 话题：列表、详情、标签、统计、日历。
 - 学习：主题详情、热身、词汇、表达、任务、点评。
 - 口语热身：主题详情、热身介绍、核心词汇、句型模板、地道表达、模拟任务、AI 点评、真实语音转文字。
+- 跟读精听：资源列表、详情、句级录音点评。
 - 会员：会员状态、联系方式、卡密兑换。
 - 单词练习：已发布单词本、单词本详情、下一词、单词详情、提交认识/模糊/不认识、进度。
 - 每日外刊：未读/已读列表、外刊详情并自动标记已读。
@@ -136,12 +139,14 @@ flowchart LR
 | 学习详情 | `pages/learningTopic/index` | AI 热身、词汇、表达、任务、回答点评 |
 | AI 对话准备 | `pages/aiDialogSetup/index` | 登录用户选择教学/练习模式、初级/进阶难度、系统主题或自定义主题 |
 | AI 对话 | `pages/aiDialogChat/index` | 当前页面内存中保持上下文，发送文字消息，播放 AI 音频，默认显示 AI 回复文字和教学点评，并支持手动隐藏文字 |
-| 单词本列表 | `pages/wordBooks/index` | 作为换词书/词书选择页，展示已发布单词本、词数和个人进度 |
-| 单词本详情 | `pages/wordBookDetail/index` | 单词练习总览页，展示当前词书、初级/进阶切换、今日复习/新词计划、进度和开始练习入口 |
+| 单词本列表 | `pages/wordBooks/index` | 作为换词书/词书选择页，按初级/进阶两块展示已发布单词本封面卡片、词数和个人进度 |
+| 单词本详情 | `pages/wordBookDetail/index` | 单词练习总览页，展示当前词书所属等级、今日复习/新词计划、进度和开始练习入口 |
 | 单词练习 | `pages/wordPractice/index` | 两段式练习：回忆态先展示英文单词和发音，用户选择认识/模糊/不认识；模糊和不认识进入答后展开态展示释义、例句和句型；本轮结束后展示复盘和换词书入口 |
 | 单词详情 | `pages/wordDetail/index` | 使用与练习页一致的沉浸式渐变详情样式，展示释义、音标、词性、句型、例句、来源和发音入口 |
-| 每日外刊列表 | `pages/dailyArticles/index` | 未读/已读 tab、下拉刷新、触底分页、跳转详情 |
-| 每日外刊详情 | `pages/dailyArticleDetail/index` | 音频播放、英文段落、中文翻译开关、总结、重点词汇和表达句型 |
+| 每日外刊列表 | `pages/dailyArticles/index` | 未读/已读 tab、封面卡片、下拉刷新、触底分页、跳转详情 |
+| 每日外刊详情 | `pages/dailyArticleDetail/index` | 迷你播放器、逐段中英对照、总结、重点词汇、长难句解析和表达句型 |
+| 跟读精听列表 | `pages/shadowingLessons/index` | 未学习/已学习 tab、游客可浏览资源卡片、登录用户按学习记录筛选 |
+| 跟读精听详情 | `pages/shadowingLessonDetail/index` | 游客试看媒体和简介；登录用户查看完整连续学习流、逐句跟读、录音回放和 AI 点评 |
 | 口语热身列表 | `pages/spokenWarmup/index` | 登录用户搜索、标签筛选、日期筛选系统主题并进入口语热身 |
 | 口语热身详情 | `pages/spokenWarmupDetail/index` | 初级/进阶切换，按模块实时生成热身、词汇、句型、表达、任务，支持语音/文字回答和 AI 点评 |
 | 登录 | `pages/login/index` | 微信登录，调用 `wx.login` 后传 code 到后端 |
@@ -155,6 +160,14 @@ flowchart LR
 
 小程序首页提供“每日外刊”入口；学习中心顶部不再展示独立入口卡片。
 
+## 跟读精听展示规则
+
+跟读精听列表页和详情页直接消费后端 `/api/shadowing-lessons` 返回的展示字段：
+
+- 标题字段 `title`、`titleZh` 由后端移除 `Episode + 序号` 片段后返回，小程序不再额外拼接 episode 编号。
+- 来源字段 `sourceName` 为通用导入标记 `Lingohow`、栏目字段 `category` 为通用栏目名 `300期油管地道口语` 时，后端返回空值，避免列表页和详情页展示这些导入来源标记。
+- 小程序副标题继续按 `sourceName -> category -> title` 兜底展示；主题标签继续按 `topic -> category -> 原声素材` 兜底展示。
+
 ## 首页学习入口
 
 小程序首页 `pages/home/index` 的学习入口采用一行四列 icon 排列，图标为浅色底、低饱和线性符号，延续当前 iOS / Apple 风格首页视觉：
@@ -162,9 +175,9 @@ flowchart LR
 - 单词练习：未登录跳转登录；已登录时按最近词书缓存进入单词练习页或词书选择页。
 - AI 对话：跳转 `pages/aiDialogSetup/index`。
 - 每日外刊：跳转 `pages/dailyArticles/index`。
-- 口语热身：直接切换到底部 `pages/learning/index` 学习 tab。
+- 跟读精听：直接进入 `pages/shadowingLessons/index`。
 
-单词练习、AI 对话、每日外刊在未登录时仍统一跳转登录页；口语热身入口直接切换到学习 tab，由学习页承接登录或会员状态展示。
+单词练习、AI 对话、每日外刊在未登录时仍统一跳转登录页；跟读精听入口对游客开放，未登录用户可进入列表和试看详情，完整学习内容由详情页登录引导承接。
 
 单词练习入口使用本地最近词书缓存：
 
@@ -175,7 +188,7 @@ flowchart LR
 
 权限：
 
-- 未登录点击“口语热身”会直接进入学习 tab，并由学习页展示登录引导。
+- 未登录点击“跟读精听”会进入跟读精听列表页，不触发会员购买流程。
 - 已登录用户可使用每日外刊，不限制会员状态。
 
 ## 单词练习流程
@@ -184,14 +197,17 @@ flowchart LR
 
 词书选择页：
 
-- 用户点击任一词书后会保存该词书为最近词书，并以初级难度直接进入单词练习页。
+- 页面分为“初级词书”和“进阶词书”两个分区，单词本以两列卡片展示。
+- 每张卡片包含封面色块、词书名称、词数和个人学习状态。
+- 一个单词本只能属于一个等级，由后端 `word_books.level` 返回；小程序按该字段分组。
+- 用户点击任一词书后会保存该词书和所属等级为最近词书，并直接进入对应等级的单词练习页。
 - 该页面主要用于首次选择词书或从练习页主动换词书，不再强制经过练习总览页。
 
 练习总览页：
 
-- 顶部展示当前词书和难度。
+- 顶部展示当前词书和所属等级。
 - 主卡片展示当前词书名称、描述、学习进度和“开始今日练习”按钮。
-- 支持初级/进阶切换。
+- 不再支持在同一个词书内切换初级/进阶；如需切换等级，应返回词书选择页选择另一本词书。
 - 支持“换词书”返回词书选择。
 - 今日计划分为“先复习到期词”和“再学习新词”，数据来自单词本进度接口。
 - 当前保留为可访问页面，但不再作为单词练习模块的默认进入路径。
@@ -209,16 +225,22 @@ flowchart LR
 - 默认请求未读外刊。
 - 支持未读/已读 tab 切换。
 - 支持下拉刷新和触底分页。
-- 展示英文标题、中文标题和更新日期。
+- 列表卡片展示左侧封面、英文标题、中文标题和进入箭头。
+- 卡片不展示时间/日期标签；封面由小程序基于标题本地生成，不依赖后端封面字段。
 - 点击列表项进入 `pages/dailyArticleDetail/index?id=<articleId>`。
 
 详情页 `pages/dailyArticleDetail/index`：
 
 - 调用详情接口后，后端自动把当前用户标记为已读。
-- 顶部展示发布日期、英文标题、中文标题、播放音频按钮和中文翻译开关。
-- 正文按段落展示英文；开启中文翻译后，在英文段落下方展示对应中文。
-- 文章总结、重点词汇和表达句型为空时不展示。
-- `vocabulary` 和 `expressions` 是 JSON 字符串，页面会解析失败兜底为空列表。
+- 顶部展示发布日期、英文标题、中文标题、难度星级、词数和来源；缺字段时隐藏对应项。
+- 音频使用页面内 `wx.createInnerAudioContext()` 迷你播放器，支持播放/暂停、当前时间、总时长、进度拖动和 `0.75 / 1 / 1.25 / 1.5 / 2` 倍速。
+- 无 `audioUrl` 时展示「暂无音频」禁用态；音频加载失败 toast「音频播放失败」并回到可重试状态。
+- 页面 `onHide` / `onUnload` 会停止并销毁音频实例，避免后台续播。
+- 正文默认只展示英文；每段可单独展开/收起中文翻译，顶部支持一键显示全部中文/隐藏全部中文。
+- 文章总结、重点词汇、长难句解析和表达句型为空时不展示。
+- `vocabulary`、`expressions`、`keySentences` 是 JSON 字符串，页面会解析失败兜底为空列表。
+- 重点词汇支持 `word / phoneticUk / phoneticUs / pos / meaning / example / exampleZh`，并兼容旧字段 `zh`、`exampleEn`。
+- 长难句解析支持 `sentence / translation / analysis`，按素材顺序渲染。
 
 接口：
 
@@ -228,8 +250,16 @@ flowchart LR
 
 音频：
 
-- 音频 URL 可能是 `/uploads/daily-articles/...` 站点相对路径。
-- 页面复用 `utils/audio.js`，播放前会用当前环境 API 地址去掉 `/api` 后补全为静态资源 URL。
+- 音频 URL 可以是完整外部 URL，也可以是 `/uploads/daily-articles/...` 站点相对路径。
+- 详情页通过 `utils/audio.resolveAudioUrl()` 解析 URL 后交给 `InnerAudioContext`，完整外部 URL 原样播放，站点相对路径会按当前环境 API 地址补全为静态资源 URL。
+
+素材导入：
+
+- 单篇精读素材模板：`doc/generated/daily-article-intensive-reading.template.json`。
+- 导入脚本：`scripts/import_daily_article_intensive_reading.java`。
+- 微信公众号 Markdown 批量导入脚本：`scripts/import_daily_articles_from_weixin_md.java`，转换输出目录为 `doc/generated/daily-articles-intensive-reading-batch`。
+- 素材应包含标题、音频 URL、正文段落中英对照、总结、重点词汇、表达句型和长难句解析；`status` 默认建议为 `ENABLED`，`publishedDate` 为空时由每日推送任务选取。
+- 若原始 Markdown 不包含音频直链，素材仍可导入；小程序详情页会展示「暂无音频」。
 
 ## 组件说明
 
@@ -290,16 +320,51 @@ sequenceDiagram
 - 用户输入回答。
 - 调用 AI 点评。
 
-接口需要会员权限。若后端返回无权限，小程序应引导登录、兑换或开通会员。
+接口需要会员权限。页面进入和生成内容前会先检查本地登录态和会员态，并在接口返回时区分处理：
+
+- 未登录或 token 失效：后端返回 401，小程序清除本地登录态，提示重新登录。
+- 已登录但无会员权限：后端返回 403，小程序保留登录态，展示会员开通/卡密兑换引导。
+- 学习详情页不再在 `/learning/topic/{id}` 返回 401 或 403 时回退到公开主题详情，避免用户看到主题内容后误以为学习生成权限也可用。
+
+## 跟读精听流程
+
+小程序首页和学习页提供“跟读精听”入口，替换原对用户暴露的“口语热身”入口；旧 `pages/spokenWarmup` 和 `pages/spokenWarmupDetail` 代码保留，内部功能逻辑不改。
+
+列表页 `pages/shadowingLessons/index`：
+
+- 默认请求未学习资源：`GET /api/shadowing-lessons?learned=false&page=0&size=10`。
+- 支持未学习/已学习 tab；游客切换已学习时接口返回空列表。
+- 卡片展示封面、标题、栏目/主题、日期、句子数、表达数和学习状态。
+- 支持下拉刷新、触底分页、加载失败重试和空状态。
+
+详情页 `pages/shadowingLessonDetail/index`：
+
+- 调用 `GET /api/shadowing-lessons/{id}`。
+- 游客只展示视频/音频、标题、简介和登录引导，不渲染完整原文、逐句跟读、表达或翻译练习。
+- 登录用户打开详情后，后端自动写入学习记录；资源会从未学习列表移动到已学习列表。
+- 页面采用媒体区 + 连续学习流：对照原文、逐句跟读、地道表达、中文翻译练习；不再展示单独的“先听一遍”模块。
+- 视频和音频独立播放；逐句播放优先按当前媒体模式定位视频或音频时间段。
+- 逐句跟读使用 `wx.getRecorderManager()` 录音，录完后保存本地临时文件，可在当前页面回放。
+- 点击点评上传本次录音到 `POST /api/shadowing-lessons/{id}/sentences/{sentenceIndex}/review`，后端完成 ASR + AI 综合评分后返回点评抽屉数据。
+- 最后一段“根据中文自己翻译”默认展示可编辑英文输入框，输入框下方提供“切换为语音输入”按钮；语音上传到 `POST /api/shadowing-lessons/speech-to-text` 识别成功后回填输入框。底部只保留“查看参考英文”和“AI点评”两个操作按钮并同一行展示。
+- 录音只作为本次上传临时文件使用，小程序不长期保存；后端也不保存长期录音 URL。
+
+接口：
+
+- `GET /api/shadowing-lessons?learned=false&page=0&size=10`：跟读精听列表。
+- `GET /api/shadowing-lessons/{id}`：详情；游客返回试看数据，登录用户返回完整内容并标记已学习。
+- `POST /api/shadowing-lessons/{id}/sentences/{sentenceIndex}/review`：上传 `audioFile`、`referenceText`、`durationMs` 获取句级点评。
+- `POST /api/shadowing-lessons/speech-to-text`：上传翻译练习录音并返回识别文本。
+- `POST /api/shadowing-lessons/{id}/translation-review`：提交英文翻译文本并返回 AI 点评与改进。
 
 ## 口语热身流程
 
-小程序首页提供“口语热身”入口，替换原“听力练习”占位入口；当前入口会直接切换到学习 tab 页面。
+口语热身页面和接口继续保留，作为历史功能代码；当前首页和学习页不再对用户展示“口语热身”入口，入口已替换为“跟读精听”。
 
 权限：
 
 - 未登录点击入口进入学习 tab，由学习页展示登录引导。
-- 原口语热身列表和详情页面保留；首页“口语热身”入口不再直达列表页，而是进入学习 tab。
+- 原口语热身列表和详情页面保留；本次只替换用户入口，不改口语热身详情页内部生成、录音识别和 AI 点评逻辑。
 
 列表页 `pages/spokenWarmup/index`：
 
@@ -359,8 +424,8 @@ sequenceDiagram
 2. 已登录用户进入 `pages/wordBooks/index` 后，可访问 `/api/word-practice/**` 接口。
 3. 单词练习仅要求登录，不限制会员状态。
 4. 登录用户可查看已发布单词本。
-5. 用户进入单词本详情后选择初级或进阶。
-6. 单词本详情页展示总词数、已学、待复习、已掌握和开始练习入口，保留初级/进阶切换，不展示学习规则说明或学习记录列表。
+5. 用户进入单词本选择页后，在“初级词书”或“进阶词书”分区选择一本词书。
+6. 单词本详情页展示总词数、已学、待复习、已掌握和开始练习入口，不再提供初级/进阶切换。
 7. 练习页调用 `/api/word-practice/books/{bookId}/next`，后端优先返回到期复习词，没有到期复习词时返回未学新词。
 8. 用户点击“认识”后提交 `KNOWN` 并进入下一词；点击“模糊”后提交 `FUZZY`，点击“不认识”后提交 `UNKNOWN`，并在当前单词下方直接展示释义、句型、例句、来源和发音入口。
 9. 用户也可进入单词详情页查看释义、句型、例句和带语音图标的“美式发音/英式发音”入口。
@@ -373,7 +438,7 @@ sequenceDiagram
 - 顶部突出英文单词大标题，音标与美式/英式发音入口合并为胶囊按钮。
 - 练习页和详情页的英文单词大标题使用偏强调但不过黑的字重，避免长词在移动端显得过粗。
 - 单词本列表、单词本详情、练习页和单词详情页去除解释型标题、副标题和兜底描述，仅保留页面主标题、核心数据、发音入口和操作按钮。
-- 单词本列表使用轻量白色卡片、扁平分段控件、低饱和进度信息块。
+- 单词本列表使用初级/进阶两块分区和封面卡片，卡片展示词书封面、名称、词数和学习状态。
 - 释义、例句、搭配/来源使用浅色内容卡片，不额外展示分区标题。
 - 练习页和详情页底部固定展示“认识 / 模糊 / 不认识”三段操作，分别提交 `KNOWN` / `FUZZY` / `UNKNOWN`。
 - 练习页答错或选择模糊/不认识后，会在单词卡下方展开释义、例句和来源信息，底部操作区保留主操作位置。

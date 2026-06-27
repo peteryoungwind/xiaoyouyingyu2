@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>05 状态页（加载 / 错误 / 无音频）</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <div class="stage multi">
+
+    <!-- 加载态 -->
+    <div class="phone">
+      <div class="screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="status-icons"><span class="signal"></span><span class="wifi"></span><span class="battery"></span></span>
+        </div>
+        <div class="app-page">
+          <div class="nav-row">
+            <span class="nav-btn">‹</span>
+            <span class="nav-title">外刊精读</span>
+            <span class="nav-btn ghost">中</span>
+          </div>
+          <div class="state-tag">加载态</div>
+          <div class="loading-wrap">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">加载中...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 错误态 -->
+    <div class="phone">
+      <div class="screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="status-icons"><span class="signal"></span><span class="wifi"></span><span class="battery"></span></span>
+        </div>
+        <div class="app-page">
+          <div class="nav-row">
+            <span class="nav-btn">‹</span>
+            <span class="nav-title">外刊精读</span>
+            <span class="nav-btn ghost">中</span>
+          </div>
+          <div class="state-tag">错误态</div>
+          <div class="empty-box error">
+            <div class="empty-icon error">!</div>
+            <h2 class="empty-title">外刊不存在</h2>
+            <p class="empty-desc">内容加载失败，请检查网络后重试。</p>
+            <button class="primary-btn retry">重试</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 无音频降级态 -->
+    <div class="phone">
+      <div class="screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="status-icons"><span class="signal"></span><span class="wifi"></span><span class="battery"></span></span>
+        </div>
+        <div class="app-page">
+          <div class="nav-row">
+            <span class="nav-btn">‹</span>
+            <span class="nav-title">外刊精读</span>
+            <span class="nav-btn ghost">中</span>
+          </div>
+          <div class="state-tag">无音频降级态</div>
+
+          <div class="article-hero plain">
+            <div class="meta-bar">
+              <span class="stars"><i>★</i><i>★</i><i class="star-dim">★</i></span>
+              <span class="meta-sep">·</span>
+              <span class="meta-item">412 词</span>
+            </div>
+            <h1 class="detail-title">A Quiet Shift in Reading Habits</h1>
+            <p class="detail-title-zh">阅读习惯的悄然改变</p>
+          </div>
+
+          <div class="mini-player player-disabled">
+            <div class="player-top">
+              <span class="player-play">♪</span>
+              <div class="player-info">
+                <span class="player-label">暂无音频</span>
+                <div class="player-bar"><span class="player-fill" style="width:0"></span></div>
+                <span class="player-time">本篇外刊未提供音频</span>
+              </div>
+            </div>
+          </div>
+
+          <section class="content-card">
+            <div class="paragraph">
+              <p class="paragraph-en">Reading on paper is making a quiet comeback among younger people who want fewer screens in their day.</p>
+              <button class="para-toggle">查看翻译</button>
+            </div>
+          </section>
+          <div class="note-strip subtle">无 audioUrl 时播放器降级为禁用占位，不报错；正文与其余模块照常渲染。</div>
+          <div class="bottom-safe"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

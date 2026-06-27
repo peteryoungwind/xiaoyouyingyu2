@@ -1,4 +1,7 @@
 {
   "navigationBarTitleText": "主题学习",
-  "enablePullDownRefresh": false
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "membership-modal": "../../components/membership-modal/index"
+  }
 }

@@ -1,0 +1,168 @@
+{
+  "title" : "TikTok Has Been Completely Taken Over by AI Slop",
+  "titleZh" : "互联网正在进入“真假难辨”时代",
+  "audioUrl" : "https://res.wx.qq.com/voice/getvoice?mediaid=MzU3MTAwNTY5Ml8yMjQ3NDk3MjQz",
+  "difficultyStars" : 3,
+  "wordCount" : 453,
+  "sourceName" : "Futurism",
+  "summary" : "如今，人们在社交媒体上几乎已经无法避开AI垃圾内容（AI slop），各大平台充斥着廉价劣质、时而令人不寒而栗的AI生成视频，人类创作者的作品正被这些内容所淹没。即便是作为竖屏短视频标杆的TikTok也未能幸免。总部位于旧金山的视频编辑公司Kapwing发布的最新报告显示，在TikTok算法驱动的“For You（为你推荐）”页面中，推送给新用户的视频里有近六成是这类AI垃圾内容——这一比例是YouTube推送给新用户的三倍。\n\n来源：Futurism；作者：Victor Tangermann；原文发布时间：2026-06-23 19:59:00",
+  "status" : "ENABLED",
+  "publishedDate" : null,
+  "paragraphs" : [ {
+    "sortOrder" : 1,
+    "contentEn" : "AI slop has become practically inescapable on social media, with low-rent and at-times terrifying AI-generated videos drowning out human creators across platforms. Even the vertical video darling TikTok has fallen victim. According to a new report by San Francisco-based video editing company Kapwing, almost 60 percent of videos being served to new users on the app’s algorithmic “For You” page is now AI slop — three times as much as is served to new YouTube users.",
+    "contentZh" : "如今，人们在社交媒体上几乎已经无法避开AI垃圾内容（AI slop），各大平台充斥着廉价劣质、时而令人不寒而栗的AI生成视频，人类创作者的作品正被这些内容所淹没。即便是作为竖屏短视频标杆的TikTok也未能幸免。总部位于旧金山的视频编辑公司Kapwing发布的最新报告显示，在TikTok算法驱动的“For You（为你推荐）”页面中，推送给新用户的视频里有近六成是这类AI垃圾内容——这一比例是YouTube推送给新用户的三倍。"
+  }, {
+    "sortOrder" : 2,
+    "contentEn" : "It’s particularly worrisome for the platform’s youngest users: Kapwing found that the “category with the highest slop density by far was Kids.” The hashtag #cartoonkids was “almost entirely made up of slop, with only three of the 100 videos we checked being human-made,” according to the company. Worse yet, once an account indicates to the algorithm it’s interested in AI, the feed quickly doubles down, serving even more slop.",
+    "contentZh" : "这一现象对平台上的低龄用户来说尤其令人担忧：Kapwing发现，“当前AI垃圾内容密度最高的类别绝对是儿童板块。”该公司指出，#cartoonkids（卡通儿童）标签下的视频“几乎全部由AI垃圾内容构成，在我们抽查的100条视频中，只有3条是由真人制作的”。更糟的是，一旦某个账号向算法表露出对AI内容的兴趣，推荐流就会迅速加倍强化这一倾向，向其推送更多垃圾内容。"
+  }, {
+    "sortOrder" : 3,
+    "contentEn" : "The findings are a pertinent reminder of just how big of a problem AI slop has become. Young, impressionable minds are being exposed to a slurry of half-baked and brain-melting AI material that could endanger their brain development, experts warn. Meanwhile, photorealistic deepfakes are facilitating the spread of misinformation and political propaganda.",
+    "contentZh" : "这些调查结果切中要害地提醒我们，AI垃圾内容已经演变成何等严重的问题。专家警告称，心智尚未成熟的低龄群体正暴露在大量粗制滥造、荼毒心智的AI内容之中，这可能危及他们的大脑发育。与此同时，以假乱真的深度伪造内容（deepfakes）也正在为虚假信息和政治宣传的传播提供便利。"
+  }, {
+    "sortOrder" : 4,
+    "contentEn" : "TikTok is far from the only platform being consumed. Meta’s Facebook and Instagram have also turned into a largely unrecognizable wasteland, with users — and likely bots — interacting with absurd images of impoverished children begging on the street without arms, or videos of humanoid cats unintentionally killing their offspring in a meat grinder.",
+    "contentZh" : "被AI垃圾内容侵蚀的绝不仅是TikTok一家。Meta旗下的Facebook和Instagram也已变得面目全非，几乎沦为内容荒原，平台用户——很可能还有机器人账号——正与各种荒诞的内容互动，比如无臂贫困儿童在街头乞讨的图片，或是拟人化猫咪无意间将自己的幼崽卷进绞肉机的视频。"
+  }, {
+    "sortOrder" : 5,
+    "contentEn" : "In an effort to get a hold of the problem, TikTok announced in November that it would allow users to either dial up or down the amount of AI-generated content on their feeds. “We know from our community that many people enjoy content made with AI tools, from digital art to science explainers, and we want to give people the power to see more or less of that, based on their own preferences,” TikTok’s European director of public policy for safety and privacy Jade Nester told The Guardian at the time.",
+    "contentZh" : "为遏制这一乱象，TikTok于去年11月宣布，将允许用户自行调高或调低推荐流中AI生成内容的比例。TikTok欧洲区安全与隐私公共政策总监杰德·内斯特当时在接受《卫报》采访时表示：“我们从社区了解到，许多用户喜欢借助AI工具创作的内容，无论是数字艺术还是科普解说，所以我们想让用户能够根据自己的偏好，自主决定看到更多还是更少这类内容。”"
+  }, {
+    "sortOrder" : 6,
+    "contentEn" : "YouTube also recently announced that it was making changes to how it would start labeling AI-generated content in a broader effort to tamp down on AI slop, but stopped short of changing “how a video is recommended or whether it’s eligible to earn money.” It’s not clear what an easy fix would be. The tech has progressed to the point where discerning between reality and slop has become increasingly difficult; as the New York Times reported over the weekend, even Hany Farid, the “world’s leading deepfake expert,” has “stopped trusting his own eyes.”",
+    "contentZh" : "作为更大范围整治AI垃圾内容的举措，YouTube近期也宣布，将对其即将实施的AI生成内容标注方式进行调整，但并未触及“视频如何被推荐或是否有资格获取收益”的机制。目前尚不清楚是否存在简单的解决办法。技术已经发展到让人越来越难以分辨真实内容与AI垃圾内容的地步；正如《纽约时报》上周末所报道的，就连“全球顶尖深度伪造专家”哈尼·法里德，如今也已“不再相信自己的眼睛”。"
+  } ],
+  "vocabulary" : [ {
+    "word" : "inescapable",
+    "phoneticUk" : "ˌɪnɪˈskeɪpəbl",
+    "phoneticUs" : "ˌɪnɪˈskeɪpəb(ə)l",
+    "pos" : "adj.",
+    "meaning" : "不可避免的；逃脱不了的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "algorithmic",
+    "phoneticUk" : "ˈælɡəˌrɪðəmɪk",
+    "phoneticUs" : "ˌælɡəˈrɪðəmɪk",
+    "pos" : "adj.",
+    "meaning" : "[数] 算法的；规则系统的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "worrisome",
+    "phoneticUk" : "ˈwʌrisəm",
+    "phoneticUs" : "ˈwɜːrisəm",
+    "pos" : "adj.",
+    "meaning" : "令人担心的，使人发愁的，让人焦虑的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "hashtag",
+    "phoneticUk" : "ˈhæʃtæɡ",
+    "phoneticUs" : "ˈhæʃtæɡ",
+    "pos" : "n.",
+    "meaning" : "标签",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "pertinent",
+    "phoneticUk" : "ˈpɜːtɪnənt",
+    "phoneticUs" : "ˈpɜːrt(ə)nənt",
+    "pos" : "adj.",
+    "meaning" : "切题的，相关的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "impressionable",
+    "phoneticUk" : "ɪmˈpreʃənəb(ə)l",
+    "phoneticUs" : "ɪmˈpreʃənəb(ə)l",
+    "pos" : "adj.",
+    "meaning" : "敏感的；易受影响的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "half-baked",
+    "phoneticUk" : "ˌhɑːfˈbeɪkt",
+    "phoneticUs" : "ˌhæfˈbeɪkt",
+    "pos" : "adj.",
+    "meaning" : "（菜肴）半熟的；（计划、想法等）不完善的；（观点、理论）不成熟的；愚蠢的，肤浅的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "propaganda",
+    "phoneticUk" : "ˌprɒpəˈɡændə",
+    "phoneticUs" : "ˌprɑːpəˈɡændə",
+    "pos" : "n.",
+    "meaning" : "宣传，鼓吹；（罗马天主教的）传信部（Propaganda）",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "wasteland",
+    "phoneticUk" : "ˈweɪstlænd",
+    "phoneticUs" : "ˈweɪstlænd",
+    "pos" : "n.",
+    "meaning" : "荒地，不毛之地；未开垦地，荒漠；（精神或文化上的）贫乏",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "impoverished",
+    "phoneticUk" : "ɪmˈpɒvərɪʃt",
+    "phoneticUs" : "ɪmˈpɑːvərɪʃt",
+    "pos" : "adj.",
+    "meaning" : "贫困的，赤贫的；（品质）恶化的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "humanoid",
+    "phoneticUk" : "ˈhjuːmənɔɪd",
+    "phoneticUs" : "ˈhjuːmənɔɪd",
+    "pos" : "",
+    "meaning" : "adj. 像人的\nn. 类人动物",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "community",
+    "phoneticUk" : "kəˈmjuːnəti",
+    "phoneticUs" : "kəˈmjuːnəti",
+    "pos" : "n.",
+    "meaning" : "社区，社会；（由同国籍、同宗教等构成的）群体，界；（多个国家的）共同体；归属感；（动植物的）群落",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "tamp down on",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "1. 压制，抑制：采取措施来减少或限制某种行为或现象",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "stop short of",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "1. 不做某事或不说某事：决定不去做或说某事，尽管你几乎要做或说",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "discern",
+    "phoneticUk" : "dɪˈsɜːn",
+    "phoneticUs" : "dɪˈsɜːrn",
+    "pos" : "v.",
+    "meaning" : "（艰难地或努力地）看出，觉察出；了解，认识",
+    "example" : "",
+    "exampleZh" : ""
+  } ],
+  "expressions" : [ {
+    "expression" : "The findings are a pertinent reminder of just how big of a problem …… has become.",
+    "meaning" : "这些发现切中要害地提醒人们，……已经成为一个多么严重的问题。",
+    "example" : "The findings are a pertinent reminder of just how big of a problem social-media-induced anxiety has become among young people.",
+    "exampleZh" : "这些发现再次表明，由社交媒体引发的焦虑情绪正在年轻人群体中愈演愈烈。"
+  } ],
+  "keySentences" : [ {
+    "sentence" : "The findings are a pertinent reminder of just how big of a problem …… has become.",
+    "translation" : "这些发现切中要害地提醒人们，……已经成为一个多么严重的问题。",
+    "analysis" : "写作积累句型\n例句：The findings are a pertinent reminder of just how big of a problem social-media-induced anxiety has become among young people.\n翻译：这些发现再次表明，由社交媒体引发的焦虑情绪正在年轻人群体中愈演愈烈。"
+  } ]
+}

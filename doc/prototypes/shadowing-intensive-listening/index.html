@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>跟读精听原型索引</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="prototype-shell">
+    <header class="prototype-header">
+      <div>
+        <span class="prototype-kicker">小柚英语 · 微信小程序原型</span>
+        <h1 class="prototype-title">跟读精听</h1>
+        <p class="prototype-desc">
+          基于真实视频和音频素材的精听、逐句跟读、录音点评和地道表达学习模块。视觉延续现有小程序的 Apple 风格：浅灰背景、白色卡片、明亮蓝色主操作、轻量阴影和高圆角。
+        </p>
+      </div>
+      <aside class="review-card">
+        <h2 class="review-card-title">建议评审顺序</h2>
+        <ol class="review-list">
+          <li>先看未学习列表，确认入口和卡片密度。</li>
+          <li>再看游客详情，确认试看边界。</li>
+          <li>最后看完整详情和点评弹层，确认学习闭环。</li>
+        </ol>
+      </aside>
+    </header>
+
+    <section class="page-grid" aria-label="原型页面列表">
+      <a class="page-link" href="./pages/01-list-unlearned.html">
+        <div class="page-link-index">01</div>
+        <h2>未学习列表</h2>
+        <p>默认入口态，展示跟读精听模块头图、未学习/已学习 tab 和资源卡片。</p>
+      </a>
+      <a class="page-link" href="./pages/02-list-learned-empty.html">
+        <div class="page-link-index">02</div>
+        <h2>已学习空状态</h2>
+        <p>展示已学习 tab 的空状态，用于新用户或游客没有学习记录的情况。</p>
+      </a>
+      <a class="page-link" href="./pages/03-detail-guest.html">
+        <div class="page-link-index">03</div>
+        <h2>游客试看详情</h2>
+        <p>只展示媒体和简介，其余学习内容通过登录引导承接。</p>
+      </a>
+      <a class="page-link" href="./pages/04-detail-member.html">
+        <div class="page-link-index">04</div>
+        <h2>登录完整详情</h2>
+        <p>顶部媒体加分段学习卡片，包括精听挑战、对照原文、逐句跟读、表达和填空。</p>
+      </a>
+      <a class="page-link" href="./pages/05-review-result.html">
+        <div class="page-link-index">05</div>
+        <h2>AI 点评结果</h2>
+        <p>逐句录音后展示 ASR 识别、综合评分、发音/流利度/准确度和建议。</p>
+      </a>
+    </section>
+  </main>
+</body>
+</html>

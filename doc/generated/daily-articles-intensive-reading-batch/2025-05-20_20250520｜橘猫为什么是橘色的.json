@@ -1,0 +1,276 @@
+{
+  "title" : "Why are some cats orange? Stanford scientists solve century-old mystery",
+  "titleZh" : "橘猫为什么是橘色的",
+  "audioUrl" : "https://res.wx.qq.com/voice/getvoice?mediaid=MzU3MTAwNTY5Ml8yMjQ3NDkzOTkw",
+  "difficultyStars" : 3,
+  "wordCount" : 671,
+  "sourceName" : "旧金山纪事报",
+  "summary" : "橘猫之所以特别——不仅仅是因为它们那些广为人知的沙雕行为。更是因为它们在遗传学上长期被视为一个谜团。而如今，科学家们终于破解了猫的“毛色密码”。两项于本周四同步发表的研究精准锁定了导致猫拥有橘色毛发的关键基因。其中一项由斯坦福大学医学院及美国科研团队主导，另一项则由日本研究人员牵头完成。\n\n来源：旧金山纪事报；作者：Jack Lee；原文发布时间：2025-05-20 20:00:00",
+  "status" : "ENABLED",
+  "publishedDate" : null,
+  "paragraphs" : [ {
+    "sortOrder" : 1,
+    "contentEn" : "Orange cats are special — and not just because of notoriety for silly behavior. They have also been a longtime genetic enigma. Scientists have now cracked the cat color code. Two studies, published in tandem Thursday, pinpointed the gene responsible for orange cat fur. One study was led by Stanford University’s School of Medicine and scientists based in the United States; the second was led by researchers in Japan.",
+    "contentZh" : "橘猫之所以特别——不仅仅是因为它们那些广为人知的沙雕行为。更是因为它们在遗传学上长期被视为一个谜团。而如今，科学家们终于破解了猫的“毛色密码”。两项于本周四同步发表的研究精准锁定了导致猫拥有橘色毛发的关键基因。其中一项由斯坦福大学医学院及美国科研团队主导，另一项则由日本研究人员牵头完成。"
+  }, {
+    "sortOrder" : 2,
+    "contentEn" : "“Over the past hundred years or so, it was recognized that orange cats kind of fall outside of the genetic rules for how coat color in mammals is determined,” said author Christopher Kaelin, a geneticist at Stanford University’s School of Medicine. The investigation of felines’ orange coat color addresses broader questions about animal evolution and how gene regulation is encoded in the genome, Kaelin said.",
+    "contentZh" : "斯坦福大学医学院的遗传学家、该研究作者之一克里斯托弗·凯林表示：“在过去大约一百年里，科学界逐渐发现，橘猫的毛色似乎不完全符合哺乳动物毛色遗传的常规规律。”凯林认为，对猫科动物橘色毛色展开研究，也同样能帮助我们更好地理解动物进化过程以及基因如何在生物体的基因组中进行调控。"
+  }, {
+    "sortOrder" : 3,
+    "contentEn" : "Past studies pointed to the orange mutation as being on the X chromosome. By analyzing sequencing data, the American scientists further mapped the mutation to a DNA deletion near a gene called Arhgap36. In humans, increased expression of this gene has been implicated in brain tumors and endocrine cancer, according to the study.",
+    "contentZh" : "早期研究发现，导致猫咪呈现橘色毛发的基因突变位于X染色体上。美国研究团队通过分析基因测序数据，进一步将这一突变精确定位到一个靠近Arhgap36基因的DNA缺失区域。研究指出，在人类中，该基因表达水平的升高与脑肿瘤以及内分泌系统癌症的发生有所关联。"
+  }, {
+    "sortOrder" : 4,
+    "contentEn" : "The researchers found cats with the orange mutation expressed higher levels of RNA from the Arhgap36 gene, specifically in pigment cells. They propose that the protein produced by this gene limits a step in the middle of the biological pathway behind coat color. In male cats, who typically have one X chromosome, the orange mutation means more Arhgap36 protein in pigment cells and activation of a pathway to produce reddish yellow pigment. By contrast, in male cats without the mutation, and less Arhgap36, pigment cells produce a different pigment that’s black or brown.",
+    "contentZh" : "研究人员发现，携带橘色突变的猫，其色素细胞中Arhgap36基因的RNA表达水平更高。他们推测，该基因所编码的蛋白质在决定毛色的生物通路中，起到了抑制中间步骤的作用。对于通常只有一条X染色体的雄性猫来说，这一突变会导致其色素细胞中Arhgap36蛋白水平升高，从而激活生成红黄色素的生物通路。相比之下，在未携带该突变的雄性猫体内，由于Arhgap36蛋白水平较低，色素细胞则会合成如黑色或棕色等不同色素。"
+  }, {
+    "sortOrder" : 5,
+    "contentEn" : "This switch recapitulates a molecular pathway in humans, in cells that make pigment that causes red hair, said author Gregory Barsh, a geneticist at Stanford University’s School of Medicine and HudsonAlpha Institute for Biotechnology. Coat color is more complicated with female cats, who have two X chromosomes. A random process, known as X-chromosome inactivation, turns off one X chromosome in each cell. If a female cat has the orange mutation on just one X chromosome, this random inactivation results in a mixed tortoiseshell or calico pattern.",
+    "contentZh" : "斯坦福大学医学院及哈德逊阿尔法生物技术研究所的遗传学家、该研究作者之一格雷戈里·巴什指出，这一色素生成的转换机制，类似于人类体内作用于产生红发色素细胞的分子通路。而对于拥有两条X染色体雌性猫来说，其毛色的形成机制更为复杂。在每个细胞中，都会随机关闭其中一条X染色体，这一过程被称为“X染色体失活”。如果一只雌性猫仅在一条X染色体上携带橘色突变，那么这种随机的失活过程会导致其毛色呈现混合的玳瑁或三花的斑纹样式。"
+  }, {
+    "sortOrder" : 6,
+    "contentEn" : "Like the American team, the Japanese researchers identified Arhgap36 as the reason for orange cats’ coat color. They additionally confirmed that the gene experiences chemical modifications that indicate it undergoes X-chromosome inactivation. “The orange gene was a long-standing mystery for scientists,” said study author Hiroyuki Sasaki, a geneticist at Kyushu University’s Medical Institute of Bioregulation and Institute for Advanced Study, by email. “It is a great joy for me to have finally cracked it with my colleagues.”",
+    "contentZh" : "与美国团队的研究结果一致，日本研究人员也确认，Arhgap36是决定猫咪橘色毛发的关键基因。此外，他们还进一步证实，该基因发生了特定的化学修饰，表明它确实参与了X染色体失活过程。来自九州大学生物调控医学研究所及高等研究院的遗传学家、该研究作者之一佐佐木宏之在邮件中表示：“这个橘色基因长期以来一直是科学界未解之谜。如今能与同事们一起揭开它的真相，我感到无比欣喜。”"
+  }, {
+    "sortOrder" : 7,
+    "contentEn" : "The two studies were originally posted as preprints last year. The Japanese results were posted on Nov. 21, 2024; the American results were posted on Nov. 22, 2024. “It’s fantastic that not only one group, but two groups have published on this,” said Leslie Lyons, a feline geneticist at the University of Missouri College of Veterinary Medicine, who wasn’t involved with the new studies.",
+    "contentZh" : "这两项研究最初均于去年以预印本的形式对外公布。其中，日本团队的研究成果发表于2024年11月21日；美国团队则于2024年11月22日公布了相关结果。密苏里大学兽医学院的猫科遗传学家莱斯利·莱昂斯（未参与这两项新研究）表示：“不仅一个，而是两个研究团队能在这一课题上同时取得突破，实在令人振奋。”"
+  }, {
+    "sortOrder" : 8,
+    "contentEn" : "Lyons still wants to know more about how the genetic findings translate into the ginger hues of orange cats. One step could be quantifying how much reddish yellow pigment is produced, compared with other pigments. Another could be probing how much pigment is put into feline hairs. The U.S.-based researchers found the orange mutation specifically affected pigment cells, suggesting Arhgap36 isn’t involved in orange cats’ reputation for goofy behavior. Potentially, their friendly demeanors could just be a byproduct of orange cats typically being male. But there also could be linkage with some other genes, Lyons said.",
+    "contentZh" : "莱昂斯表示，她仍希望进一步了解，这些遗传发现究竟是如何转化为橘猫那种标志性的姜黄色。接下来的研究方向，可能包括量化红黄色素的实际生成量，并与其他色素进行对比。也可能探索这些色素在猫毛发中的沉积程度。美国研究团队的结果表明，橘色突变主要作用于色素细胞，这意味着Arhgap36基因与橘猫蠢萌行为的名声无关。至于它们普遍展现出的亲人性格，可能仅仅是因为橘猫大多为雄性的附带效应。不过，莱昂斯也指出，这背后也可能涉及与其他基因的遗传连锁。"
+  }, {
+    "sortOrder" : 9,
+    "contentEn" : "Scientists say orange cats’ personalities could be an area for future study. “There’s a lot of anecdotal stories about orange cats and behavior, or orange cats and appetite, but those aren’t well-documented in the scientific literature,” Kaelin said. “I do think there’s opportunities using citizen science approaches to make those types of associations.”",
+    "contentZh" : "科学家们认为，橘猫的性格特点或许是未来研究的新方向。凯林表示：“关于橘猫的行为习性或食欲特点，民间传说很多，但在科学文献中却很少有系统记录。不过我确实认为，未来可以借助公民科学的方式，来进一步探索这些潜在的关联。”"
+  } ],
+  "vocabulary" : [ {
+    "word" : "notoriety",
+    "phoneticUk" : "ˌnəʊtəˈraɪəti",
+    "phoneticUs" : "ˌnoʊtəˈraɪəti",
+    "pos" : "n.",
+    "meaning" : "臭名昭著，声名狼藉",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "enigma",
+    "phoneticUk" : "ɪˈnɪɡmə",
+    "phoneticUs" : "ɪˈnɪɡmə",
+    "pos" : "n.",
+    "meaning" : "谜，不可思议的东西",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "in tandem",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "1. 一前一后地；协力地",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "pinpoint",
+    "phoneticUk" : "ˈpɪnpɔɪnt",
+    "phoneticUs" : "ˈpɪnpɔɪnt",
+    "pos" : "",
+    "meaning" : "v. 精准确定（位置或时间）；准确解释，查明\nn. 极小的范围，光点；针尖\nadj. 准确的；极小的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "mammal",
+    "phoneticUk" : "ˈmæm(ə)l",
+    "phoneticUs" : "ˈmæm(ə)l",
+    "pos" : "n.",
+    "meaning" : "哺乳动物",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "felines",
+    "phoneticUk" : "ˈfiːlaɪn",
+    "phoneticUs" : "ˈfiːlaɪn",
+    "pos" : "",
+    "meaning" : "adj. 猫科的；猫一样的；狡猾的\nn. 猫科动物",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "encode",
+    "phoneticUk" : "ɪnˈkəʊd",
+    "phoneticUs" : "ɪnˈkoʊd",
+    "pos" : "v.",
+    "meaning" : "把……译成密码（或电码）；给（计算机程序）编码；用外语表达；（基因）对生成（某种物质或行为）负责，给……编码",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "mutation",
+    "phoneticUk" : "mjuːˈteɪʃn",
+    "phoneticUs" : "mjuːˈteɪʃ(ə)n",
+    "pos" : "n.",
+    "meaning" : "（动物或植物的）突变，变异；（基因结构突变产生的）突变体，突变型；（形式的）转变，改变；语流音变，变音",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "chromosome",
+    "phoneticUk" : "ˈkrəʊməsəʊm",
+    "phoneticUs" : "ˈkroʊməsoʊm",
+    "pos" : "n.",
+    "meaning" : "染色体",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "deletion",
+    "phoneticUk" : "dɪˈliːʃn",
+    "phoneticUs" : "dɪˈliːʃn",
+    "pos" : "n.",
+    "meaning" : "删除，删去的部分；（核酸分子或染色体的）缺失",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "tumor",
+    "phoneticUk" : "ˈtjuːmə(r)",
+    "phoneticUs" : "ˈtuːmər",
+    "pos" : "n.",
+    "meaning" : "肿瘤；肿块；赘生物",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "pigment",
+    "phoneticUk" : "ˈpɪɡmənt",
+    "phoneticUs" : "ˈpɪɡmənt",
+    "pos" : "",
+    "meaning" : "n. 色素；颜料\nv. 给……染色；呈现颜色",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "biological pathway",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "n.",
+    "meaning" : "生物通路：生物体内分子间相互作用的一系列化学反应，用于维持生命活动和完成生物学功能",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "recapitulate",
+    "phoneticUk" : "ˌriːkəˈpɪtʃuleɪt",
+    "phoneticUs" : "ˌriːkəˈpɪtʃuleɪt",
+    "pos" : "",
+    "meaning" : "vi. 概括；重述要点；摘要\nvt. 概括；重述要点；摘要",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "molecular",
+    "phoneticUk" : "məˈlekjələ(r)",
+    "phoneticUs" : "məˈlekjələr",
+    "pos" : "adj.",
+    "meaning" : "分子的，与分子有关的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "tortoiseshell",
+    "phoneticUk" : "ˈtɔːtəsʃel;ˈtɔːtəʃel",
+    "phoneticUs" : "ˈtɔːrtəsʃelˌˈtɔːrtəʃel",
+    "pos" : "",
+    "meaning" : "n. 龟甲；玳瑁壳；玳瑁色\nadj. 龟甲色的；龟甲状的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "chemical modification",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "n.",
+    "meaning" : "化学修饰：生物化学中的一种技术，通过使用试剂对蛋白质或核酸进行解剖反应",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "long-standing",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "adj.",
+    "meaning" : "长期存在的；存在已久的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "preprint",
+    "phoneticUk" : "ˈpriːprɪnt",
+    "phoneticUs" : "priˈprɪnt",
+    "pos" : "",
+    "meaning" : "n. 预印本\nv. 预印",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "ginger",
+    "phoneticUk" : "ˈdʒɪndʒə(r)",
+    "phoneticUs" : "ˈdʒɪndʒər",
+    "pos" : "",
+    "meaning" : "n. 生姜；姜（产于东南亚，外表似竹）；姜黄色；长着姜黄色头发的人；姜味汽水（ginger ale 的简称）；精神，活力\nv. 用姜给……调味；激励，使有生气（ginger sb./sth. up）\nadj. （主要指毛发或动物毛皮）姜黄色的；姜味的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "hue",
+    "phoneticUk" : "hjuː",
+    "phoneticUs" : "hjuː",
+    "pos" : "n.",
+    "meaning" : "颜色，色调，色度；种类，派别；叫声（hue and cry）",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "probe",
+    "phoneticUk" : "prəʊb",
+    "phoneticUs" : "proʊb",
+    "pos" : "",
+    "meaning" : "v. 调查，打探，探究；（用手指、细长工具等）探查，查看；搜寻，探索；侦察，侦探（敌情）\nn. 探究，详尽调查；（医生和科学家用的）探针； 航天探测器，太空探测器（=space probe）；探测仪，传感器，取样器",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "demeanor",
+    "phoneticUk" : "dɪˈmiːnə(r)",
+    "phoneticUs" : "dɪˈmiːnər",
+    "pos" : "n.",
+    "meaning" : "风度；举止；行为",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "byproduct",
+    "phoneticUk" : "ˈbaɪˌprɒdʌkt",
+    "phoneticUs" : "ˈbaɪˌprɑːdʌkt",
+    "pos" : "n.",
+    "meaning" : "副产品",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "linkage",
+    "phoneticUk" : "ˈlɪŋkɪdʒ",
+    "phoneticUs" : "ˈlɪŋkɪdʒ",
+    "pos" : "n.",
+    "meaning" : "联系；（国与国之间达成的）互换约定；连接，接合；链条，连接环节；基因连锁（同一染色体上的基因组一起被遗传的特性）",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "anecdotal",
+    "phoneticUk" : "ˌænɪkˈdəʊt(ə)l",
+    "phoneticUs" : "ˌænɪkˈdoʊt(ə)l",
+    "pos" : "adj.",
+    "meaning" : "轶事的，传闻的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "citizen science",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "n.",
+    "meaning" : "公民科学：由业余（或非专业）科学家完成的整体或部分科学研究",
+    "example" : "",
+    "exampleZh" : ""
+  } ],
+  "expressions" : [ {
+    "expression" : "Potentially, …… could just be a byproduct of …… typically being ……",
+    "meaning" : "可能……只是……通常是……的副产物。",
+    "example" : "Potentially, the popularity of fast food could just be a byproduct of people’s busy schedules typically leaving less time for cooking.",
+    "exampleZh" : "可能，快餐的流行只是因为人们通常很忙，没时间做饭的副产物。"
+  } ],
+  "keySentences" : [ {
+    "sentence" : "Potentially, …… could just be a byproduct of …… typically being ……",
+    "translation" : "可能……只是……通常是……的副产物。",
+    "analysis" : "写作积累句型\n例句：Potentially, the popularity of fast food could just be a byproduct of people’s busy schedules typically leaving less time for cooking.\n翻译：可能，快餐的流行只是因为人们通常很忙，没时间做饭的副产物。"
+  } ]
+}

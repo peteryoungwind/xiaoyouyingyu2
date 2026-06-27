@@ -1,0 +1,152 @@
+{
+  "title" : "Study Finds AI Use Eats Away at Users’ Confidence in Their Own Brains",
+  "titleZh" : "越用AI，越不敢相信自己了",
+  "audioUrl" : "https://res.wx.qq.com/voice/getvoice?mediaid=MzU3MTAwNTY5Ml8yMjQ3NDk2NzM3",
+  "difficultyStars" : 3,
+  "wordCount" : 435,
+  "sourceName" : "Futurism",
+  "summary" : "越来越多研究人员开始警惕，将脑力任务外包给人工智能，正在引发一系列认知能力的下滑。而一项最新研究指出了一个值得关注的新变化：频繁使用这类智能工具，可能会逐渐削弱用户对自身能力的信任，进而降低他们独立进行推理的信心。\n\n来源：Futurism；作者：Joe Wilkins；原文发布时间：2026-04-20 20:00:00",
+  "status" : "ENABLED",
+  "publishedDate" : null,
+  "paragraphs" : [ {
+    "sortOrder" : 1,
+    "contentEn" : "Researchers are growing increasingly suspicious that outsourcing intellectual tasks to AI is causing a range of cognitive deficits. A new study adds a wrinkle worth paying attention to: that use of the bots can eat away at users’ faith in their own abilities, resulting in lower confidence in their own independent reasoning.",
+    "contentZh" : "越来越多研究人员开始警惕，将脑力任务外包给人工智能，正在引发一系列认知能力的下滑。而一项最新研究指出了一个值得关注的新变化：频繁使用这类智能工具，可能会逐渐削弱用户对自身能力的信任，进而降低他们独立进行推理的信心。"
+  }, {
+    "sortOrder" : 2,
+    "contentEn" : "The new peer-reviewed study, published in the journal Technology, Mind and Behavior and flagged by TIME, found that those who showed a heavy reliance on AI were more likely to admit chatbots were “thinking” for them — and seem to show decreased confidence in their own ideas. By the same token, participants who took control over their AI’s output by editing, questioning, or scrapping it showed a greater confidence and sense of ownership over the final output, even though the tools used were the same.",
+    "contentZh" : "一项经同行评审、发表于《技术、心智与行为》期刊，并被《时代周刊》特别提及的最新研究发现，高度依赖人工智能的参与者，更多地表示聊天机器人在替自己“思考”——同时对自身想法的信心也有所下降。与此相对的是，那些通过修改、质疑或直接弃用等方式主动干预人工智能输出的参与者，即便使用相同的工具，也对最终结果表现出更强的信心和掌控感。"
+  }, {
+    "sortOrder" : 3,
+    "contentEn" : "As the study’s author Sarah Baldeo — a PhD candidate in AI and neuroscience at Middlesex University — told TIME, the ultimate cognitive effects “depends on your interaction style.” “When we look at brain activity contingent on how people choose to use the tool, we can see increases or decreases,” Baldeo said. “It really doesn’t have to do with the tool itself.”",
+    "contentZh" : "正如该研究作者——密德萨斯大学人工智能与神经科学方向的博士候选人——莎拉·巴尔迪奥在接受《时代》周刊采访时所说，人工智能对认知的最终影响“取决于人们如何与其互动”。巴尔迪奥表示：“当我们观察大脑活动如何随人们使用这一工具的方式而变化时，能够看到活跃度的增强或减弱。这本质上并不是工具本身的问题。”"
+  }, {
+    "sortOrder" : 4,
+    "contentEn" : "That finding lines up with the “boiling frog study” we covered earlier this week. That yet-to-be-peer-reviewed paper, by researchers at MIT and Carnegie Mellon, claimed to have found the first causal evidence that AI can rapidly degrade users’ intellectual abilities, particularly when we use the tech for “reasoning-intensive” work.",
+    "contentZh" : "这一发现与我们本周早些时候介绍过的“温水煮青蛙”研究高度吻合。那篇由麻省理工学院和卡内基梅隆大学研究人员撰写、尚未经过同行评审的论文声称，研究人员首次发现了因果证据，表明人工智能可能会迅速削弱使用者的认知能力，尤其是当人们将其应用于“高强度推理”任务时。"
+  }, {
+    "sortOrder" : 5,
+    "contentEn" : "During that study, participants in the experimental group were given AI access to complete a series of equations. The researchers then pulled the plug in the middle of their work, forcing them to continue without it. Those who had been abandoned by their AI chatbots saw rapid declines in reasoning ability, as well as a swift drop in willingness to follow-through and complete the math tasks.",
+    "contentZh" : "在“温水煮青蛙”研究中，实验组参与者获准借助人工智能来解答一系列数学方程题。随后，研究人员在他们解题过程中突然切断人工智能的支持，迫使他们在没有辅助的情况下继续作答。结果发现，那些失去人工智能聊天机器人帮助的参与者，推理能力迅速下降，同时坚持完成这些数学任务的意愿也明显减弱。"
+  }, {
+    "sortOrder" : 6,
+    "contentEn" : "Both studies converge on the same core mechanism: how you use AI is an important factor in determining whether it harms your cognitive ability. Basically, they argue that offloading all of your work to the machine degrades your capacity for independent reasoning, while using AI as a supplement may help to preserve it. Whether you’re measuring confidence or raw reasoning, both pieces of research seem to pose an important question: are you using AI to help you think, or is AI doing the thinking for you?",
+    "contentZh" : "两项研究共同指向了同一个核心机制：人们使用人工智能的方式，是决定其认知能力是否会受到影响的关键因素。简单来说，研究认为，将任务完全交给机器，会削弱个体的独立推理能力；而把人工智能作为辅助工具使用，则可能有助于维持这一能力。无论是衡量自信心还是实际的推理表现，这两项研究都提出了一个值得思考的问题：你是在借助人工智能帮助自己思考，还是让人工智能替你思考？"
+  } ],
+  "vocabulary" : [ {
+    "word" : "outsource",
+    "phoneticUk" : "ˈaʊtsɔːs",
+    "phoneticUs" : "ˈaʊtsɔːrs",
+    "pos" : "",
+    "meaning" : "vt. 把……外包\nvi. 外包",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "deficit",
+    "phoneticUk" : "ˈdefɪsɪt",
+    "phoneticUs" : "ˈdefɪsɪt",
+    "pos" : "n.",
+    "meaning" : "亏损，赤字，不足额；（体育用语）失分数；缺乏，缺陷",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "eat away at",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "1. 侵蚀：消耗或逐渐磨损\n2. 烦扰：使感到不安、困扰、担忧、内疚或烦恼",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "reliance",
+    "phoneticUk" : "rɪˈlaɪəns",
+    "phoneticUs" : "rɪˈlaɪəns",
+    "pos" : "n.",
+    "meaning" : "依靠，信任；<古>被依赖的人（或物）",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "scrap",
+    "phoneticUk" : "skræp",
+    "phoneticUs" : "skræp",
+    "pos" : "",
+    "meaning" : "n. 小块（纸、布匹等）；丝毫；一丁点；残羹剩饭\nv. 废弃；取消；抛弃；报废",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "interaction",
+    "phoneticUk" : "ˌɪntərˈækʃ(ə)n",
+    "phoneticUs" : "ˌɪntərˈækʃ(ə)n",
+    "pos" : "n.",
+    "meaning" : "互动，交流；相互影响，相互作用",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "contingent",
+    "phoneticUk" : "kənˈtɪndʒənt",
+    "phoneticUs" : "kənˈtɪndʒənt",
+    "pos" : "",
+    "meaning" : "n. （军队的）分遣队；代表团\nadj. 附带的，依情况而定的；偶然（发生）的，可能的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "line up with",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "1. 与……一致，与……相符：指与某物在位置、方向或特征上保持一致或相符",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "degrade",
+    "phoneticUk" : "dɪˈɡreɪd",
+    "phoneticUs" : "dɪˈɡreɪd",
+    "pos" : "v.",
+    "meaning" : "侮辱，贬低；降低，削弱（尤指质量）；降解，分解；使降级，贬黜；使（岩石）陵削；使（能量）衰变",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "equation",
+    "phoneticUk" : "ɪˈkweɪʒ(ə)n",
+    "phoneticUs" : "ɪˈkweɪʒ(ə)n",
+    "pos" : "n.",
+    "meaning" : "等式，方程（式）；等同（看待）；（必须考虑多种因素的）复杂局面（或问题）",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "swift drop",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "1. 迅速下降：指价格、数量等在短时间内迅速下降",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "converge",
+    "phoneticUk" : "kənˈvɜːdʒ",
+    "phoneticUs" : "kənˈvɜːrdʒ",
+    "pos" : "v.",
+    "meaning" : "（使）汇聚，集中；（观点、目标）趋同；（数）收敛",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "offload",
+    "phoneticUk" : "ˌɒfˈləʊd",
+    "phoneticUs" : "ˌɔːfˈloʊd",
+    "pos" : "",
+    "meaning" : "vt. 卸下；卸货\nadj. 卸载的",
+    "example" : "",
+    "exampleZh" : ""
+  } ],
+  "expressions" : [ {
+    "expression" : "…… converge on the same core mechanism: …… is an important factor in determining whether ……",
+    "meaning" : "……最终指向同一个核心机制：……是决定是否……的重要因素。",
+    "example" : "Management studies converge on the same core mechanism: clarity of goals is an important factor in determining whether teams perform effectively.",
+    "exampleZh" : "多项管理研究表明一个共同的核心机制：目标是否清晰，是决定团队能否高效运作的重要因素。"
+  } ],
+  "keySentences" : [ {
+    "sentence" : "…… converge on the same core mechanism: …… is an important factor in determining whether ……",
+    "translation" : "……最终指向同一个核心机制：……是决定是否……的重要因素。",
+    "analysis" : "写作积累句型\n例句：Management studies converge on the same core mechanism: clarity of goals is an important factor in determining whether teams perform effectively.\n翻译：多项管理研究表明一个共同的核心机制：目标是否清晰，是决定团队能否高效运作的重要因素。"
+  } ]
+}

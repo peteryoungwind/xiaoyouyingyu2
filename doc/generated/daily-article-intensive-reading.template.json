@@ -1,0 +1,62 @@
+{
+  "title": "Why are more older Americans getting divorced?",
+  "titleZh": "为什么越来越多的美国老年人选择离婚？",
+  "audioUrl": "https://example.com/audio/gray-divorce.mp3",
+  "difficultyStars": 3,
+  "wordCount": 670,
+  "sourceName": "纽约时报",
+  "summary": "本文讨论美国 50 岁以上人群离婚率上升的现象与原因，包括寿命延长、空巢综合征、现代婚姻期待变化，以及对“时间有限”的觉察。",
+  "status": "ENABLED",
+  "publishedDate": null,
+  "paragraphs": [
+    {
+      "sortOrder": 1,
+      "contentEn": "Americans age 50 and older are getting divorced more than ever, with almost half of all broken marriages in recent years coming from aging Gen Xers and Baby Boomers.",
+      "contentZh": "在美国，50岁及以上人群的离婚现象比以往任何时候都更为普遍，近年来，在所有婚姻破裂案例中，近半数都来自步入中老年的 X 世代与婴儿潮一代。"
+    },
+    {
+      "sortOrder": 2,
+      "contentEn": "Nearly 40% of all divorces nationwide are among couples 50 years and older — separations known as gray divorces.",
+      "contentZh": "全美约 40% 的离婚发生在 50 岁及以上的夫妻之间，这类离异被称为“银发离婚”。"
+    }
+  ],
+  "vocabulary": [
+    {
+      "word": "separation",
+      "phoneticUk": "ˌsepəˈreɪʃn",
+      "phoneticUs": "ˌsepəˈreɪʃn",
+      "pos": "n.",
+      "meaning": "分开，分隔；分居；离析",
+      "example": "The couple agreed to a trial separation.",
+      "exampleZh": "这对夫妻同意试行分居。"
+    },
+    {
+      "word": "mortality",
+      "phoneticUk": "mɔːˈtæləti",
+      "phoneticUs": "mɔːrˈtæləti",
+      "pos": "n.",
+      "meaning": "死亡率；必死性，终有一死",
+      "example": "Facing his own mortality changed his priorities.",
+      "exampleZh": "直面终有一死改变了他的人生重心。"
+    }
+  ],
+  "expressions": [
+    {
+      "expression": "stare down the barrel of",
+      "meaning": "直面（困境、危险或不可避免之事）",
+      "example": "They are staring down the barrel of mortality."
+    },
+    {
+      "expression": "bucket list",
+      "meaning": "遗愿清单；人生必做清单",
+      "example": "Visiting Iceland is high on my bucket list."
+    }
+  ],
+  "keySentences": [
+    {
+      "sentence": "Nearly 40% of all divorces nationwide are among couples 50 years and older — separations known as gray divorces.",
+      "translation": "全美约 40% 的离婚发生在 50 岁及以上的夫妻之间，这类离异被称为“银发离婚”。",
+      "analysis": "主句为 Nearly 40% of all divorces nationwide are among couples 50 years and older；破折号后的 separations known as gray divorces 是同位语，known as 引导过去分词短语作后置定语。"
+    }
+  ]
+}

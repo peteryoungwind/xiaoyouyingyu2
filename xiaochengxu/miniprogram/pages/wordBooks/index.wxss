@@ -30,36 +30,117 @@
 .summary-card view { margin-top: 6rpx; color: #172033; font-size: 34rpx; font-weight: 900; }
 .loading, .empty { padding: 120rpx 20rpx; text-align: center; color: #667085; font-size: 28rpx; }
 .empty-title { font-size: 32rpx; font-weight: 800; color: #172033; }
-.book-list { display: flex; flex-direction: column; gap: 20rpx; }
-.book-card {
-  padding: 30rpx;
-  border-radius: 30rpx;
-  background: rgba(255, 255, 255, 0.92);
-  border: 2rpx solid rgba(212, 219, 231, 0.9);
-  box-shadow: 0 14rpx 36rpx rgba(28, 43, 74, 0.08);
+.level-list { display: flex; flex-direction: column; gap: 22rpx; }
+.level-section {
+  padding: 28rpx;
+  border-radius: 28rpx;
+  background: rgba(255, 255, 255, 0.82);
+  border: 2rpx solid rgba(212, 219, 231, 0.86);
+  box-shadow: 0 14rpx 34rpx rgba(28, 43, 74, 0.06);
 }
-.book-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 20rpx; }
-.book-name { font-size: 34rpx; font-weight: 900; color: #172033; }
-.book-desc { margin-top: 10rpx; font-size: 24rpx; line-height: 1.5; color: #667085; }
-.book-arrow {
-  width: 54rpx;
-  height: 54rpx;
-  border-radius: 50%;
-  background: #EAF1FF;
-  color: #1646A5;
-  font-size: 42rpx;
-  line-height: 48rpx;
-  text-align: center;
+.level-section.beginner { border-top: 8rpx solid #22A876; }
+.level-section.advanced { border-top: 8rpx solid #F08B3E; }
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20rpx;
+  margin-bottom: 22rpx;
 }
-.progress-track {
-  height: 12rpx;
-  margin: 28rpx 0 22rpx;
+.section-kicker {
+  color: #2F6FED;
+  font-size: 20rpx;
+  line-height: 1.2;
+  font-weight: 850;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+.section-title { margin-top: 8rpx; color: #172033; font-size: 36rpx; line-height: 1.2; font-weight: 900; }
+.section-count {
+  height: 52rpx;
+  padding: 0 18rpx;
   border-radius: 999rpx;
-  background: rgba(226, 232, 240, 0.88);
+  background: #F1F5F9;
+  color: #344054;
+  font-size: 23rpx;
+  line-height: 52rpx;
+  font-weight: 850;
+  white-space: nowrap;
+}
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18rpx;
+}
+.book-card {
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 24rpx;
+  background: #FFFFFF;
+  border: 2rpx solid rgba(212, 219, 231, 0.9);
+  box-shadow: 0 10rpx 24rpx rgba(28, 43, 74, 0.06);
+}
+.book-card:active { transform: scale(0.985); }
+.book-cover {
+  position: relative;
+  height: 186rpx;
+  padding: 20rpx;
   overflow: hidden;
 }
-.progress-track view { height: 100%; border-radius: 999rpx; background: linear-gradient(90deg, #22A876, #2F6FED); }
-.metric-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14rpx; }
-.metric-grid view { min-width: 0; }
-.metric-grid text:first-child { display: block; font-size: 30rpx; font-weight: 900; color: #172033; }
-.metric-grid text:last-child { display: block; margin-top: 4rpx; font-size: 21rpx; color: #667085; }
+.book-cover::after {
+  content: "";
+  position: absolute;
+  right: 22rpx;
+  bottom: 20rpx;
+  width: 84rpx;
+  height: 72rpx;
+  border-radius: 18rpx;
+  background: rgba(255, 255, 255, 0.54);
+  box-shadow: inset 0 0 0 2rpx rgba(255, 255, 255, 0.7);
+}
+.cover-mark {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  height: 42rpx;
+  padding: 0 16rpx;
+  border-radius: 999rpx;
+  color: #FFFFFF;
+  font-size: 22rpx;
+  line-height: 42rpx;
+  font-weight: 900;
+  background: rgba(23, 32, 51, 0.34);
+}
+.cover-life { background: linear-gradient(135deg, #3DBB82, #7BD7BC); }
+.cover-travel { background: linear-gradient(135deg, #2F6FED, #8FB7FF); }
+.cover-campus { background: linear-gradient(135deg, #7A67E8, #B8ADFF); }
+.cover-business { background: linear-gradient(135deg, #293855, #6B7FA8); }
+.cover-news { background: linear-gradient(135deg, #F08B3E, #F6C06D); }
+.cover-speech { background: linear-gradient(135deg, #0E9A9A, #7DD3D3); }
+.book-info { padding: 18rpx 18rpx 22rpx; }
+.book-name {
+  min-height: 80rpx;
+  color: #172033;
+  font-size: 28rpx;
+  line-height: 1.34;
+  font-weight: 900;
+  word-break: break-all;
+}
+.book-meta {
+  margin-top: 12rpx;
+  color: #667085;
+  font-size: 22rpx;
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.section-empty {
+  padding: 42rpx 20rpx;
+  border-radius: 20rpx;
+  background: rgba(241, 245, 249, 0.72);
+  color: #667085;
+  text-align: center;
+  font-size: 25rpx;
+}

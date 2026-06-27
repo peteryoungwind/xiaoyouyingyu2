@@ -1,0 +1,268 @@
+{
+  "title" : "The Carbon Removal Industry Is Already Lagging Behind Where It Needs to Be",
+  "titleZh" : "全球气温在升，碳清除行业却还在预热",
+  "audioUrl" : "https://res.wx.qq.com/voice/getvoice?mediaid=MzU3MTAwNTY5Ml8yMjQ3NDk0MTE3",
+  "difficultyStars" : 3,
+  "wordCount" : 624,
+  "sourceName" : "Futurism",
+  "summary" : "恐怕我们是时候硬着头皮接受现实了——这里所指的，并不仅仅是大气中的碳排放问题。我们真正需要正视的，是这样一种可能性：据《新科学家》杂志报道，人类试图通过捕获温室气体来阻止气候灾难的努力，即便不算完全徒劳，恐怕也早已远远落后于原定计划了。\n\n来源：Futurism；作者：Frank Landymore；原文发布时间：2025-06-02 20:10:00",
+  "status" : "ENABLED",
+  "publishedDate" : null,
+  "paragraphs" : [ {
+    "sortOrder" : 1,
+    "contentEn" : "It may be time to suck it up — and we don't just mean the carbon in the atmosphere. No, we're talking about reckoning with the possibility that our attempts at capturing the greenhouse gas to stave off climate disaster are already hopelessly behind schedule, New Scientist reports, if they're not in vain entirely.",
+    "contentZh" : "恐怕我们是时候硬着头皮接受现实了——这里所指的，并不仅仅是大气中的碳排放问题。我们真正需要正视的，是这样一种可能性：据《新科学家》杂志报道，人类试图通过捕获温室气体来阻止气候灾难的努力，即便不算完全徒劳，恐怕也早已远远落后于原定计划了。"
+  }, {
+    "sortOrder" : 2,
+    "contentEn" : "To illustrate, here're some simple numbers. The CO2 removal industry expects to hit a milestone of removing one million metric tons of CO2 this year. And companies across the globe have bought carbon credits to remove 27 million more, according to data from CDR.fyi cited in the reporting (more on these carbon credit schemes in a moment).",
+    "contentZh" : "为了更直观地说明这一点，我们来看一组简单数据。二氧化碳去除行业预计今年将实现去除100万公吨二氧化碳的里程碑。而根据报道中援引CDR.fyi的数据，目前全球各地的企业已经购买碳信用额度，计划再额外去除2700万吨二氧化碳。（关于这些碳信用额度的具体情况，后文将进一步介绍。）"
+  }, {
+    "sortOrder" : 3,
+    "contentEn" : "That sounds like a lot, but it really isn't. As New Scientist notes, the Intergovernmental Panel on Climate Change — the leading authority on these issues — concluded in a 2022 report that we need to be removing up to 16 billion tons of carbon, not millions, each year to keep the rise in global temperature from exceeding 1.5 degrees Celsius (2.7 degrees Fahrenheit) of warming by the middle of the century, past which the most drastic effects of climate change are believed to be irreversible. \"It's not scaling up as fast as it would need to if we are going to reach multiple gigatons by 2050,\" Robert Höglund at Marginal Carbon, a climate consultancy based in Sweden, told the magazine.",
+    "contentZh" : "这个数字看似可观，实则杯水车薪。《新科学家》杂志指出，政府间气候变化专门委员会（IPCC）——气候变化领域的权威机构——在其2022年的一份报告中总结道，为了确保全球升温在本世纪中叶不超过1.5摄氏度（2.7华氏度），从而避免气候变化带来被认为是不可逆转的严重后果，人类每年需要去除的碳排量应高达160亿吨，而非仅仅几百万吨。瑞典气候咨询机构 Marginal Carbon 的罗伯特・赫格伦德在接受该杂志采访时表示：“如果我们要在2050年前实现数十亿吨级的去除规模，以目前的推进速度远远不够。”"
+  }, {
+    "sortOrder" : 4,
+    "contentEn" : "Carbon capture is not the be-all and end-all. The fact remains that humanity needs to drastically reduce its emissions, which probably means reorganizing society — or at least its energy production and consumption — as we know it. Simply removing the CO2 that's already there is more like a band-aid that buys us a little time; eventually, we'll need to rip it off.",
+    "contentZh" : "碳捕获并不是终极解决方案。现实情况是人类仍需要大幅削减排放量，而这很可能意味着必须重构现有的社会体系——至少要彻底转变能源的生产与消费方式。单纯靠去除已排放到大气中的二氧化碳，更像是一种临时应急手段，只能为我们争取有限的时间；最终，我们仍需直面并根本性地解决排放问题。"
+  }, {
+    "sortOrder" : 5,
+    "contentEn" : "For these reasons, some critics fear that carbon capture — and even more drastic interventions, like attempting to dim the Sun — could distract from the climate change's systemic causes. But there's a lot of enthusiasm for the approach all the same, both from scientists and investors. The IPCC acknowledged in its 2022 report that carbon removal was \"unavoidable\" — as in, essential to meeting climate targets.",
+    "contentZh" : "鉴于这些原因，一些批评者担心，碳捕获技术——甚至包括试图削弱阳光照射等更为激进的干预手段——可能会转移人们对气候变化深层成因的关注。即便如此，这类技术仍受到科学界和投资者的大力追捧。政府间气候变化专门委员会（IPCC）在2022年发布的报告中也指出，碳去除“不可避免”——换言之，它是实现气候目标所不可缺少的一环。"
+  }, {
+    "sortOrder" : 6,
+    "contentEn" : "One popular method of carbon removal is called direct air capture, which involves sucking the carbon straight from the air using massive industrial facilities. A more circuitous approach that's gaining steam involves extracting CO2 out of the ocean, freeing up room for the world's largest carbon sink to passively absorb even more of the greenhouse gas.",
+    "contentZh" : "当前较为常见的一种碳去除方式是“直接空气捕获”，该方法是通过大型工业设施直接从空气中提取二氧化碳。而另一种路径更为间接、但正逐渐兴起的技术则是从海洋中移除二氧化碳，从而为这个全球最大的碳汇释放吸收空间，使其能够被动吸纳更多温室气体。"
+  }, {
+    "sortOrder" : 7,
+    "contentEn" : "All of these initiatives, though, are basically just getting off the ground. And the corporate investment, which once promised billions of dollars in cash, seems to be cooling. More than 90 percent of all carbon removal credits sold this year were bought by a single company, Microsoft, New Scientist notes, probably to gloss over its egregious energy bill it's accrued from building loads of AI datacenters.",
+    "contentZh" : "不过，这些碳去除项目眼下仍处于起步阶段。而此前承诺投入数十亿美元资金的企业投资热，如今似乎也显现出了降温迹象。据《新科学家》披露，今年售出的所有碳去除信用额度中，超过90%由微软一家公司买下，很可能是为了抵消其因大规模建设人工智能数据中心所带来的高昂能源消耗。"
+  }, {
+    "sortOrder" : 8,
+    "contentEn" : "This also touches on the fact that the practice of buying carbon credits can be used as a means of corporate greenwashing. By paying to another firm to \"certify\" that they will remove a certain amount of carbon at some undetermined point in the future, a company can report a greener carbon balance sheet without actually reducing its emissions.",
+    "contentZh" : "这也凸显出一个备受争议的问题，即购买碳信用额度往往被企业当作“漂绿”工具。企业只需通过向第三方机构付费，换取一份承诺在未来某个未知时间去除特定碳量的“认证”，便可以在不实际减少自身排放的前提下，就能在其碳排放账面数据上塑造更环保的形象。"
+  }, {
+    "sortOrder" : 9,
+    "contentEn" : "In any case, staking the industry's hopes on corporate munificence is a dicey prospect indeed. \"I have been raising the alarm for about a year and a half,\" Eli Mitchell-Larson at Carbon Gap, a UK carbon dioxide removal advocacy organisation, told New Scientist. \"If we're just waiting for the waves of free philanthropic money from corporations to fill a hole on their sustainability report, we're not really going to solve the problem.\"",
+    "contentZh" : "无论如何，将整个行业的希望寄托在企业的“慷慨解囊”上，无疑是一场高风险的赌博。英国碳去除倡导组织Carbon Gap的埃利·米切尔-拉尔森在接受《新科学家》采访时表示：“过去一年半以来，我一直在发出警告。如果我们只是坐等企业出于美化可持续发展报告的目的，不时投来几笔免费的慈善资金，那我们实际上根本无法真正解决问题。”"
+  } ],
+  "vocabulary" : [ {
+    "word" : "suck it up",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "1. 忍受，硬着头皮承受：指在面对困难或不愉快的情况时，勇敢地承受并努力克服",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "reckon",
+    "phoneticUk" : "ˈrekən",
+    "phoneticUs" : "ˈrekən",
+    "pos" : "v.",
+    "meaning" : "估算，计算；<非正式>料想，认为；把……看作；<英，非正式>期望，指望",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "in vain",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "1. 徒劳无功：没有成功或结果",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "removal",
+    "phoneticUk" : "rɪˈmuːv(ə)l",
+    "phoneticUs" : "rɪˈmuːv(ə)l",
+    "pos" : "n.",
+    "meaning" : "移走，去掉；消除，清除；免职，开除；<英>搬运，搬迁；<南非，史>种族迫迁；<爱尔兰>（从家里运至教堂举行葬礼的）尸体搬运仪式",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "milestone",
+    "phoneticUk" : "ˈmaɪlstəʊn",
+    "phoneticUs" : "ˈmaɪlstoʊn",
+    "pos" : "n.",
+    "meaning" : "重要事件，转折点；里程碑，里程标",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "irreversible",
+    "phoneticUk" : "ˌɪrɪˈvɜːsəb(ə)l",
+    "phoneticUs" : "ˌɪrɪˈvɜːrsəb(ə)l",
+    "pos" : "adj.",
+    "meaning" : "不可挽回的，无法逆转的；不能治愈的，不能挽救的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "scale up",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "1. 扩大规模：指将某事物的规模或范围增加，通常是为了适应更大的需求或目标",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "gigaton",
+    "phoneticUk" : "ˈɡɪɡəˌtʌn",
+    "phoneticUs" : "ˈdʒɪɡəˌtʌn",
+    "pos" : "n.",
+    "meaning" : "十亿吨",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "the be-all and end-all",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "n.",
+    "meaning" : "the most important part of something or the reason for something",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "humanity",
+    "phoneticUk" : "hjuːˈmænəti",
+    "phoneticUs" : "hjuːˈmænəti",
+    "pos" : "n.",
+    "meaning" : "人类（总称）；人性，人的属性；人道，仁慈；（历史、哲学、文学等）人文学科",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "band-aid",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "美/ ˈbænd eɪd /\nn. <商标>邦迪牌创可贴；权宜之计\nadj. 权宜的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "intervention",
+    "phoneticUk" : "ˌɪntəˈvenʃ(ə)n",
+    "phoneticUs" : "ˌɪntərˈvenʃ(ə)n",
+    "pos" : "n.",
+    "meaning" : "干预，介入；调停，斡旋；（为改善情况尤指病痛采取的）措施，做法",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "enthusiasm",
+    "phoneticUk" : "ɪnˈθjuːziæzəm",
+    "phoneticUs" : "ɪnˈθuːziæzəm",
+    "pos" : "n.",
+    "meaning" : "热情，热忱；热衷的活动，热爱的事物",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "facility",
+    "phoneticUk" : "fəˈsɪləti",
+    "phoneticUs" : "fəˈsɪləti",
+    "pos" : "n.",
+    "meaning" : "设施，设备；卫生间；天赋，才能；（机器等的）特别装置，（服务等的）特色；（用作某种用途的）场所",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "circuitous",
+    "phoneticUk" : "səˈkjuːɪtəs",
+    "phoneticUs" : "sərˈkjuːɪtəs",
+    "pos" : "adj.",
+    "meaning" : "迂曲的；绕行的；迂回线路的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "gain steam",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "1. 聚集蒸汽：形容事物逐渐变得更加强劲、有力或受到更多关注和支持的过程",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "carbon sink",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "1. 碳汇：一种自然或人工的储存某种含碳化合物的库，可以无限期地积累和储存碳",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "get off the ground",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "1. 开始运作或进行成功：指开始运作或进行，并取得成功\n2. 使（某事物）开始运作或进行成功：指促使某事物开始运作或进行，并取得成功",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "gloss over",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "1. 掩饰，掩盖：将（严重的问题或错误）当作不重要来对待或描述",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "egregious",
+    "phoneticUk" : "ɪˈɡriːdʒiəs",
+    "phoneticUs" : "ɪˈɡriːdʒiəs",
+    "pos" : "adj.",
+    "meaning" : "惊人的；过分的；恶名昭彰的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "greenwashing",
+    "phoneticUk" : "ˈɡriːnˌwɒʃɪŋ",
+    "phoneticUs" : "ɡˈrinwɑːʃɪŋ",
+    "pos" : "n.",
+    "meaning" : "漂绿（组织以某些行为宣示自身对环保的付出，实际上却反其道而行）",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "certify",
+    "phoneticUk" : "ˈsɜːtɪfaɪ",
+    "phoneticUs" : "ˈsɜːrtɪfaɪ",
+    "pos" : "v.",
+    "meaning" : "证明，证实；给……颁发合格证书；证明（某人）患有精神病；保证",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "balance sheet",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "n.",
+    "meaning" : "资产负债表：指在特定日期的财务状况报表",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "munificence",
+    "phoneticUk" : "mjuːˈnɪfɪs(ə)ns",
+    "phoneticUs" : "mjuːˈnɪfɪs(ə)ns",
+    "pos" : "n.",
+    "meaning" : "慷慨给与；宽宏大量",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "dicey",
+    "phoneticUk" : "ˈdaɪsi",
+    "phoneticUs" : "ˈdaɪsi",
+    "pos" : "adj.",
+    "meaning" : "不确定的；冒险性的；认命的；危险的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "philanthropic",
+    "phoneticUk" : "ˌfɪlənˈθrɒpɪk",
+    "phoneticUs" : "ˌfɪlənˈθrɑːpɪk",
+    "pos" : "adj.",
+    "meaning" : "慈善的，捐助的",
+    "example" : "",
+    "exampleZh" : ""
+  } ],
+  "expressions" : [ {
+    "expression" : "Simply doing …… more like a band-aid that buys us ……; eventually, we'll need to rip it off.",
+    "meaning" : "简单地做……更像是一块创可贴，它只是暂时拖延了……；最终，我们还是得把它撕掉。",
+    "example" : "Applying subsidies to struggling businesses is more like a band-aid that buys us time; eventually, we'll need to rip it off and address the root causes of economic instability.",
+    "exampleZh" : "对陷入困境的企业提供补贴更像是一个临时措施，它只能暂时拖延问题；最终，我们还是得取消补贴，直面经济不稳定的根本原因。"
+  } ],
+  "keySentences" : [ {
+    "sentence" : "Simply doing …… more like a band-aid that buys us ……; eventually, we'll need to rip it off.",
+    "translation" : "简单地做……更像是一块创可贴，它只是暂时拖延了……；最终，我们还是得把它撕掉。",
+    "analysis" : "写作积累句型\n例句：Applying subsidies to struggling businesses is more like a band-aid that buys us time; eventually, we'll need to rip it off and address the root causes of economic instability.\n翻译：对陷入困境的企业提供补贴更像是一个临时措施，它只能暂时拖延问题；最终，我们还是得取消补贴，直面经济不稳定的根本原因。"
+  } ]
+}

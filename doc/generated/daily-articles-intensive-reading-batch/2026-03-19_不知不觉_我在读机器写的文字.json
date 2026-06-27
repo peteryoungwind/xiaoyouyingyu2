@@ -1,0 +1,220 @@
+{
+  "title" : "The Internet’s New Question: Who Actually Wrote What You’re Reading?",
+  "titleZh" : "不知不觉，我在读机器写的文字",
+  "audioUrl" : "https://res.wx.qq.com/voice/getvoice?mediaid=MzU3MTAwNTY5Ml8yMjQ3NDk2NTA2",
+  "difficultyStars" : 3,
+  "wordCount" : 660,
+  "sourceName" : "LA Weekly",
+  "summary" : "过去几十年来，人们在网上阅读时很少会质疑内容的作者身份。新闻报道通常署有作者姓名，博客文章带有鲜明的个人风格，评论也多源自个人的真实体验。但如今，这种确定性正在逐渐消逝。人工智能已经能够以惊人的速度生成极具说服力的文章、解说与摘要。在这样的背景下，一个新的问题开始在互联网上浮现：你此刻读到的内容，究竟是谁写的？\n\n来源：LA Weekly；作者：Will Jones；原文发布时间：2026-03-19 20:00:00",
+  "status" : "ENABLED",
+  "publishedDate" : null,
+  "paragraphs" : [ {
+    "sortOrder" : 1,
+    "contentEn" : "For decades, readers rarely questioned the authorship of what they encountered online. An article had a byline, a blog had a recognizable voice, and a review reflected someone’s personal experience. Today, that certainty is fading. Artificial intelligence has become capable of producing convincing articles, explanations, and summaries at extraordinary speed. As a result, a new question is emerging across the internet: who actually wrote what you’re reading?",
+    "contentZh" : "过去几十年来，人们在网上阅读时很少会质疑内容的作者身份。新闻报道通常署有作者姓名，博客文章带有鲜明的个人风格，评论也多源自个人的真实体验。但如今，这种确定性正在逐渐消逝。人工智能已经能够以惊人的速度生成极具说服力的文章、解说与摘要。在这样的背景下，一个新的问题开始在互联网上浮现：你此刻读到的内容，究竟是谁写的？"
+  }, {
+    "sortOrder" : 2,
+    "contentEn" : "This change has not arrived with a dramatic announcement. Instead, it has quietly blended into everyday digital life. AI tools can generate paragraphs that look polished and informative, often without obvious signs that a machine produced them. In response, readers and professionals are increasingly turning to an AI detector free tool to better understand the origins of the content they encounter.",
+    "contentZh" : "这一变化并未伴随着任何高调的宣告。而是悄然融入了日常的数字生活。如今，人工智能工具可以生成看似专业、信息丰富的段落，且几乎没有机器生成的痕迹。面对这种情况，读者与专业人士正越来越多地借助免费AI检测工具，以更好地判断所读内容的来源。"
+  }, {
+    "sortOrder" : 3,
+    "contentEn" : "The most striking feature of modern AI writing is how natural it sounds. Language models are trained on enormous collections of books, articles, and web content, allowing them to replicate tone, structure, and style with impressive accuracy. To a casual reader, AI generated text often appears indistinguishable from human writing. This ability has obvious advantages. Writers can draft content faster, businesses can organize information more efficiently, and educational materials can be produced at scale.",
+    "contentZh" : "现代人工智能写作最显著的特征，在于其语言呈现的自然程度。语言模型基于海量书籍、文章和网络内容进行训练，因而能够以较高的准确度复现人类的语气、结构和写作风格。对于普通读者而言，AI生成的文本常常与人类作品难以区分。这种能力也带来了显著优势。写作者可以更快完成内容初稿，企业能够更高效地整合信息，教育材料也得以实现规模化生产。"
+  }, {
+    "sortOrder" : 4,
+    "contentEn" : "Yet it also creates a new challenge. When both humans and machines can produce equally convincing text, traditional cues that once signaled authorship become unreliable. Tone alone no longer reveals whether an article reflects lived experience or algorithmic prediction. As that distinction becomes harder to recognize, readers must rely on new methods to understand what they are reading.",
+    "contentZh" : "但与此同时，这也带来了新的挑战。当人类与机器都能够产出同样具有说服力的文本时，过去用于判断作者身份的那些传统线索开始变得不再可靠。如今，仅凭行文语调，已难以判断一篇文章究竟源于真实的生活阅历，还是基于算法的推演预测。随着两者之间的界限日益模糊，读者不得不借助新的方式，来审视自己正在阅读的内容。"
+  }, {
+    "sortOrder" : 5,
+    "contentEn" : "Some may wonder why it matters who wrote a piece of content if the information appears useful. The answer lies in accountability and context. Human authors bring perspective, expertise, and responsibility to their work. If an error appears, they can correct it. If a claim is challenged, they can explain their reasoning. Artificial intelligence operates differently. AI systems generate text based on patterns in data rather than genuine understanding. While the output may sound authoritative, it can sometimes include subtle inaccuracies or generalizations that lack real world context.",
+    "contentZh" : "有人或许会问，如果信息本身具有价值，内容出自谁手还重要吗？答案在于责任与语境。人类作者在写作中会融入个人视角、专业认知与责任意识。一旦出现错误，他们可以加以更正。当观点受到质疑时，也能阐明自己的依据。而人工智能的运作逻辑则完全不同。AI系统是基于数据的规律特征生成文本，而非源于真正的理解与认知。其输出虽然可能显得权威，但有时会包含细微的不准确之处，或出现脱离现实语境的概括性表述。"
+  }, {
+    "sortOrder" : 6,
+    "contentEn" : "For readers, knowing the origin of content helps determine how it should be interpreted. A medical explanation written by a doctor carries different weight than one generated automatically. A product review based on personal use provides insights that an algorithm cannot replicate. Authorship provides the context that helps readers judge credibility.",
+    "contentZh" : "对于读者而言，了解内容的真实出处，有助于判断应如何解读其中的信息。由医生撰写的医学解释，与自动生成的文本，其分量并不相同。基于个人使用体验的产品评价，也能提供算法难以复制的洞见。归根结底，作者身份本身，构成了读者判断内容可信度的重要语境。"
+  }, {
+    "sortOrder" : 7,
+    "contentEn" : "As AI generated content becomes more widespread, tools designed to analyze writing patterns are gaining attention. These systems examine characteristics such as sentence predictability, structure, and language patterns to estimate whether a text was likely produced by artificial intelligence. For journalists and editors, these tools help maintain editorial standards. For teachers and universities, they support academic integrity. For everyday readers, they offer a way to better understand what is shaping the information they consume.",
+    "contentZh" : "随着AI生成内容的日益普遍，用于分析写作特征的工具也开始受到关注。这类系统通过评估句式的可预测性、行文结构以及语言规律等特征，判断一段文本是否可能由人工智能生成。对于记者和编辑而言，这类工具有助于坚守编审标准。对于教师和高校来说，能够维护学术诚信。普通读者则可以借助这些工具，更清楚地理解自己所读的信息是如何形成的。"
+  }, {
+    "sortOrder" : 8,
+    "contentEn" : "The rise of AI generated writing is introducing a new dimension to digital literacy. In the past, readers learned to evaluate sources, check facts, and identify bias. Today, they must also consider whether content was created by a human or a machine. This does not mean rejecting AI entirely. Many writers and researchers use AI tools responsibly to organize ideas or draft preliminary text. The challenge lies in transparency. Readers benefit from knowing when automation played a role in the creation of content. As awareness grows, the ability to question authorship may become a normal part of reading online.",
+    "contentZh" : "AI生成写作的兴起，正在为数字素养增添新的维度。过去，读者需要学会甄别信息来源、核实事实并识别偏见。而如今，还需要判断内容是由人类还是机器生成。这并不意味着应当完全排斥人工智能。许多写作者和研究人员会负责任地使用AI工具来梳理思路或起草初步文本。问题的关键在于透明度。当自动化技术参与内容创作时，读者若能知情，将更有助于理解相关信息。随着这种意识逐渐普及，追问作者身份或许会成为未来网络阅读中的常态。"
+  }, {
+    "sortOrder" : 9,
+    "contentEn" : "The internet has always evolved alongside technology. Search engines changed how people find information, social media changed how they share it, and now artificial intelligence is changing how it is written. The question of authorship will likely remain central as this transformation continues. In a world where machines can write fluently, understanding the origin of content becomes essential to maintaining trust. The internet’s newest question may be simple, but it carries lasting significance: who actually wrote what you’re reading?",
+    "contentZh" : "互联网始终伴随着技术的演进而不断变化。搜索引擎改变了人们获取信息的方式，社交媒体改变了信息的传播方式，而如今，人工智能正在重构内容的创作模式。随着这一转变持续推进，关于作者身份的问题可能仍将处于核心位置。在一个机器也能够流畅生成文本的时代，洞悉内容的真实来源，正成为维系信任的关键。互联网提出的这个新问题或许看似简单，却具有持久意义：你此刻所读的内容，究竟出自谁手？"
+  } ],
+  "vocabulary" : [ {
+    "word" : "authorship",
+    "phoneticUk" : "ˈɔːθəʃɪp",
+    "phoneticUs" : "ˈɔːθərʃɪp",
+    "pos" : "n.",
+    "meaning" : "（书等的）原创作者，来源；作者的身份；著述业",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "byline",
+    "phoneticUk" : "ˈbaɪlaɪn",
+    "phoneticUs" : "ˈbaɪlaɪn",
+    "pos" : "",
+    "meaning" : "n. 标题下署名之行；铁路支线；副业\nv. 署名",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "blend into",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "1. 融入：逐渐变得与某物相同或成为其一部分",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "polished",
+    "phoneticUk" : "ˈpɒlɪʃt",
+    "phoneticUs" : "ˈpɑːlɪʃt",
+    "pos" : "adj.",
+    "meaning" : "擦亮的；优美的；圆滑的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "enormous",
+    "phoneticUk" : "ɪˈnɔːməs",
+    "phoneticUs" : "ɪˈnɔːrməs",
+    "pos" : "adj.",
+    "meaning" : "巨大的，极大的；<古>凶暴的，极恶的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "replicate",
+    "phoneticUk" : "ˈreplɪkeɪt",
+    "phoneticUs" : "ˈreplɪkeɪt",
+    "pos" : "v.",
+    "meaning" : "复制；（精确地）仿制；再造；再生",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "indistinguishable",
+    "phoneticUk" : "ˌɪndɪˈstɪŋɡwɪʃəb(ə)l",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "美/ ˌɪndɪˈstɪŋɡwɪʃəb(ə)l /\nadj. 难以区别的，难以分辨的；不清楚的，无法识别的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "algorithmic",
+    "phoneticUk" : "ˈælɡəˌrɪðəmɪk",
+    "phoneticUs" : "ˌælɡəˈrɪðəmɪk",
+    "pos" : "adj.",
+    "meaning" : "[数] 算法的；规则系统的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "distinction",
+    "phoneticUk" : "dɪˈstɪŋkʃn",
+    "phoneticUs" : "dɪˈstɪŋkʃn",
+    "pos" : "n.",
+    "meaning" : "差别，区分；杰出，卓越；特点；荣誉",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "accountability",
+    "phoneticUk" : "əˌkaʊntəˈbɪləti",
+    "phoneticUs" : "əˌkaʊntəˈbɪləti",
+    "pos" : "n.",
+    "meaning" : "责任，责任心，可说明性",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "authoritative",
+    "phoneticUk" : "ɔːˈθɒrətətɪv",
+    "phoneticUs" : "əˈθɔːrəteɪtɪv",
+    "pos" : "adj.",
+    "meaning" : "专断的，命令式的；可靠的，可信的，权威的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "generalization",
+    "phoneticUk" : "ˌdʒen(ə)rəlaɪˈzeɪʃ(ə)n",
+    "phoneticUs" : "ˌdʒen(ə)rələˈzeɪʃ(ə)n",
+    "pos" : "n.",
+    "meaning" : "（依据不足的）概括，泛论（=generalisation）",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "interpret",
+    "phoneticUk" : "ɪnˈtɜːprət",
+    "phoneticUs" : "ɪnˈtɜːrprət",
+    "pos" : "v.",
+    "meaning" : "解释，说明；口译；把……理解为；演绎",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "credibility",
+    "phoneticUk" : "ˌkredəˈbɪləti",
+    "phoneticUs" : "ˌkredəˈbɪləti",
+    "pos" : "n.",
+    "meaning" : "可靠性，可信度",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "predictability",
+    "phoneticUk" : "prɪˌdɪktəˈbɪləti",
+    "phoneticUs" : "prɪˌdɪktəˈbɪləti",
+    "pos" : "n.",
+    "meaning" : "可预测性；可预言",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "editorial",
+    "phoneticUk" : "ˌedɪˈtɔːriəl",
+    "phoneticUs" : "ˌedɪˈtɔːriəl",
+    "pos" : "",
+    "meaning" : "adj. 编辑的，主编的；社论的\nn. 社论，社评；（报刊的）由编辑撰写的部分，非广告部分",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "literacy",
+    "phoneticUk" : "ˈlɪtərəsi",
+    "phoneticUs" : "ˈlɪtərəsi",
+    "pos" : "n.",
+    "meaning" : "识字，读写能力；专业知识；精通文学",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "preliminary",
+    "phoneticUk" : "prɪˈlɪmɪnəri",
+    "phoneticUs" : "prɪˈlɪmɪneri",
+    "pos" : "",
+    "meaning" : "adj. 初步的，预备的\nn. 初步行动，准备工作；预赛，预试",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "transparency",
+    "phoneticUk" : "trænsˈpærənsi",
+    "phoneticUs" : "trænsˈpærənsi",
+    "pos" : "n.",
+    "meaning" : "透明，透明性；幻灯片，透明正片；透明度，清晰度，公开度；显而易见，一目了然",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "fluently",
+    "phoneticUk" : "ˈfluːəntli",
+    "phoneticUs" : "ˈfluːəntli",
+    "pos" : "adv.",
+    "meaning" : "流利地；（做事）毫不费力地；顺利地，流畅地",
+    "example" : "",
+    "exampleZh" : ""
+  } ],
+  "expressions" : [ {
+    "expression" : "…… has not arrived with a dramatic announcement. Instead, it has quietly blended into ……",
+    "meaning" : "……的到来，并未伴随高调的宣告，而是悄然融入了……。",
+    "example" : "Chronic anxiety has not arrived with a dramatic announcement. Instead, it has quietly blended into people’s everyday thoughts.",
+    "exampleZh" : "长期焦虑的出现，并未伴随明显的信号，而是悄然渗入了人们的日常思绪。"
+  } ],
+  "keySentences" : [ {
+    "sentence" : "…… has not arrived with a dramatic announcement. Instead, it has quietly blended into ……",
+    "translation" : "……的到来，并未伴随高调的宣告，而是悄然融入了……。",
+    "analysis" : "写作积累句型\n例句：Chronic anxiety has not arrived with a dramatic announcement. Instead, it has quietly blended into people’s everyday thoughts.\n翻译：长期焦虑的出现，并未伴随明显的信号，而是悄然渗入了人们的日常思绪。"
+  } ]
+}

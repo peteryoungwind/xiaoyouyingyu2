@@ -1,0 +1,232 @@
+{
+  "title" : "Why top firms paradoxically fire good workers",
+  "titleZh" : "大厂最反人性的用人逻辑",
+  "audioUrl" : "https://res.wx.qq.com/voice/getvoice?mediaid=MzU3MTAwNTY5Ml8yMjQ3NDk1NjIz",
+  "difficultyStars" : 4,
+  "wordCount" : 830,
+  "sourceName" : "罗彻斯特大学",
+  "summary" : "为什么全球最负盛名的公司——从麦肯锡、高盛等一众顶尖咨询公司到投资银行和律师事务所——会在吸纳最聪明的人才、对他们进行高强度培养后，又在几年内让大批新人离开？《美国经济评论》最新的一项研究给出的结论是，这种所谓的“逆向选择”并不是机制缺陷，而是证明这一体系（即精英行业高门槛招人、高强度培养、高流动率的人才体系）正完全按照当初的设计运行。\n\n来源：罗彻斯特大学；作者：Sandra Knispel；原文发布时间：2025-11-24 20:00:00",
+  "status" : "ENABLED",
+  "publishedDate" : null,
+  "paragraphs" : [ {
+    "sortOrder" : 1,
+    "contentEn" : "Why do the world’s most prestigious firms—such as McKinsey, Goldman Sachs and other elite consulting giants, investment banks, and law practices—hire the brightest talents, train them intensively, and then, after a few years, send many of them packing? A recent study in the American Economic Review concludes that so-called adverse selection is not a flaw but rather a sign that the system is working precisely as intended.",
+    "contentZh" : "为什么全球最负盛名的公司——从麦肯锡、高盛等一众顶尖咨询公司到投资银行和律师事务所——会在吸纳最聪明的人才、对他们进行高强度培养后，又在几年内让大批新人离开？《美国经济评论》最新的一项研究给出的结论是，这种所谓的“逆向选择”并不是机制缺陷，而是证明这一体系（即精英行业高门槛招人、高强度培养、高流动率的人才体系）正完全按照当初的设计运行。"
+  }, {
+    "sortOrder" : 2,
+    "contentEn" : "Two financial economists, from the University of Rochester and the University of Wisconsin–Madison respectively, created a model that explains how reputation, information, and retention interact in professions where skill is essential and performance is both visible and attributable to a specific person, particularly in fields such as law, consulting, fund asset management, auditing, and architecture. They argue that much of the professional services world operates through “intermediaries”—firms that both hire employees (also referred to as “agents” or “managers”) and market their expertise to clients—because clients can’t themselves easily judge a worker’s ability from the outset.",
+    "contentZh" : "来自罗切斯特大学和威斯康星大学麦迪逊分校的两位金融经济学家提出了一个模型，用以解释声誉、信息流通与人才留存在那些技能要求极高、绩效可见且可明确归因于个人的行业（如法律、咨询、基金资产管理、审计及建筑）中如何相互作用。研究者指出，之所以在许多专业服务行业中，“中介型公司”成为主要的组织形式——也就是那些既雇用员工（模型中又称“代理人”或“经理人”）又向客户（用人方）兜售员工专业能力的公司——原因在于客户最初很难凭自身判断准确评估一名从业者的真实水平。"
+  }, {
+    "sortOrder" : 3,
+    "contentEn" : "“Identifying skilled professionals is critical yet presents a major challenge for clients,” the researchers write. “Some of the firm’s employees are high-quality managers,” says coauthor Ron Kaniel, the Jay S. and Jeanne P. Benet Professor of Finance at the University’s Simon Business School, “but the firm is paying them less than their actual quality, because initially the employees don’t have a credible way of convincing the outside world that they are high-quality.”",
+    "contentZh" : "研究人员写道：“识别出真正有实力的专业人士至关重要，但这对于客户而言却异常困难。” 论文合著者、罗切斯特大学西蒙商学院金融学杰出教授罗恩·卡尼尔补充说：“公司内部确实会有一些高素质的专业人士，但他们在职业早期往往缺乏足够可信的凭证来向外界证明自己具备这样的高能力，因此公司给他们的薪酬往往低于其真实水平。”"
+  }, {
+    "sortOrder" : 4,
+    "contentEn" : "At the start of an employee’s career, the firm has an advantage, Kaniel and his coauthor Dmitry Orlov contend, because the firm (“the mediator”) can assess an employee’s talent more accurately than outside clients can. During what the authors call “quiet periods,” the firm keeps those who perform adequately and pays them standard wages. Over time, however, an employee’s public performance—measured by successful cases, profitable investments, or well-executed projects—reduces the firm’s informational advantage. As the informational gap shrinks, the firm needs to pay some employees more because clients are now able to observe an employee’s good performance and hence update their beliefs about the employee’s skills.",
+    "contentZh" : "卡尼尔与另一位合著者德米特里·奥尔洛夫指出，在员工职业生涯初期，公司拥有信息优势，因为作为“中介方”的公司能够比外部客户更准确地判断员工的才能。在作者所称的“静默期”内，公司会留用表现达标的员工，并向他们支付统一的标准薪酬。但随着时间推移，员工在公开领域的业绩——例如胜诉案例、盈利投资或高质量完成的项目——会逐渐削弱公司的这种信息优势。随着信息差的缩小，公司不得不为部分员工开出更高的薪酬，因为此时外部客户已经能够观察到这些员工的优异表现，并据此重新评估他们的真实能力。"
+  }, {
+    "sortOrder" : 5,
+    "contentEn" : "“At some point, the informational advantage becomes fairly small,” says Kaniel, “and the firm says, ‘Well, I will basically start to churn. I will let go of some employees, and by doing that, I can actually extract more from the remaining ones.’” Ironically, to the client these churned—or strategically fired—employees look just as good as the ones whom the firm kept. Churning happens not because these employees have failed but because they may be just somewhat lower-skilled than their peers. Subsequently, churning heightens both the reputation of the firm and of the employees who remain.",
+    "contentZh" : "卡尼尔指出：“到了某个阶段，公司的信息优势会缩小到几乎可以忽略不计，此时公司会采取这样的策略：‘开始启动人员淘汰机制。通过裁掉一部分员工，公司实际上能从留下的员工身上获得更多价值’。” 但出人意料的是，在客户眼中，这些被流动掉的员工——也就是被战略性裁撤的员工——与公司留任的员工同样出色。淘汰的发生并不是因为他们表现不佳，而是因为他们的技能水平可能只是略低于同侪。这种操作反而最终同时提升了公司的整体声誉，以及留任员工的个人声望。"
+  }, {
+    "sortOrder" : 6,
+    "contentEn" : "Somewhat counterintuitively, the researchers show that churning can benefit both sides. Workers who stay on with an elite firm accept lower pay in the short run as the tradeoff for building a stronger reputation for themselves. When these workers eventually leave the elite firms, they can command higher fees directly from clients. As a result of the churning, the informational gap between firm and client keeps shrinking because the client catches up to what the firm knows about its workers and which ones it values most. At first glance, the duo argues, the firm’s reduced informational advantage should now cause a further drop in profits. But here comes the strategic twist: The firm starts to underpay those better workers who kept their jobs, akin to making them pay for being “chosen.” Consequently, profits do not decline and may even increase.",
+    "contentZh" : "虽然听上去有些反常，但研究者指出，这种人员流动机制可能同时让双方获益。留在顶尖公司的员工，会在短期内接受较低的薪酬，以此换取更强的个人声誉。当他们最终离开这些公司时，便能够直接向客户收取更高的费用。随着人员流动的持续，公司与客户之间的信息差不断缩小，因为客户逐渐了解了公司所掌握的有关员工实力及其重视对象的真实信息。两位学者认为，按理说信息优势的减弱应进一步压低公司的收益。但关键的策略点正是在这里：公司会开始压低那些成功留任的高水平员工的薪酬，相当于让他们为自己被公司“选中”这一殊荣付出成本。最终，公司的收益不仅没有下降，可能还会实现增长。"
+  }, {
+    "sortOrder" : 7,
+    "contentEn" : "“Firms now essentially can threaten the remaining employees: ‘Look, I can let you go, and everybody’s going to think that you’re the worst in the pool. If you want me not to let you go, you need to accept below market wages,’” says Kaniel. The result is a paradoxical but stable equilibrium. Workers accept being underpaid temporarily because remaining at a top firm serves as a signal to the market about their elite status. It also helps explain why prestigious employers can attract ambitious newcomers despite grueling hours and relatively modest starting pay.",
+    "contentZh" : "卡尼尔表示：“这使得公司实际上能够向留任员工施加压力：‘你要知道，我可以随时让你离开，而且外界也会因此认为你是团队里最差的那一个。如果你不想被解雇，就必须接受低于市场水平的薪酬。’” 这种博弈形成了一种看似矛盾却极度稳定的均衡状态。员工之所以愿意在短期内接受低薪，是因为继续留在顶尖公司本身，就是向市场证明其精英身份的有力信号。这也解释了为什么名声卓著的企业，即便工作强度极高、起薪并不突出，依然能够持续吸引大批有抱负的新人加入。"
+  }, {
+    "sortOrder" : 8,
+    "contentEn" : "Meanwhile, those who are let go aren’t failures—rather, their exit is part of a system that signals who’s truly top-tier, the researchers argue. In fact, fired workers often find success on their own because potential clients interpret a person’s prior affiliation with a top firm as proof of the worker’s strong ability and qualifications. In short, the “up-or-out” path of professional life may not just be a cultural phenomenon among top professional service firms but also an efficient response to how reputation is maintained and information flows. What looks like a ruthless system of constant turnover, the researchers argue, is in reality a finely tuned mechanism that helps the market discover and reward true talent.",
+    "contentZh" : "研究者同时强调，被裁撤的员工绝非失败者——相反，他们的离开本身就是体系设计的一部分，旨在向市场标示出真正的顶尖人才。事实上，这些离职者往往能在之后的职业发展中取得成功，因为在潜在客户看来，顶尖公司的任职经历本身就是其能力与资质的有力证明。简而言之，“不升即走”的职业路径并不仅仅是顶级专业服务机构的文化特征，也可能是一种为维持声誉与信息流动而演化出的高效应对机制。在研究人员看来，这种看似冷酷、人员流动频繁的体系，本质上是一套经过精细设计的机制，有助于市场识别并回报真正具有高水平才能的人。"
+  } ],
+  "vocabulary" : [ {
+    "word" : "prestigious",
+    "phoneticUk" : "preˈstɪdʒəs",
+    "phoneticUs" : "preˈstiːdʒəs",
+    "pos" : "adj.",
+    "meaning" : "有威望的，有声望的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "adverse selection",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "n.",
+    "meaning" : "不利选择：市场现象，其中一方拥有另一方缺乏的信息，导致交易更有可能对拥有信息的一方有利，并导致市场价格调整以补偿缺乏信息的一方可能面临的不利结果",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "retention",
+    "phoneticUk" : "rɪˈtenʃ(ə)n",
+    "phoneticUs" : "rɪˈtenʃ(ə)n",
+    "pos" : "n.",
+    "meaning" : "保持，保留；保存，存放；保持力，持续力；记忆力；（热量的）阻滞，（液体的）潴留；（对物质的）吸收和保持",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "audit",
+    "phoneticUk" : "ˈɔːdɪt",
+    "phoneticUs" : "ˈɔːdɪt",
+    "pos" : "",
+    "meaning" : "n. 审计，查……的账目；审查，审核；审计报告\nv. 审计，查账；<美>旁听",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "intermediary",
+    "phoneticUk" : "ˌɪntəˈmiːdiəri",
+    "phoneticUs" : "ˌɪntərˈmiːdieri",
+    "pos" : "",
+    "meaning" : "adj. 中间的，过渡的\nn. 调解人，中间人；媒介",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "outset",
+    "phoneticUk" : "ˈaʊtset",
+    "phoneticUs" : "ˈaʊtset",
+    "pos" : "n.",
+    "meaning" : "开始，开端",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "initially",
+    "phoneticUk" : "ɪˈnɪʃəli",
+    "phoneticUs" : "ɪˈnɪʃəli",
+    "pos" : "adv.",
+    "meaning" : "开始，最初",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "mediator",
+    "phoneticUk" : "ˈmiːdieɪtə(r)",
+    "phoneticUs" : "ˈmiːdieɪtər",
+    "pos" : "n.",
+    "meaning" : "调停者，解决纷争的人（机构）；中介物",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "profitable",
+    "phoneticUk" : "ˈprɒfɪtəb(ə)l",
+    "phoneticUs" : "ˈprɑːfɪtəb(ə)l",
+    "pos" : "adj.",
+    "meaning" : "盈利的，有利可图的；有益的，有用的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "churn",
+    "phoneticUk" : "tʃɜːn",
+    "phoneticUs" : "tʃɜːrn",
+    "pos" : "",
+    "meaning" : "v. 剧烈搅动；（使）猛烈翻腾；恶心（忧虑、厌恶或恐惧的强烈感觉）\nn. （炼制黄油用的）搅乳器；<英>奶桶；人事变更率，客户流失率，货物周转率；炒单",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "extract",
+    "phoneticUk" : "ˈekstrækt;ɪkˈstrækt",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "美/ ˈekstrækt; ɪkˈstrækt /\nn. 选段，引文；提取物，汁\nv. 提取，提炼；取出，拔出；摘录；索取，设法得到；开（方），求（根）",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "counterintuitive",
+    "phoneticUk" : "ˌkaʊnt(ə)rɪnˈtjuːɪtɪv",
+    "phoneticUs" : "ˌkaʊntərɪnˈtuːɪtɪv",
+    "pos" : "adj.",
+    "meaning" : "违反直觉的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "tradeoff",
+    "phoneticUk" : "ˈtreɪdɒf",
+    "phoneticUs" : "ˈtreɪdɔːf",
+    "pos" : "n.",
+    "meaning" : "权衡；折衷；（公平）交易（同 trade-off）",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "akin",
+    "phoneticUk" : "əˈkɪn",
+    "phoneticUs" : "əˈkɪn",
+    "pos" : "adj.",
+    "meaning" : "相似的，类似的；有血缘关系的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "paradoxical",
+    "phoneticUk" : "ˌpærəˈdɒksɪk(ə)l",
+    "phoneticUs" : "ˌpærəˈdɑːksɪk(ə)l",
+    "pos" : "adj.",
+    "meaning" : "自相矛盾的；事与愿违的，出乎意料的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "equilibrium",
+    "phoneticUk" : "ˌiːkwɪˈlɪbriəm",
+    "phoneticUs" : "ˌiːkwɪˈlɪbriəm",
+    "pos" : "n.",
+    "meaning" : "平衡，均衡；（心情的）平静，心理平衡；（经济）（供求的）平衡；（化）平衡；能量均分",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "grueling",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "美/ ˈɡruːəlɪŋ /\nadj. 使人精疲力尽的；艰辛的；让人受不了的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "top-tier",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "adj.",
+    "meaning" : "质量最好的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "affiliation",
+    "phoneticUk" : "əˌfɪliˈeɪʃ(ə)n",
+    "phoneticUs" : "əˌfɪliˈeɪʃ(ə)n",
+    "pos" : "n.",
+    "meaning" : "（与政治、宗教等组织的）联系，从属关系；加盟，加入",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "up-or-out",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "n.",
+    "meaning" : "非升即走；（企业管理中施行的）不晋则退法",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "ruthless",
+    "phoneticUk" : "ˈruːθləs",
+    "phoneticUs" : "ˈruːθləs",
+    "pos" : "adj.",
+    "meaning" : "无情的，冷酷的；（行为等）坚决的，果断的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "turnover",
+    "phoneticUk" : "ˈtɜːnəʊvə(r)",
+    "phoneticUs" : "ˈtɜːrnoʊvər",
+    "pos" : "",
+    "meaning" : "n. （一定时期内的）营业额，成交量；（商店的）货物周转率，销售比率；人事变动率，人员流动率；半圆馅饼（用水果、肉类或蔬菜做馅）；<美>（比赛中的）易手，失误\nadj. 翻过来的，可翻转的",
+    "example" : "",
+    "exampleZh" : ""
+  } ],
+  "expressions" : [ {
+    "expression" : "At the start of ……, …… has an advantage, because …… can …… more …… than …… can.",
+    "meaning" : "在……初期，……占据优势，这是因为……在……方面比……能力更强。",
+    "example" : "At the start of learning a language, a child has an advantage, because they can absorb pronunciation and intonation more naturally than an adult can.",
+    "exampleZh" : "在语言学习之初，儿童更有优势，因为他们能比成年人更自然地吸收发音和语调。"
+  } ],
+  "keySentences" : [ {
+    "sentence" : "At the start of ……, …… has an advantage, because …… can …… more …… than …… can.",
+    "translation" : "在……初期，……占据优势，这是因为……在……方面比……能力更强。",
+    "analysis" : "写作积累句型\n例句：At the start of learning a language, a child has an advantage, because they can absorb pronunciation and intonation more naturally than an adult can.\n翻译：在语言学习之初，儿童更有优势，因为他们能比成年人更自然地吸收发音和语调。"
+  } ]
+}

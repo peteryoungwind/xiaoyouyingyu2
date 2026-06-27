@@ -1,0 +1,176 @@
+{
+  "title" : "AI Use at Work Is Causing “Brain Fry,” Researchers Find, Especially Among High Performers",
+  "titleZh" : "AI正在把打工人的大脑“烧坏”",
+  "audioUrl" : "https://res.wx.qq.com/voice/getvoice?mediaid=MzU3MTAwNTY5Ml8yMjQ3NDk2NDIz",
+  "difficultyStars" : 4,
+  "wordCount" : 600,
+  "sourceName" : "Futurism",
+  "summary" : "人工智能（AI）一直标榜能减轻工作负担，然而越来越多的迹象表明，依赖AI大量产出工作内容，反而可能对人的心理健康造成不小的消耗。最新研究再次印证了这一令人不安的趋势：波士顿咨询公司与加州大学河滨分校的研究人员在《哈佛商业评论》发表的一份报告显示，在一项针对近1500名美国全职员工的调查中，那些在工作中频繁使用AI、试图将生产力推高到自身正常水平之上的员工，有相当一部分人正感到明显的疲惫。研究人员甚至为这种现象起了一个颇为形象的名字：“AI 脑过载”（AI brain fry）。\n\n来源：Futurism；作者：Frank Landymore；原文发布时间：2026-03-09 20:00:00",
+  "status" : "ENABLED",
+  "publishedDate" : null,
+  "paragraphs" : [ {
+    "sortOrder" : 1,
+    "contentEn" : "It’s looking more and more like using AI to churn out work can take a considerable toll on your mental health, despite the tech’s promises of easing workloads. The latest research to illustrate this grim trend: a survey of nearly 1,500 full time US workers, which found that an alarming proportion of employees who constantly use AI at work to push their productivity past their normal capacity are becoming fatigued, as the researchers from from Boston Consulting Group and University of California, Riverside described in a new report in Harvard Business Review. The researchers even gave the phenomenon an evocative name: “AI brain fry.”",
+    "contentZh" : "人工智能（AI）一直标榜能减轻工作负担，然而越来越多的迹象表明，依赖AI大量产出工作内容，反而可能对人的心理健康造成不小的消耗。最新研究再次印证了这一令人不安的趋势：波士顿咨询公司与加州大学河滨分校的研究人员在《哈佛商业评论》发表的一份报告显示，在一项针对近1500名美国全职员工的调查中，那些在工作中频繁使用AI、试图将生产力推高到自身正常水平之上的员工，有相当一部分人正感到明显的疲惫。研究人员甚至为这种现象起了一个颇为形象的名字：“AI 脑过载”（AI brain fry）。"
+  }, {
+    "sortOrder" : 2,
+    "contentEn" : "“One of the reasons we did this work is because we saw this happening to people who were perceived as really high performers,” Julie Bedard, a partner at BCG and an author of the report, told Axios. In the study, 14 percent of workers said they had experienced “mental fatigue that results from excessive use of, interaction with, and/or oversight of AI tools beyond one’s cognitive capacity.” The percentage was highest in marketing, software development, HR, finance, and IT roles. Many employees described brain fry symptoms using similar language. They reported a “buzzing” feeling or a mental “fog.” Other symptoms included headaches and slower decision-making.",
+    "contentZh" : "波士顿咨询公司合伙人、该报告作者之一朱莉·贝达尔在接受Axios采访时表示：“我们开展这项调查的一个原因是，我们发现这种情况正发生在那些普遍被认为绩效很高的人身上。”调查显示，14%的受访员工表示，他们曾经历过一种“心理疲惫，其原因在于对人工智能工具的过度使用、频繁互动或持续监督，已超出了个人的认知承受范围”。这一比例在市场营销、软件开发、人力资源、财务和信息技术等岗位中最高。在描述AI脑过载的症状时，许多员工的体验颇为相似。有人感到大脑“嗡嗡作响”，有人形容思维像被一层“脑雾”笼罩，还有人提到头痛、决策变慢等情况。"
+  }, {
+    "sortOrder" : 3,
+    "contentEn" : "AI companies promise that AI can supercharge productivity. Whether or not that’s true, the tech is enabling workers to multitask at a speed and workload well past their regular limit, which seems to be part of the problem regarding its cognitive effects. The study identified information overload and constant task switching as some of the main drivers of brain fry. In particular, the most draining aspect of using AI to automate work was oversight, or the need to constantly supervise the AI tools, with some overseeing multiple AI agents at the same time. A high degree of oversight predicted 12 percent more mental fatigue for employees, the report found.",
+    "contentZh" : "人工智能公司一直宣称，AI能够大幅提升生产效率。无论这一说法是否完全成立，这项技术确实让许多员工得以用远超其常规极限的速度和强度进行多任务处理，而这似乎正是其影响认知健康的重要因素之一。调查发现，信息过载与高频任务切换，是导致AI脑过载的主要诱因。其中尤其消耗精力的一环，是利用AI实现工作自动化时所必需的监督任务，即员工必须不断查看、管理这些工具，有些人甚至要同时监控多个AI智能体。报告还指出，高强度的监督工作会使员工的精神疲劳程度平均升高12%。"
+  }, {
+    "sortOrder" : 4,
+    "contentEn" : "“I had one tool helping me weigh technical decisions, another spitting out drafts and summaries, and I kept bouncing between them, double-checking every little thing,” one senior engineering manager described in the HBR report. “But instead of moving faster, my brain just started to feel cluttered. Not physically tired, just… crowded. It was like I had a dozen browser tabs open in my head, all fighting for attention.” “My thinking wasn’t broken, just noisy — like mental static,” the senior manager continued. “What finally snapped me out of it was realizing I was working harder to manage the tools than to actually solve the problem.”",
+    "contentZh" : "《哈佛商业评论》的报告中引用了一位高级工程经理的描述：“当时我用一个工具来帮助权衡技术决策，另一个工具负责生成草稿和摘要。我就在几个工具间来回切换，反复核对每一个细节。但结果并没让我推进得更快，反而觉得大脑越来越杂乱。那不是身体上的疲惫，而是……一种被塞满的感觉。就像脑子里同时打开了十几个浏览器标签页，每一个都在争夺注意力。”这位经理接着说：“我的思路并没有出问题，只是变得非常嘈杂——仿佛大脑里充满了杂音。真正让我意识到问题的是，我发现花在管理这些工具上的精力，已经超过了真正解决问题的时间。”"
+  }, {
+    "sortOrder" : 5,
+    "contentEn" : "The work also found a correlation between self-reported AI brain fry and an employee’s intent to quit their company. Intent to leave rose by nearly 10 percent among those who reported AI brain fry. Brain fry is also bad news for an employer’s all-important bottom line. Workers who experienced brain fry experienced a 33 percent increase in decision fatigue. For multibillion dollar firms, this could translate to millions of dollars of being lost to poor decision-making or paralysis each year.",
+    "contentZh" : "调查还发现，员工自述的AI脑过载与离职意向之间存在一定关联。在反馈出现AI脑过载的员工中，想要离开公司的意向上升了近10%。对企业而言，这同样不是好消息，因为AI脑过载还会波及关键的经营表现。数据显示，经历过AI脑过载的员工，其决策疲劳程度比其他人高出33%。对于营收规模达到数十亿美元的企业来说，这可能意味着每年因决策失误或决策迟滞而损失数百万美元。"
+  }, {
+    "sortOrder" : 6,
+    "contentEn" : "The findings add to a growing body of research and anecdotal accounts describing the toll of using AI at the workplace. Another report in HBR last month found that AI was actually intensifying work instead of reducing workloads. Amid increasing discussion into the topic, more engineers have come out to criticize AI’s usage in the workplace, with many admitting that their own AI usage was speeding them towards burnout.",
+    "contentZh" : "这些发现为越来越多关于职场使用AI所带来心理损耗的研究和个人经历，提供了新的佐证。上个月发表在《哈佛商业评论》上的另一份报告同样指出，AI并没有减轻工作负担，反而在某种程度上加剧了工作强度。随着相关讨论不断升温，越来越多工程师开始对职场中的AI应用提出质疑，其中不少人坦言，自己对AI的使用，正加速将他们推向职业倦怠。"
+  } ],
+  "vocabulary" : [ {
+    "word" : "churn out",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "1. 大量生产，机械地生产：指机械或大量地生产某物",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "grim",
+    "phoneticUk" : "ɡrɪm",
+    "phoneticUs" : "ɡrɪm",
+    "pos" : "adj.",
+    "meaning" : "严肃的，坚定的；令人不快的，令人沮丧的；阴森的，凄凉的；<非正式>生病的；<英，非正式>质量低劣，糟糕；（地方）简陋的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "fatigued",
+    "phoneticUk" : "fəˈtiːɡd",
+    "phoneticUs" : "fəˈtiːɡd",
+    "pos" : "",
+    "meaning" : "adj. 精疲力竭的\nv. 使疲劳，使劳累（fatigue 的过去式和过去分词）",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "evocative",
+    "phoneticUk" : "ɪˈvɒkətɪv",
+    "phoneticUs" : "ɪˈvɑːkətɪv",
+    "pos" : "adj.",
+    "meaning" : "唤起的；唤出的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "oversight",
+    "phoneticUk" : "ˈəʊvəsaɪt",
+    "phoneticUs" : "ˈoʊvərsaɪt",
+    "pos" : "n.",
+    "meaning" : "监督；失察，疏忽",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "symptom",
+    "phoneticUk" : "ˈsɪmptəm",
+    "phoneticUs" : "ˈsɪmptəm",
+    "pos" : "n.",
+    "meaning" : "（医） 症状；（大问题的）迹象，征兆，征候",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "supercharge",
+    "phoneticUk" : "ˈsuːpətʃɑːdʒ;ˈsjuː-",
+    "phoneticUs" : "ˈsuːpərtʃɑːrdʒ",
+    "pos" : "",
+    "meaning" : "vt. 对……增压；使……超载；使……过分；使……超负荷\nn. 超负荷；过荷",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "supervise",
+    "phoneticUk" : "ˈsuːpəvaɪz",
+    "phoneticUs" : "ˈsuːpərvaɪz",
+    "pos" : "v.",
+    "meaning" : "指导（某人）的工作；监督（任务，计划，活动）",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "spit out",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "1. 吐出；吐出来",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "clutter",
+    "phoneticUk" : "ˈklʌtə(r)",
+    "phoneticUs" : "ˈklʌtər",
+    "pos" : "",
+    "meaning" : "n. 杂乱的东西；杂乱\nv. 乱堆，塞满；使（脑子里）塞满（乱七八糟的事）",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "static",
+    "phoneticUk" : "ˈstætɪk",
+    "phoneticUs" : "ˈstætɪk",
+    "pos" : "",
+    "meaning" : "adj. 静止的；不变的；【物】静力的；【物】静电的\nn. 【物】静电(干扰)；〈非正式〉恶言；口角",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "snap out of",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "1. 摆脱：停止处于或使（某人）停止处于（不快的状态、情绪、白日梦等）\n2. 清醒过来：突然停止（做白日梦等）；突然恢复清醒\n3. 振作起来：停止陷入（不快的状态、情绪等）",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "correlation",
+    "phoneticUk" : "ˌkɒrəˈleɪʃ(ə)n",
+    "phoneticUs" : "ˌkɔːrəˈleɪʃ(ə)n",
+    "pos" : "n.",
+    "meaning" : "相互关系，关联；相关量",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "paralysis",
+    "phoneticUk" : "pəˈræləsɪs",
+    "phoneticUs" : "pəˈræləsɪs",
+    "pos" : "n.",
+    "meaning" : "瘫痪（症），麻痹（症）；（行动、决策、运行等的）瘫痪，停顿",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "anecdotal",
+    "phoneticUk" : "ˌænɪkˈdəʊt(ə)l",
+    "phoneticUs" : "ˌænɪkˈdoʊt(ə)l",
+    "pos" : "adj.",
+    "meaning" : "轶事的，传闻的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "burnout",
+    "phoneticUk" : "ˈbɜːnaʊt",
+    "phoneticUs" : "ˈbɜːrnaʊt",
+    "pos" : "n.",
+    "meaning" : "（过劳或紧张导致的）精疲力竭，精神崩溃；（火箭或喷气式飞机的）熄火，燃油耗尽；（电器的）烧坏，烧毁；过度疲劳者；燃尽，烧光",
+    "example" : "",
+    "exampleZh" : ""
+  } ],
+  "expressions" : [ {
+    "expression" : "It is looking more and more like …… can take a considerable toll on ……, despite ……",
+    "meaning" : "越来越多迹象表明，尽管……，……可能正对……造成显著影响。",
+    "example" : "It is looking more and more like excessive social media use can take a considerable toll on teenagers’ mental health, despite the platforms’ claims of connecting people.",
+    "exampleZh" : "越来越多迹象表明，尽管社交媒体声称能够拉近人与人之间的距离，但过度使用这些平台可能会对青少年的心理健康造成不小的影响。"
+  } ],
+  "keySentences" : [ {
+    "sentence" : "It is looking more and more like …… can take a considerable toll on ……, despite ……",
+    "translation" : "越来越多迹象表明，尽管……，……可能正对……造成显著影响。",
+    "analysis" : "写作积累句型\n例句：It is looking more and more like excessive social media use can take a considerable toll on teenagers’ mental health, despite the platforms’ claims of connecting people.\n翻译：越来越多迹象表明，尽管社交媒体声称能够拉近人与人之间的距离，但过度使用这些平台可能会对青少年的心理健康造成不小的影响。"
+  } ]
+}

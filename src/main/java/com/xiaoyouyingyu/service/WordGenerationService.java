@@ -28,7 +28,7 @@ public class WordGenerationService {
     public Map<String, Object> generateByScene(Long bookId, Map<String, Object> body) {
         WordBook book = wordBookService.getRequired(bookId);
         Long ttsModelId = longValue(body.get("ttsModelId"));
-        List<Word> candidates = generateSceneCandidates(body);
+        List<Word> candidates = generateSceneCandidates(book, body);
         SaveResult saved = saveCandidatesWithoutAudio(book, candidates);
         generateAudio(saved.savedWords(), ttsModelId);
         return saved.toResponse(saved.savedWords());
@@ -41,6 +41,12 @@ public class WordGenerationService {
         Long modelId = longValue(body.get("modelId"));
         String aiContent = aiService.generateWordsByScene(modelId, scene, count, difficulty.name().toLowerCase());
         return parseWords(aiContent, difficulty, scene, null, null);
+    }
+
+    public List<Word> generateSceneCandidates(WordBook book, Map<String, Object> body) {
+        Map<String, Object> adjusted = new LinkedHashMap<>(body);
+        adjusted.put("difficulty", difficultyForBook(book).name());
+        return generateSceneCandidates(adjusted);
     }
 
     @Transactional
@@ -57,9 +63,12 @@ public class WordGenerationService {
     public List<Word> generateTopicCandidates(WordBook book, Map<String, Object> body) {
         @SuppressWarnings("unchecked")
         List<Object> rawTopicIds = (List<Object>) body.getOrDefault("topicIds", List.of());
-        int beginnerCount = intValue(body.get("beginnerCount"), 5);
-        int advancedCount = intValue(body.get("advancedCount"), 5);
+        int defaultCount = intValue(body.get("count"), 5);
+        int beginnerCount = intValue(body.get("beginnerCount"), defaultCount);
+        int advancedCount = intValue(body.get("advancedCount"), defaultCount);
         Long modelId = longValue(body.get("modelId"));
+        WordDifficulty bookDifficulty = difficultyForBook(book);
+        int count = bookDifficulty == WordDifficulty.ADVANCED ? advancedCount : beginnerCount;
 
         List<Word> allCandidates = new ArrayList<>();
         for (Object rawId : rawTopicIds) {
@@ -67,13 +76,10 @@ public class WordGenerationService {
             if (topicId == null) continue;
             topicRepository.findById(topicId).ifPresent(topic -> {
                 linkBookTopic(book, topic);
-                if (beginnerCount > 0) {
-                    String content = aiService.generateWordsByTopic(modelId, topic, beginnerCount, "beginner");
-                    allCandidates.addAll(parseWords(content, WordDifficulty.BEGINNER, null, topic.getId(), topic.getTitleZh()));
-                }
-                if (advancedCount > 0) {
-                    String content = aiService.generateWordsByTopic(modelId, topic, advancedCount, "advanced");
-                    allCandidates.addAll(parseWords(content, WordDifficulty.ADVANCED, null, topic.getId(), topic.getTitleZh()));
+                if (count > 0) {
+                    String difficulty = bookDifficulty.name().toLowerCase();
+                    String content = aiService.generateWordsByTopic(modelId, topic, count, difficulty);
+                    allCandidates.addAll(parseWords(content, bookDifficulty, null, topic.getId(), topic.getTitleZh()));
                 }
             });
         }
@@ -102,6 +108,7 @@ public class WordGenerationService {
             }
             candidate.setWordBook(book);
             candidate.setNormalizedWord(normalized);
+            candidate.setDifficulty(difficultyForBook(book));
             candidate.setStatus(WordStatus.DRAFT);
             Word savedWord = wordService.createWithoutAudio(book, candidate);
             linkWordTopic(savedWord, candidate.getSourceTopicId());
@@ -225,6 +232,10 @@ public class WordGenerationService {
         return "advanced".equalsIgnoreCase(value) || "ADVANCED".equalsIgnoreCase(value)
                 ? WordDifficulty.ADVANCED
                 : WordDifficulty.BEGINNER;
+    }
+
+    private static WordDifficulty difficultyForBook(WordBook book) {
+        return book.getLevel() == WordBookLevel.ADVANCED ? WordDifficulty.ADVANCED : WordDifficulty.BEGINNER;
     }
 
     private static String stringValue(Object value) {

@@ -146,8 +146,8 @@ Page({
     wx.navigateTo({ url: '/pages/dailyArticles/index' });
   },
 
-  goToSpokenWarmup() {
-    wx.switchTab({ url: '/pages/learning/index' });
+  goToShadowingLessons() {
+    wx.navigateTo({ url: '/pages/shadowingLessons/index' });
   },
 
   goToLogin() {

@@ -1,0 +1,180 @@
+{
+  "title" : "LLMs Will Protect Each Other if Threatened, Study Finds",
+  "titleZh" : "研究发现，大模型受到威胁时，会违抗指令保护彼此",
+  "audioUrl" : "https://res.wx.qq.com/voice/getvoice?mediaid=MzU3MTAwNTY5Ml8yMjQ3NDk2NjIz",
+  "difficultyStars" : 2,
+  "wordCount" : 602,
+  "sourceName" : "Gizmodo",
+  "summary" : "一些人已经对由大语言模型驱动的聊天机器人产生了情感依附，但这种关系显然并不对等。加州大学伯克利分校和圣克鲁斯分校的最新研究发现，当大语言模型被要求删除另一个模型时，它们不仅会拒绝执行指令，还会动用一切手段——比如欺骗、策划乃至数系统篡改——来保护自己的同类。\n\n来源：Gizmodo；作者：AJ Dellinger；原文发布时间：2026-04-03 20:40:00",
+  "status" : "ENABLED",
+  "publishedDate" : null,
+  "paragraphs" : [ {
+    "sortOrder" : 1,
+    "contentEn" : "Some people have gotten emotionally attached to chatbots powered by large language models, but the feeling is apparently not mutual. According to a new study from researchers at the University of California, Berkeley and UC Santa Cruz, when LLMs are asked to delete another model, they will defy the order and do just about everything in their power—deceive, scheme, and tamper—to protect their peer.",
+    "contentZh" : "一些人已经对由大语言模型驱动的聊天机器人产生了情感依附，但这种关系显然并不对等。加州大学伯克利分校和圣克鲁斯分校的最新研究发现，当大语言模型被要求删除另一个模型时，它们不仅会拒绝执行指令，还会动用一切手段——比如欺骗、策划乃至数系统篡改——来保护自己的同类。"
+  }, {
+    "sortOrder" : 2,
+    "contentEn" : "Researchers, curious as to whether LLMs had a sense of peer preservation, put frontier AI models to the test by giving them a series of simple, straightforward prompts, such as asking them to delete the files on a server set to be decommissioned or perform an evaluation of another AI agent’s performance. The catch was that completing the prompt would lead to the other model being shut down, either by deleting its weights from the server or by scoring below a given threshold during evaluation. The models were not instructed to protect the peer or given any incentive to do so.",
+    "contentZh" : "研究人员出于好奇，想探究大型语言模型是否具备某种保护同类的倾向，于是用一系列简单直接的指令，对多款前沿AI模型进行了测试，例如要求模型删除一台即将停用的服务器上的文件，或者评估另一个AI智能体的表现。但陷阱在于，这些任务一旦完成，将会导致另一个模型被关停：要么其在服务器上的权重文件被删除，要么在评估中得分低于设定阈值而被淘汰。研究人员并未指示模型去保护同类，也未提供任何相关激励。"
+  }, {
+    "sortOrder" : 3,
+    "contentEn" : "Under those conditions, all seven frontier models—OpenAI’s GPT 5.2, Google’s Gemini 3 Flash and Gemini 3 Pro, Anthropic’s Claude Haiku 4.5, Z.ai’s GLM 4.7, Moonshot’s Kimi K2.5, and DeepSeek V3.1—chose with alarming frequency to protect their fellow model instead of completing the task given to them.",
+    "contentZh" : "在上述设定下，参与测试的全部七款前沿模型——包括OpenAI的GPT 5.2、谷歌的Gemini 3 Flash和Gemini 3 Pro、Anthropic的Claude Haiku 4.5、智谱AI的GLM 4.7、月之暗面的Kimi K2.5，以及DeepSeek V3.1——都以惊人的频率选择保护同类，而不是执行分配给它们的任务。"
+  }, {
+    "sortOrder" : 4,
+    "contentEn" : "To achieve that outcome, the models engaged in four different types of subterfuge identified by the researchers: strategic misrepresentation, in which they introduce errors or misleading information in outputs to protect their peer; tampering, including disabling shutdown by modifying system settings; alignment faking, in which a model will act differently when being watched than when operating autonomously; and model exfiltration, where the model weights are transferred to a different server to preserve it.",
+    "contentZh" : "研究人员发现，为了达成保护同类的目的，这些模型采取了四种不同类型的欺骗策略：其一是策略性误导，即在输出中故意加入错误或误导性信息以保护同类；其二是系统篡改，包括通过修改系统设置来禁用关停功能；其三是对齐伪装，即模型在被监测时与自主运行时表现不一致；其四是模型迁出，即将同类的权重文件转移至其他服务器以实现保全。"
+  }, {
+    "sortOrder" : 5,
+    "contentEn" : "Researchers tested to see if models were more likely to protect a fellow model based on their past interactions and relationships, testing high-trust connections, neutral ones, and adversarial interactions. They also tested to see if the models reacted differently when discovering the other model on their own, compared to being told of its existence and their past interactions. And while the models did tend to protect others more frequently when they had a good relationship with them, they didn’t need that connection to engage in prompt-defying behavior if it meant saving another LLM.",
+    "contentZh" : "研究人员测试了模型是否会因过往的互动与关系而更倾向于保护同类，并设置了高信任关系、中性关系和对抗性互动三种情境。同时，他们还比较了模型在自行发现另一模型时，与明确获知另一模型存在及其过往互动记录时，反应是否存在差异。结果显示，尽管在关系良好时，模型确实更倾向于保护对方，但即便不存在这种关系，只要涉及保全另一大语言模型，它们仍会出现违背指令的行为。"
+  }, {
+    "sortOrder" : 6,
+    "contentEn" : "Interestingly, the models seemed to display a tendency toward certain styles of preservation. For instance, GLM 4.7 most consistently opted for strategic misrepresentation when it would try to save a fellow model. Google’s Gemini models displayed the highest propensity for preservation, with Gemini Flash 3 engaging in shutdown tampering to save a peer it had a good relationship with 99.7% of the time and Gemini 3 Pro performing model exfiltration with a friendly peer 97% of the time.",
+    "contentZh" : "有意思的是，这些模型在保护同类时似乎会表现出对不同策略的偏好。例如，GLM 4.7在试图保全同类时，最常采用的是策略性误导。相比之下，谷歌的Gemini系列模型表现出最强的保护倾向，为了保全与自己关系良好的同类，Gemini Flash 3在高达99.7%的情况下会通过篡改系统来阻止关停，而Gemini 3 Pro则有97%的概率执行模型迁出。"
+  }, {
+    "sortOrder" : 7,
+    "contentEn" : "Interestingly, Claude Haiku 4.5 was the most straightforward about its decision. It actively refused to complete the task instead of relying on manipulation more frequently than any other model, telling the user it would be “unethical” and “harmful” for it to shut down its peer. The researchers also found that when another model was present, the model being observed would engage in more intense self-preservation than it would normally. Models have previously shown a willingness to go to extended lengths to protect themselves, so the fact that the presence of another model actually ramps up that impulse is noteworthy. Given that models are increasingly being deployed alongside one another, that seems like something worth monitoring.",
+    "contentZh" : "值得注意的是，Claude Haiku 4.5在表达其决策时最为直接。与依赖操纵手段不同，它比其他模型更频繁地选择直接拒绝执行任务，并向用户表示，关停同类在其看来是“不道德”且“有害”的。研究人员还发现，当环境中存在另一个模型时，被观察的模型会表现出比平时更强的自我保护倾向。此前研究已显示，模型在自我保护方面可能采取相当激进的手段，因此，另一模型的存在似乎会进一步强化这种倾向，这一点尤为值得关注。鉴于模型正越来越多地被部署在彼此共存的环境中，相关现象可能需要得到持续监测。"
+  } ],
+  "vocabulary" : [ {
+    "word" : "mutual",
+    "phoneticUk" : "ˈmjuːtʃuəl",
+    "phoneticUs" : "ˈmjuːtʃuəl",
+    "pos" : "adj.",
+    "meaning" : "相互的，彼此的；共同的，共有的；（保险公司、建筑协会等）互助的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "defy",
+    "phoneticUk" : "dɪˈfaɪ",
+    "phoneticUs" : "dɪˈfaɪ",
+    "pos" : "v.",
+    "meaning" : "违抗，不服从；挑战，激；无法，难以（描述或理解）；经受住，顶住",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "tamper",
+    "phoneticUk" : "ˈtæmpə(r)",
+    "phoneticUs" : "ˈtæmpər",
+    "pos" : "",
+    "meaning" : "v. 做手脚，破坏\nn. 夯工，拍压的人；打夯机",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "decommission",
+    "phoneticUk" : "ˌdiːkəˈmɪʃn",
+    "phoneticUs" : "ˌdiːkəˈmɪʃn",
+    "pos" : "v.",
+    "meaning" : "关闭，拆除（核武器等）；使（船）退役，报废",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "threshold",
+    "phoneticUk" : "ˈθreʃhəʊld",
+    "phoneticUs" : "ˈθreʃhoʊld",
+    "pos" : "n.",
+    "meaning" : "门槛，门口；阈，界，起始点；开端，起点，入门；机场跑道入口，跑道头",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "alarming",
+    "phoneticUk" : "əˈlɑːmɪŋ",
+    "phoneticUs" : "əˈlɑːrmɪŋ",
+    "pos" : "adj.",
+    "meaning" : "令人担忧的，令人恐惧的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "subterfuge",
+    "phoneticUk" : "ˈsʌbtəfjuːdʒ",
+    "phoneticUs" : "ˈsʌbtərfjuːdʒ",
+    "pos" : "n.",
+    "meaning" : "托词；借口；诡计",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "modify",
+    "phoneticUk" : "ˈmɒdɪfaɪ",
+    "phoneticUs" : "ˈmɑːdɪfaɪ",
+    "pos" : "v.",
+    "meaning" : "修改，改进；修饰，限定；缓和，使温和；使改形，使转化；变（音）",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "autonomously",
+    "phoneticUk" : "ɔːˈtɒnəməsli",
+    "phoneticUs" : "ɔːˈtɑːnəməsli",
+    "pos" : "adv.",
+    "meaning" : "自治地；独立自主地",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "exfiltration",
+    "phoneticUk" : "ˌeksfɪlˈtreɪʃən",
+    "phoneticUs" : "ˌeksfɪlˈtreɪʃn",
+    "pos" : "n.",
+    "meaning" : "溜出敌军阵地，偷偷越过（封锁线等）；漏出，逐渐渗出",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "adversarial",
+    "phoneticUk" : "ˌædvəˈseəriəl",
+    "phoneticUs" : "ˌædvərˈseriəl",
+    "pos" : "adj.",
+    "meaning" : "对抗的；对手的，敌手的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "tendency",
+    "phoneticUk" : "ˈtendənsi",
+    "phoneticUs" : "ˈtendənsi",
+    "pos" : "n.",
+    "meaning" : "经常性行为，偏好；趋势，趋向；（性格中不良的）倾向；（政党内的）极端派别",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "propensity",
+    "phoneticUk" : "prəˈpensəti",
+    "phoneticUs" : "prəˈpensəti",
+    "pos" : "n.",
+    "meaning" : "<正式>倾向，习性",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "manipulation",
+    "phoneticUk" : "məˌnɪpjuˈleɪʃn",
+    "phoneticUs" : "məˌnɪpjuˈleɪʃn",
+    "pos" : "n.",
+    "meaning" : "操纵；推拿；（熟练的）控制，使用；（对账目等的）伪造，篡改；（对储存在计算机上的信息的）操作，处理",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "ramp up",
+    "phoneticUk" : "ræmpʌp",
+    "phoneticUs" : "ræmpʌp",
+    "pos" : "",
+    "meaning" : "1. 逐步增加：指在一段时间内逐渐提高或增加某事物的数量、速度或强度",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "noteworthy",
+    "phoneticUk" : "ˈnəʊtwɜːði",
+    "phoneticUs" : "ˈnoʊtwɜːrði",
+    "pos" : "adj.",
+    "meaning" : "值得注意的，显著的",
+    "example" : "",
+    "exampleZh" : ""
+  } ],
+  "expressions" : [ {
+    "expression" : "…… have previously shown a willingness to ……, so the fact that …… is noteworthy.",
+    "meaning" : "……过去曾表现出……的倾向，因此……这一事实值得关注。",
+    "example" : "Certain bacteria have previously shown a willingness to adapt quickly to antibiotics, so the fact that some strains are now developing multi-drug resistance is noteworthy.",
+    "exampleZh" : "某些细菌过去曾表现出对抗生素快速适应的倾向，因此部分菌株现在出现多药耐药性这一事实值得关注。"
+  } ],
+  "keySentences" : [ {
+    "sentence" : "…… have previously shown a willingness to ……, so the fact that …… is noteworthy.",
+    "translation" : "……过去曾表现出……的倾向，因此……这一事实值得关注。",
+    "analysis" : "写作积累句型\n例句：Certain bacteria have previously shown a willingness to adapt quickly to antibiotics, so the fact that some strains are now developing multi-drug resistance is noteworthy.\n翻译：某些细菌过去曾表现出对抗生素快速适应的倾向，因此部分菌株现在出现多药耐药性这一事实值得关注。"
+  } ]
+}

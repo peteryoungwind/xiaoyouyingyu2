@@ -1,0 +1,70 @@
+<view class="page-container safe-bottom shadowing-page">
+  <view class="header-card">
+    <view class="header-label">Learning</view>
+    <view class="header-title">跟读精听</view>
+    <view class="header-desc">看原声视频，练精听、跟读和地道表达。</view>
+  </view>
+
+  <view class="hero-card">
+    <view class="hero-top">
+      <view class="hero-icon">S</view>
+      <view>
+        <view class="hero-kicker">今日推荐</view>
+        <view class="hero-title">先听懂，再说顺</view>
+      </view>
+    </view>
+    <view class="hero-copy">每条素材都有独立视频和音频，适合通勤听、坐下看、逐句跟读。</view>
+  </view>
+
+  <view class="tabs">
+    <view class="tab {{!learned ? 'tab-active' : ''}}" bindtap="switchTab" data-learned="false">未学习</view>
+    <view class="tab {{learned ? 'tab-active' : ''}}" bindtap="switchTab" data-learned="true">已学习</view>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading-wrap">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <view wx:elif="{{error}}" class="empty-state">
+    <view class="empty-icon">!</view>
+    <view class="empty-title">加载失败</view>
+    <view class="empty-desc">{{error}}</view>
+    <button class="retry-btn" bindtap="retry">重试</button>
+  </view>
+
+  <view wx:elif="{{lessons.length === 0}}" class="empty-state">
+    <view class="empty-icon">{{learned ? '✓' : '听'}}</view>
+    <view class="empty-title">{{learned ? '学过的内容会出现在这里' : '暂无新的跟读内容'}}</view>
+    <view class="empty-desc">{{learned ? '点开任意跟读精听资源后，它会自动进入已学习列表。' : '新的原声素材准备好后会出现在这里。'}}</view>
+    <button wx:if="{{learned}}" class="retry-btn" bindtap="goToUnlearned">去学习</button>
+  </view>
+
+  <view wx:else class="lesson-list">
+    <view wx:for="{{lessons}}" wx:key="id" class="lesson-card" bindtap="goToDetail" data-id="{{item.id}}">
+      <view class="cover-wrap">
+        <image wx:if="{{item.thumbnailUrl}}" class="cover-image" src="{{item.thumbnailUrl}}" mode="aspectFill" />
+        <view wx:else class="cover-placeholder">▶</view>
+        <view class="play-badge">播放</view>
+      </view>
+      <view class="lesson-main">
+        <view class="meta-row">
+          <text class="chip">{{item.topic || item.category || '原声素材'}}</text>
+          <text class="chip green">{{item.learned ? '已学习' : '未学习'}}</text>
+        </view>
+        <view class="lesson-title">{{item.titleZh || item.title}}</view>
+        <view class="lesson-sub">{{item.sourceName || item.category || item.title}}</view>
+        <view class="lesson-footer">
+          <text>{{item.sentenceCount}}句 · {{item.expressionCount}}个表达 · {{item.publishedDate}}</text>
+          <text class="arrow">›</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{loadingMore}}" class="loading-more">
+    <view class="loading-spinner-sm"></view>
+    <text>加载更多...</text>
+  </view>
+  <view wx:elif="{{!hasMore && lessons.length > 0}}" class="no-more">没有更多了</view>
+</view>

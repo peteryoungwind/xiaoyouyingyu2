@@ -60,7 +60,7 @@ public class WordService {
         word.setId(null);
         word.setWordBook(book);
         word.setNormalizedWord(normalized);
-        if (word.getDifficulty() == null) word.setDifficulty(WordDifficulty.BEGINNER);
+        word.setDifficulty(difficultyForBook(book));
         if (word.getStatus() == null) word.setStatus(WordStatus.DRAFT);
         wordAudioService.markPending(word);
         return wordRepository.saveAndFlush(word);
@@ -81,7 +81,7 @@ public class WordService {
 
         word.setWord(updated.getWord());
         word.setNormalizedWord(normalized);
-        word.setDifficulty(updated.getDifficulty());
+        word.setDifficulty(difficultyForBook(word.getWordBook()));
         word.setStatus(updated.getStatus());
         word.setPhonetic(updated.getPhonetic());
         word.setPartOfSpeech(updated.getPartOfSpeech());
@@ -193,6 +193,10 @@ public class WordService {
         response.put("createdAt", word.getCreatedAt());
         response.put("updatedAt", word.getUpdatedAt());
         return response;
+    }
+
+    public WordDifficulty difficultyForBook(WordBook book) {
+        return book.getLevel() == WordBookLevel.ADVANCED ? WordDifficulty.ADVANCED : WordDifficulty.BEGINNER;
     }
 
     private static String blankToNull(String value) {

@@ -24,6 +24,10 @@ public class WordBook {
     private String scene;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "level", nullable = false, length = 20, columnDefinition = "varchar(20) default 'BEGINNER'")
+    private WordBookLevel level = WordBookLevel.BEGINNER;
+
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private WordBookStatus status = WordBookStatus.DRAFT;
 

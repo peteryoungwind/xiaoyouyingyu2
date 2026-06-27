@@ -1,0 +1,200 @@
+{
+  "title" : "Why Intempus thinks robots should have a human physiological state",
+  "titleZh" : "Intempus的尝试：未来的机器人是否更有温度",
+  "audioUrl" : "https://res.wx.qq.com/voice/getvoice?mediaid=MzU3MTAwNTY5Ml8yMjQ3NDk0MDQ3",
+  "difficultyStars" : 2,
+  "wordCount" : 674,
+  "sourceName" : "TechCrunch",
+  "summary" : "年仅19岁的泰迪・华纳一直对机器人技术充满兴趣。家族长期从事相关行业，他在高中时便常年在机械加工车间中接触实践，可以说是在这样的环境中“成长”起来的。如今，他正着手创办自己的机器人公司 Intempus，致力于赋予机器人更多类似人类的特质。\n\n来源：TechCrunch；作者：Rebecca Szkutak；原文发布时间：2025-05-26 20:00:00",
+  "status" : "ENABLED",
+  "publishedDate" : null,
+  "paragraphs" : [ {
+    "sortOrder" : 1,
+    "contentEn" : "Teddy Warner, 19, has always been interested in robotics. His family was in the industry, and he says he “grew up” working in a machinist shop while in high school. Now Warner is building a robotics company of his own, Intempus, that looks to make robots a bit more human.",
+    "contentZh" : "年仅19岁的泰迪・华纳一直对机器人技术充满兴趣。家族长期从事相关行业，他在高中时便常年在机械加工车间中接触实践，可以说是在这样的环境中“成长”起来的。如今，他正着手创办自己的机器人公司 Intempus，致力于赋予机器人更多类似人类的特质。"
+  }, {
+    "sortOrder" : 2,
+    "contentEn" : "Intempus is building tech to retrofit existing robots with human-like emotional expressions to help humans better interact with these machines and better predict their movements. Giving these robots human-like reactions will also produce data that can be used to better train AI models.",
+    "contentZh" : "Intempus正在研发一项技术，旨在为现有机器人加装具有人类情感表达能力的模块，来提升人类与机器之间的互动体验，并帮助用户更准确地判断机器人的行为走向。更重要的是，赋予机器人这些类人化反应还将生成关键数据，用于进一步优化人工智能模型的训练效果。"
+  }, {
+    "sortOrder" : 3,
+    "contentEn" : "These robots will show expression through kinetic movements, Warner told TechCrunch. “Humans derive a lot of our subconscious signals, not from face, not from semantics, but solely from the movement of your arms and your torso,” Warner said. “This extends to dogs and cats and other animals that aren’t humans.”",
+    "contentZh" : "华纳在接受TechCrunch采访时表示，Intempus正在研发的机器人将通过动态肢体动作来表达情绪。他解释说：“人类获取大量潜意识层面的信息，其实并不是依赖面部表情或语言本身，而是更多来自手臂和躯干的动作。而这种沟通方式也同样适用于我们理解猫、狗以及其他非人类动物的行为。”"
+  }, {
+    "sortOrder" : 4,
+    "contentEn" : "Warner said he got the idea for Intempus while he was working at AI research lab Midjourney. He said Midjourney, like many other AI research labs, was working on world AI models, or AI models that understand and make decisions based on the dynamics of the real world and spatial properties, as opposed to just cause and effect. But it will be really hard for these models to achieve this spatial reasoning, Warner realized, because a lot of the data the models were being trained on came from robots that didn’t have this spatial reasoning, either.",
+    "contentZh" : "华纳透露，他是在人工智能研究机构Midjourney工作期间，萌生了创办Intempus的想法。他提到，像许多人工智能实验室一样，Midjourney正在研发所谓的“世界模型”，即这类模型不仅关注因果关系，更尝试理解现实世界的动态变化与空间特性，并基于此作出决策。但华纳逐渐意识到，要实现这种空间推理并不容易，因为用于训练这些模型的大量数据，来自本身就缺乏空间理解能力的机器人。"
+  }, {
+    "sortOrder" : 5,
+    "contentEn" : "“Robots currently go from A to C, that is observation to action, whereas humans, and all living things, have this intermediary B step that we call physiological state,” Warner said. “Robots don’t have physiological state. They don’t have fun, they don’t have stress. If we want robots to understand the world like a human can, and be able to communicate with humans in a way that is innate to us, that is less uncanny, more predictable, we have to give them this B step.”",
+    "contentZh" : "华纳解释说：“目前的机器人在执行任务时通常是从观察（A）直接跳到行动（C），而人类以及其他生物在这两者之间还存在一个关键的中间步骤，我们称之为生理状态（B）。机器人目前没有生理状态，它们体验不到乐趣，也感受不到压力。如果我们希望机器人能够像人类一样理解世界，并以一种人类本能上易于接受、不显突兀、且更具可预测性的方式与人互动，就必须为它们引入这一B步骤。”"
+  }, {
+    "sortOrder" : 6,
+    "contentEn" : "Warner took that idea and started to research. He started with fMRI data, which measures brain activity by detecting changes in blood flow and oxygen, but it didn’t work. Then his friend suggested trying a polygraph (lie detector test), which works by capturing sweat data, and he started to find some success.",
+    "contentZh" : "华纳将这一想法付诸实践，开始着手研究。他最初尝试的是功能性磁共振成像（fMRI）数据，这项技术通过监测大脑中的血流和含氧量变化来追踪神经活动，但效果并不理想。后来，在朋友建议下，他开始尝试基于测谎仪（polygraph）原理的方法，通过检测汗液分泌获取数据，研究才逐渐取得了一些进展。"
+  }, {
+    "sortOrder" : 7,
+    "contentEn" : "“I was shocked at how quickly I could go from capturing sweat data for myself and a few of my friends and then training this model that can essentially allow robots to have an emotional composition solely based on sweat data,” Warner said. He’s since expanded from sweat data into other areas, like body temperature, heart rate, and photoplethysmography, which measures the blood volume changes in the microvascular level of the skin, among others.",
+    "contentZh" : "华纳回忆道：“我当时感到非常震惊，没想到我只用了自己和几位朋友的汗液数据，就能如此快速地训练出一个模型，让机器人仅凭这些数据就具备某种情感构成。”此后，他将研究从汗液数据扩展到更广泛的生理信号，包括体温、心率，以及光电容积脉搏波（PPG）等指标——这种技术可用于监测皮肤微血管层的血容量变化。"
+  }, {
+    "sortOrder" : 8,
+    "contentEn" : "Warner launched Intempus in September 2024 and spent the first four months exclusively on research. He’s spent the last few on a mix of building up these emotional capabilities for robots and engaging potential customers. He’s already signed seven enterprise robotics partners. Intempus is also part of the current cohort of Peter Thiel’s Thiel Fellowship program, which gives young entrepreneurs $200,000 over two years to drop out of school and build their companies.",
+    "contentZh" : "华纳于2024年9月创办了机器人公司Intempus，并在最初四个月专注于技术研发。此后，他一边推进机器人情感能力的构建，一边积极对接潜在客户。目前，Intempus已与七家企业级机器人公司达成合作。同时，Intempus也入选了彼得·泰尔发起的“泰尔奖学金”最新一期项目，该项目为年轻创业者提供为期两年、共计20万美元的资助，支持他们放弃传统学业，全力投入公司建设。"
+  }, {
+    "sortOrder" : 9,
+    "contentEn" : "Warner said the next step for Intempus is to hire — he’s done everything until now as a team of one — and get some of the tech that’s already been built in front of humans to start testing. While Intempus is currently working on retrofitting existing robots and plans to focus on that, Warner said he’d never rule out Intempus building its own emotionally intelligent robots in the future.",
+    "contentZh" : "华纳表示，Intempus的下一步是组建团队——迄今为止，所有工作都是由他一人完成——并将部分已开发的技术推向实际环境，开展人机交互测试。当前，公司的主要业务是为现有机器人加装情感模块，并计划在这一方向持续深耕。不过华纳也提到，未来并不排除Intempus自主打造具备情感智能的整机机器人。"
+  }, {
+    "sortOrder" : 10,
+    "contentEn" : "“I have a bunch of robots, and they run a bunch of emotions, and I want to have someone come in and just understand that this robot is a joyful robot, and if I can innately convey some emotion, some intents that the robot holds, then I’ve done my job properly,” Warner said. “I think I can, you know, really prove that I’ve done this over the next four to six months.”",
+    "contentZh" : "华纳表示：“我现在手头有一批原型机器人，它们已经能够表现出多种情感，我真正想实现的，是当人们走近它们时，能直观地感受到，这是一台快乐的机器人。如果能让机器人自然流露出自身的情绪和意图，那就说明我真的做对了。我相信，在接下来的四到六个月内，我可以确实地证明我们已经达到了这一目标。”"
+  } ],
+  "vocabulary" : [ {
+    "word" : "robotics",
+    "phoneticUk" : "rəʊˈbɒtɪks",
+    "phoneticUs" : "roʊˈbɑːtɪks",
+    "pos" : "n.",
+    "meaning" : "机器人学；机器人（robotic的复数）",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "machinist",
+    "phoneticUk" : "məˈʃiːnɪst",
+    "phoneticUs" : "məˈʃiːnɪst",
+    "pos" : "n.",
+    "meaning" : "机械工；机械师；机械安装修理工",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "retrofit",
+    "phoneticUk" : "ˈretrəʊfɪt",
+    "phoneticUs" : "ˈretroʊfɪt",
+    "pos" : "",
+    "meaning" : "vt. 改进；[计] 更新；式样翻新\nn. 式样翻新；花样翻新",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "kinetic",
+    "phoneticUk" : "kɪˈnetɪk",
+    "phoneticUs" : "kɪˈnetɪk",
+    "pos" : "adj.",
+    "meaning" : "[力] 运动的；活跃的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "subconscious",
+    "phoneticUk" : "ˌsʌbˈkɒnʃəs",
+    "phoneticUs" : "ˌsʌbˈkɑːnʃəs",
+    "pos" : "",
+    "meaning" : "adj. 下意识的，潜意识的\nn. 下意识，潜意识",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "semantics",
+    "phoneticUk" : "sɪˈmæntɪks",
+    "phoneticUs" : "sɪˈmæntɪks",
+    "pos" : "n.",
+    "meaning" : "[语] 语义学；语义论",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "torso",
+    "phoneticUk" : "ˈtɔːsəʊ",
+    "phoneticUs" : "ˈtɔːrsoʊ",
+    "pos" : "n.",
+    "meaning" : "躯干；裸体躯干雕像；未完成的作品；残缺不全的东西",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "spatial",
+    "phoneticUk" : "ˈspeɪʃ(ə)l",
+    "phoneticUs" : "ˈspeɪʃ(ə)l",
+    "pos" : "adj.",
+    "meaning" : "空间的，与空间有关的；空间理解能力的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "as opposed to",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "1. 与……相对比：用于表示与某事物相对立或相对比的另一事物",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "intermediary",
+    "phoneticUk" : "ˌɪntəˈmiːdiəri",
+    "phoneticUs" : "ˌɪntərˈmiːdieri",
+    "pos" : "",
+    "meaning" : "adj. 中间的，过渡的\nn. 调解人，中间人；媒介",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "physiological",
+    "phoneticUk" : "ˌfɪziəˈlɒdʒɪk(ə)l",
+    "phoneticUs" : "ˌfɪziəˈlɑːdʒɪk(ə)l",
+    "pos" : "adj.",
+    "meaning" : "生理的，生理机能的；生理学的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "innate",
+    "phoneticUk" : "ɪˈneɪt",
+    "phoneticUs" : "ɪˈneɪt",
+    "pos" : "adj.",
+    "meaning" : "先天的，固有的；（信仰）根深蒂固的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "uncanny",
+    "phoneticUk" : "ʌnˈkæni",
+    "phoneticUs" : "ʌnˈkæni",
+    "pos" : "adj.",
+    "meaning" : "神秘的；离奇的；可怕的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "composition",
+    "phoneticUk" : "ˌkɒmpəˈzɪʃ(ə)n",
+    "phoneticUs" : "ˌkɑːmpəˈzɪʃ(ə)n",
+    "pos" : "n.",
+    "meaning" : "成分构成，成分；（音乐、艺术、诗歌的）作品；创作，作曲；构图；作文",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "microvascular",
+    "phoneticUk" : "ˌmaɪkrəʊˈvæskjʊlə",
+    "phoneticUs" : "",
+    "pos" : "adj.",
+    "meaning" : "微脉管的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "exclusively",
+    "phoneticUk" : "ɪkˈskluːsɪvli",
+    "phoneticUs" : "ɪkˈskluːsɪvli",
+    "pos" : "adv.",
+    "meaning" : "仅仅，单独地，专门地；作为唯一的（消息）来源",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "cohort",
+    "phoneticUk" : "ˈkəʊhɔːt",
+    "phoneticUs" : "ˈkoʊhɔːrt",
+    "pos" : "n.",
+    "meaning" : "（有共同特点或举止类同的）一群人，一批人；同伙，支持者；（古罗马）步兵队",
+    "example" : "",
+    "exampleZh" : ""
+  } ],
+  "expressions" : [ {
+    "expression" : "While …… is currently working on …… and plans to focus on ……, …… said …… would never rule out …… in the future.",
+    "meaning" : "虽然……目前正在进行……并计划专注于……，但……表示……未来绝不会排除……。",
+    "example" : "While the company is currently working on electric vehicles and plans to focus on battery technology, the CEO said they would never rule out hydrogen-powered cars in the future.",
+    "exampleZh" : "虽然公司目前正在研发电动汽车，并计划专注于电池技术，但首席执行官表示未来绝不会排除氢动力汽车的可能性。"
+  } ],
+  "keySentences" : [ {
+    "sentence" : "While …… is currently working on …… and plans to focus on ……, …… said …… would never rule out …… in the future.",
+    "translation" : "虽然……目前正在进行……并计划专注于……，但……表示……未来绝不会排除……。",
+    "analysis" : "写作积累句型\n例句：While the company is currently working on electric vehicles and plans to focus on battery technology, the CEO said they would never rule out hydrogen-powered cars in the future.\n翻译：虽然公司目前正在研发电动汽车，并计划专注于电池技术，但首席执行官表示未来绝不会排除氢动力汽车的可能性。"
+  } ]
+}

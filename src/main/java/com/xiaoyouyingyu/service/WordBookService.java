@@ -32,6 +32,9 @@ public class WordBookService {
     public WordBook create(WordBook book, Long createdBy) {
         book.setId(null);
         book.setCreatedBy(createdBy);
+        if (book.getLevel() == null) {
+            book.setLevel(WordBookLevel.BEGINNER);
+        }
         if (book.getStatus() == null) {
             book.setStatus(WordBookStatus.DRAFT);
         }
@@ -44,6 +47,9 @@ public class WordBookService {
         book.setName(updated.getName());
         book.setDescription(updated.getDescription());
         book.setScene(updated.getScene());
+        if (updated.getLevel() != null) {
+            book.setLevel(updated.getLevel());
+        }
         if (updated.getStatus() != null) {
             book.setStatus(updated.getStatus());
         }
@@ -82,6 +88,7 @@ public class WordBookService {
         response.put("name", book.getName());
         response.put("description", book.getDescription());
         response.put("scene", book.getScene());
+        response.put("level", book.getLevel());
         response.put("status", book.getStatus());
         response.put("createdBy", book.getCreatedBy());
         response.put("createdAt", book.getCreatedAt());

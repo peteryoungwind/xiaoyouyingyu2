@@ -1,0 +1,204 @@
+{
+  "title" : "You’ll Snort-Laugh When You Learn How Much AI Actually Added to the US Economy Last Year",
+  "titleZh" : "人工智能帮美国经济赚了多少钱？答案是0",
+  "audioUrl" : "https://res.wx.qq.com/voice/getvoice?mediaid=MzU3MTAwNTY5Ml8yMjQ3NDk2NTQ1",
+  "difficultyStars" : 4,
+  "wordCount" : 515,
+  "sourceName" : "Futurism",
+  "summary" : "纵览各大新闻头条，很容易形成这样一种印象：似乎每一位投资者、银行家和金融分析师都对人工智能热情高涨。然而，这种表面的一致，实际上掩盖了更复杂的现实：美国经济的真实状况，并不全然如科技公司所描绘的那般。\n\n来源：Futurism；作者：Joe Wilkins；原文发布时间：2026-03-24 20:30:00",
+  "status" : "ENABLED",
+  "publishedDate" : null,
+  "paragraphs" : [ {
+    "sortOrder" : 1,
+    "contentEn" : "Scanning the headlines, it can be easy to get the impression that every investor, banker, and financial analyst is enamored with AI. Yet this simplified view obscures a more complicated story: the US economy isn’t where tech companies say it is.",
+    "contentZh" : "纵览各大新闻头条，很容易形成这样一种印象：似乎每一位投资者、银行家和金融分析师都对人工智能热情高涨。然而，这种表面的一致，实际上掩盖了更复杂的现实：美国经济的真实状况，并不全然如科技公司所描绘的那般。"
+  }, {
+    "sortOrder" : 2,
+    "contentEn" : "By and large, businesses have gone bonkers over automation, lavishing $410 billion on AI in 2025 alone. To them, it’s a productivity miracle. AI should obviously make everybody work faster, reducing the need for human labor as it takes less staff to do more — saving companies gobs of cash in the long run. At least, that’s the narrative in the corporate world. In banking, however, Goldman Sachs is spinning another yarn. After months of carefully-worded warnings about the dangers of over-investing on AI, Goldman has now dramatically escalated its rhetoric: the bank’s analysts now claim that AI has had zero impact on US economic growth over 2025.",
+    "contentZh" : "总体来看，企业界对自动化的追捧已近乎狂热，仅2025年一年，在人工智能领域的投入就高达4100亿美元。在他们眼中，这无异于一场生产力革命。依此逻辑，人工智能理应让所有人工作更高效，以更少的人力完成更多任务，从而降低用工需求——长远来看，这将为企业节省巨额成本。至少，这是当前企业界的主流叙事。但在银行业，高盛集团却给出了另一种说法。过去几个月里，高盛一直以相对克制的措辞提醒市场，过度押注人工智能可能带来风险；如今，其立场已明显趋于强硬：该行分析师指出，整个2025年，人工智能对美国经济增长的实际贡献接近于零。"
+  }, {
+    "sortOrder" : 3,
+    "contentEn" : "The disconnect between AI investment and growth comes down to two structural issues. The first is geographic: when US companies buy chips from Taiwan, for example, that money boosts Taiwan’s economy, not the US. Second is productivity. AI might make some workers faster, sure, but that speed doesn’t automatically make supply chains more efficient — so far, those productivity gains are largely trapped inside company walls.",
+    "contentZh" : "人工智能投资与经济增长之间的脱节，主要源于两个结构性问题。其一是地域错位：例如，美国企业从中国台湾采购芯片，这笔支出带动的是台湾地区的经济，而非美国本土。其二在生产率。人工智能或许能让部分员工效率提升，但这种提速并不会自然转化为供应链的效能改善——到目前为止，相关生产率收益大多仍局限于企业内部，未能向外溢出。"
+  }, {
+    "sortOrder" : 4,
+    "contentEn" : "This pushback on AI’s economic impact marks a sharp break from even the most cynical analyses of 2025, in which even doomers credited the technology with single-handedly keeping US GDP growth afloat. Though the market more broadly has yet to see things Goldman’s way — investors are projected to spend $660 billion on AI across 2026 — a growing number of analysts are starting to cry foul.",
+    "contentZh" : "这股对人工智能经济影响的质疑，明显偏离了2025年哪怕最为悲观的预期，在去年的语境下，即便是唱衰者，也承认这项技术几乎以一己之力支撑着美国的GDP增长。虽然更广泛的市场尚未接受高盛的判断——预计2026年投资者仍将向人工智能领域投入高达6600亿美元——但越来越多的分析师已开始对这一主流叙事提出质疑。"
+  }, {
+    "sortOrder" : 5,
+    "contentEn" : "Dario Perkins, head of macroeconomics at consulting firm TS Lombard, agrees that AI’s effects on productivity are nonexistent, even as massive layoffs have the workforce reeling. He was recently quoted in the Financial Times, arguing that “there is no evidence that AI deployment is either boosting productivity or damaging US employment.” “While US productivity has been strong and hiring weak, our analysis finds that cyclical forces — not automation — are to blame,” Perkins concluded.",
+    "contentZh" : "咨询公司TS Lombard宏观经济主管达里奥·珀金斯也认同这一判断：尽管大规模裁员已令劳动力市场承压，人工智能对生产率的实际影响依然难以观察到。《金融时报》日前援引他的评论指出：“没有证据表明，人工智能的部署正在提升生产率，或正在冲击美国就业。”珀金斯总结道：“虽然美国目前呈现出生产率强劲、招聘疲弱的态势，但我们的分析认为，这主要源于经济的周期性因素，而非自动化。”"
+  }, {
+    "sortOrder" : 6,
+    "contentEn" : "Meanwhile, former bank regulator at the New York Fed Brian Peters recently wrote that, while AI’s “capabilities are extraordinary” and the “capital deployment is unprecedented,” the “near-term economic payoff is, at best, debatable.” At the National Bureau of Economic Research, economists studying the effects of AI on productivity recently published a working paper identifying a “productivity paradox,” where “perceived productivity gains are larger than measured productivity gains, likely reflecting a delay in revenue realizations.”",
+    "contentZh" : "与此同时，纽约联邦储备银行前银行业监管官员布莱恩·彼得斯近日撰文指出，人工智能“能力惊人”、“资本投入前所未有”，但“其短期经济回报在最佳情况下仍存争议”。另一方面，在美国国家经济研究局，研究人工智能对生产率影响的经济学家近期发布工作论文，提出了所谓的“生产率悖论”：即“人们感知到的效率提升，往往高于实际测得的增幅，这很可能反映出收益的实现存在时间滞后。”"
+  }, {
+    "sortOrder" : 7,
+    "contentEn" : "The implications of all this are stark. An investment boom measured in the hundreds of billions has, by Goldman’s accounting, generated essentially no measurable economic return for the US. The question facing us now in 2026 is whether $660 billion more of the same will produce anything other than an even bigger AI bubble.",
+    "contentZh" : "这一切所揭示的现实无疑是严峻的。按照高盛的测算，这场规模达数千亿美元的投资热潮，几乎未给美国带来任何可衡量的经济回报。进入2026年，一个更现实的问题摆在面前：如果再砸入6600亿美元，除了吹起一个更为巨大的人工智能泡沫之外，我们还能收获什么？"
+  } ],
+  "vocabulary" : [ {
+    "word" : "enamor",
+    "phoneticUk" : "ɪˈnæmə(r)",
+    "phoneticUs" : "ɪˈnæmər",
+    "pos" : "vt.",
+    "meaning" : "使迷恋，使倾心",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "obscure",
+    "phoneticUk" : "əbˈskjʊə(r)",
+    "phoneticUs" : "əbˈskjʊr",
+    "pos" : "",
+    "meaning" : "v. 遮掩，遮蔽；使费解\nadj. 难以说清楚的，模糊的；鲜为人知的，默默无闻的；未被查实的，不确定的；费解的，晦涩的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "bonkers",
+    "phoneticUk" : "ˈbɒŋkəz",
+    "phoneticUs" : "ˈbɑːŋkərz",
+    "pos" : "adj.",
+    "meaning" : "（非正式）疯狂的，精神不正常的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "lavish",
+    "phoneticUk" : "ˈlævɪʃ",
+    "phoneticUs" : "ˈlævɪʃ",
+    "pos" : "",
+    "meaning" : "adj. 奢侈的，盛大的；慷慨的，大方的\nv. 慷慨（或过度）给予",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "yarn",
+    "phoneticUk" : "jɑːn",
+    "phoneticUs" : "jɑːrn",
+    "pos" : "",
+    "meaning" : "n. （棉、毛等的）纱，纱线，纺线；（尤指难以置信的）故事，奇谈；<澳，新西兰>闲聊，闲谈\nv. <非正式>讲（长而不可信的）故事，信口开河；<澳，新西兰>闲聊，谈话",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "escalate",
+    "phoneticUk" : "ˈeskəleɪt",
+    "phoneticUs" : "ˈeskəleɪt",
+    "pos" : "v.",
+    "meaning" : "（使）变得严重，（使）升级；迅速增加，迅速增长；逐步增强，逐步升高",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "rhetoric",
+    "phoneticUk" : "ˈretərɪk",
+    "phoneticUs" : "ˈretərɪk",
+    "pos" : "n.",
+    "meaning" : "花言巧语，浮夸之词；修辞，修辞学",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "disconnect",
+    "phoneticUk" : "ˌdɪskəˈnekt",
+    "phoneticUs" : "ˌdɪskəˈnekt",
+    "pos" : "",
+    "meaning" : "v. 切断（燃气、水或电的供应）；切断（电话服务）\nn. 断开连接；差异，缺乏联系",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "come down to",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "1. 归结为：将某事物视为最重要的部分\n2. 取决于：由某个因素或决定决定",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "pushback",
+    "phoneticUk" : "ˈpʊʃbæk",
+    "phoneticUs" : "ˈpʊʃbæk",
+    "pos" : "n.",
+    "meaning" : "回推；（对政策、规范等的）抗拒、反对；（对改变、计划等的）消极的回应；飞机推迟起飞",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "cynical",
+    "phoneticUk" : "ˈsɪnɪk(ə)l",
+    "phoneticUs" : "ˈsɪnɪk(ə)l",
+    "pos" : "adj.",
+    "meaning" : "认为人皆自私的，愤世嫉俗的；悲观的，怀疑的；损人利己的；轻蔑的，嘲笑的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "afloat",
+    "phoneticUk" : "əˈfləʊt",
+    "phoneticUs" : "əˈfloʊt",
+    "pos" : "",
+    "meaning" : "adj. 经济上周转得开的，不欠债的；漂浮的；在流传中的，当前的；在船（或艇）上的；海上的；浸水的\nadv. 不欠债地，周转顺畅地；漂浮着；在流传中，当前；在海上；浸满水",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "cry foul",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "1. 抱怨不公：指抱怨某人做了不公平的事情",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "layoff",
+    "phoneticUk" : "ˈleɪɒf",
+    "phoneticUs" : "ˈleɪˌɔːf",
+    "pos" : "n.",
+    "meaning" : "解雇，下岗；休养，停工期",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "deployment",
+    "phoneticUk" : "dɪˈplɔɪmənt",
+    "phoneticUs" : "dɪˈplɔɪmənt",
+    "pos" : "n.",
+    "meaning" : "有效运用；部署，调动",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "unprecedented",
+    "phoneticUk" : "ʌnˈpresɪdentɪd",
+    "phoneticUs" : "ʌnˈpresɪdentɪd",
+    "pos" : "adj.",
+    "meaning" : "前所未有的，史无前例的；（大小、数量、程度等）前所未知的，空前的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "payoff",
+    "phoneticUk" : "ˈpeɪˌɒf",
+    "phoneticUs" : "ˈpeɪˌɔːf",
+    "pos" : "",
+    "meaning" : "n. 报酬；结果；发工资；结算\nadj. 支付的；决定性的；产生结果的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "implication",
+    "phoneticUk" : "ˌɪmplɪˈkeɪʃn",
+    "phoneticUs" : "ˌɪmplɪˈkeɪʃ(ə)n",
+    "pos" : "n.",
+    "meaning" : "可能的影响（或作用、结果）；含意，暗指；牵连，涉及",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "bubble",
+    "phoneticUk" : "ˈbʌb(ə)l",
+    "phoneticUs" : "ˈbʌb(ə)l",
+    "pos" : "",
+    "meaning" : "n. 气泡，泡沫；经济泡沫；（欲表达的）一点感情；气泡框；泡状物；安全的地方（或位置）；泡螺\nv. 冒泡，沸腾；发出冒泡的声音；忙碌，活跃；兴奋，激动；（情绪、感情等）涌动",
+    "example" : "",
+    "exampleZh" : ""
+  } ],
+  "expressions" : [ {
+    "expression" : "…… between …… and …… comes down to two structural issues. The first is …… Second is ……",
+    "meaning" : "……与……之间的……，主要源于两个结构性问题：其一是……，其二是……。",
+    "example" : "The disconnect between students’ effort and their performance comes down to two structural issues. The first is ineffective study methods. Second is lack of feedback.",
+    "exampleZh" : "学生努力程度与学习成绩之间的脱节，主要源于两个结构性问题：其一是学习方法低效，其二是缺乏有效反馈。"
+  } ],
+  "keySentences" : [ {
+    "sentence" : "…… between …… and …… comes down to two structural issues. The first is …… Second is ……",
+    "translation" : "……与……之间的……，主要源于两个结构性问题：其一是……，其二是……。",
+    "analysis" : "写作积累句型\n例句：The disconnect between students’ effort and their performance comes down to two structural issues. The first is ineffective study methods. Second is lack of feedback.\n翻译：学生努力程度与学习成绩之间的脱节，主要源于两个结构性问题：其一是学习方法低效，其二是缺乏有效反馈。"
+  } ]
+}

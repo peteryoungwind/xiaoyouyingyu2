@@ -125,6 +125,25 @@ src/main/java/com/xiaoyouyingyu/
 - 登录用户即可访问，不限制会员状态。
 - V1 不保存 AI 生成内容、用户回答或录音文件。
 
+### `ShadowingLessonController`
+
+路径前缀：`/api/shadowing-lessons`
+
+负责微信小程序“跟读精听”模块：
+
+- 分页查询已发布跟读精听资源，支持登录用户按未学习/已学习筛选。
+- 获取资源详情；游客只返回媒体、简介和基础元信息，登录用户返回完整 `contentJson`。
+- 列表和详情响应会清理展示字段：标题移除 `Episode + 序号`，通用 `Lingohow` 来源和 `300期油管地道口语` 栏目不返回给用户端展示。
+- 登录用户打开详情时自动创建或更新 `user_shadowing_lesson_records`，同一用户同一资源只保留一条学习记录。
+- 接收单句跟读录音并调用真实 ASR 获取识别文本，再调用 `AiService.reviewShadowingSentence` 生成综合点评。
+- 成功点评后保存识别文本、评分和反馈 JSON 到 `shadowing_review_records`，不保存长期录音文件 URL。
+
+权限：
+
+- `GET /api/shadowing-lessons` 和 `GET /api/shadowing-lessons/{id}` 公开可访问。
+- `POST /api/shadowing-lessons/{id}/sentences/{sentenceIndex}/review` 要求登录用户。
+- 跟读精听不要求会员权限；完整详情只要求登录。
+
 ### `AiDialogController`
 
 路径前缀：`/api/ai-dialog`
@@ -218,7 +237,7 @@ src/main/java/com/xiaoyouyingyu/
 负责用户端每日外刊功能：
 
 - 分页查询已推送外刊，支持 `read=true/false` 筛选已读或未读。
-- 查询外刊详情，返回音频、段落、总结、词汇和句型。
+- 查询外刊详情，返回音频、段落、总结、词汇、句型、难度星级、词数、来源和长难句解析。
 - 用户进入详情时自动写入阅读记录，同一用户同一外刊只记录一次。
 
 权限：
@@ -263,6 +282,7 @@ src/main/java/com/xiaoyouyingyu/
 - `generateTasks`：学习中心练习任务。
 - `reviewAnswer`：点评用户回答。
 - `generateStructuredReply`：供 AI 对话服务传入自定义 system prompt、上下文和温度，复用现有模型解析与 OpenAI 兼容调用。
+- `reviewShadowingSentence`：跟读精听句级点评，输入资源标题、原句、音标、ASR 识别文本和录音时长，输出总分、发音、流利度、准确度、优点、建议练习和鼓励语 JSON。
 
 模型选择：
 
@@ -328,10 +348,18 @@ src/main/java/com/xiaoyouyingyu/
 
 - `listForUser`：按已读/未读筛选已发布外刊。
 - `getUserDetail`：校验发布状态、返回详情并自动标记已读。
+- 详情响应包含精读字段：`difficultyStars`、`wordCount`、`sourceName`、`keySentences`；旧数据为空时前端隐藏对应模块。
 - `listForAdmin` / `getAdminDetail`：管理端查看库存。
 - `create` / `update` / `changeStatus` / `delete`：维护主表和段落表。
 - `publishToday`：定时任务和手动触发共用的发布方法；若今日已有外刊或无候选外刊，会返回明确提示并不产生错误数据。
 - `uploadAudio`：保存音频文件并返回静态资源 URL。
+
+每日外刊精读素材支持两类导入脚本：
+
+- `scripts/import_daily_article_intensive_reading.java`：单篇 JSON 模板导入，默认读取 `doc/generated/daily-article-intensive-reading.template.json`。
+- `scripts/import_daily_articles_from_weixin_md.java`：批量转换微信公众号 Markdown，默认读取 `/Users/admin/Documents/Codex/2026-06-26/https-mp-weixin-qq-com-s-2/outputs/weixin_articles_md`，输出 JSON 到 `doc/generated/daily-articles-intensive-reading-batch`，再写入 `daily_articles` 主表和 `daily_article_paragraphs` 段落表。
+
+批量脚本会提取标题、音频直链、词数、难度、来源、双语正文、词汇、写作积累，并将写作积累同步为表达句型和长难句解析；导入前按英文标题、中文标题或音频 URL 查重，重复素材会跳过。
 
 `DailyArticlePublishScheduler` 每天 `Asia/Shanghai` 06:00 调用 `publishToday`。当前通过单实例 `synchronized` 避免并发重复发布；多实例部署时建议增加数据库唯一约束或分布式锁。
 
@@ -382,6 +410,9 @@ src/main/java/com/xiaoyouyingyu/
 | `WordTopic` | `word_topics` | 单词与口语主题的多对多来源关联 |
 | `UserWordProgress` | `user_word_progress` | 用户单词学习进度、复习时间和掌握状态 |
 | `WordGenerationTask` | `word_generation_tasks` | AI 创建单词本后台任务、阶段、进度和错误摘要 |
+| `ShadowingLesson` | `shadowing_lessons` | 跟读精听固定资源，包含媒体链接、元信息和结构化学习内容 JSON |
+| `UserShadowingLessonRecord` | `user_shadowing_lesson_records` | 用户打开跟读精听详情的学习记录 |
+| `ShadowingReviewRecord` | `shadowing_review_records` | 用户单句跟读 ASR 识别文本、评分和 AI 点评 JSON |
 
 ## Repository 说明
 
@@ -402,6 +433,9 @@ src/main/java/com/xiaoyouyingyu/
 | `DailyArticleRepository` | 用户端已发布外刊列表、管理端筛选、今日发布检查和候选外刊查询 |
 | `DailyArticleParagraphRepository` | 按外刊 ID 查询、统计和替换段落 |
 | `DailyArticleReadRepository` | 用户阅读记录去重和删除 |
+| `ShadowingLessonRepository` | 已发布资源分页、详情查询、导入去重查询 |
+| `UserShadowingLessonRecordRepository` | 用户资源学习记录查询、去重和更新 |
+| `ShadowingReviewRecordRepository` | 句级跟读点评记录保存和最近记录查询 |
 
 ## 认证与授权
 
@@ -434,6 +468,8 @@ src/main/java/com/xiaoyouyingyu/
 - `/api/learning/**`：会员、管理员或动态会员角色。
 - `/api/word-practice/**`：要求登录，由控制器读取并校验用户名；登录用户可用，不限制会员状态。
 - `/api/daily-articles/**`：要求登录；用户端只能读取已推送外刊，管理员可通过管理接口查看未推送内容。
+- `GET /api/shadowing-lessons`、`GET /api/shadowing-lessons/{id}`：公开；游客只能拿到试看详情。
+- `POST /api/shadowing-lessons/{id}/sentences/{sentenceIndex}/review`：要求登录。
 - `/uploads/**`：公开读取，用于小程序和 PC 前端播放本地音频。
 - 其他接口：要求登录。
 
@@ -456,6 +492,28 @@ src/main/java/com/xiaoyouyingyu/
 单词音频保存路径以单词本为维度组织：`{app.upload.dir}/word-audio/{wordBookId}/{wordId}/`，对外 URL 为 `/uploads/word-audio/{wordBookId}/{wordId}/...`。
 
 每日外刊音频保存路径为 `{app.upload.dir}/daily-articles/`，对外 URL 为 `/uploads/daily-articles/...`。
+
+跟读精听 V1 使用外部视频/音频 URL 或导入资料中的媒体 URL；句级录音通过 multipart 上传给 ASR 服务，处理后只保存识别文本和点评结果，不落长期音频文件。
+
+## 跟读精听导入脚本
+
+开发阶段通过 `scripts/import-shadowing-lessons/import_shadowing_lessons.js` 导入 Markdown 资料：
+
+```bash
+node scripts/import-shadowing-lessons/import_shadowing_lessons.js \
+  --file /abs/path/lesson.md \
+  --out /tmp/shadowing.sql
+```
+
+默认生成 SQL，不直接连库。直接执行模式使用本机 `mysql` CLI，并读取 `XIAOYOU_DB_URL`、`XIAOYOU_DB_USER`、`XIAOYOU_DB_PASSWORD`：
+
+```bash
+node scripts/import-shadowing-lessons/import_shadowing_lessons.js \
+  --file /abs/path/lesson.md \
+  --execute
+```
+
+脚本会解析元信息、媒体链接、精听挑战、对照原文、逐句跟读、表达和口头填空，并按 `source_url` 幂等更新。
 
 安全建议：
 

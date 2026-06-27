@@ -1,0 +1,232 @@
+{
+  "title" : "Why is it so hard to take a good photo of the moon with my phone?",
+  "titleZh" : "手机怎么才能拍出好看的月亮",
+  "audioUrl" : "https://res.wx.qq.com/voice/getvoice?mediaid=MzU3MTAwNTY5Ml8yMjQ3NDk1NTE2",
+  "difficultyStars" : 2,
+  "wordCount" : 815,
+  "sourceName" : "Phys.org",
+  "summary" : "这是一个美丽而晴朗的夜晚。繁星满天，明月高悬，映衬着夜空，美得令人屏息，于是你拿起手机，想要拍下这一刻的美景。但说实话，拍出来的效果令人失望。你不甘心，又试着稳住双手，对准月亮再拍一次——结果依旧只是一团模糊的白色光斑，挂在漆黑的背景上。怎么看都不够出片。手机平时明明可以拍出不错的照片，为什么一拍月亮就不行了？这背后的原因一方面在于拍摄对象本身，另一方面也跟手机摄像头的技术限制有关。\n\n来源：Phys.org；作者：Michael J. I. Brown；原文发布时间：2025-11-12 20:00:00",
+  "status" : "ENABLED",
+  "publishedDate" : null,
+  "paragraphs" : [ {
+    "sortOrder" : 1,
+    "contentEn" : "It's a beautiful clear night. The stars are out and the moon looks breathtaking against the sky, so you reach for your phone to take a snap. The results are, to be blunt, disappointing. Try again. Steady your hands, focus on the moon, take a photo and… it's another underwhelming white smudge against a dark background. Hardly Instagram-worthy. Phones often take superb photos, but why do they struggle with the moon? It's a little bit to do with what we are photographing, and a little bit to do with phone camera technology.",
+    "contentZh" : "这是一个美丽而晴朗的夜晚。繁星满天，明月高悬，映衬着夜空，美得令人屏息，于是你拿起手机，想要拍下这一刻的美景。但说实话，拍出来的效果令人失望。你不甘心，又试着稳住双手，对准月亮再拍一次——结果依旧只是一团模糊的白色光斑，挂在漆黑的背景上。怎么看都不够出片。手机平时明明可以拍出不错的照片，为什么一拍月亮就不行了？这背后的原因一方面在于拍摄对象本身，另一方面也跟手机摄像头的技术限制有关。"
+  }, {
+    "sortOrder" : 2,
+    "contentEn" : "The first mistake novice astrophotographers make is assuming it is night time. Sure, it may be night time where you are on Earth but is it night time on the moon? When you take a snap of the moon, you are photographing its sunlit side. In other words, you are photographing broad daylight. Regardless of your camera, this means your settings should be similar to those for daytime photography rather than nighttime photography.",
+    "contentZh" : "天文摄影新手常犯的第一个错误，就是想当然地以为自己是在拍夜景。虽然在地球上确实是晚上，但月球上此时是晚上吗？当你拍摄月亮时，实际上是在拍摄它的日照面。也就是说，你拍摄的是大白天的场景。所以，无论使用什么相机，拍摄参数应该更接近白天摄影，而不是夜间模式。"
+  }, {
+    "sortOrder" : 3,
+    "contentEn" : "Phones typically automate photography, including focus and exposure time. Unfortunately, this means that when the moon is seen against a vast dark sky, the exposure time is set by the dark sky rather than the moon. This means we turn the moon into an overexposed bright smudge. The easiest way to get around this problem is to photograph the moon during the daytime. With a bright blue sky as the background (technically the foreground), your phone will use a suitably short exposure and you'll likely get a better picture. Another way to prevent over-exposed phone photographs is to dial down the exposure time manually, if you can.",
+    "contentZh" : "手机的拍照过程通常是自动的，包括自动对焦和曝光时间的设定。但问题在于，当月亮挂在漆黑的夜空中时，手机并不会以月亮为参考对象，而是根据黑暗的天空来调整曝光时间。这就导致拍出来的月亮变成了一团过曝的亮斑。解决这一问题最简单的方法，是选择在白天拍摄月亮。以明亮的蓝天作为背景（从技术上讲是前景），手机会自动采用更短的曝光时间，这样你拍出来的照片效果可能会更好。另一种防止手机拍照过曝的方法，是在设备支持的情况下手动调低曝光时间。"
+  }, {
+    "sortOrder" : 4,
+    "contentEn" : "So, you tried all that and the pics still look pretty average? Even with the right exposure time and good focus, phone photos of the moon aren't great and often don't capture detail well. This comes down to the design of phone cameras. Phones are great at taking photos of nearby objects (selfies, anyone?) and sweeping vistas. For example, some phones can take photos of the horizon that span from due north to due east—that's a 90-degree field of view. Unfortunately, the moon (which is just half a degree across in the sky) gets lost in such an image. This comes down to the design choices that allow a camera to fit into a standard mobile phone.",
+    "contentZh" : "但假如这些方法你都试过了，拍摄的照片看起来依然平淡无奇怎么办？事实上，即便曝光时间设置合理、对焦准确，手机直拍月亮依然会效果欠佳，而且细节往往模糊不清。这主要与手机摄像头的设计有关。手机摄像头在拍摄近处的物体（比如自拍），或者宽广的风景时效果最好。举例来说，一些手机的镜头视角可覆盖从正北到正东——相当于90度的视野范围。但可惜的是，月亮在天空中的视觉跨度只有大约0.5度，在如此广阔的视野中自然显得微乎其微。归根结底，这是为了让摄像头能塞进纤薄手机机身所做的设计权衡。"
+  }, {
+    "sortOrder" : 5,
+    "contentEn" : "Cameras and telescopes focus light coming from different directions onto detectors, be they old-fashioned photographic film or modern digital sensors with pixels. The detail you see depends on the size of the pixels and the focal length; for a simple lens this is roughly the distance from the lens to the detector. Phone camera lenses have focal lengths of a few millimeters, and the sensor pixels are thousandths of a millimeter in size. For a typical phone each pixel receives light from an angle of about 0.02 degrees—and since the moon is 0.5 degrees across in the sky, its image ends up being only 25 pixels wide. An image just 25 pixels wide is not going to have much detail. Phone camera software may add more pixels, attempt to sharpen the image or interpolate to add pixels, but this won't add real detail to your moon pic.",
+    "contentZh" : "无论是相机还是望远镜，其原理都是将来自不同方向的光线聚焦到感光元件上，比如传统的胶片，或是由像素组成的现代数字传感器。图像细节的清晰程度，取决于像素大小和焦距；对于简单镜头而言，焦距大致就是从镜头到感光元件的距离。手机摄像头的焦距通常只有几毫米，而传感器上每个像素的尺寸则在千分之一毫米级别。以一部普通手机为例，每个像素接收光线的角度大约是0.02度——考虑到月亮在天空中的视觉跨度约为0.5度，这意味着月亮在传感器上的成像只有大约25个像素宽。一张宽度仅25像素的图像，自然难以呈现出丰富的细节。手机的相机软件或许会通过多像素合成、锐化图像或插值算法来补足画面，但这些手段并不能为月亮照片增添真正的细节。"
+  }, {
+    "sortOrder" : 6,
+    "contentEn" : "The obvious solution is to zoom in to get a more detailed image of the moon. For conventional cameras this is done with a zoom lens where the focal length can be increased (for example, from 50mm to 200mm). However, in phones the zoom is typically done digitally (in software) so the physical focal length is unchanged. Your disappointment will thus continue.",
+    "contentZh" : "一个显而易见的解决办法是通过放大画面来拍出更清晰的月亮。对于传统相机，这可以借助变焦镜头实现，通过增加焦距（例如从50毫米延长到200毫米）来获取更多细节。但在手机上，所谓的变焦通常是依靠软件实现的数码变焦，镜头的物理焦距实际上并没有变化。所以，你的失望感可能还将继续。"
+  }, {
+    "sortOrder" : 7,
+    "contentEn" : "However, there is a solution. Why limit yourself to a phone camera lens? Phones can take photographs with telescopes. Point a telescope at the moon, hover your phone carefully above the eyepiece and you can get a remarkably good photo. This is because you've used the magnification of the telescope to effectively multiply the focal length of your camera. Instead of a 6mm focal length you may be working with 300mm. Instead of 25 pixels you may have 1,250 pixels. Now you can have great moon photos.",
+    "contentZh" : "不过，解决方法实际是有的。为什么要把自己局限在手机镜头上呢？手机完全可以配合望远镜拍照。只需先将望远镜对准月亮，然后小心地将手机摄像头对准目镜，你就能拍出一张效果惊人的照片。这是因为，望远镜的放大倍率等效于让手机相机的焦距成倍增加。原本只有6毫米的焦距，借助望远镜可瞬间变成300毫米。月亮在成像中的宽度也能从25个像素提升到约1250个像素。这样一来，你就得到了一张真正清晰的好照片了。"
+  }, {
+    "sortOrder" : 8,
+    "contentEn" : "Phone photography using telescopes has really taken off over the past ten years. You can even get special clamps to hold your phone securely to a telescope. But what if you don't have a telescope handy? Well, instead of trying to zoom in, try zooming out. Remember that phones are great at taking in sweeping vistas. Your phone may not be great at taking moon photos, but it can take excellent photos of the Milky Way. And if you're lucky, you can snap photos of rare visitors such as bright comets or auroras.",
+    "contentZh" : "近十年来，搭配望远镜的手机摄影方式发展迅速。如今，市面上甚至有专门的夹具，用来将手机牢牢固定在望远镜上。但如果手边没有望远镜怎么办？那就不要执着于放大，尝试拉远视角。别忘了，手机最擅长的其实是拍摄广阔风景。手机拍月亮可能表现不佳，却能拍出极为出色的银河照片。如果足够幸运，你还可能用手机捕捉到明亮的彗星，甚至是绚丽的极光这类罕见的天文现象。"
+  } ],
+  "vocabulary" : [ {
+    "word" : "breathtaking",
+    "phoneticUk" : "ˈbreθteɪkɪŋ",
+    "phoneticUs" : "ˈbreθteɪkɪŋ",
+    "pos" : "adj.",
+    "meaning" : "激动人心的，令人惊叹的；非常糟糕的，令人震惊的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "take a snap",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "1. 拍照，抓拍：用相机或手机拍摄照片",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "blunt",
+    "phoneticUk" : "blʌnt",
+    "phoneticUs" : "blʌnt",
+    "pos" : "",
+    "meaning" : "adj. 钝的，不锋利的；直言不讳的，说话生硬的\nv. 减弱；使不锋利，使变钝",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "smudge",
+    "phoneticUk" : "smʌdʒ",
+    "phoneticUs" : "smʌdʒ",
+    "pos" : "",
+    "meaning" : "n. 污点，污迹；烟熏火堆；模糊不清的景象（或图像）\nv. 把……擦模糊；弄脏，涂污；用浓烟熏",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "novice",
+    "phoneticUk" : "ˈnɒvɪs",
+    "phoneticUs" : "ˈnɑːvɪs",
+    "pos" : "n.",
+    "meaning" : "初学者，新手；见习修士，见习修女；尚未赢过大赛的赛马",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "sunlit",
+    "phoneticUk" : "ˈsʌnlɪt",
+    "phoneticUs" : "ˈsʌnlɪt",
+    "pos" : "adj.",
+    "meaning" : "阳光照射的；被日光照射了的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "overexpose",
+    "phoneticUk" : "ˌəʊvərɪkˈspəʊz",
+    "phoneticUs" : "ˌoʊvərɪkˈspoʊz",
+    "pos" : "vt.",
+    "meaning" : "使感光过度；使过于暴露",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "dial down",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "1. 调低：指通过旋钮或按钮将某物的强度、音量或力量减小\n2. 缓和：指通过减少或降低某种情绪、紧张或紧迫感来使局势或气氛变得更加平静或轻松",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "manually",
+    "phoneticUk" : "ˈmænjuəli",
+    "phoneticUs" : "ˈmænjuəli",
+    "pos" : "adv.",
+    "meaning" : "手动地；用手",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "come down to",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "1. 归结为：将某事物视为最重要的部分\n2. 取决于：由某个因素或决定决定",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "selfie",
+    "phoneticUk" : "ˈselfi",
+    "phoneticUs" : "ˈselfi",
+    "pos" : "n.",
+    "meaning" : "自拍照（=selfy）",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "vista",
+    "phoneticUk" : "ˈvɪstə",
+    "phoneticUs" : "ˈvɪstə",
+    "pos" : "n.",
+    "meaning" : "远景，狭长的街景；展望；回顾",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "sensor",
+    "phoneticUk" : "ˈsensə(r)",
+    "phoneticUs" : "ˈsensər",
+    "pos" : "n.",
+    "meaning" : "（探测光、热、压力等的）传感器，敏感元件，探测设备",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "focal length",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "n.",
+    "meaning" : "焦距：从镜头或弯曲镜面的表面到焦点的距离",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "interpolate",
+    "phoneticUk" : "ɪnˈtɜːpəleɪt",
+    "phoneticUs" : "ɪnˈtɜːrpəleɪt",
+    "pos" : "",
+    "meaning" : "vt. 篡改；插入新语句\nvi. 插入；篡改",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "zoom lens",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "n.",
+    "meaning" : "变焦镜头：一种可以在保持图像清晰的情况下连续调整图像大小的镜头，常用于相机或投影仪中",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "hover",
+    "phoneticUk" : "ˈhɒvə(r)",
+    "phoneticUs" : "ˈhʌvər",
+    "pos" : "",
+    "meaning" : "v. 翱翔，盘旋；徘徊，守候；处于不稳定状态；上下波动，左右摇摆；伏窝孵化\nn. 翱翔，徘徊",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "eyepiece",
+    "phoneticUk" : "ˈaɪpiːs",
+    "phoneticUs" : "ˈaɪpiːs",
+    "pos" : "n.",
+    "meaning" : "[光] 目镜，[光] 接目镜",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "magnification",
+    "phoneticUk" : "ˌmæɡnɪfɪˈkeɪʃ(ə)n",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "美/ ˌmæɡnɪfɪˈkeɪʃ(ə)n /\nn. 放大；放大率；放大的复制品",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "clamp",
+    "phoneticUk" : "klæmp",
+    "phoneticUs" : "klæmp",
+    "pos" : "",
+    "meaning" : "v. （用夹具）夹紧，夹住；紧紧抓住，牢牢固定住；<英>给（车辆）上夹钳；保持（电信号）电压极限在规定水平\nn. 夹具，夹钳；车轮固定夹；钳位电路；（窑内的）砖垛；（保护块根作物越冬的）草皮堆",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "comet",
+    "phoneticUk" : "ˈkɒmɪt",
+    "phoneticUs" : "ˈkɑːmɪt",
+    "pos" : "n.",
+    "meaning" : "彗星",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "aurora",
+    "phoneticUk" : "ɔːˈrɔːrə",
+    "phoneticUs" : "ɔːˈrɔːrə",
+    "pos" : "n.",
+    "meaning" : "极光；晨曦；（Aurora）奥罗拉（古罗马神话中的黎明女神）；（Aurora）奥罗拉（美国科罗拉多州城市）；（Aurora）奥罗拉（美国伊利诺伊州城市）",
+    "example" : "",
+    "exampleZh" : ""
+  } ],
+  "expressions" : [ {
+    "expression" : "The easiest way to get around …… is to ……. Another way to …… is ……",
+    "meaning" : "最简单的规避……的方法是……；另一个方法是……。",
+    "example" : "The easiest way to get around the traffic jam is to take the subway. Another way to avoid delays is to leave earlier.",
+    "exampleZh" : "最简单的避开交通堵塞的方法是改乘地铁；另一个避免迟到的办法是提前出发。"
+  } ],
+  "keySentences" : [ {
+    "sentence" : "The easiest way to get around …… is to ……. Another way to …… is ……",
+    "translation" : "最简单的规避……的方法是……；另一个方法是……。",
+    "analysis" : "写作积累句型\n例句：The easiest way to get around the traffic jam is to take the subway. Another way to avoid delays is to leave earlier.\n翻译：最简单的避开交通堵塞的方法是改乘地铁；另一个避免迟到的办法是提前出发。"
+  } ]
+}

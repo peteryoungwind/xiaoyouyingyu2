@@ -22,7 +22,7 @@
     <button class="retry-btn" bindtap="retry">重试</button>
   </view>
 
-  <view wx:elif="{{articles.length === 0}}" class="empty-state">
+  <view wx:elif="{{articles.length == 0}}" class="empty-state">
     <view class="empty-icon">阅</view>
     <view class="empty-title">{{read ? '暂无已读外刊' : '暂无未读外刊'}}</view>
     <view class="empty-desc">{{read ? '读过的外刊会出现在这里' : '今天还没有新的未读外刊'}}</view>
@@ -30,8 +30,12 @@
 
   <view wx:else class="article-list">
     <view wx:for="{{articles}}" wx:key="id" class="article-card" bindtap="goToDetail" data-id="{{item.id}}">
+      <view class="article-cover {{item.cover.theme}}">
+        <text class="cover-kicker">{{item.cover.kicker}}</text>
+        <text class="cover-title">{{item.cover.title}}</text>
+        <text class="cover-mark">{{item.cover.mark}}</text>
+      </view>
       <view class="article-main">
-        <view class="article-date">{{item.publishedDate}}</view>
         <view class="article-title">{{item.title}}</view>
         <view class="article-title-zh" wx:if="{{item.titleZh}}">{{item.titleZh}}</view>
       </view>

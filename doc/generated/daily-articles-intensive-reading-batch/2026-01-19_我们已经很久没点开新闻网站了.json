@@ -1,0 +1,224 @@
+{
+  "title" : "Media Execs Prepare for AI to Bring End of Journalism Industry",
+  "titleZh" : "我们已经很久没点开新闻网站了",
+  "audioUrl" : "https://res.wx.qq.com/voice/getvoice?mediaid=MzU3MTAwNTY5Ml8yMjQ3NDk2MDc5",
+  "difficultyStars" : 4,
+  "wordCount" : 609,
+  "sourceName" : "Futurism",
+  "summary" : "人工智能这场巨蟒之缚，是否会终结新闻业？除非机器最终像《黑客帝国》描绘的那样奴役人类，否则很难想象这个行业会被彻底抹去。毕竟，总会有人热衷于打听消息、插手公共事务。但现实是，大型媒体公司已深陷生存危机，高管们对未来的展望也难言乐观，传统的新闻机构，或许正不可避免地走向消亡。\n\n来源：Futurism；作者：Frank Landymore；原文发布时间：2026-01-19 20:00:00",
+  "status" : "ENABLED",
+  "publishedDate" : null,
+  "paragraphs" : [ {
+    "sortOrder" : 1,
+    "contentEn" : "Will the slow anaconda crush of AI mean the end of journalism? It’s hard to imagine it completely eliminating the profession outright, unless the machines end up enslaving humanity à la the “Matrix” films. There will always be nosy gumshoes meddling in everyone’s affairs. But major media companies are in dire straits, and their executives aren’t sounding too cheerful about the future, which could hold in store the end of the traditional news agency.",
+    "contentZh" : "人工智能这场巨蟒之缚，是否会终结新闻业？除非机器最终像《黑客帝国》描绘的那样奴役人类，否则很难想象这个行业会被彻底抹去。毕竟，总会有人热衷于打听消息、插手公共事务。但现实是，大型媒体公司已深陷生存危机，高管们对未来的展望也难言乐观，传统的新闻机构，或许正不可避免地走向消亡。"
+  }, {
+    "sortOrder" : 2,
+    "contentEn" : "That’s according to a new survey of over 280 media leaders from 51 countries conducted by the Reuters Institute for the Study of Journalism (RISJ). It found that on average, the sample of editors, CEOs, and digital executives expect traffic to their websites to plummet by 43 percent over the next three years — which would be a disastrous blow to their commercial operations. Traffic to news sites has already been plunging, a trend that preceded the AI boom but only accelerated as chatbots like ChatGPT began to replace the search engine. Analytics data cited in the RISJ report shows that web traffic directed to news sites from Google Search has plummeted 33 percent across the globe.",
+    "contentZh" : "这一判断源自路透社新闻研究所（RISJ）最新一项覆盖全球51个国家280余位媒体高层人士的调查。调查显示，受访的编辑、首席执行官和数字业务负责人普遍预测，其网站流量将在未来三年内下降43%——这将对媒体的商业运营带来沉重打击。事实上，新闻网站流量下滑早已显现，这一趋势甚至在人工智能兴起之前就已开始，而随着ChatGPT等生成式人工智能工具在信息获取中逐步取代搜索引擎，流量下滑趋势进一步加快。RISJ报告中引用的分析数据显示，全球范围内经由谷歌搜索进入新闻网站的流量已锐减33%。"
+  }, {
+    "sortOrder" : 3,
+    "contentEn" : "With omens like those, Nick Newman, senior research associate at the RISJ, predicts the “traffic era” of the early internet, which once sustained traditional publishers, may finally be coming to an end. “It is not clear what comes next,” Newman told The Guardian. “Publishers fear that AI chatbots are creating a new convenient way of accessing information that could leave news brands — and journalists — out in the cold.” “But tech platforms do not hold all the cards,” he added. “Reliable news, expert analysis and points of view remain important both to individuals and to society, particularly in uncertain times. Great storytelling — and a human touch — is going to be hard for AI to replicate.”",
+    "contentZh" : "面对这些迹象，RISJ的高级研究助理尼克·纽曼指出，曾经支撑传统出版业发展的互联网早期“流量时代”很可能正在走向终结。在接受《卫报》采访时，纽曼表示：“接下来会发生什么，目前尚不清楚。出版商担心，人工智能聊天机器人正在提供一种更便捷的信息获取方式，这可能导致新闻品牌——乃至新闻记者本身——被边缘化。”但他也补充称：“科技平台并未掌握全部主动权。无论在何时，特别是充满不确定性的时代，可信的新闻、专业的分析和多元的观点对个人与社会都至关重要。而优秀的叙事能力——及其背后蕴含的人性温度——仍然是当前人工智能难以复制的。”"
+  }, {
+    "sortOrder" : 4,
+    "contentEn" : "Some publishers seeing the writing on the wall have pivoted to embracing AI tech. But the way it’s being deployed in many cases is almost certainly a miscalculation, imperiling fundamental tenets of good journalism by introducing hallucinating tech into the loop — which is to say nothing of the coincidentally-timed layoffs that have been hamstringing the industry.",
+    "contentZh" : "一些已经预见不祥之兆的出版商，转而选择拥抱人工智能技术。然而不少情况下，这样的技术引入几乎可以断定是一步错棋，将存在幻觉问题的生成工具纳入新闻生产流程，正在危及优秀新闻业的根本原则——更何况，与之同步发生的大规模裁员，已然在严重掣肘整个行业的发展。"
+  }, {
+    "sortOrder" : 5,
+    "contentEn" : "Some cases seem more innocuous. The New York Times, for example, has been using AI to help craft headlines. But in an alarming recent demonstration of how the tech can go drastically wrong, the Washington Post launched a feature last month for producing personalized AI-generated podcasts that would relay the newspaper’s latest stories, which immediately sparked uproar both internally and externally. The podcasts were riddled with factual errors and in some cases even editorialized on developing stories. The venture was resoundingly mocked online, and WaPo staffers fumed against leadership, calling it “astonishing” and a “disaster.”",
+    "contentZh" : "有些引入方式看上去无害得多。例如《纽约时报》长期使用人工智能辅助撰写新闻标题。然而，《华盛顿邮报》最近的一次尝试，却以令人警醒的方式暴露出这项技术可能带来的严重风险，上月，该报推出了一项利用人工智能生成个性化播客的功能，用以播报最新报道，结果上线后迅速在内外引发轩然大波。这些由人工智能生成的播客内容充斥着事实性错误，甚至在部分尚在进展的新闻事件中掺杂了不应有的编辑判断。该项目很快在网络上遭到广泛嘲讽，《华盛顿邮报》内部员工也激烈批评管理层，称其做法“令人震惊”、是“一场灾难”。"
+  }, {
+    "sortOrder" : 6,
+    "contentEn" : "But the logic behind these moves is that desperate times call for desperate, extremely ill-advised measures, and the industry is desperate indeed. According to the RISJ report, only 38 percent of the surveyed media leaders say they’re confident about journalism’s prospects in the years ahead, a staggering 22 percent drop from four years ago. To navigate these waters, the publishers emphasized doubling down on some aspects of what makes journalism unique, like original investigations, on-the-ground reporting, and human-oriented stories. On the other hand, they said they’d scale back general news and service journalism, which they expected to be commoditized by AI. They also favored pivoting journalists into content creation, such as making shortform videos, to gain a foothold in social media.",
+    "contentZh" : "但这些举措背后的逻辑在于，在困境之中，行业往往会采取一些仓促甚至明显欠妥的应对方式，而新闻业眼下的处境确实十分艰难。根据RISJ的报告，仅有38%的受访媒体高层对新闻业未来几年的发展抱有信心，这一比例较四年前下降了22个百分点，跌幅惊人。为了渡过难关，出版商们表示将加大对体现新闻业独特价值领域的投入，包括原创调查报道、现场报道和以人为核心的叙事内容。与此同时，他们计划缩减一般新闻和服务型新闻的规模，因为这类内容被认为更容易被人工智能商品化取代。此外，出版商还倾向于推动记者向内容创作者转型，例如制作短视频，以便在社交媒体平台上争取立足之地。"
+  } ],
+  "vocabulary" : [ {
+    "word" : "anaconda",
+    "phoneticUk" : "ˌænəˈkɒndə",
+    "phoneticUs" : "ˌænəˈkɑːndə",
+    "pos" : "n.",
+    "meaning" : "水蟒；蟒蛇",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "enslave",
+    "phoneticUk" : "ɪnˈsleɪv",
+    "phoneticUs" : "ɪnˈsleɪv",
+    "pos" : "vt.",
+    "meaning" : "束缚；征服；使某人成为奴隶",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "gumshoes",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "n.",
+    "meaning" : "侦探，特工：指从事侦查、调查工作的人，通常为私家侦探",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "meddle",
+    "phoneticUk" : "ˈmed(ə)l",
+    "phoneticUs" : "ˈmed(ə)l",
+    "pos" : "v.",
+    "meaning" : "干涉，管闲事，干预他人之事；瞎搞，乱弄",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "hold in store",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "1. 储备，准备好：为将来的使用或需要而储备或准备好某物",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "plummet",
+    "phoneticUk" : "ˈplʌmɪt",
+    "phoneticUs" : "ˈplʌmɪt",
+    "pos" : "",
+    "meaning" : "v. （数量、价值等）暴跌；（尤指从高处）坠落\nn. 铅锤，测深锤；骤降",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "precede",
+    "phoneticUk" : "prɪˈsiːd",
+    "phoneticUs" : "prɪˈsiːd",
+    "pos" : "v.",
+    "meaning" : "处在……之前，先于；在……之前做（或说）；比……更重要，比……（级别）更高",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "omen",
+    "phoneticUk" : "ˈəʊmən",
+    "phoneticUs" : "ˈoʊmən",
+    "pos" : "",
+    "meaning" : "n. 预兆，征兆；预兆性\nvt. 预示，预告；占卜",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "out in the cold",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "1. 被冷落：故意不给某人提供支持，忽视或忽略某人",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "replicate",
+    "phoneticUk" : "ˈreplɪkeɪt",
+    "phoneticUs" : "ˈreplɪkeɪt",
+    "pos" : "",
+    "meaning" : "v. 重复，复制；（遗传物质或生物）自我繁殖，自我复制；复证（实验或试验以得出一致的结果）\nn. 复制品；（乐）高（或低）八度反复音\nadj. 复制的；（实验或试验）复现的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "the writing on the wall",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "1. 明显的迹象或警告，暗示某事将会发生或失败",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "imperil",
+    "phoneticUk" : "ɪmˈperəl",
+    "phoneticUs" : "ɪmˈperəl",
+    "pos" : "vt.",
+    "meaning" : "危及；使陷于危险",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "hallucinate",
+    "phoneticUk" : "həˈluːsɪneɪt",
+    "phoneticUs" : "həˈluːsɪneɪt",
+    "pos" : "",
+    "meaning" : "vt. 使产生幻觉\nvi. 出现幻觉",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "hamstring",
+    "phoneticUk" : "ˈhæmstrɪŋ",
+    "phoneticUs" : "ˈhæmstrɪŋ",
+    "pos" : "",
+    "meaning" : "n. 腿筋\nvt. 切断腿筋使成跛腿；使残废",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "innocuous",
+    "phoneticUk" : "ɪˈnɒkjuəs",
+    "phoneticUs" : "ɪˈnɑːkjuəs",
+    "pos" : "adj.",
+    "meaning" : "无害的；无伤大雅的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "uproar",
+    "phoneticUk" : "ˈʌprɔː(r)",
+    "phoneticUs" : "ˈʌprɔːr",
+    "pos" : "n.",
+    "meaning" : "吵闹，喧嚣；骚乱，骚动",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "editorialize",
+    "phoneticUk" : "ˌedɪˈtɔːriəlaɪz",
+    "phoneticUs" : "ˌedɪˈtɔːriəlaɪz",
+    "pos" : "",
+    "meaning" : "vi. 发表社论；（在报纸等的文章中）加编者按语\nvt. （就某事）发表社论；插入主观评论",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "resoundingly",
+    "phoneticUk" : "rɪˈzaʊndɪŋli",
+    "phoneticUs" : "rɪˈzaʊndɪŋli",
+    "pos" : "adv.",
+    "meaning" : "成功地；轰动地",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "fume",
+    "phoneticUk" : "fjuːm",
+    "phoneticUs" : "fjuːm",
+    "pos" : "",
+    "meaning" : "v. 发怒，生气；冒气（或烟、汽）；熏（尤指木材）\nn. 刺鼻（或有害）的气，烟",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "staggering",
+    "phoneticUk" : "ˈstæɡərɪŋ",
+    "phoneticUs" : "ˈstæɡərɪŋ",
+    "pos" : "",
+    "meaning" : "adj. 大得惊人的，令人吃惊的\nv. 摇摇晃晃地走，蹒跚；使震惊，使大吃一惊；使交错，使错开（stagger 的现在分词）",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "double down on",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "v.",
+    "meaning" : "更加坚决地继续做某事：指在某个领域或行动上更加坚定和决心，不退缩，加大力度",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "foothold",
+    "phoneticUk" : "ˈfʊthəʊld",
+    "phoneticUs" : "ˈfʊthoʊld",
+    "pos" : "n.",
+    "meaning" : "据点；立足处",
+    "example" : "",
+    "exampleZh" : ""
+  } ],
+  "expressions" : [ {
+    "expression" : "Some …… seeing the writing on the wall have pivoted to embracing ……",
+    "meaning" : "部分……在察觉到不可逆转的趋势后，开始转向……。",
+    "example" : "Some young professionals, seeing the writing on the wall, have pivoted to embracing more flexible and portfolio-based careers.",
+    "exampleZh" : "一些年轻职场人士在看清形势后，开始转向更灵活、多元化的职业道路。"
+  } ],
+  "keySentences" : [ {
+    "sentence" : "Some …… seeing the writing on the wall have pivoted to embracing ……",
+    "translation" : "部分……在察觉到不可逆转的趋势后，开始转向……。",
+    "analysis" : "写作积累句型\n例句：Some young professionals, seeing the writing on the wall, have pivoted to embracing more flexible and portfolio-based careers.\n翻译：一些年轻职场人士在看清形势后，开始转向更灵活、多元化的职业道路。"
+  } ]
+}

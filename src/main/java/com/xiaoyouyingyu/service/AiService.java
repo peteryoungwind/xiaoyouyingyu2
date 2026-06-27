@@ -467,6 +467,118 @@ public class AiService {
         return callAi(modelId, systemPrompt, userPrompt, null);
     }
 
+    // ===================== 跟读精听：单句跟读点评 =====================
+
+    public String reviewShadowingSentence(Long modelId,
+                                          String lessonTitle,
+                                          String lessonTitleZh,
+                                          Integer sentenceIndex,
+                                          String referenceText,
+                                          String referenceTextZh,
+                                          String phonetic,
+                                          String recognizedText,
+                                          Long durationMs) {
+        if (recognizedText == null || recognizedText.isBlank()) {
+            throw new IllegalArgumentException("识别文本不能为空");
+        }
+        String systemPrompt = """
+                你是一位英语跟读教练。请基于 ASR 识别文本和原句，对用户的单句跟读做学习辅助型点评。
+
+                ## 评分要求
+                - 分数范围必须是 0-100
+                - accuracyScore 主要参考识别文本与原句的接近程度
+                - fluencyScore 参考完整度、自然停顿和录音时长信息
+                - pronunciationScore 参考关键词是否可识别、连读和清晰度
+                - 评分应鼓励但真实，不包装成专业考试评分
+                - 建议必须具体到可复读的词组或短句
+
+                ## 输出格式
+                必须返回严格 JSON，不要 Markdown，不要解释：
+                {
+                  "overallScore": 88,
+                  "pronunciationScore": 86,
+                  "fluencyScore": 84,
+                  "accuracyScore": 94,
+                  "strengths": ["中文优点1", "中文优点2"],
+                  "improvements": ["中文改进建议1", "中文改进建议2"],
+                  "suggestedPractice": ["需要复读的英文短语1", "需要复读的英文短语2"],
+                  "encouragement": "一句中文鼓励"
+                }
+                """;
+        String userPrompt = """
+                资源标题：%s
+                资源中文标题：%s
+                句子序号：%s
+                原句英文：%s
+                原句中文：%s
+                音标：%s
+                ASR 识别文本：%s
+                录音时长毫秒：%s
+                """.formatted(
+                lessonTitle,
+                lessonTitleZh,
+                sentenceIndex == null ? "" : sentenceIndex + 1,
+                referenceText,
+                referenceTextZh == null ? "" : referenceTextZh,
+                phonetic == null ? "" : phonetic,
+                recognizedText,
+                durationMs == null ? "" : durationMs
+        );
+        return callAi(modelId, systemPrompt, userPrompt, null);
+    }
+
+    public String reviewShadowingTranslation(Long modelId,
+                                             String lessonTitle,
+                                             String lessonTitleZh,
+                                             String promptZh,
+                                             String referenceText,
+                                             String userAnswer,
+                                             String inputMode) {
+        if (userAnswer == null || userAnswer.isBlank()) {
+            throw new IllegalArgumentException("翻译内容不能为空");
+        }
+        String systemPrompt = """
+                你是一位英语翻译与口语表达教练。用户会根据中文提示自己翻译成英文，请对用户译文做学习型点评。
+
+                ## 点评要求
+                - 分数范围是 0-100，鼓励但真实
+                - 先看意思是否完整，再看语法准确性、表达自然度和可口语输出程度
+                - 如果提供了参考英文，不要求用户逐字一致，允许自然表达
+                - 改进建议要具体，指出可以替换或补充的表达
+
+                ## 输出格式
+                必须返回严格 JSON，不要 Markdown，不要解释：
+                {
+                  "score": 85,
+                  "strengths": ["中文优点1", "中文优点2"],
+                  "improvements": ["中文改进建议1", "中文改进建议2"],
+                  "corrections": [
+                    { "original": "用户原句或片段", "corrected": "更自然的英文", "explanationZh": "中文说明" }
+                  ],
+                  "improvedAnswer": "优化后的英文参考翻译",
+                  "encouragement": "一句中文鼓励"
+                }
+                """;
+        String userPrompt = """
+                资源标题：%s
+                资源中文标题：%s
+                输入方式：%s
+                中文提示：%s
+                参考英文：%s
+
+                用户英文翻译：
+                %s
+                """.formatted(
+                lessonTitle,
+                lessonTitleZh,
+                inputMode == null || inputMode.isBlank() ? "text" : inputMode,
+                promptZh,
+                referenceText == null ? "" : referenceText,
+                userAnswer
+        );
+        return callAi(modelId, systemPrompt, userPrompt, null);
+    }
+
     // ===================== 学习中心：生成热身内容 =====================
 
     public String generateWarmup(Long modelId, String titleEn, String titleZh, String mode, String exclude) {

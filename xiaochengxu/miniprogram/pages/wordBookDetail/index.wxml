@@ -24,9 +24,8 @@
       </view>
 
       <view class="mode-row">
-        <view class="segmented">
-          <view class="segment {{difficulty === 'BEGINNER' ? 'active' : ''}}" bindtap="switchDifficulty" data-difficulty="BEGINNER">初级</view>
-          <view class="segment {{difficulty === 'ADVANCED' ? 'active' : ''}}" bindtap="switchDifficulty" data-difficulty="ADVANCED">进阶</view>
+        <view class="segmented single">
+          <view class="segment active">{{difficultyLabel}}词书</view>
         </view>
         <view class="switch-book-btn" bindtap="goToBooks">换词书</view>
       </view>

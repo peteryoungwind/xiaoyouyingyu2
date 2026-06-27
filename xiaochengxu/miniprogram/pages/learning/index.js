@@ -142,6 +142,9 @@ Page({
     }
     wx.navigateTo({ url: '/pages/aiDialogSetup/index' });
   },
+  goToShadowingLessons() {
+    wx.navigateTo({ url: '/pages/shadowingLessons/index' });
+  },
 
   onPullDownRefresh() { this.refreshState(); wx.stopPullDownRefresh(); },
 

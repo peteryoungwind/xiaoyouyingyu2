@@ -6,6 +6,10 @@ function isAuthExpiredError(err) {
   return err && err.code === 401;
 }
 
+function isPermissionDeniedError(err) {
+  return err && err.code === 403;
+}
+
 /**
  * Parse AI content string: strip markdown code fences, then JSON.parse.
  */
@@ -63,7 +67,12 @@ Page({
 
     // Review
     showReview: false,
-    reviewData: null // { score, strengths, improvements, corrections, encouragement }
+    reviewData: null, // { score, strengths, improvements, corrections, encouragement }
+
+    // Access
+    accessState: '', // loginRequired | memberRequired | notFound
+    showMembershipModal: false,
+    membershipExpired: false
   },
 
   onLoad(options) {
@@ -71,6 +80,30 @@ Page({
     if (options.id) {
       this.setData({ topicId: parseInt(options.id) });
       this.loadTopic(options.id);
+    }
+  },
+
+  onShow() {
+    if (
+      this.data.topicId &&
+      this.data.accessState === 'loginRequired' &&
+      app.checkLogin()
+    ) {
+      this.loadTopic(this.data.topicId);
+      return;
+    }
+
+    if (
+      this.data.topicId &&
+      this.data.accessState === 'memberRequired' &&
+      app.checkLogin() &&
+      app.isMember()
+    ) {
+      this.setData({
+        showMembershipModal: false,
+        membershipExpired: false
+      });
+      this.loadTopic(this.data.topicId);
     }
   },
 
@@ -135,21 +168,39 @@ Page({
   loadTopic(id) {
     this.setData({ loading: true });
 
+    if (!app.checkLogin()) {
+      this.setData({
+        loading: false,
+        accessState: 'loginRequired'
+      });
+      this.promptLoginRequired();
+      return;
+    }
+
     const applyTopic = (res) => {
       const normalizedTags = util.normalizeKnownTags(res.tags);
       const tagList = normalizedTags.length > 0 ? normalizedTags : util.parseTags(res.tags);
       this.setData({
         topic: res,
         tagList: tagList,
-        loading: false
+        loading: false,
+        accessState: ''
       });
     };
 
     api.getLearningTopic(id).then(applyTopic).catch(err => {
-      console.error('Load learning topic failed, fallback to public topic detail:', err);
+      console.error('Load learning topic failed:', err);
+      if (isAuthExpiredError(err)) {
+        this.setData({ loading: false, accessState: 'loginRequired' });
+        return;
+      }
+      if (isPermissionDeniedError(err)) {
+        this.handleMemberRequired(err);
+        return;
+      }
       api.getTopic(id).then(applyTopic).catch(fallbackErr => {
         console.error('Load topic failed:', fallbackErr);
-        this.setData({ loading: false });
+        this.setData({ loading: false, accessState: 'notFound' });
         if (isAuthExpiredError(fallbackErr)) {
           return;
         }
@@ -172,8 +223,77 @@ Page({
   toggleExpressions() { this.setData({ expressionsExpanded: !this.data.expressionsExpanded }); },
   toggleTasks() { this.setData({ tasksExpanded: !this.data.tasksExpanded }); },
 
+  promptLoginRequired() {
+    wx.showModal({
+      title: '请先登录',
+      content: '登录后可使用主题学习和 AI 生成内容。',
+      confirmText: '去登录',
+      cancelText: '取消',
+      success: (res) => {
+        if (res.confirm) {
+          wx.navigateTo({ url: '/pages/login/index' });
+        }
+      }
+    });
+  },
+
+  handleMemberRequired(err) {
+    var expired = !!(app.globalData.membershipExpireAt && !app.isMember());
+    this.setData({
+      loading: false,
+      accessState: 'memberRequired',
+      showMembershipModal: true,
+      membershipExpired: expired
+    });
+    if (err && err.message) {
+      wx.showToast({ title: err.message, icon: 'none' });
+    }
+  },
+
+  ensureCanGenerate() {
+    if (!app.checkLogin()) {
+      this.setData({ accessState: 'loginRequired' });
+      this.promptLoginRequired();
+      return false;
+    }
+    if (!app.isMember()) {
+      this.handleMemberRequired();
+      return false;
+    }
+    return true;
+  },
+
+  handleGenerateError(err, fallbackMessage) {
+    if (isAuthExpiredError(err)) {
+      this.setData({ accessState: 'loginRequired' });
+      return;
+    }
+    if (isPermissionDeniedError(err)) {
+      this.handleMemberRequired(err);
+      return;
+    }
+    wx.showToast({ title: fallbackMessage || '生成失败，请重试', icon: 'none' });
+  },
+
+  onMembershipModalClose() {
+    this.setData({ showMembershipModal: false });
+  },
+
+  goToLogin() {
+    wx.navigateTo({ url: '/pages/login/index' });
+  },
+
+  goToLearning() {
+    wx.switchTab({ url: '/pages/learning/index' });
+  },
+
+  goToRedeem() {
+    wx.navigateTo({ url: '/pages/redeem/index' });
+  },
+
   // --- Warmup ---
   generateWarmup(isRefresh) {
+    if (!this.ensureCanGenerate()) return;
     if (this.data.warmupLoading || !this.data.topic) return;
     this.setData({ warmupLoading: true, warmupExpanded: true });
     wx.showLoading({ title: '生成热身内容...', mask: true });
@@ -193,10 +313,7 @@ Page({
       console.error('Generate warmup failed:', err);
       this.setData({ warmupLoading: false });
       wx.hideLoading();
-      if (isAuthExpiredError(err)) {
-        return;
-      }
-      wx.showToast({ title: '生成失败，请重试', icon: 'none' });
+      this.handleGenerateError(err, '生成失败，请重试');
     });
   },
 
@@ -205,6 +322,7 @@ Page({
 
   // --- Vocabulary ---
   generateVocab(isRefresh) {
+    if (!this.ensureCanGenerate()) return;
     if (this.data.vocabLoading || !this.data.topic) return;
     this.setData({ vocabLoading: true, vocabExpanded: true });
     wx.showLoading({ title: '生成词汇表...', mask: true });
@@ -224,10 +342,7 @@ Page({
       console.error('Generate vocabulary failed:', err);
       this.setData({ vocabLoading: false });
       wx.hideLoading();
-      if (isAuthExpiredError(err)) {
-        return;
-      }
-      wx.showToast({ title: '生成失败，请重试', icon: 'none' });
+      this.handleGenerateError(err, '生成失败，请重试');
     });
   },
 
@@ -236,6 +351,7 @@ Page({
 
   // --- Expressions ---
   generateExpressions(isRefresh) {
+    if (!this.ensureCanGenerate()) return;
     if (this.data.expressionsLoading || !this.data.topic) return;
     this.setData({ expressionsLoading: true, expressionsExpanded: true });
     wx.showLoading({ title: '生成表达模板...', mask: true });
@@ -255,10 +371,7 @@ Page({
       console.error('Generate expressions failed:', err);
       this.setData({ expressionsLoading: false });
       wx.hideLoading();
-      if (isAuthExpiredError(err)) {
-        return;
-      }
-      wx.showToast({ title: '生成失败，请重试', icon: 'none' });
+      this.handleGenerateError(err, '生成失败，请重试');
     });
   },
 
@@ -267,6 +380,7 @@ Page({
 
   // --- Tasks ---
   generateTasks(isRefresh) {
+    if (!this.ensureCanGenerate()) return;
     if (this.data.tasksLoading || !this.data.topic) return;
     this.setData({ tasksLoading: true, tasksExpanded: true });
     wx.showLoading({ title: '生成练习任务...', mask: true });
@@ -286,10 +400,7 @@ Page({
       console.error('Generate tasks failed:', err);
       this.setData({ tasksLoading: false });
       wx.hideLoading();
-      if (isAuthExpiredError(err)) {
-        return;
-      }
-      wx.showToast({ title: '生成失败，请重试', icon: 'none' });
+      this.handleGenerateError(err, '生成失败，请重试');
     });
   },
 
@@ -317,6 +428,7 @@ Page({
   },
 
   onSubmitAnswer() {
+    if (!this.ensureCanGenerate()) return;
     if (!this.data.answerText.trim()) {
       wx.showToast({ title: '请输入回答内容', icon: 'none' });
       return;
@@ -346,10 +458,7 @@ Page({
       console.error('Review answer failed:', err);
       this.setData({ submittingAnswer: false });
       wx.hideLoading();
-      if (isAuthExpiredError(err)) {
-        return;
-      }
-      wx.showToast({ title: 'AI点评失败，请重试', icon: 'none' });
+      this.handleGenerateError(err, 'AI点评失败，请重试');
     });
   },
 

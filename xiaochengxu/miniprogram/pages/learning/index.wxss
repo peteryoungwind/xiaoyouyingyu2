@@ -13,6 +13,71 @@
   background: #F0FBF7;
 }
 
+.shadowing-outline {
+  color: #007AFF;
+  border: 2rpx solid rgba(0, 122, 255, 0.24);
+  background: #EEF5FF;
+}
+
+.shadowing-entry-card {
+  margin-bottom: 28rpx;
+  padding: 32rpx;
+  border-radius: 34rpx;
+  background: linear-gradient(135deg, #EEF5FF, #FFFFFF);
+  border: 2rpx solid rgba(0, 122, 255, 0.12);
+  box-shadow: 0 16rpx 40rpx rgba(0, 122, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24rpx;
+}
+
+.shadowing-entry-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.shadowing-entry-label {
+  display: inline-flex;
+  height: 38rpx;
+  align-items: center;
+  padding: 0 16rpx;
+  border-radius: 999rpx;
+  background: #FFFFFF;
+  color: #007AFF;
+  font-size: 20rpx;
+  font-weight: 800;
+}
+
+.shadowing-entry-title {
+  margin-top: 18rpx;
+  font-size: 38rpx;
+  line-height: 1.2;
+  font-weight: 800;
+  color: #1D1D1F;
+}
+
+.shadowing-entry-desc {
+  margin-top: 8rpx;
+  font-size: 25rpx;
+  line-height: 1.5;
+  color: #50657F;
+}
+
+.shadowing-entry-action {
+  width: 92rpx;
+  height: 58rpx;
+  border-radius: 20rpx;
+  background: #007AFF;
+  color: #FFFFFF;
+  font-size: 24rpx;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
 /* Stats card */
 .stats-card {
   background: #FFFFFF; border-radius: 28rpx; padding: 40rpx;

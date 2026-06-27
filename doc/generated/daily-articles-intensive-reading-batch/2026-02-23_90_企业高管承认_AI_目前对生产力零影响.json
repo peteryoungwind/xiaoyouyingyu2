@@ -1,0 +1,184 @@
+{
+  "title" : "A Huge Survey of CEOs and Other Execs Just Found Something Damning About AI’s Effects on Productivity",
+  "titleZh" : "90%企业高管承认：AI 目前对生产力零影响",
+  "audioUrl" : "https://res.wx.qq.com/voice/getvoice?mediaid=MzU3MTAwNTY5Ml8yMjQ3NDk2MzE5",
+  "difficultyStars" : 3,
+  "wordCount" : 602,
+  "sourceName" : "Futurism",
+  "summary" : "关于人工智能能否真正提升职场效率的质疑正在不断增加。美国国家经济研究局最新发布、并获《财富》杂志重点报道的一项调查分析显示，在美国、英国、德国和澳大利亚近6000名受访的首席执行官、首席财务官及其他企业高管中，约90%表示，人工智能尚未对其公司的生产力或就业情况产生任何影响。需要指出的是，调查询问的是人工智能整体层面的影响，而非仅限于企业内部是否部署了相关技术。不过，考虑到约有70%的受访企业表示已在积极使用人工智能，这也意味着其中绝大多数企业承认，截至目前，引入这项技术仍未带来任何实质性改变。\n\n来源：Futurism；作者：Frank Landymore；原文发布时间：2026-02-23 20:00:00",
+  "status" : "ENABLED",
+  "publishedDate" : null,
+  "paragraphs" : [ {
+    "sortOrder" : 1,
+    "contentEn" : "The case against AI’s usefulness in the workplace continues to grow. In a new analysis of a survey published by the National Bureau of Economic Research and highlighted by Fortune, around 90 percent of the nearly 6,000 interviewed CEOs, chief financial officers, and other top executives at firms across the US, UK, Germany, and Australia, said that AI has had no impact on productivity or employment at their business. To be clear, the question was about AI’s impact generally, and not just from implementing it in the workplace. But around 70 percent of the firms reported actively using AI, meaning the vast majority of them are admitting that adopting the tech hasn’t budged the needle for them yet.",
+    "contentZh" : "关于人工智能能否真正提升职场效率的质疑正在不断增加。美国国家经济研究局最新发布、并获《财富》杂志重点报道的一项调查分析显示，在美国、英国、德国和澳大利亚近6000名受访的首席执行官、首席财务官及其他企业高管中，约90%表示，人工智能尚未对其公司的生产力或就业情况产生任何影响。需要指出的是，调查询问的是人工智能整体层面的影响，而非仅限于企业内部是否部署了相关技术。不过，考虑到约有70%的受访企业表示已在积极使用人工智能，这也意味着其中绝大多数企业承认，截至目前，引入这项技术仍未带来任何实质性改变。"
+  }, {
+    "sortOrder" : 2,
+    "contentEn" : "The CEOs themselves don’t appear to be getting a whole lot out of using AI tools. While two-thirds said they personally used AI, their average use amounted to only 1.5 hours a week, the survey found — less time than most people spend doomscrolling on their phones in a single day. That’s striking, considering that execs tend to be far more enthusiastic about the tech compared to their underlings. Another recent survey, for example, found that 40 percent of rank-and-file white collar workers thought AI didn’t save them any time at work, while 98 percent of their bosses did.",
+    "contentZh" : "企业高管自身似乎也并未从人工智能工具中获得太多实质性的助益。调查显示，尽管有三分之二的受访高管自称会使用人工智能，但平均每周的使用时间仅为1.5小时——这甚至少于多数人一天之中在手机上漫无目的浏览的时间。鉴于高管们对这项技术的热衷程度通常远高于普通员工，如此之低的使用频率着实令人意外。以另一项近期调查为例，40%的普通办公室职员认为人工智能并不能为自己节省任何工作时间，而在他们的上级中，却有高达98%的人坚信人工智能可以做到。"
+  }, {
+    "sortOrder" : 3,
+    "contentEn" : "These latest findings will continue to raise questions about AI’s economic impact, and in its promise to supercharge productivity in the workplace. In another recent survey, more than half of nearly 4,500 CEOs said their companies weren’t seeing a financial return from investing in AI. A notable MIT study rang alarm bells across the industry after findings that 95 percent of companies that incorporated AI experiencing no meaningful growth in revenue.",
+    "contentZh" : "这些最新发现势必会进一步加剧外界对人工智能经济效益的质疑，也让人再次审视它能否真正兑现其大幅提升职场生产力的承诺。在另一项近期调查中，近4500名首席执行官中有超过半数表示，公司在人工智能上的投入尚未带来财务回报。与此同时，麻省理工学院一项备受关注的研究更是为整个行业敲响了警钟：研究显示，95%引入人工智能的企业没有实现任何有意义的营收增长。"
+  }, {
+    "sortOrder" : 4,
+    "contentEn" : "Why this is the case isn’t much of a mystery. Studies have found that AIs fail at completing remote work and other white collar tasks, and slow down rather than speed up human programmers because they frequently slip errors into their code. Meanwhile, a fresher avenue of research exploring AI’s effect on the workforce using it is already producing damning insights. The tech may actually be intensifying work and accelerating burn-out, one report found, and it’s also leading to employees producing low-quality “workslop” that their co-workers are forced to fix, bogging down workflows and leading to resentment, another found — leading the researchers to opine that its “most alarming cost may be interpersonal.”",
+    "contentZh" : "至于为何会出现这样的局面，其实并不难理解。研究发现，人工智能在完成远程工作及其他白领类任务时表现欠佳；在编程领域，由于其生成代码时频繁引入错误，不仅未能提升效率，反而拖慢了人类程序员的工作进度。与此同时，聚焦于人工智能对使用者影响的新兴研究方向，也已开始得出不容乐观的结论。一份报告指出，这项技术可能正在加剧工作强度，加速员工的职业倦怠；另一项研究则发现，人工智能可能诱导员工产出低质量的“无效工作”，迫使同事花费额外时间进行修正，这不仅拖慢了整体流程，还在团队内部积累了不满情绪——研究人员因此直言，人工智能“最令人警惕的成本，或许是人际层面的”。"
+  }, {
+    "sortOrder" : 5,
+    "contentEn" : "Despite this, AI adoption has gone up since the start up of 2025, the new survey found, with the percentage of businesses using AI tech increasing from 61 percent in February-April 2025 to 71 percent in November 2025-January 2026. Perhaps what AI brings to the table is tough to quantify from an economic standpoint. Decades ago, the Nobel Prize winning economist Robert Solow correctly predicted that the advent of information technology wouldn’t lead to a measurable surge in productivity, and instead would lead to a slow in productivity growth. The phenomenon is now called the Solow paradox: though computers were obviously transformative, they didn’t immediately translate to economic gains.",
+    "contentZh" : "尽管存在种种质疑，但最新调查显示，自2025年初以来，企业对人工智能的采用率仍在攀升，部署相关技术的企业比例已从2025年2月至4月的61%，增至2025年11月至2026年1月的71%。或许，人工智能所带来的真正价值，并不容易通过经济指标进行衡量。数十年前，诺贝尔经济学奖得主罗伯特·索洛就曾敏锐地指出，信息技术的兴起未必会带来可量化的生产力跃升，反而可能表现为生产率增长放缓。后来，这种现象被称为索洛悖论：尽管计算机技术显然改变了世界，却不会即刻转化为可见的经济收益。"
+  }, {
+    "sortOrder" : 6,
+    "contentEn" : "But the business world, nonetheless, is clinging to the hope that the tech’s promises will be borne out in the long run. The surveyed executives are predicting that AI will boost productivity by 1.4 percent and output by 0.8 percent over the next three years — while also cutting down employment by 0.5 percent. Hard to say which part they’re excited about more.",
+    "contentZh" : "尽管质疑不断，商界依然寄望于这项技术的承诺能在长期内兑现。受访高管预计，未来三年，人工智能将推动生产率提升1.4%，产出增长0.8%——同时使就业岗位减少0.5%。至于他们更热衷于增长的前景，还是更期待裁员的可能性，就不得而知了。"
+  } ],
+  "vocabulary" : [ {
+    "word" : "implement",
+    "phoneticUk" : "ˈɪmplɪment",
+    "phoneticUs" : "ˈɪmplɪment",
+    "pos" : "",
+    "meaning" : "v. 执行，贯彻；为……提供工具\nn. 工具，器具；<苏格兰>履行；手段",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "budge/move the needle",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "1. 改变情况以引起明显的变化：通常用于描述某个行动或决策对于整体结果或进展产生了重要影响或积极的变化",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "doomscrolling",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "1. 末日刷屏：指在社交媒体或新闻网站上不断浏览负面、令人沮丧的新闻或信息的行为",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "enthusiastic",
+    "phoneticUk" : "ɪnˌθjuːziˈæstɪk",
+    "phoneticUs" : "ɪnˌθuːziˈæstɪk",
+    "pos" : "adj.",
+    "meaning" : "热心的，热情的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "underling",
+    "phoneticUk" : "ˈʌndəlɪŋ",
+    "phoneticUs" : "ˈʌndərlɪŋ",
+    "pos" : "n.",
+    "meaning" : "下属，部下；走卒",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "rank-and-file",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "美/ ˌræŋk ən ˈfaɪl /\nadj. 士兵的；一般大众的；一般成员的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "supercharge",
+    "phoneticUk" : "ˈsuːpətʃɑːdʒ;ˈsjuː-",
+    "phoneticUs" : "ˈsuːpərtʃɑːrdʒ",
+    "pos" : "",
+    "meaning" : "vt. 对……增压；使……超载；使……过分；使……超负荷\nn. 超负荷；过荷",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "notable",
+    "phoneticUk" : "ˈnəʊtəb(ə)l",
+    "phoneticUs" : "ˈnoʊtəb(ə)l",
+    "pos" : "",
+    "meaning" : "adj. 显要的，值得注意的；非常成功的，令人尊敬的\nn. 显要人物，名流",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "bog down",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "1. 陷入泥沼：指使某物陷入湿地中沉没\n2. 陷入困境：指陷入困难或复杂的情况中",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "resentment",
+    "phoneticUk" : "rɪˈzentmənt",
+    "phoneticUs" : "rɪˈzentmənt",
+    "pos" : "n.",
+    "meaning" : "愤恨，怨恨",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "opine",
+    "phoneticUk" : "əʊˈpaɪn",
+    "phoneticUs" : "oʊˈpaɪn",
+    "pos" : "v.",
+    "meaning" : "以为，表示意见，说明",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "interpersonal",
+    "phoneticUk" : "ˌɪntəˈpɜːsən(ə)l",
+    "phoneticUs" : "ˌɪntərˈpɜːrsən(ə)l",
+    "pos" : "adj.",
+    "meaning" : "人际关系的，人际的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "bring to the table",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "1. 为团队合作或讨论做出贡献：指某人在团队中能够提供独特的技能、知识或资源，为团队的合作或讨论做出有价值的贡献",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "advent",
+    "phoneticUk" : "ˈædvent",
+    "phoneticUs" : "ˈædvent",
+    "pos" : "n.",
+    "meaning" : "出现，到来，问世；基督降临节（Advent）；基督降临，基督复临（Advent）",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "transformative",
+    "phoneticUk" : "trænsˈfɔːmətɪv",
+    "phoneticUs" : "trænsˈfɔːrmətɪv",
+    "pos" : "adj.",
+    "meaning" : "有改革能力的，起改造作用的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "cling",
+    "phoneticUk" : "klɪŋ",
+    "phoneticUs" : "klɪŋ",
+    "pos" : "",
+    "meaning" : "v. 抓住，抱紧；黏附，粘住；依恋，依附；坚持，坚信；紧抓不放，坚守\nn. 粘核桃",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "be borne out",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "1. 得到证实：指某种观点、说法或假设经过验证后被证明是正确的",
+    "example" : "",
+    "exampleZh" : ""
+  } ],
+  "expressions" : [ {
+    "expression" : "Perhaps what …… brings to the table is tough to quantify from …… standpoint.",
+    "meaning" : "或许，……真正带来的价值，很难从……的角度加以量化。",
+    "example" : "Perhaps what liberal arts education brings to the table is tough to quantify from a purely financial standpoint.",
+    "exampleZh" : "或许，人文学科教育的意义，很难单纯用经济回报来计算。"
+  } ],
+  "keySentences" : [ {
+    "sentence" : "Perhaps what …… brings to the table is tough to quantify from …… standpoint.",
+    "translation" : "或许，……真正带来的价值，很难从……的角度加以量化。",
+    "analysis" : "写作积累句型\n例句：Perhaps what liberal arts education brings to the table is tough to quantify from a purely financial standpoint.\n翻译：或许，人文学科教育的意义，很难单纯用经济回报来计算。"
+  } ]
+}

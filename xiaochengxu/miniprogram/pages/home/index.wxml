@@ -40,7 +40,7 @@
       </view>
       <view class="study-entry-title">每日外刊</view>
     </view>
-    <view class="study-entry-item listening" bindtap="goToSpokenWarmup">
+    <view class="study-entry-item listening" bindtap="goToShadowingLessons">
       <view class="study-entry-icon">
         <view class="icon-headphone">
           <view class="icon-headphone-band"></view>
@@ -48,7 +48,7 @@
           <view class="icon-headphone-ear right"></view>
         </view>
       </view>
-      <view class="study-entry-title">口语热身</view>
+      <view class="study-entry-title">跟读精听</view>
     </view>
   </view>
 

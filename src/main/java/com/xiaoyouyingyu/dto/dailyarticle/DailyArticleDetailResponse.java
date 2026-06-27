@@ -15,6 +15,10 @@ public class DailyArticleDetailResponse {
     private String summary;
     private String vocabulary;
     private String expressions;
+    private Integer difficultyStars;
+    private Integer wordCount;
+    private String sourceName;
+    private String keySentences;
     private LocalDate publishedDate;
     private Boolean read;
     private List<DailyArticleParagraphResponse> paragraphs;

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>跟读精听 · AI 点评结果</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <main class="stage review-modal-page">
+    <article class="phone">
+      <div class="screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="status-icons"><span class="signal"></span><span class="wifi"></span><span class="battery"></span></span>
+        </div>
+        <div class="app-page">
+          <nav class="nav-row">
+            <a class="nav-btn" href="./04-detail-member.html">‹</a>
+            <span class="chip green">点评完成</span>
+          </nav>
+          <section class="section-card">
+            <div class="section-head">
+              <div>
+                <h2 class="section-title">逐句跟读</h2>
+                <p class="section-caption">句子 1 · 0.3s - 4.4s</p>
+              </div>
+            </div>
+            <article class="sentence-card">
+              <p class="sentence-en">I just got out of the shower, I dried my hair.</p>
+              <p class="sentence-zh">我刚洗完澡，吹干头发。</p>
+              <div class="sentence-actions">
+                <button class="icon-btn primary">播放</button>
+                <button class="icon-btn">录音</button>
+                <button class="icon-btn">回放</button>
+                <button class="icon-btn">点评</button>
+              </div>
+            </article>
+          </section>
+        </div>
+
+        <section class="bottom-sheet" aria-label="AI 点评结果">
+          <div class="sheet-handle"></div>
+          <div class="score-panel">
+            <div class="score-ring"><div class="score-inner">88</div></div>
+            <div class="score-copy">
+              <h2>这句读得很稳</h2>
+              <p>关键内容识别完整，再把 out of the shower 的连读练顺一点。</p>
+            </div>
+          </div>
+
+          <div class="score-grid">
+            <div class="score-item"><strong>86</strong><span>发音</span></div>
+            <div class="score-item"><strong>84</strong><span>流利度</span></div>
+            <div class="score-item"><strong>94</strong><span>准确度</span></div>
+          </div>
+
+          <div class="feedback-card">
+            <h3 class="feedback-title">ASR 识别</h3>
+            <p>I just got out of the shower, I dried my hair.</p>
+          </div>
+
+          <div class="feedback-card">
+            <h3 class="feedback-title">优点</h3>
+            <ul>
+              <li>句子主干完整，关键词都被识别出来了。</li>
+              <li>dried my hair 的尾音比较清楚。</li>
+            </ul>
+          </div>
+
+          <div class="feedback-card">
+            <h3 class="feedback-title">建议练习</h3>
+            <p>重点复读：out of the shower。让 out of 连起来，不要每个词都断开。</p>
+          </div>
+
+          <div class="sheet-actions">
+            <a class="ghost-btn" href="./04-detail-member.html">关闭</a>
+            <a class="primary-btn" href="./04-detail-member.html">再读一次</a>
+          </div>
+        </section>
+      </div>
+    </article>
+  </main>
+</body>
+</html>

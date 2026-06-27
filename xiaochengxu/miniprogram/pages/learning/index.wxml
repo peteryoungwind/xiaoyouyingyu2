@@ -4,7 +4,8 @@
   <view wx:if="{{!isLoggedIn}}" class="empty-state">
     <view class="empty-icon">📚</view>
     <view class="empty-title">登录后开启学习之旅</view>
-    <view class="empty-desc">学习中心提供热身、词汇、表达、练习任务等丰富内容</view>
+    <view class="empty-desc">跟读精听可先试看，登录后解锁逐句跟读和 AI 点评。</view>
+    <button class="btn shadowing-outline btn-block mt-32" bindtap="goToShadowingLessons">进入跟读精听</button>
     <button class="btn btn-primary btn-block mt-32" bindtap="goToLogin">去登录</button>
     <button class="btn daily-article-outline btn-block mt-16" bindtap="goToDailyArticles">每日外刊</button>
     <button class="btn btn-outline btn-block mt-16" bindtap="browseAsGuest">以游客身份浏览</button>
@@ -37,12 +38,22 @@
     </view>
 
     <button class="btn btn-gold btn-block mt-24" bindtap="goToRedeem">卡密兑换</button>
+    <button class="btn shadowing-outline btn-block mt-16" bindtap="goToShadowingLessons">进入跟读精听</button>
     <button class="btn daily-article-outline btn-block mt-16" bindtap="goToDailyArticles">进入每日外刊</button>
     <button class="btn btn-primary btn-block mt-16" bindtap="goToAiDialog">进入 AI 对话</button>
   </view>
 
   <!-- Member content -->
   <view wx:else>
+    <view class="shadowing-entry-card" bindtap="goToShadowingLessons">
+      <view class="shadowing-entry-copy">
+        <view class="shadowing-entry-label">Shadowing</view>
+        <view class="shadowing-entry-title">跟读精听</view>
+        <view class="shadowing-entry-desc">看原声视频，练精听、跟读和地道表达。</view>
+      </view>
+      <view class="shadowing-entry-action">进入</view>
+    </view>
+
     <!-- Stats -->
     <view class="stats-card">
       <view class="stat-block">

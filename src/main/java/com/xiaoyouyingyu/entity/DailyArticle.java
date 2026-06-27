@@ -37,6 +37,18 @@ public class DailyArticle {
     @Column(columnDefinition = "json")
     private String expressions;
 
+    @Column(name = "difficulty_stars")
+    private Integer difficultyStars;
+
+    @Column(name = "word_count")
+    private Integer wordCount;
+
+    @Column(name = "source_name", length = 200)
+    private String sourceName;
+
+    @Column(name = "key_sentences", columnDefinition = "json")
+    private String keySentences;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private DailyArticleStatus status = DailyArticleStatus.DRAFT;

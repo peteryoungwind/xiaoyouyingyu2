@@ -1,0 +1,192 @@
+{
+  "title" : "Scientists Identify Another Contributor to Global Warming—and It’s Everywhere",
+  "titleZh" : "新发现：无孔不入的微塑料正加剧全球变暖",
+  "audioUrl" : "https://res.wx.qq.com/voice/getvoice?mediaid=MzU3MTAwNTY5Ml8yMjQ3NDk2ODUx",
+  "difficultyStars" : 3,
+  "wordCount" : 681,
+  "sourceName" : "Gizmodo",
+  "summary" : "微塑料已渗透至人类生活的方方面面，不仅遍布土壤和水体，甚至侵入了人体。不仅如此，微塑料同样存在于空气中，一项最新研究指出，空气中的微塑料正在推高地球气温。本周一发表于《自然·气候变化》期刊的一项研究指出，悬浮在大气中的有色微塑料和纳米塑料可能对全球变暖产生显著影响，其作用强度相当于黑碳（即煤烟）所致升温的16%。此前已有大量证据表明，塑料污染不仅会破坏陆地和海洋生态系统，同样也会影响地球气候，这项研究为此增添了新的佐证。\n\n来源：Gizmodo；作者：Ellyn Lapointe；原文发布时间：2026-05-06 20:05:00",
+  "status" : "ENABLED",
+  "publishedDate" : null,
+  "paragraphs" : [ {
+    "sortOrder" : 1,
+    "contentEn" : "Microplastics have become a ubiquitous part of our lives, infiltrating the soil, water, and even our bodies. They’re in the air too, and a new study suggests they’re contributing to the heating of the planet. The findings, published Monday in Nature Climate Change, show that colored micro- and nanoplastics suspended in the atmosphere may contribute to global warming at a level equal to 16% of that caused by black carbon, or soot. The study adds to mounting evidence that plastic pollution doesn’t just degrade terrestrial and marine ecosystems—it can also influence Earth’s climate.",
+    "contentZh" : "微塑料已渗透至人类生活的方方面面，不仅遍布土壤和水体，甚至侵入了人体。不仅如此，微塑料同样存在于空气中，一项最新研究指出，空气中的微塑料正在推高地球气温。本周一发表于《自然·气候变化》期刊的一项研究指出，悬浮在大气中的有色微塑料和纳米塑料可能对全球变暖产生显著影响，其作用强度相当于黑碳（即煤烟）所致升温的16%。此前已有大量证据表明，塑料污染不仅会破坏陆地和海洋生态系统，同样也会影响地球气候，这项研究为此增添了新的佐证。"
+  }, {
+    "sortOrder" : 2,
+    "contentEn" : "Prior to this research, “we really didn’t know if these things were even warming or cooling,” co-author Drew Shindell, Nicholas Distinguished Professor of Earth Science at Duke University, said during a press briefing. He worked with a team of atmospheric chemists at Fudan University, led by Professor Hongbo Fu, to precisely measure how microplastics interact with light. Their analysis revealed that the net atmospheric effect of almost all microplastics across a range of optical properties is warming.",
+    "contentZh" : "该研究合著者、杜克大学地球科学尼古拉斯讲席教授德鲁·辛德尔在一次发布会上表示，在这项研究开展之前，“我们其实并不清楚这些微粒最终会导致升温还是降温。”为此，辛德尔与复旦大学付洪波教授带领的大气化学团队合作，对微塑料与光的相互作用进行了精确测量。他们的分析显示，在各类光学特性下，几乎所有微塑料在大气中的净效应均表现为增温。"
+  }, {
+    "sortOrder" : 3,
+    "contentEn" : "Plastic pollution on land and in the ocean gradually breaks down into micro- and nanoplastics, and these particles are so light that they can be lofted into the atmosphere by wind. Atmospheric plastic concentrations are particularly high over ocean gyres, large systems of rotating ocean currents where plastic accumulates and degrades as pieces bump into each other. For example, the North Pacific Garbage Patch—an enormous floating island of trash between Hawaii and California—is created by the North Pacific Gyre.",
+    "contentZh" : "陆地和海洋中的塑料污染物会逐步降解为微塑料和纳米塑料，这些颗粒因质量极轻，极易被风力卷入大气。在海洋环流上空，大气中的塑料浓度尤其较高，海洋环流是由大规模旋转洋流构成的系统，塑料会在其中不断聚集，并在相互碰撞中逐渐破碎降解。例如，北太平洋垃圾带——一座漂浮在夏威夷与加利福尼亚之间的巨型垃圾岛——便是由北太平洋环流长期作用形成的。"
+  }, {
+    "sortOrder" : 4,
+    "contentEn" : "Much remains unknown about the concentration and distribution of microplastics throughout the global atmosphere, but in recent years, researchers have been investigating their direct radiative forcing: how they change the balance of energy (or heat) flowing in and out of the atmosphere. This is an important metric for measuring how a gas or an aerosol drives climate change, as those with a heat-trapping effect help global temperatures rise.",
+    "contentZh" : "目前，科学界对全球大气中微塑料的浓度与分布状况仍了解有限，不过近年来，研究人员已开始关注微塑料的直接辐射强迫效应：即这些颗粒如何改变进出大气的能量（或热量）平衡。这一指标是衡量气体或气溶胶如何推动气候变化的重要依据，因为具有截留热量效应的物质会导致全球气温上升。"
+  }, {
+    "sortOrder" : 5,
+    "contentEn" : "A 2021 study published in Nature used previous estimates of how colored microplastics absorb and scatter sunlight to calculate their radiative forcing. The results suggested that these particles have a negligible effect on Earth’s climate—especially when compared with the overall impact of other aerosols that interact with sunlight—though the authors noted that their influence will intensify as plastic pollution worsens.",
+    "contentZh" : "2021年发表在《自然》上的一项研究，曾基于过往对有色微塑料吸收和散射太阳辐射的估算数据，对其辐射强迫效应进行了计算。结果显示，这类颗粒对地球气候的影响微乎其微——尤其是在与其他同样与太阳辐射相互作用的气溶胶相比时，其总体作用几乎可以忽略。不过，研究作者也指出，随着塑料污染加剧，这些颗粒对气候的影响可能会随之增强。"
+  }, {
+    "sortOrder" : 6,
+    "contentEn" : "This new study used a more systematic approach to refine the direct radiative forcing of colored microplastics. Fu and his colleagues used high-resolution electron spectroscopy and atmospheric transport simulations to analyze their optical properties, finding their warming potential to be much higher than the 2021 estimate. On a global scale, this warming effect is still relatively small. But over ocean regions with high concentrations of plastic, such as the North Pacific Garbage Patch, it can exceed that of black carbon by nearly a factor of 5.",
+    "contentZh" : "这项新研究采用了更为系统的方法，对有色微塑料的直接辐射强迫效应进行了更精细的测算。付洪波教授及其团队利用高分辨率电子能谱和大气传输模拟技术，分析了微塑料的光学特性，发现其升温潜力明显高于2021年的估算水平。从全球尺度来看，这种升温效应仍相对有限。但在微塑料浓度较高的海洋区域，例如北太平洋垃圾带，其增温效应可达黑碳的5倍左右。"
+  }, {
+    "sortOrder" : 7,
+    "contentEn" : "Zamin Kanji, an atmospheric scientist and lecturer at ETH Zurich who was not involved in the study, said the findings are not altogether surprising. “If the plastic particles start to be present in significant amounts, they are bound to have effects on direct and indirect radiative forcing,” he told Gizmodo in an email. However, “the fact that the concentrations of [micro- and nanoplastics] that we detect in airborne samples is increasing—as the techniques and analytical methods to characterize them are advancing—is definitely worrying,” he said.",
+    "contentZh" : "未参与该项研究的苏黎世联邦理工学院大气科学家兼讲师扎明·坎吉表示，这一发现并不算太令人意外。他在发给Gizmodo的电子邮件中写道：“如果这些塑料颗粒开始以较大规模存在，势必会对直接和间接辐射强迫产生影响。”但他同时强调：“真正令人担忧的是，随着相关检测和分析方法不断进步，我们在大气样本中实际检测到的（微塑料和纳米塑料）浓度正在上升。”"
+  }, {
+    "sortOrder" : 8,
+    "contentEn" : "Kanji noted that key uncertainties remain about where airborne microplastics are found globally, how different particle sizes are distributed in the atmosphere, and how their physical and chemical properties change over time. The study’s authors acknowledge these limitations but emphasize that their findings clearly point to atmospheric microplastics as a warming agent. “We’re really confident now that we understand their optics and their net effect on radiation, but we’re not as confident—and we need more measurements from all around the world—to really characterize more precisely how much of the stuff is in the atmosphere,” Shindell said.",
+    "contentZh" : "坎吉指出，目前仍存在若干关键的不确定性，包括大气微塑料的全球分布格局、不同粒径颗粒的分布特征，以及其理化特性随时间的变化规律。研究作者也承认存在这些局限，但同时强调，现有结果已清楚表明，大气中的微塑料是一种升温因子。辛德尔表示：“我们现在已相当确定，对其光学特性以及它们对辐射的净效应有了清楚认识，但对于大气中究竟存在多少这类颗粒，仍缺乏足够把握——这需要来自全球各地更多观测数据，才能做出更精确的评估。”"
+  } ],
+  "vocabulary" : [ {
+    "word" : "infiltrate",
+    "phoneticUk" : "ˈɪnfɪltreɪt",
+    "phoneticUs" : "ˈɪnfɪltreɪt",
+    "pos" : "",
+    "meaning" : "v. （尤指为获取秘密情报而）渗透，渗入（组织、场所等）；（肿瘤、细胞等）浸润（组织，器官）；（液体）渗入；（某种特性缓慢地）透入，渗透\nn. （医学）浸润物",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "degrade",
+    "phoneticUk" : "dɪˈɡreɪd",
+    "phoneticUs" : "dɪˈɡreɪd",
+    "pos" : "v.",
+    "meaning" : "侮辱，贬低；降低，削弱（尤指质量）；降解，分解；使降级，贬黜；使（岩石）陵削；使（能量）衰变",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "terrestrial",
+    "phoneticUk" : "təˈrestriəl",
+    "phoneticUs" : "təˈrestriəl",
+    "pos" : "",
+    "meaning" : "adj. 陆地的；陆栖的；陆生的；地球的\nn. 陆栖动物；地球居民",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "interact",
+    "phoneticUk" : "ˌɪntərˈækt",
+    "phoneticUs" : "ˌɪntərˈækt",
+    "pos" : "v.",
+    "meaning" : "相互交流，互动；相互作用，相互影响",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "optical",
+    "phoneticUk" : "ˈɒptɪk(ə)l",
+    "phoneticUs" : "ˈɑːptɪk(ə)l",
+    "pos" : "adj.",
+    "meaning" : "视力的，视觉的；有助于视力的，光学的；光读取的，光存贮的；（装置）光电的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "loft",
+    "phoneticUk" : "lɒft",
+    "phoneticUs" : "lɔft",
+    "pos" : "v.",
+    "meaning" : "向高处击（或踢、掷）；使（高尔夫球棒击球端）向后倾斜",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "gyre",
+    "phoneticUk" : "dʒaɪə",
+    "phoneticUs" : "ˈdʒaɪər",
+    "pos" : "",
+    "meaning" : "n. 回转；旋回；旋转\nvi. 旋回",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "radiative",
+    "phoneticUk" : "ˈreɪdɪeɪtɪv",
+    "phoneticUs" : "ˈreɪdɪˌeɪtɪv",
+    "pos" : "adj.",
+    "meaning" : "辐射的；放射的；发光的；放热的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "aerosol",
+    "phoneticUk" : "ˈeərəsɒl",
+    "phoneticUs" : "ˈerəsɑːl",
+    "pos" : "",
+    "meaning" : "n. [物化] 气溶胶；气雾剂；喷雾器；浮质\nadj. 喷雾的；喷雾器的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "scatter",
+    "phoneticUk" : "ˈskætə(r)",
+    "phoneticUs" : "ˈskætər",
+    "pos" : "",
+    "meaning" : "v. 撒；四散；驱散；撒播\nn. 散落；三三两两；零零星星",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "negligible",
+    "phoneticUk" : "ˈneɡlɪdʒəb(ə)l",
+    "phoneticUs" : "ˈneɡlɪdʒəb(ə)l",
+    "pos" : "adj.",
+    "meaning" : "微不足道的，不值一提的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "refine",
+    "phoneticUk" : "rɪˈfaɪn",
+    "phoneticUs" : "rɪˈfaɪn",
+    "pos" : "v.",
+    "meaning" : "精炼，提纯；改进，改善；使……文雅",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "relatively",
+    "phoneticUk" : "ˈrelətɪvli",
+    "phoneticUs" : "ˈrelətɪvli",
+    "pos" : "adv.",
+    "meaning" : "相当地，相对地",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "be bound to",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "1. 注定会，必然会：表示某种情况或结果是不可避免的，一定会发生",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "airborne",
+    "phoneticUk" : "ˈeəbɔːn",
+    "phoneticUs" : "ˈerbɔːrn",
+    "pos" : "adj.",
+    "meaning" : "在空中的，飞行中的；空降的；空气传播的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "agent",
+    "phoneticUk" : "ˈeɪdʒənt",
+    "phoneticUs" : "ˈeɪdʒənt",
+    "pos" : "n.",
+    "meaning" : "（人工智能领域）智能体；代理人，代理商；（艺术界的）经纪人；间谍，特工；原动力，动因；剂；（语法）施动者；（美国某些政府部门的）官员",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "radiation",
+    "phoneticUk" : "ˌreɪdiˈeɪʃn",
+    "phoneticUs" : "ˌreɪdiˈeɪʃ(ə)n",
+    "pos" : "n.",
+    "meaning" : "辐射，放射线；辐射的热（或能量等）；放射疗法；辐射形进化，发散状分化",
+    "example" : "",
+    "exampleZh" : ""
+  } ],
+  "expressions" : [ {
+    "expression" : "…… have become a ubiquitous part of our lives, infiltrating ……, and even ……",
+    "meaning" : "……已成为我们生活中无处不在的一部分，渗入……，甚至进入……。",
+    "example" : "Social media has become a ubiquitous part of our lives, infiltrating our relationships and even shaping our sense of self.",
+    "exampleZh" : "社交媒体已成为我们生活中无处不在的一部分，渗入人际关系，甚至影响我们对自我的认知。"
+  } ],
+  "keySentences" : [ {
+    "sentence" : "…… have become a ubiquitous part of our lives, infiltrating ……, and even ……",
+    "translation" : "……已成为我们生活中无处不在的一部分，渗入……，甚至进入……。",
+    "analysis" : "写作积累句型\n例句：Social media has become a ubiquitous part of our lives, infiltrating our relationships and even shaping our sense of self.\n翻译：社交媒体已成为我们生活中无处不在的一部分，渗入人际关系，甚至影响我们对自我的认知。"
+  } ]
+}

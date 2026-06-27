@@ -129,7 +129,14 @@ Page({
 
   loadBookTitle() {
     api.getWordBookDetail(this.data.bookId, this.data.difficulty).then(res => {
-      this.setData({ bookTitle: res.name || '单词练习' });
+      const difficulty = res.level === 'ADVANCED' ? 'ADVANCED' : 'BEGINNER';
+      const difficultyLabel = difficulty === 'ADVANCED' ? '进阶' : '初级';
+      this.setData({
+        bookTitle: res.name || '单词练习',
+        difficulty,
+        difficultyLabel
+      });
+      wordPractice.saveRecentBook(this.data.bookId, difficulty);
     }).catch(() => {});
   },
 

@@ -5,9 +5,9 @@ import { api, isAuthExpiredError } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
 import { BookOpen, CheckSquare, Loader2, Plus, RefreshCw } from 'lucide-react';
 
-const emptyBook = { name: '', description: '', scene: '', status: 'DRAFT' };
-const emptySceneBook = { name: '', description: '', status: 'DRAFT' };
-const emptyTopicBook = { name: '', description: '', scene: '', status: 'DRAFT' };
+const emptyBook = { name: '', description: '', scene: '', level: 'BEGINNER', status: 'DRAFT' };
+const emptySceneBook = { name: '', description: '', level: 'BEGINNER', status: 'DRAFT' };
+const emptyTopicBook = { name: '', description: '', scene: '', level: 'BEGINNER', status: 'DRAFT' };
 const emptyWord = {
   word: '',
   difficulty: 'BEGINNER',
@@ -37,7 +37,7 @@ export default function AdminWordBooksPage() {
   const [difficulty, setDifficulty] = useState('');
   const [status, setStatus] = useState('');
   const [keyword, setKeyword] = useState('');
-  const [sceneForm, setSceneForm] = useState({ scene: '', count: 8, difficulty: 'BEGINNER', modelId: '' });
+  const [sceneForm, setSceneForm] = useState({ scene: '', count: 8, modelId: '' });
   const [topicForm, setTopicForm] = useState({ topicIds: [] as number[], beginnerCount: 5, advancedCount: 5, modelId: '' });
   const [message, setMessage] = useState('');
 
@@ -117,9 +117,9 @@ export default function AdminWordBooksPage() {
       return api.createWordGenerationTaskByScene({
         name: sceneBookForm.name,
         description: sceneBookForm.description,
+        level: sceneBookForm.level,
         scene: sceneForm.scene,
         count: sceneForm.count,
-        difficulty: sceneForm.difficulty,
         modelId: sceneForm.modelId ? Number(sceneForm.modelId) : undefined,
         ttsModelId: selectedTtsModelId ? Number(selectedTtsModelId) : undefined,
       });
@@ -127,7 +127,7 @@ export default function AdminWordBooksPage() {
     onSuccess: (task: any) => {
       setMessage(`后台任务已创建：${task.wordBookName}`);
       setSceneBookForm(emptySceneBook);
-      setSceneForm({ scene: '', count: 8, difficulty: 'BEGINNER', modelId: '' });
+      setSceneForm({ scene: '', count: 8, modelId: '' });
       setSelectedBookId(task.wordBookId || null);
       refresh();
     },
@@ -139,6 +139,7 @@ export default function AdminWordBooksPage() {
         name: topicBookForm.name,
         description: topicBookForm.description,
         scene: topicBookForm.scene,
+        level: topicBookForm.level,
         topicIds: topicForm.topicIds,
         beginnerCount: topicForm.beginnerCount,
         advancedCount: topicForm.advancedCount,
@@ -342,6 +343,10 @@ export default function AdminWordBooksPage() {
             {creationMode === 'manual' && (
               <div className="space-y-2">
                 <input value={bookForm.name} onChange={e => setBookForm({ ...bookForm, name: e.target.value })} placeholder="单词本名称" className="w-full rounded-lg bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100" />
+                <select value={bookForm.level} onChange={e => setBookForm({ ...bookForm, level: e.target.value })} className="w-full rounded-lg bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100">
+                  <option value="BEGINNER">初级词书</option>
+                  <option value="ADVANCED">进阶词书</option>
+                </select>
                 <input value={bookForm.scene} onChange={e => setBookForm({ ...bookForm, scene: e.target.value })} placeholder="适用场景" className="w-full rounded-lg bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100" />
                 <textarea value={bookForm.description} onChange={e => setBookForm({ ...bookForm, description: e.target.value })} placeholder="描述" className="min-h-20 w-full rounded-lg bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100" />
                 <button onClick={() => createBook.mutate()} disabled={!bookForm.name || createBook.isPending} className="w-full rounded-lg bg-blue-500 px-3 py-2 text-sm font-medium text-white disabled:opacity-50">{createBook.isPending ? '创建中...' : '创建空单词本'}</button>
@@ -350,14 +355,14 @@ export default function AdminWordBooksPage() {
             {creationMode === 'ai' && (
               <div className="space-y-2">
                 <input value={sceneBookForm.name} onChange={e => setSceneBookForm({ ...sceneBookForm, name: e.target.value })} placeholder="单词本名称" className="w-full rounded-lg bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100" />
+                <select value={sceneBookForm.level} onChange={e => setSceneBookForm({ ...sceneBookForm, level: e.target.value })} className="w-full rounded-lg bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100">
+                  <option value="BEGINNER">初级词书</option>
+                  <option value="ADVANCED">进阶词书</option>
+                </select>
                 <textarea value={sceneBookForm.description} onChange={e => setSceneBookForm({ ...sceneBookForm, description: e.target.value })} placeholder="单词本描述" className="min-h-16 w-full rounded-lg bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100" />
                 <textarea value={sceneForm.scene} onChange={e => setSceneForm({ ...sceneForm, scene: e.target.value })} placeholder="生成场景，例如下班后和朋友约饭、点餐、闲聊" className="min-h-24 w-full rounded-lg bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100" />
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-2 gap-2">
                   <input type="number" min={1} max={50} value={sceneForm.count} onChange={e => setSceneForm({ ...sceneForm, count: Number(e.target.value) })} className="rounded-lg bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100" />
-                  <select value={sceneForm.difficulty} onChange={e => setSceneForm({ ...sceneForm, difficulty: e.target.value })} className="rounded-lg bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100">
-                    <option value="BEGINNER">初级</option>
-                    <option value="ADVANCED">进阶</option>
-                  </select>
                   <select value={sceneForm.modelId} onChange={e => setSceneForm({ ...sceneForm, modelId: e.target.value })} className="rounded-lg bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100">
                     <option value="">默认模型</option>
                     {aiModels.map((model: any) => <option key={model.id} value={model.id}>{model.name}</option>)}
@@ -370,6 +375,10 @@ export default function AdminWordBooksPage() {
             {creationMode === 'topic' && (
               <div className="space-y-2">
                 <input value={topicBookForm.name} onChange={e => setTopicBookForm({ ...topicBookForm, name: e.target.value })} placeholder="单词本名称" className="w-full rounded-lg bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100" />
+                <select value={topicBookForm.level} onChange={e => setTopicBookForm({ ...topicBookForm, level: e.target.value })} className="w-full rounded-lg bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100">
+                  <option value="BEGINNER">初级词书</option>
+                  <option value="ADVANCED">进阶词书</option>
+                </select>
                 <input value={topicBookForm.scene} onChange={e => setTopicBookForm({ ...topicBookForm, scene: e.target.value })} placeholder="适用场景" className="w-full rounded-lg bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100" />
                 <textarea value={topicBookForm.description} onChange={e => setTopicBookForm({ ...topicBookForm, description: e.target.value })} placeholder="单词本描述" className="min-h-16 w-full rounded-lg bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100" />
                 <div className="max-h-36 space-y-1 overflow-y-auto rounded-lg bg-gray-50 p-2">
@@ -402,13 +411,13 @@ export default function AdminWordBooksPage() {
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
                     <p className="truncate text-sm font-semibold text-gray-900">{book.name}</p>
-                    <p className="mt-1 line-clamp-2 text-xs text-gray-500">{book.description || book.scene || '暂无描述'}</p>
+                    <p className="mt-1 line-clamp-2 text-xs text-gray-500">{book.level === 'ADVANCED' ? '进阶词书' : '初级词书'} · {book.description || book.scene || '暂无描述'}</p>
                   </div>
                   <span className="rounded-full bg-gray-100 px-2 py-1 text-[11px] text-gray-600">{book.status}</span>
                 </div>
                 <div className="mt-3 grid grid-cols-4 gap-2 text-center text-xs text-gray-500">
-                  <span>初级 {book.stats?.beginnerWords || 0}</span>
-                  <span>进阶 {book.stats?.advancedWords || 0}</span>
+                  <span>{book.level === 'ADVANCED' ? '进阶' : '初级'}</span>
+                  <span>词数 {book.stats?.totalWords || 0}</span>
                   <span>发布 {book.stats?.publishedWords || 0}</span>
                   <span>主题 {book.stats?.linkedTopics || 0}</span>
                 </div>
@@ -442,10 +451,7 @@ export default function AdminWordBooksPage() {
                 <div className="grid gap-2 sm:grid-cols-2">
                   <input value={wordForm.word} onChange={e => setWordForm({ ...wordForm, word: e.target.value })} placeholder="英文单词" className="rounded-lg bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100" />
                   <input value={wordForm.phonetic} onChange={e => setWordForm({ ...wordForm, phonetic: e.target.value })} placeholder="音标" className="rounded-lg bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100" />
-                  <select value={wordForm.difficulty} onChange={e => setWordForm({ ...wordForm, difficulty: e.target.value })} className="rounded-lg bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100">
-                    <option value="BEGINNER">初级</option>
-                    <option value="ADVANCED">进阶</option>
-                  </select>
+                  <input value={selectedBook.level === 'ADVANCED' ? '进阶词书' : '初级词书'} readOnly className="rounded-lg bg-gray-50 px-3 py-2 text-sm text-gray-500 outline-none" />
                   <select value={wordForm.status} onChange={e => setWordForm({ ...wordForm, status: e.target.value })} className="rounded-lg bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100">
                     <option value="DRAFT">草稿</option>
                     <option value="PUBLISHED">发布</option>
@@ -534,6 +540,10 @@ export default function AdminWordBooksPage() {
             <h3 className="text-sm font-semibold text-gray-900">编辑单词本</h3>
             <input value={editingBook.name || ''} onChange={e => setEditingBook({ ...editingBook, name: e.target.value })} className="w-full rounded-lg bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100" />
             <input value={editingBook.scene || ''} onChange={e => setEditingBook({ ...editingBook, scene: e.target.value })} className="w-full rounded-lg bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100" />
+            <select value={editingBook.level || 'BEGINNER'} onChange={e => setEditingBook({ ...editingBook, level: e.target.value })} className="w-full rounded-lg bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100">
+              <option value="BEGINNER">初级词书</option>
+              <option value="ADVANCED">进阶词书</option>
+            </select>
             <textarea value={editingBook.description || ''} onChange={e => setEditingBook({ ...editingBook, description: e.target.value })} className="min-h-24 w-full rounded-lg bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100" />
             <select value={editingBook.status || 'DRAFT'} onChange={e => setEditingBook({ ...editingBook, status: e.target.value })} className="w-full rounded-lg bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100">
               <option value="DRAFT">草稿</option>
@@ -556,10 +566,7 @@ export default function AdminWordBooksPage() {
               <input value={editingWord.word || ''} onChange={e => setEditingWord({ ...editingWord, word: e.target.value })} placeholder="英文单词" className="rounded-lg bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100" />
               <input value={editingWord.phonetic || ''} onChange={e => setEditingWord({ ...editingWord, phonetic: e.target.value })} placeholder="音标" className="rounded-lg bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100" />
               <input value={editingWord.partOfSpeech || ''} onChange={e => setEditingWord({ ...editingWord, partOfSpeech: e.target.value })} placeholder="词性" className="rounded-lg bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100" />
-              <select value={editingWord.difficulty || 'BEGINNER'} onChange={e => setEditingWord({ ...editingWord, difficulty: e.target.value })} className="rounded-lg bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100">
-                <option value="BEGINNER">初级</option>
-                <option value="ADVANCED">进阶</option>
-              </select>
+              <input value={selectedBook?.level === 'ADVANCED' ? '进阶词书' : '初级词书'} readOnly className="rounded-lg bg-gray-50 px-3 py-2 text-sm text-gray-500 outline-none" />
               <select value={editingWord.status || 'DRAFT'} onChange={e => setEditingWord({ ...editingWord, status: e.target.value })} className="rounded-lg bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100">
                 <option value="DRAFT">草稿</option>
                 <option value="PUBLISHED">发布</option>

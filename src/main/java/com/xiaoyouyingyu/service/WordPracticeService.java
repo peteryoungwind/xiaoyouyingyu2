@@ -29,7 +29,7 @@ public class WordPracticeService {
         User user = getUser(username);
         return wordBookRepository.findByDeletedFalseAndStatusOrderByUpdatedAtDesc(WordBookStatus.PUBLISHED)
                 .stream()
-                .map(book -> bookResponse(book, user.getId(), WordDifficulty.BEGINNER))
+                .map(book -> bookResponse(book, user.getId(), difficultyForBook(book)))
                 .toList();
     }
 
@@ -39,20 +39,22 @@ public class WordPracticeService {
         if (book.getStatus() != WordBookStatus.PUBLISHED) {
             throw new IllegalArgumentException("单词本未发布");
         }
-        return bookResponse(book, user.getId(), difficulty);
+        return bookResponse(book, user.getId(), difficultyForBook(book));
     }
 
     public Map<String, Object> progress(Long bookId, String username, WordDifficulty difficulty) {
         User user = getUser(username);
-        return progressResponse(user.getId(), bookId, difficulty);
+        WordBook book = wordBookService.getRequired(bookId);
+        return progressResponse(user.getId(), bookId, difficultyForBook(book));
     }
 
     public Map<String, Object> next(Long bookId, String username, WordDifficulty difficulty, int limit) {
         User user = getUser(username);
-        wordBookService.getRequired(bookId);
+        WordBook book = wordBookService.getRequired(bookId);
+        WordDifficulty bookDifficulty = difficultyForBook(book);
         LocalDateTime now = LocalDateTime.now();
 
-        List<UserWordProgress> due = progressRepository.findDueReviews(user.getId(), bookId, difficulty, UserWordStatus.MASTERED, now, PageRequest.of(0, limit));
+        List<UserWordProgress> due = progressRepository.findDueReviews(user.getId(), bookId, bookDifficulty, UserWordStatus.MASTERED, now, PageRequest.of(0, limit));
         List<Word> words = due.stream().map(UserWordProgress::getWord).collect(Collectors.toCollection(ArrayList::new));
 
         if (words.size() < limit) {
@@ -60,7 +62,7 @@ public class WordPracticeService {
             if (seenIds.isEmpty()) {
                 seenIds = List.of(-1L);
             }
-            words.addAll(wordRepository.findNewPracticeWords(bookId, difficulty, WordStatus.PUBLISHED, seenIds, PageRequest.of(0, limit - words.size())));
+            words.addAll(wordRepository.findNewPracticeWords(bookId, bookDifficulty, WordStatus.PUBLISHED, seenIds, PageRequest.of(0, limit - words.size())));
         }
 
         List<Long> wordIds = words.stream().map(Word::getId).toList();
@@ -72,7 +74,7 @@ public class WordPracticeService {
                 .toList();
         Map<String, Object> response = new LinkedHashMap<>();
         response.put("words", items);
-        response.put("progress", progressResponse(user.getId(), bookId, difficulty));
+        response.put("progress", progressResponse(user.getId(), bookId, bookDifficulty));
         return response;
     }
 
@@ -113,10 +115,15 @@ public class WordPracticeService {
 
     public List<Map<String, Object>> learnedWords(Long bookId, String username, WordDifficulty difficulty) {
         User user = getUser(username);
-        return progressRepository.findByUserIdAndWordBookIdAndWordDifficulty(user.getId(), bookId, difficulty)
+        WordBook book = wordBookService.getRequired(bookId);
+        return progressRepository.findByUserIdAndWordBookIdAndWordDifficulty(user.getId(), bookId, difficultyForBook(book))
                 .stream()
                 .map(progress -> wordWithProgress(progress.getWord(), progress))
                 .toList();
+    }
+
+    private WordDifficulty difficultyForBook(WordBook book) {
+        return book.getLevel() == WordBookLevel.ADVANCED ? WordDifficulty.ADVANCED : WordDifficulty.BEGINNER;
     }
 
     private Map<String, Object> bookResponse(WordBook book, Long userId, WordDifficulty difficulty) {

@@ -198,6 +198,35 @@ function spokenWarmupSpeechToText(filePath, data) {
   return http.upload('/spoken-warmup/speech-to-text', filePath, 'audioFile', data || {});
 }
 
+// ==================== Shadowing Intensive Listening ====================
+
+function getShadowingLessons(params) {
+  var parts = [];
+  if (params) {
+    if (params.learned !== undefined) parts.push('learned=' + params.learned);
+    if (params.page !== undefined) parts.push('page=' + params.page);
+    if (params.size !== undefined) parts.push('size=' + params.size);
+  }
+  var query = parts.length > 0 ? '?' + parts.join('&') : '';
+  return http.get('/shadowing-lessons' + query);
+}
+
+function getShadowingLessonDetail(id) {
+  return http.get('/shadowing-lessons/' + id);
+}
+
+function reviewShadowingSentence(id, sentenceIndex, filePath, data) {
+  return http.upload('/shadowing-lessons/' + id + '/sentences/' + sentenceIndex + '/review', filePath, 'audioFile', data || {});
+}
+
+function reviewShadowingTranslation(id, data) {
+  return http.post('/shadowing-lessons/' + id + '/translation-review', data || {});
+}
+
+function shadowingSpeechToText(filePath, data) {
+  return http.upload('/shadowing-lessons/speech-to-text', filePath, 'audioFile', data || {});
+}
+
 // ==================== AI Dialog ====================
 
 function getAiDialogConfig() {
@@ -310,6 +339,12 @@ module.exports = {
   generateSpokenWarmupTasks: generateSpokenWarmupTasks,
   reviewWarmupAnswer: reviewWarmupAnswer,
   spokenWarmupSpeechToText: spokenWarmupSpeechToText,
+  // Shadowing Intensive Listening
+  getShadowingLessons: getShadowingLessons,
+  getShadowingLessonDetail: getShadowingLessonDetail,
+  reviewShadowingSentence: reviewShadowingSentence,
+  reviewShadowingTranslation: reviewShadowingTranslation,
+  shadowingSpeechToText: shadowingSpeechToText,
   // AI Dialog
   getAiDialogConfig: getAiDialogConfig,
   sendAiDialogMessage: sendAiDialogMessage,

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>每日外刊精读 · 原型索引</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="prototype-shell">
+    <header class="prototype-header">
+      <div>
+        <span class="prototype-kicker">小柚英语 · 微信小程序原型</span>
+        <h1 class="prototype-title">每日外刊精读升级</h1>
+        <p class="prototype-desc">
+          把现有「每日外刊」详情升级为对标公众号外刊精读的沉浸式阅读：文章元信息（难度星级 / 字数 / 来源）、迷你音频播放器（播放暂停 / 进度拖动 / 倍速含 2.0）、逐段点击查看翻译 + 顶部一键全显、带英美音标和词性的重点词汇、长难句解析。视觉延续系统蓝色主题：浅灰背景、白色高圆角卡片、蓝色主操作 #007AFF、轻量阴影。
+        </p>
+        <div class="tag-row">
+          <span class="flow-tag">FR-1 布局升级</span>
+          <span class="flow-tag">FR-2 元信息条</span>
+          <span class="flow-tag">FR-3 逐段翻译</span>
+          <span class="flow-tag">FR-4 迷你播放器</span>
+          <span class="flow-tag">FR-5 词汇音标词性</span>
+          <span class="flow-tag">FR-6 长难句解析</span>
+        </div>
+      </div>
+      <aside class="review-card">
+        <h2 class="review-card-title">建议评审顺序</h2>
+        <ol class="review-list">
+          <li>先看列表页，确认封面露出、入口与卡片密度。</li>
+          <li>再看精读详情默认态，确认六大模块顺序与元信息条。</li>
+          <li>看翻译全显态，确认逐段与全局开关协同。</li>
+          <li>看播放器交互态，确认倍速面板与拖动反馈。</li>
+          <li>最后看加载 / 错误状态。</li>
+        </ol>
+      </aside>
+    </header>
+
+    <section class="page-grid" aria-label="原型页面列表">
+      <a class="page-link" href="./pages/01-list-context.html">
+        <div class="page-link-index">01</div>
+        <h2>外刊列表 · 封面卡片</h2>
+        <p>未读 / 已读 tab、文章封面、英文标题与中文标题入口，用于交代精读详情的来路。</p>
+      </a>
+      <a class="page-link" href="./pages/02-detail-reading.html">
+        <div class="page-link-index">02</div>
+        <h2>精读详情 · 默认态</h2>
+        <p>英雄标题 + 元信息条 + 迷你播放器 + 中英正文（默认仅英文 + 逐段查看翻译）+ 总结 + 词汇 + 长难句 + 表达。</p>
+      </a>
+      <a class="page-link" href="./pages/03-detail-playing.html">
+        <div class="page-link-index">03</div>
+        <h2>精读详情 · 播放与全文翻译态</h2>
+        <p>顶部一键全显中文后，逐段译文展开；同时展示播放中状态与倍速面板。</p>
+      </a>
+      <a class="page-link" href="./pages/04-study-modules.html">
+        <div class="page-link-index">04</div>
+        <h2>学习模块 · 词汇 / 长难句 / 表达</h2>
+        <p>聚焦详情页下半部分：重点词汇、长难句解析、表达句型的内容密度与卡片样式。</p>
+      </a>
+      <a class="page-link" href="./pages/05-states.html">
+        <div class="page-link-index">05</div>
+        <h2>加载 / 错误状态</h2>
+        <p>详情骨架屏加载态与「外刊不存在 + 重试」错误态，覆盖关键异常路径。</p>
+      </a>
+    </section>
+
+    <p class="legend">
+      <strong>来源需求文档：</strong>doc/prd/daily-articles-intensive-reading-requirements-20260626.md。
+      <br><strong>范围说明：</strong>首页入口、列表页交互、句子级音频高亮、表达句型补例句翻译均不在本次范围（详见需求文档非目标）。原型为高保真静态稿，真机交互以小程序实现为准。
+    </p>
+  </main>
+</body>
+</html>

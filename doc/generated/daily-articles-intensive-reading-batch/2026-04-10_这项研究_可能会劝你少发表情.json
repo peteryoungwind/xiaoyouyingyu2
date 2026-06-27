@@ -1,0 +1,256 @@
+{
+  "title" : "Using Emojis at Work? You’re Not Going to Like This Study",
+  "titleZh" : "这项研究，可能会劝你少发表情",
+  "audioUrl" : "https://res.wx.qq.com/voice/getvoice?mediaid=MzU3MTAwNTY5Ml8yMjQ3NDk2Njcz",
+  "difficultyStars" : 3,
+  "wordCount" : 693,
+  "sourceName" : "Gizmodo",
+  "summary" : "\uD83D\uDE02这或许令人难以置信——但\uD83D\uDE35‍\uD83D\uDCAB一项心理学实验表明，在职场通讯中加入表情符号，可能会让同事对你的专业能力产生负面判断。不过，结论并非绝对：正如俗话所说，魔鬼（\uD83D\uDE08）就藏在细节之中。\n\n来源：Gizmodo；作者：Matthew Phelan；原文发布时间：2026-04-10 20:00:00",
+  "status" : "ENABLED",
+  "publishedDate" : null,
+  "paragraphs" : [ {
+    "sortOrder" : 1,
+    "contentEn" : "So, crying-laughing emoji, you’re not going to believe this—but, spiral-eyes emoji, a psychological experiment has found that incorporating emojis into your workplace communiqués might be leading your peers to perceive you as incompetent. But not always: the mercurial purple devil emoji, as always, is in the details.",
+    "contentZh" : "\uD83D\uDE02这或许令人难以置信——但\uD83D\uDE35‍\uD83D\uDCAB一项心理学实验表明，在职场通讯中加入表情符号，可能会让同事对你的专业能力产生负面判断。不过，结论并非绝对：正如俗话所说，魔鬼（\uD83D\uDE08）就藏在细节之中。"
+  }, {
+    "sortOrder" : 2,
+    "contentEn" : "Researchers at the University of Ottawa tested the reactions of 243 adult volunteers (134 men and 109 women) to a battery of hypothetical corporate instant messages, some with emojis, some without, to gauge the average response to the inclusion of these pictographic symbols. While messages without emoji were, far and away, deemed to be the most professional, emojis with a clear positive vibe paired with a positive or neutral text message also tended to enhance the test subject’s assessment of the sender’s competence.",
+    "contentZh" : "渥太华大学的研究人员测试了243名成年志愿者（男性134人、女性109人）对一系列模拟职场即时通讯信息的反应，这些信息有的包含表情符号，有的不包含，研究旨在评估人们对这类图形符号进入职场沟通的整体观感。结果显示，不使用表情符号的信息明显被认为最具专业性；与此同时，当带有明确正面情绪的表情符号与积极或中性的文字内容搭配使用时，往往也能提升受试者对信息发送者能力的评价。"
+  }, {
+    "sortOrder" : 3,
+    "contentEn" : "There were gender dynamics at play, too. Women were more likely to judge negative IMs with emoji more harshly if they were ostensibly sent by women, compared to similar negative messages and emojis sent by men. But this trend was also seen in workplace IMs sent without emojis. “Emojis are not simply neutral add-ons to text messages; they can influence how others perceive us, particularly in terms of competence and appropriateness,” the study’s lead author, Erin L. Courtice at the University of Ottawa’s School of Psychology, said in a statement. “By understanding the nuances of emoji use,” Courtice opined, “professionals can leverage these digital tools to enhance their communication and build stronger workplace relationships.”",
+    "contentZh" : "研究还发现，性别因素也在评价中发挥作用。与设定为男性发送的同类信息相比，当带有表情符号的负面即时消息被标注为来自女性时，女性受试者往往给予更严厉的评价。不过，这一倾向在不含表情符号的职场即时通讯中同样存在。该研究的主要作者、渥太华大学心理学院的艾琳·L·考蒂斯在一份声明中表示：“表情符号并不只是文本信息的中性补充；它们会影响他人对我们的看法，尤其是在专业能力和得体程度方面。”考蒂斯认为：“如果能够理解表情符号使用中的微妙尺度，职场人士就可以更好地利用这些数字工具，提升沟通效果，并建立更稳固的职场关系。”"
+  }, {
+    "sortOrder" : 4,
+    "contentEn" : "Courtice and her colleagues exercised strict controls on their study to ensure that they were uncovering real and broadly generalizable psychological phenomena. Their emoji selection (unlike many you’ve probably witnessed in the workplace) was limited to only three options: a positive “grinning face” emoji, a negative “angry face” emoji, or no emoji at all. “We deliberately selected these emojis to represent positive and negative emotional valence because these simple and unambiguous facial expressions minimize interpretive variability, representing clear positive and negative emotions,” the team wrote in their study, published in the journal Collabra: Psychology.",
+    "contentZh" : "为确保研究能够揭示出真实且具有广泛适用性的心理现象，考蒂斯及其团队在实验中对变量进行了严格控制。与现实职场中表情符号的多样用法不同，该研究仅选取了三种类型：代表正面情绪的“咧嘴笑脸”（\uD83D\uDE00）、代表负面情绪的“愤怒脸”（\uD83D\uDE20），以及完全不使用表情符号。研究团队在发表于《Collabra: Psychology》的论文中解释道：“我们有意选择这些表情来代表正面和负面的情绪效价，因为这些简单且不易产生歧义的面部表情，能最大程度减少解读差异，从而传递出清晰的正面或负面情绪。”"
+  }, {
+    "sortOrder" : 5,
+    "contentEn" : "Highly subjective and potentially inflammatory emoji were excluded from the team’s experimental framework. So were all off-brand Google Android and Microsoft Teams emojis. “All emojis were from iOS,” the team stated. Courtice and her fellow psychologists crafted a matrix of workplace IMs that varied between positive, negative, and neutral sentence content; positive and negative emojis, or no emoji content; and sender gender. Their study participants were asked to rate these messages both in terms of the hypothetical sender’s “competence” and “appropriateness,” which provided some additional nuance.",
+    "contentZh" : "研究团队在实验设计中排除了主观性较强、可能引发争议的表情符号。同时也剔除了来自谷歌Android和微软Teams等平台的表情符号。团队表示：“所有表情符号均选自iOS系统。”在此基础上，考蒂斯及其心理学团队构建了一组职场即时通讯信息的实验矩阵，围绕多项变量进行组合，包括文本内容的情绪倾向（正面、负面或中性）、是否搭配正面或负面表情符号（或不使用表情），以及发送者的性别。随后，受试者被要求从“专业能力”和“沟通得体性”两个维度，对这些模拟的信息发送者进行评分，从而为研究结果提供了更细致的差异呈现。"
+  }, {
+    "sortOrder" : 6,
+    "contentEn" : "Far and away, the presence of a negative emoji led subjects to deem a workplace message as inappropriate and, worse, led respondents to perceive the sender as less competent, particularly when the emotion was misaligned with positive or neutral message content. Positive emojis, the study noted, “do not soften bad news or critical feedback,” instead heightening suspicions of the sender’s “dishonesty and insincerity.” So, don’t do this if you can help it.",
+    "contentZh" : "实验结论十分清晰：只要使用了负面表情符号，受试者就明显更倾向于认为这类职场信息不得体；更进一步，他们也更容易因此认为发送者能力不足，尤其是在表情所表达的情绪与原本积极或中性的文本内容不一致时。研究还指出，正面表情符号“并不能缓和坏消息或批评性反馈”，反而可能加剧接收者对发送者“不诚实、不真诚”的怀疑。因此，如非必要，这类用法应尽量避免。"
+  }, {
+    "sortOrder" : 7,
+    "contentEn" : "Courtice had a silver lining for those of us who innately love adding a chipper emoji to keep up morale: Positive emojis can “enhance perceptions of competence when used with neutral or congruent messages,” her study found. “Future research should consider how emojis function within broader communication patterns,” Courtince said, “examining outcomes such as conversation flow, rapport building, conflict resolution, and team cohesion in digital workplace environments.”",
+    "contentZh" : "不过，对于习惯发送轻快表情来活跃职场气氛的人来说，考蒂斯的研究也带来了一些好消息：研究发现，正面表情符号“在与中性或情绪一致的文本搭配使用时，确实可以提升他人对发送者能力的评价。”考蒂斯表示：“未来的研究应考虑表情符号在更广泛的沟通模式中如何发挥作用，比如在数字化职场环境中，探究它们对对话流畅度、人际关系建立、冲突解决以及团队凝聚力等方面的影响。”"
+  }, {
+    "sortOrder" : 8,
+    "contentEn" : "Much was left on the table, her team noted, suggesting further examination of “a wider range of emojis and their use in more naturalistic settings.” “Although our use of validated stimuli is a strength of our design,” they wrote, “we acknowledge that workplace communication involves a broader range of emojis.” Sophisticated juxtaposition of the clown face emoji, the nail-painting emoji, and/or the casket emoji while conveying office gossip might, in fact, rocket your own coworker’s perception of your competence into the stratosphere. Diamond emoji? Flying cash emoji? You might get a raise.",
+    "contentZh" : "研究团队指出，这项研究仍有不少尚未覆盖的部分，并建议未来进一步考察“更广泛类型的表情符号及其在更自然情境中的使用”。他们在论文中写道：“尽管采用经过验证的实验材料是本研究设计的一项优势，但我们也承认，现实中的职场沟通涉及的表情符号远比实验所选取的更为丰富。”事实上，如果你在传递办公室八卦时，能够巧妙搭配使用小丑脸（\uD83E\uDD21）、涂指甲（\uD83D\uDC85）甚至棺材（⚰️）等表情，或许会让同事对你的能力评价直线上升。要是再加上钻石（\uD83D\uDC8E）？或者飞走的钞票（\uD83D\uDCB8）？说不定连加薪也能一并拿下。"
+  } ],
+  "vocabulary" : [ {
+    "word" : "communiqué",
+    "phoneticUk" : "kəˈmjuːnɪkeɪ",
+    "phoneticUs" : "kəˌmjuːnəˈkeɪ",
+    "pos" : "n.",
+    "meaning" : "an official statement or report, especially to newspapers",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "mercurial",
+    "phoneticUk" : "mɜːˈkjʊəriəl",
+    "phoneticUs" : "mɜːrˈkjʊriəl",
+    "pos" : "",
+    "meaning" : "adj. 水银的；水星的；墨丘利神的；雄辩机智的；活泼善变的\nn. 汞剂；水银剂",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "hypothetical",
+    "phoneticUk" : "ˌhaɪpəˈθetɪk(ə)l",
+    "phoneticUs" : "ˌhaɪpəˈθetɪk(ə)l",
+    "pos" : "",
+    "meaning" : "adj. （基于）假设的，假定的\nn. 假设命题，假设陈述",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "gauge",
+    "phoneticUk" : "ɡeɪdʒ",
+    "phoneticUs" : "ɡeɪdʒ",
+    "pos" : "",
+    "meaning" : "n. 测量仪器；宽度，厚度；（测量或判断的）尺度，标准；（铁道的）轨距；（枪管的）口径；（汽车）胎压计\nv. 估计，判断；测量",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "pictographic",
+    "phoneticUk" : "ˌpɪktəˈɡræfɪk",
+    "phoneticUs" : "ˈpɪktəˌɡræfɪk",
+    "pos" : "adj.",
+    "meaning" : "象形文字的，绘画文字的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "ostensibly",
+    "phoneticUk" : "ɒˈstensəbli",
+    "phoneticUs" : "ɑːˈstensəbli",
+    "pos" : "adv.",
+    "meaning" : "表面上；外表",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "add-on",
+    "phoneticUk" : "ˈædɒn",
+    "phoneticUs" : "ˈædɑːn",
+    "pos" : "n.",
+    "meaning" : "附加装置；（计算机的）附加设备；（现存计划、协议、法律等的）补充",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "nuance",
+    "phoneticUk" : "ˈnjuːɑːns",
+    "phoneticUs" : "ˈnuːɑːns",
+    "pos" : "",
+    "meaning" : "n. 细微差别\nv. 使产生细微差别",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "leverage",
+    "phoneticUk" : "ˈliːvərɪdʒ",
+    "phoneticUs" : "ˈlevərɪdʒ",
+    "pos" : "",
+    "meaning" : "n. 影响力，手段；杠杆力，杠杆作用；<美>杠杆比率\nv. <英>举债经营；充分利用（资源、观点等）",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "uncover",
+    "phoneticUk" : "ʌnˈkʌvə(r)",
+    "phoneticUs" : "ʌnˈkʌvər",
+    "pos" : "v.",
+    "meaning" : "揭露，发现；揭开盖子，移开覆盖物；发掘，挖出；脱帽（尤指表示敬意）",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "unambiguous",
+    "phoneticUk" : "ˌʌnæmˈbɪɡjuəs",
+    "phoneticUs" : "ˌʌnæmˈbɪɡjuəs",
+    "pos" : "adj.",
+    "meaning" : "不含糊的；清楚的；明白的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "variability",
+    "phoneticUk" : "ˌveəriəˈbɪləti",
+    "phoneticUs" : "ˌveriəˈbɪləti",
+    "pos" : "n.",
+    "meaning" : "可变性，变化性；[生物][数] 变异性",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "inflammatory",
+    "phoneticUk" : "ɪnˈflæmət(ə)ri",
+    "phoneticUs" : "ɪnˈflæmətɔːri",
+    "pos" : "adj.",
+    "meaning" : "炎症性的；煽动性的；激动的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "off-brand",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "",
+    "meaning" : "adj. 商标未注册的；杂牌的\nn. 未注册的商标；杂牌",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "matrix",
+    "phoneticUk" : "ˈmeɪtrɪks",
+    "phoneticUs" : "ˈmeɪtrɪks",
+    "pos" : "n.",
+    "meaning" : "矩阵；模型；社会环境；（骨头、牙齿和指甲等身体器官的）母体，基质；脉石；矩阵转接电路；线路网，道路网；精细材料；交叉结构",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "misaligned",
+    "phoneticUk" : "ˌmɪsəˈlaɪnd",
+    "phoneticUs" : "ˌmɪsəˈlaɪnd",
+    "pos" : "",
+    "meaning" : "adj. 方向偏离的；不重合的；未对准的；线向不正的\nv. 使不成一直线；使不一致（misalign 的过去分词）",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "feedback",
+    "phoneticUk" : "ˈfiːdbæk",
+    "phoneticUs" : "ˈfiːdbæk",
+    "pos" : "n.",
+    "meaning" : "反馈意见；（信号返回电子音响系统所致的）噪声；（返回机器、系统或者程序的）返回信息，返回电流",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "silver lining",
+    "phoneticUk" : "",
+    "phoneticUs" : "",
+    "pos" : "n.",
+    "meaning" : "银色衬里，指令人安慰或希望的前景",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "innately",
+    "phoneticUk" : "ɪˈneɪtli",
+    "phoneticUs" : "ɪˈneɪtli",
+    "pos" : "adv.",
+    "meaning" : "天赋地；与生俱来的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "morale",
+    "phoneticUk" : "məˈrɑːl",
+    "phoneticUs" : "məˈræl",
+    "pos" : "n.",
+    "meaning" : "士气，精神面貌",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "congruent",
+    "phoneticUk" : "ˈkɒŋɡruənt",
+    "phoneticUs" : "ˈkɑːŋɡruənt",
+    "pos" : "adj.",
+    "meaning" : "相合的，一致的；（图形）全等的，叠合的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "cohesion",
+    "phoneticUk" : "kəʊˈhiːʒ(ə)n",
+    "phoneticUs" : "koʊˈhiːʒ(ə)n",
+    "pos" : "n.",
+    "meaning" : "凝聚力，团结；内聚力；（句子、文章等在语法或含义方面的）连贯，衔接",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "naturalistic",
+    "phoneticUk" : "ˌnætʃ(ə)rəˈlɪstɪk",
+    "phoneticUs" : "ˌnætʃ(ə)rəˈlɪstɪk",
+    "pos" : "adj.",
+    "meaning" : "自然的；自然主义的；博物学的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "juxtaposition",
+    "phoneticUk" : "ˌdʒʌkstəpəˈzɪʃ(ə)n",
+    "phoneticUs" : "ˌdʒʌkstəpəˈzɪʃn",
+    "pos" : "n.",
+    "meaning" : "并置，并列",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "stratosphere",
+    "phoneticUk" : "ˈstrætəsfɪə(r)",
+    "phoneticUs" : "ˈstrætəsfɪr",
+    "pos" : "n.",
+    "meaning" : "平流层，同温层；最上层；最高阶段",
+    "example" : "",
+    "exampleZh" : ""
+  } ],
+  "expressions" : [ {
+    "expression" : "By understanding the nuances of ……, …… can leverage …… to enhance …… and build stronger ……",
+    "meaning" : "理解……的细微之处，有助于……更好地运用……，从而提升……并强化……。",
+    "example" : "By understanding the nuances of cultural diversity, multinational corporations can leverage these human resources to enhance their global competitiveness and build stronger market presence.",
+    "exampleZh" : "只要洞悉文化多样性中的微妙差异，跨国企业便能善用这些人力资源来提升其全球竞争力，并构建更稳固的市场地位。"
+  } ],
+  "keySentences" : [ {
+    "sentence" : "By understanding the nuances of ……, …… can leverage …… to enhance …… and build stronger ……",
+    "translation" : "理解……的细微之处，有助于……更好地运用……，从而提升……并强化……。",
+    "analysis" : "写作积累句型\n例句：By understanding the nuances of cultural diversity, multinational corporations can leverage these human resources to enhance their global competitiveness and build stronger market presence.\n翻译：只要洞悉文化多样性中的微妙差异，跨国企业便能善用这些人力资源来提升其全球竞争力，并构建更稳固的市场地位。"
+  } ]
+}

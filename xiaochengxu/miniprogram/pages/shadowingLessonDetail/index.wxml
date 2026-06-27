@@ -1,0 +1,242 @@
+<view class="page-container safe-bottom detail-page">
+  <view wx:if="{{loading}}" class="loading-wrap">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <view wx:elif="{{error}}" class="empty-state">
+    <view class="empty-icon">!</view>
+    <view class="empty-title">加载失败</view>
+    <view class="empty-desc">{{error}}</view>
+    <button class="primary-btn" bindtap="retry">重试</button>
+  </view>
+
+  <view wx:else>
+    <view class="media-card">
+      <view class="media-box">
+        <video
+          wx:if="{{mediaMode === 'video' && lesson.videoUrl}}"
+          id="shadowingVideo"
+          class="video-player"
+          src="{{lesson.videoUrl}}"
+          poster="{{lesson.thumbnailUrl}}"
+          controls
+          object-fit="cover"
+        ></video>
+        <view wx:else class="audio-panel" bindtap="playAudio">
+          <image wx:if="{{lesson.thumbnailUrl}}" class="audio-cover" src="{{lesson.thumbnailUrl}}" mode="aspectFill" />
+          <view wx:else class="audio-cover placeholder">▶</view>
+          <view class="audio-play">播放音频</view>
+        </view>
+        <view class="media-tags">
+          <text class="media-tag">{{lesson.topic || lesson.category || '原声素材'}}</text>
+          <text class="media-tag">{{lesson.sentenceCount || 0}}句</text>
+        </view>
+      </view>
+      <view class="media-switch">
+        <view wx:if="{{lesson.videoUrl}}" class="media-tab {{mediaMode === 'video' ? 'active' : ''}}" bindtap="switchMedia" data-mode="video">看视频</view>
+        <view wx:if="{{lesson.audioUrl}}" class="media-tab {{mediaMode === 'audio' ? 'active' : ''}}" bindtap="switchMedia" data-mode="audio">听音频</view>
+      </view>
+      <view class="media-body">
+        <view class="detail-title">{{lesson.titleZh || lesson.title}}</view>
+        <view class="detail-sub">{{lesson.sourceName || lesson.category || lesson.title}}</view>
+        <view class="meta-row">
+          <text class="chip">{{lesson.publishedDate}}</text>
+          <text class="chip blue">{{lesson.expressionCount || 0}}个表达</text>
+          <text class="chip green" wx:if="{{!lesson.previewOnly}}">已学习</text>
+          <text class="chip gray" wx:else>游客试看</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="desc-card" wx:if="{{lesson.description}}">
+      <text>{{lesson.description}}</text>
+    </view>
+
+    <view wx:if="{{lesson.previewOnly}}" class="login-card">
+      <view class="lock-symbol">L</view>
+      <view class="login-title">登录后解锁完整跟读</view>
+      <view class="login-desc">查看逐句原文、录音点评、地道表达和翻译练习，把这条素材真正练到会说。</view>
+      <button class="primary-btn" bindtap="goToLogin">去登录</button>
+    </view>
+
+    <view wx:else>
+      <view class="flow-nav">
+        <text class="flow-nav-item active">读</text>
+        <text class="flow-nav-item">跟</text>
+        <text class="flow-nav-item">学</text>
+        <text class="flow-nav-item">练</text>
+      </view>
+
+      <view class="learning-flow">
+        <view class="flow-section first" wx:if="{{content.transcript.en || content.transcript.zh}}">
+          <view class="flow-step">
+            <text class="flow-index">01</text>
+            <view>
+              <view class="flow-title">对照原文</view>
+              <view class="flow-caption">边读边标记卡壳的表达</view>
+            </view>
+          </view>
+          <view class="read-mode">
+            <button class="read-mode-btn {{transcriptMode === 'both' ? 'active' : ''}}" bindtap="switchTranscriptMode" data-mode="both">中英对照</button>
+            <button class="read-mode-btn {{transcriptMode === 'en' ? 'active' : ''}}" bindtap="switchTranscriptMode" data-mode="en">只看英文</button>
+          </view>
+          <view class="transcript-flow">
+            <view class="paragraph-text" wx:if="{{content.transcript.en}}">{{content.transcript.en}}</view>
+            <view class="translation-text" wx:if="{{transcriptMode === 'both' && content.transcript.zh}}">{{content.transcript.zh}}</view>
+          </view>
+        </view>
+
+        <view class="flow-section" wx:if="{{sentences.length > 0}}">
+          <view class="flow-step">
+            <text class="flow-index">02</text>
+            <view>
+              <view class="flow-title">逐句跟读</view>
+              <view class="flow-caption">在原文下面直接练，不用跳到新模块</view>
+            </view>
+          </view>
+          <view class="sentence-thread">
+            <view wx:for="{{sentences}}" wx:key="displayIndex" class="sentence-row">
+              <view class="sentence-row-head">
+                <text>句子 {{item.displayIndex}}<text wx:if="{{item.timeText}}"> · {{item.timeText}}</text></text>
+                <text class="score-badge {{item.score ? '' : 'muted'}}">{{item.score ? item.score + '分' : '未练'}}</text>
+              </view>
+              <view class="sentence-en">{{item.en}}</view>
+              <view class="sentence-zh" wx:if="{{item.zh}}">{{item.zh}}</view>
+              <view class="phonetic" wx:if="{{item.phonetic}}">{{item.phonetic}}</view>
+              <view class="compact-actions">
+                <button class="round-action primary" bindtap="playSentence" data-index="{{index}}">播放</button>
+                <button wx:if="{{!item.recording}}" class="round-action recording" bindtap="startRecord" data-index="{{index}}">{{item.recorded ? '重录' : '录音'}}</button>
+                <button wx:else class="round-action recording active" bindtap="stopRecord" data-index="{{index}}">停止</button>
+                <button class="round-action {{item.recorded ? '' : 'disabled'}}" bindtap="playbackRecord" data-index="{{index}}">回放</button>
+                <button class="round-action {{item.recorded && !item.reviewing ? '' : 'disabled'}}" bindtap="submitReview" data-index="{{index}}">{{item.reviewing ? '点评中' : '点评'}}</button>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <view class="flow-section" wx:if="{{expressions.length > 0}}">
+          <view class="flow-step">
+            <text class="flow-index">03</text>
+            <view>
+              <view class="flow-title">顺手学表达</view>
+              <view class="flow-caption">只展开最相关的解释，阅读不断开</view>
+            </view>
+          </view>
+          <view class="expression-stream">
+            <view wx:for="{{expressions}}" wx:key="index" class="expression-inline" bindtap="toggleExpression" data-index="{{index}}">
+              <view class="expression-head">
+                <view>
+                  <view class="expression-title">{{item.text}}</view>
+                  <view class="expression-zh">{{item.definitionZh}}<text wx:if="{{item.type}}"> · {{item.type}}</text></view>
+                </view>
+                <text class="chip">{{expandedExpression === index ? '收起' : '展开解析'}}</text>
+              </view>
+              <view class="expression-example" wx:if="{{item.exampleEn}}">{{item.exampleEn}}</view>
+              <view wx:if="{{expandedExpression === index}}" class="expression-detail">
+                <view wx:if="{{item.phonetic}}">{{item.phonetic}}</view>
+                <view wx:if="{{item.definitionEn}}">{{item.definitionEn}}</view>
+                <view wx:if="{{item.exampleZh}}">{{item.exampleZh}}</view>
+                <view wx:if="{{item.analysis}}">{{item.analysis}}</view>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <view class="flow-section last" wx:if="{{content.cloze.zhPromptText || content.cloze.promptText || content.cloze.enFullText}}">
+          <view class="flow-step">
+            <text class="flow-index">04</text>
+            <view>
+              <view class="flow-title">根据中文自己翻译</view>
+              <view class="flow-caption">先自己组织英文，再让 AI 帮你改得更自然</view>
+            </view>
+          </view>
+          <view class="translate-flow">
+            <view class="translate-label">中文提示</view>
+            <view class="cloze-line">{{content.cloze.zhPromptText || content.cloze.promptText}}</view>
+          </view>
+          <textarea
+            class="translation-input"
+            value="{{translationAnswer}}"
+            bindinput="onTranslationInput"
+            placeholder="写下或说出你的英文翻译"
+            maxlength="2000"
+          />
+          <view class="voice-panel compact">
+            <button class="voice-toggle-btn {{translationRecording ? 'recording' : ''}}" bindtouchstart="startTranslationRecord" bindtouchend="stopTranslationRecord" loading="{{translationSpeechLoading}}">
+              {{translationRecording ? '松开结束' : '切换为语音输入'}}
+            </button>
+            <view class="voice-hint">语音识别后会填入上方，可继续编辑。</view>
+          </view>
+          <view class="inline-toolbar translation-secondary-actions">
+            <button class="ghost-btn" bindtap="toggleClozeAnswer">{{showClozeAnswer ? '隐藏参考英文' : '查看参考英文'}}</button>
+            <button class="soft-btn" bindtap="submitTranslationReview" loading="{{translationReviewLoading}}">AI点评</button>
+          </view>
+          <view wx:if="{{showClozeAnswer && content.cloze.enFullText}}" class="answer-text">{{content.cloze.enFullText}}</view>
+          <view wx:if="{{translationReviewData}}" id="translation-review" class="translation-review-card">
+            <view class="translation-score">{{translationReviewData.score || 0}}</view>
+            <view class="translation-score-label">AI 点评分</view>
+            <view class="feedback-card compact" wx:if="{{translationReviewData.strengths && translationReviewData.strengths.length > 0}}">
+              <view class="feedback-title">优点</view>
+              <view wx:for="{{translationReviewData.strengths}}" wx:key="index" class="feedback-line">{{item}}</view>
+            </view>
+            <view class="feedback-card compact" wx:if="{{translationReviewData.improvements && translationReviewData.improvements.length > 0}}">
+              <view class="feedback-title">改进建议</view>
+              <view wx:for="{{translationReviewData.improvements}}" wx:key="index" class="feedback-line">{{item}}</view>
+            </view>
+            <view class="feedback-card compact" wx:if="{{translationReviewData.corrections && translationReviewData.corrections.length > 0}}">
+              <view class="feedback-title">纠错</view>
+              <view wx:for="{{translationReviewData.corrections}}" wx:key="index" class="correction-line">
+                <view>{{item.original}}</view>
+                <view class="corrected-line">{{item.corrected}}</view>
+                <view class="correction-note">{{item.explanationZh || item.explanation}}</view>
+              </view>
+            </view>
+            <view class="feedback-card compact" wx:if="{{translationReviewData.improvedAnswer}}">
+              <view class="feedback-title">优化翻译</view>
+              <view>{{translationReviewData.improvedAnswer}}</view>
+            </view>
+            <view wx:if="{{translationReviewData.encouragement}}" class="encouragement-line">{{translationReviewData.encouragement}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{reviewSheetOpen}}" class="sheet-mask" bindtap="closeReviewSheet"></view>
+  <view wx:if="{{reviewSheetOpen}}" class="bottom-sheet">
+    <view class="sheet-handle"></view>
+    <view class="score-panel">
+      <view class="score-ring"><view class="score-inner">{{reviewData.overallScore || 0}}</view></view>
+      <view class="score-copy">
+        <view class="score-title">这句完成了</view>
+        <view class="score-desc">{{reviewData.encouragement}}</view>
+      </view>
+    </view>
+    <view class="score-grid">
+      <view class="score-item"><text>{{reviewData.pronunciationScore || 0}}</text><view>发音</view></view>
+      <view class="score-item"><text>{{reviewData.fluencyScore || 0}}</text><view>流利度</view></view>
+      <view class="score-item"><text>{{reviewData.accuracyScore || 0}}</text><view>准确度</view></view>
+    </view>
+    <view class="feedback-card">
+      <view class="feedback-title">ASR 识别</view>
+      <view>{{reviewData.recognizedText}}</view>
+    </view>
+    <view class="feedback-card" wx:if="{{reviewData.strengths.length > 0}}">
+      <view class="feedback-title">优点</view>
+      <view wx:for="{{reviewData.strengths}}" wx:key="*this" class="feedback-line">{{item}}</view>
+    </view>
+    <view class="feedback-card" wx:if="{{reviewData.improvements.length > 0}}">
+      <view class="feedback-title">改进建议</view>
+      <view wx:for="{{reviewData.improvements}}" wx:key="*this" class="feedback-line">{{item}}</view>
+    </view>
+    <view class="feedback-card" wx:if="{{reviewData.suggestedPractice.length > 0}}">
+      <view class="feedback-title">建议练习</view>
+      <view wx:for="{{reviewData.suggestedPractice}}" wx:key="*this" class="practice-pill">{{item}}</view>
+    </view>
+    <view class="sheet-actions">
+      <button class="ghost-btn" bindtap="closeReviewSheet">关闭</button>
+      <button class="primary-btn small" bindtap="retrySentence">再读一次</button>
+    </view>
+  </view>
+</view>

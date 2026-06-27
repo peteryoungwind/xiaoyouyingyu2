@@ -1,0 +1,176 @@
+{
+  "title" : "Former Delivery Drivers Are Getting Weird New Jobs as Delivery Robots Take Over",
+  "titleZh" : "人类沦为机器人的远程保姆",
+  "audioUrl" : "https://res.wx.qq.com/voice/getvoice?mediaid=MzU3MTAwNTY5Ml8yMjQ3NDk2Mzgz",
+  "difficultyStars" : 3,
+  "wordCount" : 550,
+  "sourceName" : "Futurism",
+  "summary" : "送餐零工的收入本就处在贫困线边缘，如今又面临着无需小费配送机器人的竞争。据《洛杉矶时报》报道，当前加州增长最快的新兴零工岗位之一是“机器人管理员”：这类工作人员在幕后值守，负责照看穿梭于现实世界的配送机器人。当Coco或Serve Robotics等公司运营的机器人在街头遇到障碍——比如误闯进花园——管理员便会出面处理，将它们拖出坑洼、在翻倒后扶正，或将需要维护的设备送回总部。\n\n来源：Futurism；作者：Joe Wilkins；原文发布时间：2026-03-04 20:00:00",
+  "status" : "ENABLED",
+  "publishedDate" : null,
+  "paragraphs" : [ {
+    "sortOrder" : 1,
+    "contentEn" : "Gig delivery workers, already earning poverty wages, are now being undercut by robots that don’t need tips. These days, one of the fastest growing new gigs in California is “robot wrangler”: workers paid to tend delivery robots behind the scenes as they trundle around the real world, the Los Angeles Times reports. When delivery units operated by companies like Coco or Serve Robotics run into real-world obstacles — like a garden, for example — these robot wranglers spring into action, freeing them from potholes, helping them upright after a fall, and ferrying them back to headquarters for maintenance.",
+    "contentZh" : "送餐零工的收入本就处在贫困线边缘，如今又面临着无需小费配送机器人的竞争。据《洛杉矶时报》报道，当前加州增长最快的新兴零工岗位之一是“机器人管理员”：这类工作人员在幕后值守，负责照看穿梭于现实世界的配送机器人。当Coco或Serve Robotics等公司运营的机器人在街头遇到障碍——比如误闯进花园——管理员便会出面处理，将它们拖出坑洼、在翻倒后扶正，或将需要维护的设备送回总部。"
+  }, {
+    "sortOrder" : 2,
+    "contentEn" : "Much of the work happens behind the scenes, the LA Times notes. The robots need daily recharging and cleaning, plus constant maintenance for software updates and hardware malfunctions. Still, a crucial component of the work happens in the streets, where the US’ notorious urban infrastructure can make life hell for a young robot. As the paper explains, it’s not uncommon for robot wranglers to have to come to the aid of their wards, helping them navigate crosswalks and physically drop off food to customers who refuse to come outside.",
+    "contentZh" : "据《洛杉矶时报》报道，这项工作的大部分内容都在幕后完成。配送机器人每天都需要充电和清洁，还要持续维护，以完成软件更新并排除硬件故障。尽管如此，工作中最关键的一环仍然在街头完成：在复杂且问题频出的美国城市基础设施中，这些新上路的机器人常常难以顺利通行。报道称，机器人管理员需要频繁出面为它们解围，协助其通过人行横道；当部分顾客不愿出门取餐时，他们甚至不得不亲自将食物送至顾客手中。"
+  }, {
+    "sortOrder" : 3,
+    "contentEn" : "“They are the kind of jobs that scale with the robots,” Serve Robotics CEO told the LA Times. “If you build more robots, you’re going to still have people whose job is to operate the fleet.” Be that as it may, delivery drivers in urban settings see the robots as a direct threat to their livelihoods by way of automation, as the new robot wrangler jobs make clear. In Los Angeles, for example, Coco is hiring “robot delivery specialists” to support its fleet of robots across the city, 24/7. “You’ll transport robots to merchant partners, perform basic maintenance, and even complete in-person deliveries when necessary,” the job listing reads.",
+    "contentZh" : "Serve Robotics首席执行官在接受《洛杉矶时报》采访时表示：“这类岗位会随着机器人规模的扩大而同步增加。即便部署更多机器人，仍然需要有人来管理整个车队。”尽管如此，在城市中工作的送餐司机依然将这些机器人视为自动化带来的直接竞争压力，而机器人管理员这一新岗位的诞生，在某种程度上印证了这一现实。以洛杉矶为例，Coco目前正在招聘“机器人配送专员”，为在全市范围内运行的机器人车队提供全天候支持。招聘启事写道：“你将负责把机器人运送到合作商家、进行基础维护，并在必要时完成线下配送任务。”"
+  }, {
+    "sortOrder" : 4,
+    "contentEn" : "Wages for this illustrious work start at $21 an hour and top off at $23 — a yearly take-home hovering around $45,760. While that may be higher than what an average Los Angeles delivery driver earns, it’s still well below what’s required in California for a single adult with no children to care for themselves — $63,402, according to MIT’s Living Wage calculator. And as robotics companies take over gig delivery jobs, they eliminate a low-barrier income source for workers who already have limited options. Of course, delivery work is far from an ideal safety net, but it nonetheless functions as an important financial stopgap for marginalized workers like migrants, single parents, the elderly, and people with disabilities.",
+    "contentZh" : "这类看似重要的工作时薪从21美元起，最高为23美元——折算成年收入约为45,760美元。虽然高于洛杉矶普通送餐司机的平均收入，但仍明显低于在加州维持基本生活所需的标准——根据麻省理工学院生活工资计算器的数据，一名无子女的单身成年人每年需要63,402美元才能自给自足。与此同时，随着机器人公司逐步取代部分零工配送岗位，那些原本就业选择有限的劳动者也失去了一个准入门槛较低的收入来源。诚然，外卖配送远非理想的社会保障机制，但对移民、单亲父母、老年人及残障人士等群体而言，它在现实中扮演着重要的经济缓冲角色。"
+  }, {
+    "sortOrder" : 5,
+    "contentEn" : "If apps like Uber and DoorDash deskill drivers, robots complete the degradation — reducing workers to little more than remote babysitters. When a DoorDash driver closes the app, they presumably drop their obligation to fill orders for the company. Robot wranglers, contracted by the hour, have no such freedom.",
+    "contentZh" : "如果说Uber和DoorDash等平台削弱了司机的技能属性，那么机器人的加入则将这种去技能化进一步加深——工人的角色被压缩为远程看护者。当一名DoorDash骑手关闭接单应用时，原则上也就不再承担为平台完成订单的义务。但按小时受雇的机器人管理员，却并不享有这种灵活性。"
+  }, {
+    "sortOrder" : 6,
+    "contentEn" : "Whatever long-term impact delivery robots will have on overall job numbers remains unclear. The business case for the tech is still relatively young, and municipal regulations may slow their rollout to a crawl. At this pivotal juncture, it’s worth asking: do delivery robots represent progress for all, or just Silicon Valley’s latest scheme to cut labor costs under the banner of innovation?",
+    "contentZh" : "至于配送机器人将对整体就业规模产生何种长期影响，目前仍难有定论。这项技术的商业可行性仍处于早期阶段，而地方层面的监管政策也可能放缓其推广节奏。在这样一个关键节点上，有必要追问：配送机器人究竟意味着惠及更广泛群体的技术进步，还是只是硅谷在创新名义下推动的又一轮成本压缩策略？"
+  } ],
+  "vocabulary" : [ {
+    "word" : "undercut",
+    "phoneticUk" : "ˌʌndəˈkʌt",
+    "phoneticUs" : "ˌʌndərˈkʌt",
+    "pos" : "",
+    "meaning" : "vt. 廉价出售；较便宜的工资工作；从下边削球；削弱；根除\nvi. 底切；根切\nn. 底切；牛腰部下侧嫩肉；砍口；切球",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "wrangler",
+    "phoneticUk" : "ˈræŋɡlə(r)",
+    "phoneticUs" : "ˈræŋɡlər",
+    "pos" : "n.",
+    "meaning" : "争论者；口角者；牧人",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "trundle",
+    "phoneticUk" : "ˈtrʌndl",
+    "phoneticUs" : "ˈtrʌndl",
+    "pos" : "",
+    "meaning" : "v. （车）缓慢地移动；（人）沉重缓慢地走\nn. 缓慢沉重的移动；小脚轮",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "pothole",
+    "phoneticUk" : "ˈpɒthəʊl",
+    "phoneticUs" : "ˈpɑːthoʊl",
+    "pos" : "",
+    "meaning" : "n. 壶穴\nvi. 探索洞穴",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "malfunction",
+    "phoneticUk" : "ˌmælˈfʌŋkʃ(ə)n",
+    "phoneticUs" : "ˌmælˈfʌŋkʃ(ə)n",
+    "pos" : "",
+    "meaning" : "v. 出现故障，运转失灵\nn. 故障，失灵",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "notorious",
+    "phoneticUk" : "nəʊˈtɔːriəs",
+    "phoneticUs" : "noʊˈtɔːriəs",
+    "pos" : "adj.",
+    "meaning" : "声名狼藉的，臭名昭著的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "automation",
+    "phoneticUk" : "ˌɔːtəˈmeɪʃ(ə)n",
+    "phoneticUs" : "ˌɔːtəˈmeɪʃ(ə)n",
+    "pos" : "n.",
+    "meaning" : "自动化",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "merchant",
+    "phoneticUk" : "ˈmɜːtʃənt",
+    "phoneticUs" : "ˈmɜːrtʃənt",
+    "pos" : "",
+    "meaning" : "n. 商人，（尤指外贸）批发商；<美>商店老板；<英，非正式>对（令人讨厌之事）入迷的人\nadj. 海上货运的；商业的，商人的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "illustrious",
+    "phoneticUk" : "ɪˈlʌstriəs",
+    "phoneticUs" : "ɪˈlʌstriəs",
+    "pos" : "adj.",
+    "meaning" : "著名的，杰出的；辉煌的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "hover",
+    "phoneticUk" : "ˈhɒvə(r)",
+    "phoneticUs" : "ˈhʌvər",
+    "pos" : "",
+    "meaning" : "v. 翱翔，盘旋；徘徊，守候；处于不稳定状态；上下波动，左右摇摆；伏窝孵化\nn. 翱翔，徘徊",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "stopgap",
+    "phoneticUk" : "ˈstɒpɡæp",
+    "phoneticUs" : "ˈstɑːpɡæp",
+    "pos" : "",
+    "meaning" : "n. 权宜之计；临时替代品\nadj. 权宜的；暂时的",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "marginalize",
+    "phoneticUk" : "ˈmɑːdʒɪnəlaɪz",
+    "phoneticUs" : "ˈmɑːrdʒɪnəlaɪz",
+    "pos" : "vt.",
+    "meaning" : "排斥；忽视；使处于社会边缘；使脱离社会发展进程",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "degradation",
+    "phoneticUk" : "ˌdeɡrəˈdeɪʃn",
+    "phoneticUs" : "ˌdeɡrəˈdeɪʃ(ə)n",
+    "pos" : "n.",
+    "meaning" : "丢脸，落魄，侮辱；损害，恶化，衰退；降解；陵夷，剥蚀",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "presumably",
+    "phoneticUk" : "prɪˈzjuːməbli",
+    "phoneticUs" : "prɪˈzuːməbli",
+    "pos" : "adv.",
+    "meaning" : "大概，可能",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "crawl",
+    "phoneticUk" : "krɔːl",
+    "phoneticUs" : "krɔːl",
+    "pos" : "",
+    "meaning" : "v. 爬行，匍匐前进；缓慢移动，缓慢行进；挤满，爬满；谄媚奉承，卑躬屈膝\nn. 缓慢移动，徐行；爬泳，自由泳；（海边浅滩的鱼、龟等）围养池",
+    "example" : "",
+    "exampleZh" : ""
+  }, {
+    "word" : "juncture",
+    "phoneticUk" : "ˈdʒʌŋktʃə(r)",
+    "phoneticUs" : "ˈdʒʌŋktʃər",
+    "pos" : "n.",
+    "meaning" : "接缝；连接；接合；特定时刻，关头；交接处，接合点；音渡",
+    "example" : "",
+    "exampleZh" : ""
+  } ],
+  "expressions" : [ {
+    "expression" : "Of course, A is far from an ideal B, but it nonetheless functions as an important C for D.",
+    "meaning" : "当然，A 远算不上理想的B，但它在D中仍发挥着重要的C作用。",
+    "example" : "Of course, social media is far from an ideal public sphere, but it nonetheless functions as an important platform for grassroots voices.",
+    "exampleZh" : "当然，社交媒体远非理想的公共空间，但它仍为草根声音提供了一个重要的平台。"
+  } ],
+  "keySentences" : [ {
+    "sentence" : "Of course, A is far from an ideal B, but it nonetheless functions as an important C for D.",
+    "translation" : "当然，A 远算不上理想的B，但它在D中仍发挥着重要的C作用。",
+    "analysis" : "写作积累句型\n例句：Of course, social media is far from an ideal public sphere, but it nonetheless functions as an important platform for grassroots voices.\n翻译：当然，社交媒体远非理想的公共空间，但它仍为草根声音提供了一个重要的平台。"
+  } ]
+}

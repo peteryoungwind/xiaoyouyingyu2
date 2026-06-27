@@ -13,19 +13,81 @@
 
   <view wx:else>
     <view class="article-hero">
-      <view class="article-date">{{article.publishedDate}}</view>
+      <view class="article-date" wx:if="{{article.publishedDate}}">{{article.publishedDate}}</view>
       <view class="article-title">{{article.title}}</view>
       <view class="article-title-zh" wx:if="{{article.titleZh}}">{{article.titleZh}}</view>
-      <view class="hero-actions">
-        <view wx:if="{{article.audioUrl}}" class="audio-btn" bindtap="playAudio">播放音频</view>
-        <view class="translate-btn {{showZh ? 'translate-btn-on' : ''}}" bindtap="toggleZh">{{showZh ? '隐藏中文' : '中文翻译'}}</view>
+
+      <view wx:if="{{hasMeta}}" class="meta-bar">
+        <view wx:if="{{difficultyStars.length > 0}}" class="meta-item stars">
+          <text wx:for="{{difficultyStars}}" wx:key="index" class="{{item.active ? 'star-active' : 'star-dim'}}">★</text>
+        </view>
+        <view wx:if="{{article.wordCount}}" class="meta-item">{{article.wordCount}} 词</view>
+        <view wx:if="{{article.sourceName}}" class="meta-item meta-source">{{article.sourceName}}</view>
       </view>
     </view>
 
-    <view class="content-card">
+    <view wx:if="{{audioUrl}}" class="mini-player {{audioPlaying ? 'mini-player-playing' : ''}}">
+      <view class="player-top">
+        <button class="player-play" bindtap="toggleAudio" disabled="{{audioLoading}}">
+          {{audioLoading ? '…' : (audioPlaying ? 'Ⅱ' : '▶')}}
+        </button>
+        <view class="player-info">
+          <view class="player-label">{{audioPlaying ? '正在播放' : '文章音频'}}</view>
+          <slider
+            class="player-slider"
+            value="{{audioProgress}}"
+            min="0"
+            max="100"
+            step="0.1"
+            activeColor="#007AFF"
+            backgroundColor="#D8E9FF"
+            block-color="#FFFFFF"
+            block-size="16"
+            bindchanging="onAudioSeekChanging"
+            bindchange="onAudioSeekChange"
+          />
+        </view>
+      </view>
+      <view class="player-bottom">
+        <text class="player-time">{{audioCurrentText}} / {{audioDurationText}}</text>
+        <view class="rate-wrap">
+          <button class="player-rate" bindtap="toggleRateMenu">{{audioRate}}×</button>
+        </view>
+      </view>
+      <view wx:if="{{showRateMenu}}" class="rate-menu">
+        <button
+          wx:for="{{rateOptions}}"
+          wx:key="*this"
+          class="rate-opt {{audioRate == item ? 'rate-opt-active' : ''}}"
+          data-rate="{{item}}"
+          bindtap="selectRate"
+        >{{item}}×</button>
+      </view>
+    </view>
+
+    <view wx:else class="player-disabled">
+      <view class="player-disabled-icon">▶</view>
+      <view>
+        <view class="player-label">暂无音频</view>
+        <view class="player-disabled-desc">这篇文章暂未配置音频文件</view>
+      </view>
+    </view>
+
+    <view wx:if="{{paragraphs.length > 0}}" class="read-mode">
+      <button class="read-mode-btn {{!allZhVisible ? 'read-mode-active' : ''}}" bindtap="hideAllTranslations">隐藏全部中文</button>
+      <button class="read-mode-btn {{allZhVisible ? 'read-mode-active' : ''}}" bindtap="showAllTranslations">显示全部中文</button>
+    </view>
+
+    <view wx:if="{{paragraphs.length > 0}}" class="content-card">
       <view wx:for="{{paragraphs}}" wx:key="id" class="paragraph">
         <view class="paragraph-en" wx:if="{{item.contentEn}}">{{item.contentEn}}</view>
-        <view class="paragraph-zh" wx:if="{{showZh && item.contentZh}}">{{item.contentZh}}</view>
+        <button
+          wx:if="{{item.contentZh}}"
+          class="para-toggle {{item.showZh ? 'para-toggle-open' : ''}}"
+          data-index="{{index}}"
+          bindtap="toggleParagraphTranslation"
+        >{{item.showZh ? '收起翻译 ▲' : '点击查看翻译 ▾'}}</button>
+        <view class="paragraph-zh" wx:if="{{item.showZh && item.contentZh}}">{{item.contentZh}}</view>
       </view>
     </view>
 
@@ -36,19 +98,38 @@
 
     <view wx:if="{{vocabulary.length > 0}}" class="study-section">
       <view class="section-title">重点词汇</view>
-      <view wx:for="{{vocabulary}}" wx:key="title" class="study-item">
-        <view class="study-title">{{item.title}}</view>
-        <view class="study-zh" wx:if="{{item.zh}}">{{item.zh}}</view>
-        <view class="study-example" wx:if="{{item.example}}">{{item.example}}</view>
+      <view wx:for="{{vocabulary}}" wx:key="word" class="vocab-card">
+        <view class="vocab-head">
+          <text class="vocab-word">{{item.word}}</text>
+          <text wx:if="{{item.pos}}" class="vocab-pos">{{item.pos}}</text>
+        </view>
+        <view wx:if="{{item.phoneticUk || item.phoneticUs}}" class="vocab-phonetic">
+          <text wx:if="{{item.phoneticUk}}">英 /{{item.phoneticUk}}/</text>
+          <text wx:if="{{item.phoneticUs}}"> 美 /{{item.phoneticUs}}/</text>
+        </view>
+        <view wx:if="{{item.meaning}}" class="vocab-meaning">{{item.meaning}}</view>
+        <view wx:if="{{item.example}}" class="vocab-example">
+          {{item.example}}
+          <text wx:if="{{item.exampleZh}}">{{item.exampleZh}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{keySentences.length > 0}}" class="study-section">
+      <view class="section-title">长难句解析</view>
+      <view wx:for="{{keySentences}}" wx:key="sentence" class="sentence-card">
+        <view wx:if="{{item.sentence}}" class="sentence-en">{{item.sentence}}</view>
+        <view wx:if="{{item.translation}}" class="sentence-zh">{{item.translation}}</view>
+        <view wx:if="{{item.analysis}}" class="sentence-analysis">{{item.analysis}}</view>
       </view>
     </view>
 
     <view wx:if="{{expressions.length > 0}}" class="study-section">
       <view class="section-title">表达句型</view>
-      <view wx:for="{{expressions}}" wx:key="title" class="study-item">
-        <view class="study-title">{{item.title}}</view>
-        <view class="study-zh" wx:if="{{item.zh}}">{{item.zh}}</view>
-        <view class="study-example" wx:if="{{item.example}}">{{item.example}}</view>
+      <view wx:for="{{expressions}}" wx:key="title" class="expr-card">
+        <view class="expr-title">{{item.title}}</view>
+        <view class="expr-meaning" wx:if="{{item.meaning}}">{{item.meaning}}</view>
+        <view class="expr-example" wx:if="{{item.example}}">{{item.example}}</view>
       </view>
     </view>
   </view>
