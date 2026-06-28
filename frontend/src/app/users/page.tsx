@@ -32,7 +32,7 @@ export default function UsersPage() {
   const handleAddDays = async () => {
     if (!membershipModal) return;
     try {
-      await api.addMembershipDays(membershipModal.id, addDays, remark);
+      await api.grantUserMembership(membershipModal.id, { operation: 'EXTEND_DAYS', days: addDays, reason: remark });
       setMembershipMsg(`成功追加 ${addDays} 天`);
       queryClient.invalidateQueries({ queryKey: ['admin-users'] });
     } catch (err: any) {
@@ -44,8 +44,20 @@ export default function UsersPage() {
   const handleSetExpire = async () => {
     if (!membershipModal || !expireAt) return;
     try {
-      await api.setMembershipExpireAt(membershipModal.id, expireAt, remark);
+      await api.grantUserMembership(membershipModal.id, { operation: 'SET_EXPIRE_AT', expireAt, reason: remark });
       setMembershipMsg('到期时间已更新');
+      queryClient.invalidateQueries({ queryKey: ['admin-users'] });
+    } catch (err: any) {
+      if (isAuthExpiredError(err)) return;
+      setMembershipMsg(err.message || '操作失败');
+    }
+  };
+
+  const handleSetPermanent = async () => {
+    if (!membershipModal) return;
+    try {
+      await api.grantUserMembership(membershipModal.id, { operation: 'PERMANENT', permanent: true, reason: remark });
+      setMembershipMsg('已设置为永久会员');
       queryClient.invalidateQueries({ queryKey: ['admin-users'] });
     } catch (err: any) {
       if (isAuthExpiredError(err)) return;
@@ -65,6 +77,7 @@ export default function UsersPage() {
 
   const getMembershipStatus = (u: any) => {
     if (u.role === 'ADMIN') return { label: '管理员', color: 'text-blue-600' };
+    if (u.membershipPermanent) return { label: '永久会员', color: 'text-purple-600' };
     if (u.membershipExpireAt && new Date(u.membershipExpireAt) > new Date()) return { label: '会员中', color: 'text-amber-600' };
     if (u.membershipExpireAt) return { label: '已过期', color: 'text-gray-400' };
     return { label: '未开通', color: 'text-gray-400' };
@@ -103,7 +116,7 @@ export default function UsersPage() {
                     </td>
                     <td className={`px-4 py-4 text-xs font-medium ${ms.color}`}>{ms.label}</td>
                     <td className="px-4 py-4 text-xs text-gray-500">
-                      {u.membershipExpireAt ? u.membershipExpireAt.replace('T', ' ').substring(0, 19) : '-'}
+                      {u.membershipPermanent ? '永久' : (u.membershipExpireAt ? u.membershipExpireAt.replace('T', ' ').substring(0, 19) : '-')}
                     </td>
                     <td className="px-4 py-4">
                       <div className="flex gap-2">
@@ -144,7 +157,7 @@ export default function UsersPage() {
                   </select>
                 </div>
                 <div className="break-all text-xs text-gray-500">
-                  到期时间：{u.membershipExpireAt ? u.membershipExpireAt.replace('T', ' ').substring(0, 19) : '-'}
+                  到期时间：{u.membershipPermanent ? '永久' : (u.membershipExpireAt ? u.membershipExpireAt.replace('T', ' ').substring(0, 19) : '-')}
                 </div>
                 {u.role !== 'ADMIN' && (
                   <div className="flex flex-wrap gap-2">
@@ -166,7 +179,7 @@ export default function UsersPage() {
           <div className="max-h-[80vh] w-full max-w-md space-y-4 overflow-y-auto rounded-2xl bg-white p-6 shadow-xl" onClick={e => e.stopPropagation()}>
             <h3 className="break-all font-semibold text-gray-900">会员设置 - {membershipModal.username}</h3>
             <div className="break-all text-sm text-gray-500">
-              当前到期时间：{membershipModal.membershipExpireAt ? membershipModal.membershipExpireAt.replace('T', ' ').substring(0, 19) : '未设置'}
+              当前到期时间：{membershipModal.membershipPermanent ? '永久' : (membershipModal.membershipExpireAt ? membershipModal.membershipExpireAt.replace('T', ' ').substring(0, 19) : '未设置')}
             </div>
 
             <div className="space-y-3">
@@ -195,6 +208,9 @@ export default function UsersPage() {
                 <input type="text" value={remark} onChange={e => setRemark(e.target.value)} placeholder="操作原因"
                   className="w-full px-3 py-2 rounded-xl bg-gray-50 text-sm outline-none focus:ring-2 focus:ring-blue-100" />
               </div>
+
+              <button onClick={handleSetPermanent}
+                className="w-full px-4 py-2 bg-purple-600 text-white rounded-xl text-sm hover:bg-purple-700">设置为永久会员</button>
             </div>
 
             {membershipMsg && <p className="text-sm text-green-600">{membershipMsg}</p>}

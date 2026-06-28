@@ -30,6 +30,9 @@ public class User {
     @Column(name = "membership_expire_at")
     private LocalDateTime membershipExpireAt;
 
+    @Column(name = "membership_permanent", nullable = false)
+    private boolean membershipPermanent = false;
+
     @Column(name = "membership_source", length = 30)
     private String membershipSource;
 
@@ -43,7 +46,7 @@ public class User {
 
     public boolean isMembershipActive() {
         if (role == Role.ADMIN) return true;
-        if (role == Role.PREMIUM_USER) return true;
+        if (membershipPermanent) return true;
         return membershipExpireAt != null && membershipExpireAt.isAfter(LocalDateTime.now());
     }
 }

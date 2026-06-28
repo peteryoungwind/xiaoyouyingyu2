@@ -20,6 +20,8 @@
 | [每日外刊精读需求](./prd/daily-articles-intensive-reading-requirements-20260626.md) | 每日外刊精读升级的字段、交互、播放器、长难句和导入格式 |
 | [每日外刊精读开发计划](./prd/daily-articles-intensive-reading-development-plan-20260626.md) | 每日外刊精读升级的实施步骤、文件清单和验收标准 |
 | [每日外刊精读 HTML 原型](./prototypes/daily-articles-intensive-reading/index.html) | 每日外刊列表封面、精读详情、播放器和状态页的可浏览原型 |
+| [会员套餐与微信小程序支付需求](./prd/membership-wechat-miniapp-pay-requirements-20260627.md) | 会员套餐、微信小程序支付、订单管理、动态会员权限和微信支付配置清单 |
+| [会员套餐与微信小程序支付开发计划](./prd/membership-wechat-miniapp-pay-development-plan-20260627.md) | 基于会员支付需求的后端、PC 后台、小程序、微信支付联调、测试和上线实施计划 |
 
 ## 快速定位
 

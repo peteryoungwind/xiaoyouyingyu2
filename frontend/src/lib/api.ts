@@ -29,6 +29,23 @@ export function isAuthExpiredError(error: unknown) {
   return error instanceof ApiError && (error.status === 401 || error.code === 'AUTH_EXPIRED');
 }
 
+export type TopicSubmissionStatus = 'PENDING' | 'ACCEPTED' | 'REJECTED';
+
+export interface TopicSubmissionListItem {
+  id: number;
+  title: string;
+  username: string;
+  category?: string;
+  status: TopicSubmissionStatus;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface TopicSubmissionDetail extends TopicSubmissionListItem {
+  reason?: string;
+  extraInfo?: string;
+}
+
 async function request(url: string, options?: RequestInitOptions) {
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
   const headers: Record<string, string> = { 'Content-Type': 'application/json' };
@@ -58,7 +75,7 @@ async function request(url: string, options?: RequestInitOptions) {
   if (!res.ok) {
     const message = data?.error || data?.message || (res.status >= 500 ? '服务异常，请稍后重试' : '') || text || `请求失败（${res.status}）`;
     if (res.status === 401 && typeof window !== 'undefined') {
-      ['token', 'username', 'role', 'membershipExpireAt', 'membershipActive', 'hasPassword'].forEach(key => {
+      ['token', 'username', 'role', 'membershipExpireAt', 'membershipActive', 'membershipPermanent', 'hasPassword'].forEach(key => {
         localStorage.removeItem(key);
       });
       if (!authExpiredNotified) {
@@ -137,6 +154,7 @@ export const api = {
       role?: string;
       membershipExpireAt?: string;
       membershipActive?: boolean;
+      membershipPermanent?: boolean;
       hasPassword?: boolean;
     }>,
   cancelWechatPcLoginSession: (ticketId: string) =>
@@ -184,6 +202,20 @@ export const api = {
     request(`/admin/topics/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
   deleteTopic: (id: number) =>
     request(`/admin/topics/${id}`, { method: 'DELETE' }),
+
+  // Admin - Topic Submissions
+  getAdminTopicSubmissions: (params: Record<string, string> = {}) =>
+    request(`/admin/topic-submissions?${new URLSearchParams(params)}`) as Promise<{
+      content: TopicSubmissionListItem[];
+      totalElements: number;
+      totalPages: number;
+      number: number;
+      size: number;
+    }>,
+  getAdminTopicSubmission: (id: number) =>
+    request(`/admin/topic-submissions/${id}`) as Promise<TopicSubmissionDetail>,
+  updateAdminTopicSubmissionStatus: (id: number, status: TopicSubmissionStatus) =>
+    request(`/admin/topic-submissions/${id}/status`, { method: 'PUT', body: JSON.stringify({ status }) }) as Promise<TopicSubmissionDetail>,
 
   // Admin - Users
   getUsers: () => request('/admin/users'),
@@ -292,6 +324,10 @@ export const api = {
 
   // Membership
   getMembership: () => request('/user/membership', { direct: true }),
+  getMembershipPlansForUser: () => request('/membership/plans', { direct: true }),
+  createMembershipOrder: (planId: number) =>
+    request('/membership/orders', { method: 'POST', body: JSON.stringify({ planId }), direct: true }),
+  getMembershipOrder: (orderNo: string) => request(`/membership/orders/${orderNo}`, { direct: true }),
   getMembershipContact: () => request('/user/membership-contact', { direct: true }),
   redeemCode: (code: string) =>
     request('/redeem-codes/redeem', { method: 'POST', body: JSON.stringify({ code }), direct: true }),
@@ -322,4 +358,17 @@ export const api = {
     request(`/admin/users/${userId}/membership-add-days`, { method: 'POST', body: JSON.stringify({ days, remark }) }),
   getMembershipRecords: (userId: number) =>
     request(`/admin/users/${userId}/membership-records`),
+  getAdminMembershipPlans: () => request('/admin/membership/plans'),
+  createAdminMembershipPlan: (data: any) =>
+    request('/admin/membership/plans', { method: 'POST', body: JSON.stringify(data) }),
+  updateAdminMembershipPlan: (id: number, data: any) =>
+    request(`/admin/membership/plans/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+  updateAdminMembershipPlanStatus: (id: number, status: string) =>
+    request(`/admin/membership/plans/${id}/status`, { method: 'PUT', body: JSON.stringify({ status }) }),
+  getAdminMembershipOrders: (params: Record<string, string>) =>
+    request(`/admin/membership/orders?${new URLSearchParams(params)}`),
+  getAdminMembershipOrder: (id: number) =>
+    request(`/admin/membership/orders/${id}`),
+  grantUserMembership: (userId: number, data: any) =>
+    request(`/admin/membership/users/${userId}/grant`, { method: 'POST', body: JSON.stringify(data) }),
 };

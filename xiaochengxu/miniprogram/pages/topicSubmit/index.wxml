@@ -1,0 +1,46 @@
+<view class="page-container safe-bottom topic-submit-page">
+  <view wx:if="{{!submitted}}">
+    <view class="submit-header">
+      <view class="submit-title">提交你想练的话题</view>
+      <view class="submit-subtitle">告诉小柚你的兴趣，管理员会挑选适合的内容整理进主题库。</view>
+    </view>
+
+    <view class="form-card">
+      <view class="field">
+        <view class="field-label">你想练的话题 <text class="required">*</text></view>
+        <input class="field-input" maxlength="100" placeholder="例如：面试时介绍自己的项目经历" placeholder-class="field-placeholder" value="{{title}}" bindinput="onTitleInput" />
+      </view>
+
+      <view class="field">
+        <view class="field-label">为什么想练这个话题</view>
+        <textarea class="field-textarea" maxlength="500" placeholder="可以简单说说你为什么想练这个场景" placeholder-class="field-placeholder" value="{{reason}}" bindinput="onReasonInput" />
+      </view>
+
+      <view class="field">
+        <view class="field-label">话题分类</view>
+        <view class="category-grid">
+          <view wx:for="{{categories}}" wx:key="*this" class="category-chip {{category === item ? 'active' : ''}}" bindtap="onCategoryTap" data-category="{{item}}">
+            {{item}}
+          </view>
+        </view>
+      </view>
+
+      <view class="field">
+        <view class="field-label">补充说明</view>
+        <textarea class="field-textarea short" maxlength="500" placeholder="可填写目标水平、希望包含的问题、真实使用场景" placeholder-class="field-placeholder" value="{{extraInfo}}" bindinput="onExtraInfoInput" />
+      </view>
+
+      <button class="submit-button" loading="{{submitting}}" disabled="{{submitting}}" bindtap="onSubmit">提交给管理员</button>
+    </view>
+  </view>
+
+  <view wx:else class="success-card">
+    <view class="success-icon">✓</view>
+    <view class="success-title">提交成功</view>
+    <view class="success-desc">如被采纳会出现在主题库</view>
+    <view class="success-actions">
+      <button class="success-button primary" bindtap="goToTopics">继续浏览主题</button>
+      <button class="success-button secondary" bindtap="goToHome">返回首页</button>
+    </view>
+  </view>
+</view>

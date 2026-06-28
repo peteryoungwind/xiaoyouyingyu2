@@ -18,9 +18,11 @@
     "pages/shadowingLessonDetail/index",
     "pages/spokenWarmup/index",
     "pages/spokenWarmupDetail/index",
+    "pages/topicSubmit/index",
     "pages/login/index",
     "pages/register/index",
     "pages/settings/index",
+    "pages/membership/index",
     "pages/redeem/index",
     "pages/calendar/index"
   ],

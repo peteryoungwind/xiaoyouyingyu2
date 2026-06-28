@@ -25,6 +25,7 @@ public class MembershipService {
     public void grantRegistrationGift(User user) {
         LocalDateTime now = LocalDateTime.now();
         user.setMembershipExpireAt(now.plusDays(3));
+        user.setMembershipPermanent(false);
         user.setMembershipSource("REGISTER_GIFT");
         user.setMembershipUpdatedAt(now);
         userRepository.save(user);
@@ -32,11 +33,79 @@ public class MembershipService {
         MembershipRecord record = new MembershipRecord();
         record.setUserId(user.getId());
         record.setChangeType("REGISTER_GIFT");
+        record.setSource("REGISTER_GIFT");
         record.setDays(3);
         record.setBeforeExpireAt(null);
         record.setAfterExpireAt(user.getMembershipExpireAt());
+        record.setBeforePermanent(false);
+        record.setAfterPermanent(false);
         record.setRemark("新用户注册赠送3天会员");
         membershipRecordRepository.save(record);
+    }
+
+    public boolean isActiveMember(User user) {
+        return user != null && user.isMembershipActive();
+    }
+
+    @Transactional
+    public MembershipGrantResult grantMembership(Long userId,
+                                                 Integer durationDays,
+                                                 boolean permanent,
+                                                 String source,
+                                                 String sourceId,
+                                                 String changeType,
+                                                 String remark,
+                                                 Long operatorId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("用户不存在"));
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime beforeExpire = user.getMembershipExpireAt();
+        boolean beforePermanent = user.isMembershipPermanent();
+        LocalDateTime afterExpire = beforeExpire;
+        boolean afterPermanent = beforePermanent;
+
+        if (permanent) {
+            user.setMembershipPermanent(true);
+            afterPermanent = true;
+        } else if (!beforePermanent) {
+            int days = durationDays != null ? durationDays : 0;
+            if (days <= 0) {
+                throw new RuntimeException("会员天数必须大于0");
+            }
+            LocalDateTime base = (beforeExpire != null && beforeExpire.isAfter(now)) ? beforeExpire : now;
+            afterExpire = base.plusDays(days);
+            user.setMembershipExpireAt(afterExpire);
+            user.setMembershipPermanent(false);
+            afterPermanent = false;
+        }
+
+        user.setMembershipSource(source);
+        user.setMembershipUpdatedAt(now);
+        userRepository.save(user);
+
+        MembershipRecord record = new MembershipRecord();
+        record.setUserId(userId);
+        record.setChangeType(changeType);
+        record.setSource(source);
+        record.setSourceId(sourceId);
+        record.setDays(durationDays);
+        record.setBeforeExpireAt(beforeExpire);
+        record.setAfterExpireAt(user.getMembershipExpireAt());
+        record.setBeforePermanent(beforePermanent);
+        record.setAfterPermanent(afterPermanent);
+        record.setOperatorId(operatorId);
+        record.setRemark(remark);
+        membershipRecordRepository.save(record);
+
+        return MembershipGrantResult.builder()
+                .userId(userId)
+                .membershipActive(user.isMembershipActive())
+                .membershipPermanent(user.isMembershipPermanent())
+                .beforeExpireAt(beforeExpire)
+                .afterExpireAt(user.getMembershipExpireAt())
+                .beforePermanent(beforePermanent)
+                .afterPermanent(afterPermanent)
+                .daysAdded(durationDays)
+                .build();
     }
 
     @Transactional
@@ -50,36 +119,29 @@ public class MembershipService {
             throw new RuntimeException("卡密已过期");
 
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime beforeExpire = user.getMembershipExpireAt();
-        LocalDateTime base = (beforeExpire != null && beforeExpire.isAfter(now)) ? beforeExpire : now;
-        LocalDateTime newExpire = base.plusDays(redeemCode.getDays());
-
-        user.setMembershipExpireAt(newExpire);
-        user.setMembershipSource("REDEEM_CODE");
-        user.setMembershipUpdatedAt(now);
-        userRepository.save(user);
+        MembershipGrantResult result = grantMembership(
+                user.getId(),
+                redeemCode.getDays(),
+                false,
+                "REDEEM_CODE",
+                String.valueOf(redeemCode.getId()),
+                "REDEEM_CODE",
+                "兑换卡密: " + redeemCode.getName(),
+                null
+        );
 
         redeemCode.setStatus("USED");
         redeemCode.setUsedBy(user.getId());
         redeemCode.setUsedAt(now);
         redeemCodeRepository.save(redeemCode);
 
-        MembershipRecord record = new MembershipRecord();
-        record.setUserId(user.getId());
-        record.setChangeType("REDEEM_CODE");
-        record.setDays(redeemCode.getDays());
-        record.setBeforeExpireAt(beforeExpire);
-        record.setAfterExpireAt(newExpire);
-        record.setRelatedCodeId(redeemCode.getId());
-        record.setRemark("兑换卡密: " + redeemCode.getName());
-        membershipRecordRepository.save(record);
-
         return Map.of(
                 "success", true,
                 "message", "兑换成功",
                 "daysAdded", redeemCode.getDays(),
-                "membershipExpireAt", newExpire.toString(),
-                "membershipActive", true
+                "membershipExpireAt", result.getAfterExpireAt() != null ? result.getAfterExpireAt().toString() : "",
+                "membershipPermanent", result.isMembershipPermanent(),
+                "membershipActive", result.isMembershipActive()
         );
     }
 
@@ -87,7 +149,9 @@ public class MembershipService {
     public void setMembershipExpireAt(Long userId, LocalDateTime expireAt, String remark, Long operatorId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("用户不存在"));
         LocalDateTime before = user.getMembershipExpireAt();
+        boolean beforePermanent = user.isMembershipPermanent();
         user.setMembershipExpireAt(expireAt);
+        user.setMembershipPermanent(false);
         user.setMembershipSource("ADMIN_GRANT");
         user.setMembershipUpdatedAt(LocalDateTime.now());
         userRepository.save(user);
@@ -95,8 +159,11 @@ public class MembershipService {
         MembershipRecord record = new MembershipRecord();
         record.setUserId(userId);
         record.setChangeType("ADMIN_SET");
+        record.setSource("ADMIN_MANUAL");
         record.setBeforeExpireAt(before);
         record.setAfterExpireAt(expireAt);
+        record.setBeforePermanent(beforePermanent);
+        record.setAfterPermanent(false);
         record.setOperatorId(operatorId);
         record.setRemark(remark);
         membershipRecordRepository.save(record);
@@ -104,26 +171,12 @@ public class MembershipService {
 
     @Transactional
     public void addMembershipDays(Long userId, int days, String remark, Long operatorId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("用户不存在"));
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime before = user.getMembershipExpireAt();
-        LocalDateTime base = (before != null && before.isAfter(now)) ? before : now;
-        LocalDateTime newExpire = base.plusDays(days);
+        grantMembership(userId, days, false, "ADMIN_MANUAL", null, "ADMIN_ADD", remark, operatorId);
+    }
 
-        user.setMembershipExpireAt(newExpire);
-        user.setMembershipSource("ADMIN_GRANT");
-        user.setMembershipUpdatedAt(now);
-        userRepository.save(user);
-
-        MembershipRecord record = new MembershipRecord();
-        record.setUserId(userId);
-        record.setChangeType("ADMIN_ADD");
-        record.setDays(days);
-        record.setBeforeExpireAt(before);
-        record.setAfterExpireAt(newExpire);
-        record.setOperatorId(operatorId);
-        record.setRemark(remark);
-        membershipRecordRepository.save(record);
+    @Transactional
+    public void setMembershipPermanent(Long userId, String remark, Long operatorId) {
+        grantMembership(userId, null, true, "ADMIN_MANUAL", null, "ADMIN_PERMANENT", remark, operatorId);
     }
 
     public List<RedeemCode> generateCodes(String name, int count, int days, LocalDateTime expireAt, String remark, Long creatorId) {

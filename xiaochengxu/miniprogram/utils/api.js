@@ -87,6 +87,10 @@ function getCalendar(year, month) {
   return http.get('/topics/calendar?year=' + year + '&month=' + month);
 }
 
+function createTopicSubmission(data) {
+  return http.post('/topic-submissions', data || {});
+}
+
 // ==================== Learning ====================
 
 function getLearningTopic(id) {
@@ -247,6 +251,24 @@ function getMembership() {
   return http.get('/user/membership');
 }
 
+function getMembershipStatus() {
+  return http.get('/membership/status');
+}
+
+function getMembershipPlans() {
+  return http.get('/membership/plans');
+}
+
+function createMembershipOrder(planId) {
+  return http.post('/membership/orders', {
+    planId: planId
+  });
+}
+
+function getMembershipOrder(orderNo) {
+  return http.get('/membership/orders/' + encodeURIComponent(orderNo));
+}
+
 function getMembershipContact() {
   return http.get('/user/membership-contact');
 }
@@ -323,6 +345,7 @@ module.exports = {
   getTagStats: getTagStats,
   getStats: getStats,
   getCalendar: getCalendar,
+  createTopicSubmission: createTopicSubmission,
   // Learning
   getLearningTopic: getLearningTopic,
   generateWarmup: generateWarmup,
@@ -351,6 +374,10 @@ module.exports = {
   speechToText: speechToText,
   // Membership
   getMembership: getMembership,
+  getMembershipStatus: getMembershipStatus,
+  getMembershipPlans: getMembershipPlans,
+  createMembershipOrder: createMembershipOrder,
+  getMembershipOrder: getMembershipOrder,
   getMembershipContact: getMembershipContact,
   redeemCode: redeemCode,
   // Word Practice

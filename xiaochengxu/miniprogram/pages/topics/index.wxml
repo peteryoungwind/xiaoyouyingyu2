@@ -29,6 +29,13 @@
         <text class="calendar-entry-text">按日历浏览本月主题</text>
         <view class="calendar-entry-btn">进入日历</view>
       </view>
+      <view class="topic-submit-entry" bindtap="goToTopicSubmit">
+        <view class="topic-submit-copy">
+          <view class="topic-submit-title">没有找到想练的话题？</view>
+          <view class="topic-submit-desc">告诉我们你想聊什么，我们会优先整理高频需求。</view>
+        </view>
+        <view class="topic-submit-btn">提交</view>
+      </view>
     </view>
   </view>
 

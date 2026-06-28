@@ -1,15 +1,34 @@
 <view class="page-container safe-bottom home-page">
-  <view class="hero-card" bindtap="goToLearning">
-    <view class="hero-badge">Daily Practice</view>
-    <view class="hero-title">今天想聊点什么？</view>
-    <view class="hero-footer simple">
-      <view class="hero-progress">
-        <text class="hero-progress-value">已坚持 {{stats.days}} 天</text>
-        <text class="hero-progress-label">浏览主题或进入学习中心继续练习。</text>
+  <swiper class="hero-swiper" current="{{heroCurrent}}" indicator-dots="{{true}}" circular="{{true}}" autoplay="{{false}}" bindchange="onHeroSwiperChange">
+    <swiper-item>
+      <view class="hero-card hero-slide" bindtap="goToLearning">
+        <view class="hero-badge">Daily Practice</view>
+        <view class="hero-title">今天想聊点什么？</view>
+        <view class="hero-footer simple">
+          <view class="hero-progress">
+            <text class="hero-progress-value">已坚持 {{stats.days}} 天</text>
+            <text class="hero-progress-label">浏览主题或进入学习中心继续练习。</text>
+          </view>
+          <view class="hero-action">去学习</view>
+        </view>
       </view>
-      <view class="hero-action">去学习</view>
-    </view>
-  </view>
+    </swiper-item>
+    <swiper-item>
+      <view class="hero-card hero-slide submit-hero-card" bindtap="goToTopicSubmit">
+        <view class="hero-badge submit-hero-badge">Topic Wish</view>
+        <view class="hero-title">有想练的话题吗？</view>
+        <view class="hero-footer simple">
+          <view class="hero-progress">
+            <text class="hero-progress-value">告诉小柚你的兴趣</text>
+            <text class="hero-progress-label">我们会整理成适合开口练习的主题。</text>
+          </view>
+          <view class="hero-action submit-hero-action">提交话题</view>
+        </view>
+        <view class="submit-hero-decor decor-a"></view>
+        <view class="submit-hero-decor decor-b"></view>
+      </view>
+    </swiper-item>
+  </swiper>
 
   <view class="study-entry-grid">
     <view class="study-entry-item word" bindtap="goToWordPractice">

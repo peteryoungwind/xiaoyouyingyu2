@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#172033"/>
+      <stop offset="0.52" stop-color="#243B55"/>
+      <stop offset="1" stop-color="#2E6F68"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.06"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="20" flood-color="#07101F" flood-opacity="0.28"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <path d="M0 640 C180 560 320 700 510 620 C720 530 875 660 1200 520 L1200 800 L0 800 Z" fill="#32C7A6" opacity="0.18"/>
+  <path d="M765 96 L1132 96 C1162 96 1186 120 1186 150 L1186 514 C1186 544 1162 568 1132 568 L765 568 C735 568 711 544 711 514 L711 150 C711 120 735 96 765 96 Z" fill="url(#panel)" stroke="#FFFFFF" stroke-opacity="0.22" filter="url(#shadow)"/>
+  <rect x="760" y="160" width="150" height="300" rx="16" fill="#EAF4FF" opacity="0.92"/>
+  <rect x="796" y="208" width="78" height="12" rx="6" fill="#2F6FED" opacity="0.88"/>
+  <rect x="796" y="244" width="86" height="12" rx="6" fill="#22A876" opacity="0.74"/>
+  <rect x="796" y="280" width="60" height="12" rx="6" fill="#F4B544" opacity="0.85"/>
+  <rect x="948" y="146" width="126" height="338" rx="18" fill="#FFFFFF" opacity="0.16" stroke="#FFFFFF" stroke-opacity="0.22"/>
+  <polyline points="980,410 1008,356 1032,374 1062,294" fill="none" stroke="#32C7A6" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="980" cy="410" r="10" fill="#32C7A6"/>
+  <circle cx="1008" cy="356" r="10" fill="#32C7A6"/>
+  <circle cx="1032" cy="374" r="10" fill="#32C7A6"/>
+  <circle cx="1062" cy="294" r="10" fill="#32C7A6"/>
+  <rect x="920" y="510" width="205" height="74" rx="18" fill="#0F172A" opacity="0.34"/>
+  <text x="948" y="558" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700" fill="#FFFFFF">1000 WORDS</text>
+  <text x="80" y="150" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" fill="#32C7A6" letter-spacing="4">ADVANCED</text>
+  <text x="80" y="246" font-family="PingFang SC, Hiragino Sans GB, Arial, sans-serif" font-size="88" font-weight="900" fill="#FFFFFF">商务英语</text>
+  <text x="84" y="314" font-family="Arial, Helvetica, sans-serif" font-size="38" font-weight="700" fill="#DDEBFF">Business English</text>
+  <text x="84" y="380" font-family="PingFang SC, Hiragino Sans GB, Arial, sans-serif" font-size="30" font-weight="500" fill="#D4DEE9">战略 · 财务 · 谈判 · 运营 · 市场 · 合规</text>
+  <g transform="translate(84 468)">
+    <rect width="132" height="48" rx="24" fill="#32C7A6" opacity="0.95"/>
+    <text x="28" y="32" font-family="PingFang SC, Hiragino Sans GB, Arial, sans-serif" font-size="23" font-weight="800" fill="#10233A">进阶</text>
+    <rect x="152" width="176" height="48" rx="24" fill="#FFFFFF" opacity="0.14"/>
+    <text x="181" y="32" font-family="Arial, Helvetica, sans-serif" font-size="23" font-weight="800" fill="#FFFFFF">PUBLISHED</text>
+  </g>
+  <g opacity="0.42" stroke="#FFFFFF" stroke-width="2">
+    <line x1="80" y1="610" x2="532" y2="610"/>
+    <line x1="80" y1="650" x2="432" y2="650"/>
+    <line x1="80" y1="690" x2="492" y2="690"/>
+  </g>
+</svg>

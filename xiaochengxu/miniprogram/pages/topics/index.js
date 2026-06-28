@@ -160,6 +160,14 @@ Page({
     wx.navigateTo({ url: '/pages/calendar/index' });
   },
 
+  goToTopicSubmit() {
+    if (!app.checkLogin()) {
+      wx.navigateTo({ url: '/pages/login/index' });
+      return;
+    }
+    wx.navigateTo({ url: '/pages/topicSubmit/index' });
+  },
+
   onShareAppMessage() {
     var query = [];
     if (this.data.selectedTag) {

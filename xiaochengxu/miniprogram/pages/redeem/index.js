@@ -112,8 +112,10 @@ Page({
 
       // Update global membership state
       app.globalData.membershipActive = true;
+      app.globalData.membershipPermanent = !!res.membershipPermanent;
       app.globalData.membershipExpireAt = util.formatDateTime(res.membershipExpireAt || '');
       wx.setStorageSync('membershipActive', true);
+      wx.setStorageSync('membershipPermanent', !!res.membershipPermanent);
       wx.setStorageSync('membershipExpireAt', util.formatDateTime(res.membershipExpireAt || ''));
 
       // Reload membership info

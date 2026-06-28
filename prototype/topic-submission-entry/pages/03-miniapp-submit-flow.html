@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>提交表单原型</title>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <main class="canvas">
+      <section class="phone" aria-label="提交话题表单">
+        <div class="phone-status"><span>9:41</span><span>5G 100%</span></div>
+        <div class="mini-nav"><span class="back">‹</span>提交话题</div>
+        <div class="phone-page">
+          <section class="form-card">
+            <div class="field">
+              <label for="topic-name">你想练的话题</label>
+              <input id="topic-name" class="input" value="面试时介绍自己的项目经历" />
+              <div class="hint">建议写成一个具体场景，比如“出国旅行问路”。</div>
+            </div>
+
+            <div class="field">
+              <label for="topic-reason">为什么想练这个话题</label>
+              <textarea id="topic-reason" class="textarea">最近准备英文面试，想练习怎么自然地讲项目背景、遇到的问题和自己的贡献。</textarea>
+            </div>
+
+            <div class="field">
+              <label>话题分类</label>
+              <div class="chips">
+                <span class="chip active">职场</span>
+                <span class="chip">旅行</span>
+                <span class="chip">日常生活</span>
+                <span class="chip">兴趣爱好</span>
+                <span class="chip">考试</span>
+                <span class="chip">其他</span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="extra">补充信息</label>
+              <textarea id="extra" class="textarea" style="min-height: 80px">希望有初级和进阶两个版本。</textarea>
+              <div class="hint">可选：目标水平、希望包含的问题、真实使用场景。</div>
+            </div>
+
+            <button class="primary-btn" style="width: 100%">提交给管理员</button>
+          </section>
+        </div>
+      </section>
+
+      <section class="phone" aria-label="提交成功状态">
+        <div class="phone-status"><span>9:41</span><span>5G 100%</span></div>
+        <div class="mini-nav"><span class="back">‹</span>提交成功</div>
+        <div class="phone-page">
+          <section class="success-card">
+            <div class="success-icon">✓</div>
+            <h2>提交成功</h2>
+            <p>管理员会查看你的话题建议。如果被采纳，会出现在主题库里。</p>
+            <div class="submit-actions" style="grid-template-columns: 1fr 1fr">
+              <button class="primary-btn">继续浏览主题</button>
+              <button class="ghost-btn">返回首页</button>
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="section-header">
+              <div class="section-title">你可能也想练</div>
+            </div>
+            <article class="topic-row">
+              <div>
+                <strong>Job Interview Self Introduction</strong>
+                <span>英文面试自我介绍 · 8 个问题</span>
+              </div>
+              <button class="secondary-btn">先练这个</button>
+            </article>
+            <article class="topic-row">
+              <div>
+                <strong>Talking About Projects</strong>
+                <span>介绍项目经历 · 10 个问题</span>
+              </div>
+              <button class="secondary-btn">详情</button>
+            </article>
+          </section>
+        </div>
+      </section>
+
+      <aside class="notes-panel">
+        <h2>设计说明</h2>
+        <ul>
+          <li>表单字段要短，降低提交门槛。</li>
+          <li>成功页不再提供提交记录入口，直接回到学习或浏览路径。</li>
+          <li>分类可以帮助后台筛选，但不应成为必填难题。</li>
+        </ul>
+      </aside>
+    </main>
+  </body>
+</html>

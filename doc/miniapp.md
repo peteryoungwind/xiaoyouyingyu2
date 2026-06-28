@@ -64,6 +64,7 @@ flowchart LR
 - 登录：`pages/login/index`
 - 注册：`pages/register/index`
 - 设置：`pages/settings/index`
+- 会员开通：`pages/membership/index`
 - 兑换：`pages/redeem/index`
 - 日历：`pages/calendar/index`
 
@@ -82,6 +83,7 @@ flowchart LR
 - `isLoggedIn`
 - `role`
 - `membershipActive`
+- `membershipPermanent`
 - `membershipExpireAt`
 - `hasPassword`
 - `userInfo`
@@ -125,8 +127,10 @@ flowchart LR
 - 口语热身：主题详情、热身介绍、核心词汇、句型模板、地道表达、模拟任务、AI 点评、真实语音转文字。
 - 跟读精听：资源列表、详情、句级录音点评。
 - 会员：会员状态、联系方式、卡密兑换。
+- 会员支付：套餐列表、创建会员订单、查询订单状态并调用 `wx.requestPayment`。
 - 单词练习：已发布单词本、单词本详情、下一词、单词详情、提交认识/模糊/不认识、进度。
 - 每日外刊：未读/已读列表、外刊详情并自动标记已读。
+- 用户提交话题：登录用户提交感兴趣的话题，管理员在 PC 后台处理。
 
 ## 页面说明
 
@@ -141,22 +145,41 @@ flowchart LR
 | AI 对话 | `pages/aiDialogChat/index` | 当前页面内存中保持上下文，发送文字消息，播放 AI 音频，默认显示 AI 回复文字和教学点评，并支持手动隐藏文字 |
 | 单词本列表 | `pages/wordBooks/index` | 作为换词书/词书选择页，按初级/进阶两块展示已发布单词本封面卡片、词数和个人进度 |
 | 单词本详情 | `pages/wordBookDetail/index` | 单词练习总览页，展示当前词书所属等级、今日复习/新词计划、进度和开始练习入口 |
-| 单词练习 | `pages/wordPractice/index` | 两段式练习：回忆态先展示英文单词和发音，用户选择认识/模糊/不认识；模糊和不认识进入答后展开态展示释义、例句和句型；本轮结束后展示复盘和换词书入口 |
-| 单词详情 | `pages/wordDetail/index` | 使用与练习页一致的沉浸式渐变详情样式，展示释义、音标、词性、句型、例句、来源和发音入口 |
+| 单词练习 | `pages/wordPractice/index` | 两段式练习：回忆态先展示英文单词和发音，主单词使用克制字号和中等加粗，用户选择认识/模糊/不认识；模糊和不认识进入答后展开态，使用蓝色词典卡样式展示释义、例句和句型；本轮结束后展示复盘和换词书入口 |
+| 单词详情 | `pages/wordDetail/index` | 使用与练习页一致的蓝色词典卡详情样式，主单词使用较小字号和较轻字重，展示释义、音标、句型、例句、来源和发音入口 |
 | 每日外刊列表 | `pages/dailyArticles/index` | 未读/已读 tab、封面卡片、下拉刷新、触底分页、跳转详情 |
 | 每日外刊详情 | `pages/dailyArticleDetail/index` | 迷你播放器、逐段中英对照、总结、重点词汇、长难句解析和表达句型 |
 | 跟读精听列表 | `pages/shadowingLessons/index` | 未学习/已学习 tab、游客可浏览资源卡片、登录用户按学习记录筛选 |
 | 跟读精听详情 | `pages/shadowingLessonDetail/index` | 游客试看媒体和简介；登录用户查看完整连续学习流、逐句跟读、录音回放和 AI 点评 |
 | 口语热身列表 | `pages/spokenWarmup/index` | 登录用户搜索、标签筛选、日期筛选系统主题并进入口语热身 |
 | 口语热身详情 | `pages/spokenWarmupDetail/index` | 初级/进阶切换，按模块实时生成热身、词汇、句型、表达、任务，支持语音/文字回答和 AI 点评 |
+| 提交话题 | `pages/topicSubmit/index` | 登录用户提交自己感兴趣的口语练习话题，成功后提示如被采纳会出现在主题库 |
 | 登录 | `pages/login/index` | 微信登录，调用 `wx.login` 后传 code 到后端 |
 | 注册 | `pages/register/index` | 用户名密码注册 |
 | 我的 | `pages/profile/index` | 用户信息、会员状态、设置、兑换、PC 登录确认 |
 | 设置 | `pages/settings/index` | 改用户名、改密码、微信用户首次设置密码、会员联系信息 |
+| 会员开通 | `pages/membership/index` | 展示当前会员状态和上架套餐，创建微信支付订单并调起小程序支付 |
 | 兑换 | `pages/redeem/index` | 卡密兑换与会员状态刷新 |
 | 日历 | `pages/calendar/index` | 按月份查看话题日期分布 |
 
 ## 每日外刊流程
+
+## 会员开通流程
+
+小程序保留卡密兑换，并新增会员套餐购买：
+
+1. 用户从“我的”页、会员拦截弹窗或其它会员入口进入 `pages/membership/index`。
+2. 页面调用 `/api/membership/status` 和 `/api/membership/plans`。
+3. 用户选择上架套餐后，小程序调用 `/api/membership/orders` 创建订单。
+4. 后端返回 `wx.requestPayment` 所需参数。
+5. 小程序调用 `wx.requestPayment`。
+6. 支付成功后，小程序轮询 `/api/membership/orders/{orderNo}`，订单变为 `PAID` 后刷新会员状态。
+
+注意：
+
+- 小程序端不生成支付签名，不保存商户密钥。
+- 支付成功后的最终开通结果以后端微信支付回调和订单查询为准。
+- `membershipPermanent` 用于展示永久会员；会员权限最终以后端动态判断为准。
 
 小程序首页提供“每日外刊”入口；学习中心顶部不再展示独立入口卡片。
 
@@ -170,7 +193,13 @@ flowchart LR
 
 ## 首页学习入口
 
-小程序首页 `pages/home/index` 的学习入口采用一行四列 icon 排列，图标为浅色底、低饱和线性符号，延续当前 iOS / Apple 风格首页视觉：
+小程序首页 `pages/home/index` 的顶部封面是两张轮播：
+
+- 第一张保留原 Daily Practice 内容，默认展示，点击进入学习页。
+- 第二张是“提交话题”入口，文案为“有想练的话题吗？”，点击后登录用户进入 `pages/topicSubmit/index`，未登录用户进入登录页。
+- 首页只替换顶部封面区域为轮播；四个学习入口、统计卡片、热门标签、最新主题、会员提示和底部提示保持原有顺序与展示逻辑。
+
+小程序首页学习入口采用一行四列 icon 排列，图标为浅色底、低饱和线性符号，延续当前 iOS / Apple 风格首页视觉：
 
 - 单词练习：未登录跳转登录；已登录时按最近词书缓存进入单词练习页或词书选择页。
 - AI 对话：跳转 `pages/aiDialogSetup/index`。
@@ -190,6 +219,33 @@ flowchart LR
 
 - 未登录点击“跟读精听”会进入跟读精听列表页，不触发会员购买流程。
 - 已登录用户可使用每日外刊，不限制会员状态。
+
+## 用户提交话题
+
+用户提交话题功能由首页轮播第二张和主题列表页辅助横幅进入。
+
+入口：
+
+- 首页顶部封面第二张“有想练的话题吗？”。
+- 主题列表页搜索和筛选区域下方“没有找到想练的话题？”横幅。
+
+页面：
+
+- `pages/topicSubmit/index`
+
+表单字段：
+
+- 话题标题：必填，至少 2 个字符。
+- 想练原因：选填。
+- 分类标签：选填，当前为本地固定选项。
+- 补充说明：选填。
+
+提交行为：
+
+- 小程序调用 `utils/api.js` 中的 `createTopicSubmission(data)`。
+- 后端接口为 `POST /api/topic-submissions`，要求登录。
+- 提交成功后展示“提交成功，如被采纳会出现在主题库”，并提供“继续浏览主题”和“返回首页”。
+- V1 不提供“我的提交记录”，不限制提交频率，不向用户发送采纳通知。
 
 ## 单词练习流程
 
@@ -214,11 +270,20 @@ flowchart LR
 
 练习页：
 
-- 回忆态只展示英文单词、音标和美式/英式发音，底部固定展示“认识 / 模糊 / 不认识”。
+- 回忆态只展示英文单词、音标和美式/英式发音，主单词避免过大过粗，底部固定展示“认识 / 模糊 / 不认识”。
 - 选择“认识”后直接记录并进入下一词。
-- 选择“模糊”或“不认识”后在当前页展开释义、英文解释、例句、句型和来源信息，底部展示“加入重点复习”和“下一词”。
+- 选择“模糊”或“不认识”后在当前页展开蓝色词典卡详情：词头区展示单词、音标、美式/英式发音、中文释义和英文解释，不再展示答题结果胶囊和词性；例句卡展示英文例句与中文翻译，例句语音按钮固定在卡片右上角，不单独占一行；句型和来源信息在下方卡片展示；底部展示“加入重点复习”和“下一词”。
 - 当前后端尚无收藏/重点复习接口，“加入重点复习”仅作为轻提示，不改变服务端数据。
 - 本轮没有可练词时展示复盘页，统计本次进入练习页后的认识、模糊、不认识数量和熟悉率，并提供继续练习、回到总览和换词书入口。
+
+单词音频：
+
+- 后端单词表保存 `audioUsUrl`、`audioUkUrl`、`exampleAudioUsUrl`、`exampleAudioUkUrl` 四个音频 URL。
+- TTS 生成文件落在服务端 `app.upload.dir` 下的 `word-audio/{bookId}/{wordId}/` 目录，数据库保存 `/uploads/word-audio/...` 站点相对 URL，而不是本机绝对路径。
+- 小程序通过 `utils/audio.resolveAudioUrl()` 播放音频：完整外部 URL 原样播放，`/uploads/...` 会按当前环境 `baseUrl` 去掉 `/api` 后补全域名。
+- 因此本地和服务器迁移时不需要批量改数据库音频字段，只需保持后端 `/uploads/**` 静态资源映射和线上 `app.upload.dir` 指向实际持久化目录。
+- 全量补音频可使用 `scripts/backfill_all_wordbook_audio.java`。脚本按数据库待生成状态认领单词，生成单词美式、单词英式、例句美式、例句英式四个文件，写入 `logs/wordbook-audio-backfill-all.log` 和 `logs/wordbook-audio-backfill-all.progress.json`。
+- 后台运行示例：先用 JDK 21 编译，再执行 `nohup java -cp "/tmp:$(cat /tmp/xiaoyou_cp.txt)" backfill_all_wordbook_audio 24 200 0 > logs/wordbook-audio-backfill-all.nohup.log 2>&1 &`。参数依次为并发数、每分钟启动处理的单词数、最多处理单词数（`0` 表示全部）。
 
 列表页 `pages/dailyArticles/index`：
 

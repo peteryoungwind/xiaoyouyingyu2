@@ -108,6 +108,9 @@ npm run start
 | `/admin` | `src/app/admin/page.tsx` | 管理后台，AI 生成、手动创建、主题管理、用户管理、模型管理 |
 | `/admin/word-books` | `src/app/admin/word-books/page.tsx` | 单词训练后台，单词本、单词、AI 场景生成 |
 | `/admin/daily-articles` | `src/app/admin/daily-articles/page.tsx` | 每日外刊后台，库存维护、音频上传和今日推送 |
+| `/admin/topic-submissions` | `src/app/admin/topic-submissions/page.tsx` | 用户提交话题后台，查看小程序提交、详情和采纳状态 |
+| `/admin/membership-plans` | `src/app/admin/membership-plans/page.tsx` | 会员套餐管理，支持普通时长、永久会员、价格、折扣和上下架 |
+| `/admin/membership-orders` | `src/app/admin/membership-orders/page.tsx` | 会员订单管理，支持状态、订单号和用户筛选，查看套餐快照 |
 | `/users` | `src/app/users/page.tsx` | 用户管理与会员操作 |
 | `/redeem-codes` | `src/app/redeem-codes/page.tsx` | 卡密生成、查询、禁用 |
 | `/settings` | `src/app/settings/page.tsx` | 修改密码、会员状态、卡密兑换、开通联系信息 |
@@ -123,6 +126,17 @@ npm run start
 | `TopicCard` | `components/topic-card.tsx` | 话题卡片展示 |
 | `ToastProvider` | `components/toast-provider.tsx` | Toast 通知上下文 |
 | `Navbar` | `components/navbar.tsx` | 旧版/辅助导航组件 |
+
+## 会员支付管理
+
+PC 后台新增两个管理员页面：
+
+- `/admin/membership-plans`：维护会员套餐。金额输入以元展示，提交时转为整数分；支持普通天数套餐、永久会员套餐、限时折扣、排序和上下架。
+- `/admin/membership-orders`：查看小程序支付订单，展示订单号、用户、金额、状态、微信交易号、创建时间和套餐快照。
+
+`/users` 用户管理页保留原有会员追加和设置到期时间能力，并新增“设置为永久会员”。新版操作调用 `/api/admin/membership/users/{id}/grant`，要求填写操作原因。
+
+`frontend/src/lib/auth.tsx` 新增保存 `membershipPermanent`，但前端展示只作为体验优化，最终会员权限以后端动态判断为准。
 
 ## 话题列表功能
 
@@ -246,6 +260,14 @@ PC 管理端：
 - `deleteDailyArticle(id)`
 - `publishTodayDailyArticle()`
 - `uploadDailyArticleAudio(file)`
+
+用户提交话题 PC 管理接口也位于 `frontend/src/lib/api.ts`：
+
+- `getAdminTopicSubmissions(params)`
+- `getAdminTopicSubmission(id)`
+- `updateAdminTopicSubmissionStatus(id, status)`
+
+`/admin/topic-submissions` 仅管理员可见。页面支持按状态筛选、关键词搜索、查看详情，并可将提交标记为已采纳或未采纳。采纳只更新提交状态，不自动创建正式主题。
 
 AI 对话配置接口也位于 `frontend/src/lib/api.ts`：
 

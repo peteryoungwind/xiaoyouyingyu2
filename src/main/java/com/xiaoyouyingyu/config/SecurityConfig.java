@@ -45,6 +45,8 @@ public class SecurityConfig {
             )
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.POST, "/api/auth/register", "/api/auth/login", "/api/auth/wechat-login", "/api/auth/wechat-pc-login/session").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/payment/wechat/notify").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/dev/membership/orders/*/mock-paid").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/auth/wechat-pc-login/session/*").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/topics").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/topics/calendar").permitAll()
@@ -57,7 +59,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/shadowing-lessons/*/sentences/*/review").authenticated()
                 .requestMatchers(HttpMethod.GET, "/uploads/**").permitAll()
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                .requestMatchers("/api/learning/**").hasAnyRole("PREMIUM_USER", "ADMIN", "MEMBER")
+                .requestMatchers("/api/learning/**").hasAnyRole("ADMIN", "MEMBER")
                 .requestMatchers("/api/spoken-warmup/**").authenticated()
                 .requestMatchers("/api/word-practice/**").authenticated()
                 .requestMatchers("/api/ai-dialog/**").authenticated()

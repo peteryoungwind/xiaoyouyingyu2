@@ -44,7 +44,7 @@ public class AuthController {
     private AuthResponse buildAuthResponse(User user) {
         String token = jwtUtils.generateToken(user.getUsername(), user.getRole().name());
         String expireAt = user.getMembershipExpireAt() != null ? user.getMembershipExpireAt().toString() : "";
-        return new AuthResponse(token, user.getUsername(), user.getRole().name(), expireAt, user.isMembershipActive(), user.isHasPassword());
+        return new AuthResponse(token, user.getUsername(), user.getRole().name(), expireAt, user.isMembershipActive(), user.isMembershipPermanent(), user.isHasPassword());
     }
 
     private boolean hasStoredPassword(User user) {
@@ -237,6 +237,7 @@ public class AuthController {
                 response.put("role", authResponse.getRole());
                 response.put("membershipExpireAt", authResponse.getMembershipExpireAt());
                 response.put("membershipActive", authResponse.isMembershipActive());
+                response.put("membershipPermanent", authResponse.isMembershipPermanent());
                 response.put("hasPassword", authResponse.isHasPassword());
                 response.put("isAdmin", authResponse.isAdmin());
                 response.put("isPremium", authResponse.isPremium());

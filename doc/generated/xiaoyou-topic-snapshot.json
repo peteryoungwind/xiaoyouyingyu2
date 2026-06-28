@@ -1,6 +1,27 @@
 {
-  "count" : 260,
+  "count" : 263,
   "topics" : [ {
+    "id" : 675,
+    "title" : "Social Events",
+    "titleZh" : "社交活动",
+    "tags" : "生活习惯",
+    "questions" : "[{\"en\": \" What kinds of social events do you prefer in your daily life? Small casual chats, group dinners, outdoor activities, or bigger parties with lots of people?\", \"zh\": \"你平时更喜欢参加什么样的社交活动？是小范围聊天、一起吃饭、户外活动，还是人多一点的聚会？\"}, {\"en\": \"At social gatherings, are you the type who takes the lead to liven up the mood, or do you sit back and observe, waiting for others to start the conversation? Do you think this comes down to your personality, or how well you know the people there?\", \"zh\": \"在社交活动中，你更像是主动带动气氛的人，还是慢慢观察、等别人先开口的人？你觉得这是性格原因，还是和熟不熟有关？\"}, {\"en\": \"What makes a social event feel comfortable to you most? A laid-back vibe, interesting shared topics, or not having to put on a fake front around everyone?\", \"zh\": \"你觉得一次社交活动让你感觉舒服，最重要的是什么？是氛围轻松、话题合拍，还是大家不用刻意表现自己？\"}, {\"en\": \"As you’ve gotten older and your lifestyle has changed, has your need for socializing shifted at all? Do you feel like meeting new people more, or would you rather spend your spare time with just a handful of close, important people?\", \"zh\": \"随着年龄和生活状态变化，你对社交活动的需求有没有改变？是变得更想认识新朋友，还是更想把时间留给少数重要的人？\"}]",
+    "eventDate" : "2026-06-28"
+  }, {
+    "id" : 674,
+    "title" : "Spending Habits",
+    "titleZh" : "消费习惯",
+    "tags" : "消费科技",
+    "questions" : "[{\"en\": \"When are you most likely to spend money? Is it when you're in a good mood, stressed out, seeing a good sale, or when someone recommends something? Do you feel like in those moments, you're buying what you actually need, or just looking for a little emotional comfort?\", \"zh\": \"什么情况下你最容易花钱：心情好、压力大、看到打折，还是被别人推荐？你觉得那一刻买的是真正需要，还是一种情绪上的满足？\"}, {\"en\": \"What’s your standard for something being \\\"worth the money\\\"? Is it how often you’ll use it, the quality, a good price, or just the fact that it makes your life a little better? Can you give an example?\", \"zh\": \" 对你来说，“值得买”的标准是什么？是使用频率高、质量好、价格合适，还是它能让你感觉生活变好了一点？能举个例子吗？\"}, {\"en\": \"Do you ever change your mind about buying something because of social media, friends' recommendations, or influencer reviews? Do you think that helps you discover cool stuff, or just makes it easier to buy things you don't really need?\", \"zh\": \"你会不会因为社交媒体、朋友推荐或博主测评而改变自己的消费决定？你觉得这是帮你发现好东西，还是让你更容易想买不需要的东西？\"}, {\"en\": \"Do you think a person’s spending habits reflect their lifestyle or values? Like, are they more focused on efficiency, experiences, saving face, feeling secure, or just treating themselves?\", \"zh\": \"你觉得一个人的消费习惯能不能反映他的生活状态或价值观？比如更在意效率、体验、面子、安全感，还是自我奖励？\"}]",
+    "eventDate" : "2026-06-24"
+  }, {
+    "id" : 673,
+    "title" : "Being Someone People Can Count On",
+    "titleZh" : "成为一个靠谱的人",
+    "tags" : "自我成长",
+    "questions" : "[{\"en\": \"What’s the easiest way to tell if someone is truly reliable? Is it showing up on time, replying to texts quickly, or just remembering to do what they promised?\", \"zh\": \"你觉得一个人“靠谱”，最简单的表现是什么？是准时到、及时回复消息，还是答应的事会记得做？\"}, {\"en\": \"Is there someone in your life you’d call super dependable? What do they usually do that makes you feel you can always count on them?\", \"zh\": \"你身边有没有一个你觉得很靠谱的人？他/她平时做了什么，让你有这种感觉？\"}, {\"en\": \"Say you promise to do something, but then realize you actually can’t pull it off. How do you usually handle it? Do you speak up early, try to force it through, or wait until the last minute to say something? Which of those do you think is the most acceptable?\", \"zh\": \"当你答应了一件事，但后来发现自己有点做不到时，你通常会怎么处理？是提前说明、硬撑到底，还是拖到最后才开口？哪种方式你最能接受？\"}, {\"en\": \"How do you think someone can become a more reliable person? What kind of changes do they need to make?\", \"zh\": \"你觉得如何才能成为一个靠谱的人？需要在哪些方面做出改变？\"}]",
+    "eventDate" : "2026-06-14"
+  }, {
     "id" : 672,
     "title" : "My Favorite Way to Travel",
     "titleZh" : "自己喜欢的旅行方式",

@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>首页入口原型</title>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <main class="canvas">
+      <section class="phone" aria-label="小程序首页默认封面">
+        <div class="phone-status"><span>9:41</span><span>5G 100%</span></div>
+        <div class="mini-nav">小柚英语</div>
+        <div class="phone-page">
+          <section class="hero-carousel">
+            <article class="hero-card hero-slide active-slide">
+              <span class="badge">Daily Practice</span>
+              <h1 class="hero-title">今天想聊点什么？</h1>
+              <div class="hero-foot">
+                <p><strong>已坚持 86 天</strong><br />浏览主题或进入学习中心继续练习。</p>
+                <button class="primary-btn">去学习</button>
+              </div>
+            </article>
+            <div class="carousel-dots" aria-label="当前为第一张">
+              <span class="dot active"></span>
+              <span class="dot"></span>
+            </div>
+          </section>
+
+          <section class="entry-grid" aria-label="学习入口">
+            <div class="entry-item">
+              <div class="entry-icon" style="background: #e9f8f0">📘</div>
+              <span>单词练习</span>
+            </div>
+            <div class="entry-item">
+              <div class="entry-icon" style="background: #e8f2ff">💬</div>
+              <span>AI 对话</span>
+            </div>
+            <div class="entry-item">
+              <div class="entry-icon" style="background: #e9fbf8">📰</div>
+              <span>每日外刊</span>
+            </div>
+            <div class="entry-item">
+              <div class="entry-icon" style="background: #f0edff">🎧</div>
+              <span>跟读精听</span>
+            </div>
+          </section>
+
+          <section class="overview-grid" aria-label="首页统计">
+            <article class="overview-card">
+              <span class="overview-label">主题总数</span>
+              <strong class="overview-value">263</strong>
+              <span class="overview-note">持续更新</span>
+            </article>
+            <article class="overview-card">
+              <span class="overview-label">连续天数</span>
+              <strong class="overview-value">1091</strong>
+              <span class="overview-note">学习节奏</span>
+            </article>
+            <article class="overview-card">
+              <span class="overview-label">热门标签</span>
+              <strong class="overview-value">8</strong>
+              <span class="overview-note">分类浏览</span>
+            </article>
+          </section>
+
+          <section class="section">
+            <div class="section-header">
+              <div class="section-title">热门标签</div>
+              <div class="section-more">查看全部</div>
+            </div>
+            <div class="tag-category-grid">
+              <article class="tag-category-card">
+                <div class="tag-category-icon blue">♙</div>
+                <strong>自我成长</strong>
+              </article>
+              <article class="tag-category-card">
+                <div class="tag-category-icon peach">♡</div>
+                <strong>情绪心理</strong>
+              </article>
+              <article class="tag-category-card">
+                <div class="tag-category-icon pink">▢</div>
+                <strong>人际沟通</strong>
+              </article>
+              <article class="tag-category-card">
+                <div class="tag-category-icon green">⊙</div>
+                <strong>生活习惯</strong>
+              </article>
+              <article class="tag-category-card">
+                <div class="tag-category-icon blue">★</div>
+                <strong>学习方法</strong>
+              </article>
+              <article class="tag-category-card">
+                <div class="tag-category-icon violet">▭</div>
+                <strong>职场发展</strong>
+              </article>
+              <article class="tag-category-card">
+                <div class="tag-category-icon sky">◎</div>
+                <strong>文化旅行</strong>
+              </article>
+              <article class="tag-category-card">
+                <div class="tag-category-icon sand">⊙</div>
+                <strong>兴趣娱乐</strong>
+              </article>
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="section-header">
+              <div class="section-title">最新主题</div>
+              <div class="section-more">全部主题</div>
+            </div>
+            <article class="topic-row">
+              <div>
+                <strong>旅行中遇到的小意外</strong>
+                <span>Travel Surprises · 10 个问题</span>
+                <div class="tag-line"><span class="tag">travel</span><span class="tag">story</span></div>
+              </div>
+              <button class="secondary-btn">详情</button>
+            </article>
+            <article class="topic-row">
+              <div>
+                <strong>和朋友讨论周末计划</strong>
+                <span>Weekend Plans · 8 个问题</span>
+                <div class="tag-line"><span class="tag">daily</span><span class="tag">friends</span></div>
+              </div>
+              <button class="secondary-btn">详情</button>
+            </article>
+          </section>
+        </div>
+        <nav class="tabbar" aria-label="底部导航">
+          <div class="tab active">⌂<span>首页</span></div>
+          <div class="tab">◎<span>主题</span></div>
+          <div class="tab">▣<span>学习</span></div>
+          <div class="tab">◌<span>我的</span></div>
+        </nav>
+      </section>
+
+      <section class="phone" aria-label="小程序首页提交话题封面">
+        <div class="phone-status"><span>9:41</span><span>5G 100%</span></div>
+        <div class="mini-nav">小柚英语</div>
+        <div class="phone-page">
+          <section class="hero-carousel">
+            <article class="hero-card hero-slide submit-slide">
+              <span class="badge submit-badge">Topic Wish</span>
+              <h1 class="hero-title">有想练的话题吗？</h1>
+              <div class="hero-foot">
+                <p><strong>告诉小柚你的兴趣</strong><br />我们会整理成适合开口练习的主题。</p>
+                <button class="primary-btn submit-btn">提交话题</button>
+              </div>
+              <div class="soft-illustration" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </article>
+            <div class="carousel-dots" aria-label="当前为第二张">
+              <span class="dot"></span>
+              <span class="dot active"></span>
+            </div>
+          </section>
+
+          <section class="entry-grid" aria-label="学习入口">
+            <div class="entry-item">
+              <div class="entry-icon" style="background: #e9f8f0">📘</div>
+              <span>单词练习</span>
+            </div>
+            <div class="entry-item">
+              <div class="entry-icon" style="background: #e8f2ff">💬</div>
+              <span>AI 对话</span>
+            </div>
+            <div class="entry-item">
+              <div class="entry-icon" style="background: #e9fbf8">📰</div>
+              <span>每日外刊</span>
+            </div>
+            <div class="entry-item">
+              <div class="entry-icon" style="background: #f0edff">🎧</div>
+              <span>跟读精听</span>
+            </div>
+          </section>
+
+          <section class="overview-grid" aria-label="首页统计">
+            <article class="overview-card">
+              <span class="overview-label">主题总数</span>
+              <strong class="overview-value">263</strong>
+              <span class="overview-note">持续更新</span>
+            </article>
+            <article class="overview-card">
+              <span class="overview-label">连续天数</span>
+              <strong class="overview-value">1091</strong>
+              <span class="overview-note">学习节奏</span>
+            </article>
+            <article class="overview-card">
+              <span class="overview-label">热门标签</span>
+              <strong class="overview-value">8</strong>
+              <span class="overview-note">分类浏览</span>
+            </article>
+          </section>
+
+          <section class="section">
+            <div class="section-header">
+              <div class="section-title">热门标签</div>
+              <div class="section-more">查看全部</div>
+            </div>
+            <div class="tag-category-grid">
+              <article class="tag-category-card">
+                <div class="tag-category-icon blue">♙</div>
+                <strong>自我成长</strong>
+              </article>
+              <article class="tag-category-card">
+                <div class="tag-category-icon peach">♡</div>
+                <strong>情绪心理</strong>
+              </article>
+              <article class="tag-category-card">
+                <div class="tag-category-icon pink">▢</div>
+                <strong>人际沟通</strong>
+              </article>
+              <article class="tag-category-card">
+                <div class="tag-category-icon green">⊙</div>
+                <strong>生活习惯</strong>
+              </article>
+              <article class="tag-category-card">
+                <div class="tag-category-icon blue">★</div>
+                <strong>学习方法</strong>
+              </article>
+              <article class="tag-category-card">
+                <div class="tag-category-icon violet">▭</div>
+                <strong>职场发展</strong>
+              </article>
+              <article class="tag-category-card">
+                <div class="tag-category-icon sky">◎</div>
+                <strong>文化旅行</strong>
+              </article>
+              <article class="tag-category-card">
+                <div class="tag-category-icon sand">⊙</div>
+                <strong>兴趣娱乐</strong>
+              </article>
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="section-header">
+              <div class="section-title">最新主题</div>
+              <div class="section-more">全部主题</div>
+            </div>
+            <article class="topic-row">
+              <div>
+                <strong>旅行中遇到的小意外</strong>
+                <span>Travel Surprises · 10 个问题</span>
+                <div class="tag-line"><span class="tag">travel</span><span class="tag">story</span></div>
+              </div>
+              <button class="secondary-btn">详情</button>
+            </article>
+            <article class="topic-row">
+              <div>
+                <strong>和朋友讨论周末计划</strong>
+                <span>Weekend Plans · 8 个问题</span>
+                <div class="tag-line"><span class="tag">daily</span><span class="tag">friends</span></div>
+              </div>
+              <button class="secondary-btn">详情</button>
+            </article>
+          </section>
+        </div>
+        <nav class="tabbar" aria-label="底部导航">
+          <div class="tab active">⌂<span>首页</span></div>
+          <div class="tab">◎<span>主题</span></div>
+          <div class="tab">▣<span>学习</span></div>
+          <div class="tab">◌<span>我的</span></div>
+        </nav>
+      </section>
+
+      <aside class="notes-panel">
+        <h2>设计说明</h2>
+        <ul>
+          <li>首页封面改为两张轮播，默认展示当前 Daily Practice。</li>
+          <li>第二张是“提交话题”封面，使用同色系和轻插画，避免生硬广告感。</li>
+          <li>只替换顶部封面区域，其它首页模块保持原样：学习入口、统计卡片、热门标签、最新主题都保留。</li>
+          <li>主题列表页仍保留“没找到想练的话题”辅助入口。</li>
+        </ul>
+      </aside>
+    </main>
+  </body>
+</html>

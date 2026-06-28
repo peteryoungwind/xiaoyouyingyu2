@@ -4,6 +4,7 @@ App({
     token: null,
     isLoggedIn: false,
     membershipActive: false,
+    membershipPermanent: false,
     role: '',
     hasPassword: true,
     membershipExpireAt: '',
@@ -48,6 +49,7 @@ App({
       const username = wx.getStorageSync('username');
       const role = wx.getStorageSync('role');
       const membershipActive = wx.getStorageSync('membershipActive');
+      const membershipPermanent = wx.getStorageSync('membershipPermanent');
       const membershipExpireAt = wx.getStorageSync('membershipExpireAt');
       const hasPassword = wx.getStorageSync('hasPassword');
       if (token && username) {
@@ -55,6 +57,7 @@ App({
         this.globalData.isLoggedIn = true;
         this.globalData.role = role || 'USER';
         this.globalData.membershipActive = membershipActive || false;
+        this.globalData.membershipPermanent = membershipPermanent || false;
         this.globalData.membershipExpireAt = membershipExpireAt || '';
         this.globalData.hasPassword = hasPassword !== '' ? !!hasPassword : true;
         this.globalData.userInfo = { username, role: role || 'USER', hasPassword: hasPassword !== '' ? !!hasPassword : true };
@@ -69,6 +72,7 @@ App({
     this.globalData.isLoggedIn = true;
     this.globalData.role = userInfo.role || 'USER';
     this.globalData.membershipActive = userInfo.membershipActive || false;
+    this.globalData.membershipPermanent = userInfo.membershipPermanent || false;
     this.globalData.membershipExpireAt = userInfo.membershipExpireAt || '';
     this.globalData.hasPassword = userInfo.hasPassword !== undefined ? !!userInfo.hasPassword : true;
     this.globalData.userInfo = {
@@ -81,6 +85,7 @@ App({
     wx.setStorageSync('username', userInfo.username);
     wx.setStorageSync('role', userInfo.role || 'USER');
     wx.setStorageSync('membershipActive', userInfo.membershipActive || false);
+    wx.setStorageSync('membershipPermanent', userInfo.membershipPermanent || false);
     wx.setStorageSync('membershipExpireAt', userInfo.membershipExpireAt || '');
     wx.setStorageSync('hasPassword', userInfo.hasPassword !== undefined ? !!userInfo.hasPassword : true);
   },
@@ -90,6 +95,7 @@ App({
     this.globalData.isLoggedIn = false;
     this.globalData.role = '';
     this.globalData.membershipActive = false;
+    this.globalData.membershipPermanent = false;
     this.globalData.membershipExpireAt = '';
     this.globalData.hasPassword = true;
     this.globalData.userInfo = null;
@@ -98,6 +104,7 @@ App({
     wx.removeStorageSync('username');
     wx.removeStorageSync('role');
     wx.removeStorageSync('membershipActive');
+    wx.removeStorageSync('membershipPermanent');
     wx.removeStorageSync('membershipExpireAt');
     wx.removeStorageSync('hasPassword');
     wx.removeStorageSync('recentWordPracticeBook');
@@ -108,7 +115,7 @@ App({
   },
 
   isMember() {
-    return this.isAdmin() || this.globalData.membershipActive === true;
+    return this.isAdmin() || this.globalData.membershipPermanent === true || this.globalData.membershipActive === true;
   },
 
   isAdmin() {

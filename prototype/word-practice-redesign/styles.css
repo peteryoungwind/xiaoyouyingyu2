@@ -885,6 +885,352 @@ a {
   line-height: 1.45;
 }
 
+.dictionary-status {
+  background: linear-gradient(90deg, #dbe8ff 0%, #eef5ff 48%, #f6f8fb 100%);
+}
+
+.dictionary-page {
+  position: relative;
+  min-height: 822px;
+  padding: 16px 0 104px;
+  overflow: hidden;
+  background:
+    linear-gradient(138deg, #dbe8ff 0%, #eef5ff 36%, #fbfdff 68%, #eef3f8 100%);
+}
+
+.dictionary-page::before {
+  content: "";
+  position: absolute;
+  inset: -90px -70px auto auto;
+  width: 230px;
+  height: 230px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.34);
+  filter: blur(28px);
+}
+
+.dictionary-toolbar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 18px;
+}
+
+.dictionary-toolbar-title {
+  display: grid;
+  justify-items: center;
+  gap: 3px;
+  min-width: 0;
+}
+
+.dictionary-toolbar-title span {
+  color: rgba(23, 32, 51, 0.58);
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.dictionary-toolbar-title strong {
+  max-width: 220px;
+  overflow: hidden;
+  color: #172033;
+  font-size: 15px;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dictionary-hero {
+  position: relative;
+  z-index: 1;
+  padding: 18px 22px 26px;
+}
+
+.dictionary-word-row {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.dictionary-word-row h1 {
+  margin: 0;
+  color: #111318;
+  font-size: 62px;
+  line-height: 0.98;
+  letter-spacing: 0;
+}
+
+.hero-sound-button {
+  position: relative;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #1646a5;
+  background: rgba(255, 255, 255, 0.62);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.54), 0 12px 26px rgba(47, 111, 237, 0.16);
+}
+
+.dictionary-phonetic {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  color: rgba(17, 19, 24, 0.58);
+  font-size: 25px;
+  line-height: 1;
+}
+
+.dictionary-phonetic button {
+  min-width: 44px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border-radius: 999px;
+  color: #1646a5;
+  background: rgba(47, 111, 237, 0.14);
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.dictionary-phonetic button span {
+  font-size: 11px;
+}
+
+.meaning-lines {
+  display: grid;
+  gap: 10px;
+  margin-top: 24px;
+  color: #20212a;
+  font-size: 25px;
+  line-height: 1.46;
+}
+
+.meaning-lines p {
+  margin: 0;
+}
+
+.meaning-lines .part {
+  margin-right: 8px;
+  color: #22242c;
+}
+
+.meaning-lines mark,
+.phrase-row span {
+  padding: 0 1px 4px;
+  color: inherit;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.26) 48%, transparent 0) left bottom / 8px 1px repeat-x;
+}
+
+.meaning-lines mark {
+  margin-right: 18px;
+}
+
+.dictionary-card {
+  position: relative;
+  z-index: 1;
+  margin: 16px 0 0;
+  padding: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.68);
+  background: rgba(255, 255, 255, 0.48);
+  box-shadow: 0 18px 44px rgba(47, 111, 237, 0.1);
+  backdrop-filter: blur(18px);
+}
+
+.example-dictionary-card {
+  position: relative;
+  padding-right: 70px;
+  border-radius: 18px;
+}
+
+.mini-sound-button {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #1646a5;
+  background: rgba(245, 247, 251, 0.72);
+  border: 1px solid rgba(47, 111, 237, 0.26);
+}
+
+.hero-sound-button::before,
+.hero-sound-button::after,
+.mini-sound-button::before,
+.mini-sound-button::after {
+  content: "";
+  position: absolute;
+  border: 2px solid currentColor;
+  border-left: 0;
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  opacity: 0.78;
+}
+
+.hero-sound-button::before,
+.mini-sound-button::before {
+  width: 18px;
+  height: 18px;
+  right: 8px;
+}
+
+.hero-sound-button::after,
+.mini-sound-button::after {
+  width: 25px;
+  height: 25px;
+  right: 4px;
+  opacity: 0.42;
+}
+
+.hero-sound-button::before {
+  right: 10px;
+}
+
+.hero-sound-button::after {
+  right: 6px;
+}
+
+.sound-glyph {
+  position: relative;
+  width: 17px;
+  height: 15px;
+  transform: translateX(-4px);
+}
+
+.sound-glyph::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 4px;
+  width: 6px;
+  height: 7px;
+  border-radius: 2px;
+  background: currentColor;
+}
+
+.sound-glyph::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 1px;
+  width: 0;
+  height: 0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-right: 9px solid currentColor;
+}
+
+.example-en {
+  margin: 0;
+  color: #20212a;
+  font-size: 25px;
+  line-height: 1.5;
+}
+
+.example-zh {
+  margin: 10px 0 0;
+  color: rgba(32, 33, 42, 0.82);
+  font-size: 23px;
+  line-height: 1.48;
+}
+
+.phrase-card {
+  display: grid;
+  gap: 12px;
+  border-radius: 18px;
+}
+
+.phrase-row {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  color: #20212a;
+  font-size: 23px;
+  line-height: 1.3;
+}
+
+.phrase-row strong {
+  font-size: 21px;
+  font-weight: 750;
+}
+
+.memory-card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
+  margin-left: 18px;
+  margin-right: 18px;
+  border-radius: 18px;
+}
+
+.memory-label {
+  color: rgba(32, 33, 42, 0.58);
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.memory-card p {
+  margin: 5px 0 0;
+  color: #2c2d35;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.memory-card button {
+  min-width: 78px;
+  height: 38px;
+  border-radius: 999px;
+  color: #1646a5;
+  background: rgba(255, 255, 255, 0.72);
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.dictionary-actions {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 22px;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.16fr;
+  gap: 10px;
+}
+
+.dictionary-actions button {
+  min-height: 54px;
+  border-radius: 18px;
+  font-size: 16px;
+  font-weight: 900;
+  box-shadow: 0 14px 28px rgba(43, 34, 52, 0.1);
+}
+
+.known-action {
+  color: #13795b;
+  background: #e9f8f1;
+}
+
+.unknown-action {
+  color: #b7473d;
+  background: #fff0ed;
+}
+
+.next-action {
+  color: #ffffff;
+  background: linear-gradient(135deg, #2f6fed, #1646a5);
+}
+
 @media (max-width: 760px) {
   .review-grid,
   .flow-compare {

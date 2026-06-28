@@ -161,6 +161,58 @@
   flex-shrink: 0;
 }
 
+.topic-submit-entry {
+  margin-top: 20rpx;
+  min-height: 106rpx;
+  padding: 22rpx 18rpx 22rpx 28rpx;
+  border-radius: 30rpx;
+  background: #FFF8E8;
+  border: 2rpx solid rgba(245, 158, 11, 0.18);
+  box-shadow: 0 12rpx 30rpx rgba(245, 158, 11, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20rpx;
+}
+
+.topic-submit-entry:active {
+  transform: scale(0.99);
+}
+
+.topic-submit-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.topic-submit-title {
+  font-size: 28rpx;
+  line-height: 1.35;
+  font-weight: 800;
+  color: #1D1D1F;
+}
+
+.topic-submit-desc {
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  line-height: 1.5;
+  color: #8A5A00;
+}
+
+.topic-submit-btn {
+  height: 62rpx;
+  padding: 0 28rpx;
+  border-radius: 999rpx;
+  background: #FFFFFF;
+  border: 2rpx solid rgba(245, 158, 11, 0.26);
+  color: #B7791F;
+  font-size: 26rpx;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
 .topic-list {
   display: flex;
   flex-direction: column;

@@ -32,8 +32,8 @@ public class import_business_english_wordbook {
         if (book == null || words == null || !words.isArray()) {
             throw new IllegalArgumentException("Invalid wordbook JSON: missing wordBook or words");
         }
-        if (words.size() != 400) {
-            throw new IllegalArgumentException("Expected 400 words, got " + words.size());
+        if (words.size() != 1000) {
+            throw new IllegalArgumentException("Expected 1000 words, got " + words.size());
         }
 
         Class.forName("com.mysql.cj.jdbc.Driver");
@@ -41,14 +41,22 @@ public class import_business_english_wordbook {
             conn.setAutoCommit(false);
             try {
                 String bookName = uniqueBookName(conn, text(book, "name"));
-                long bookId = insertWordBook(conn, bookName, text(book, "description"), text(book, "scene"), text(book, "status"));
+                long bookId = insertWordBook(conn, bookName, text(book, "description"), text(book, "scene"),
+                        text(book, "level"), text(book, "status"));
                 int inserted = insertWords(conn, bookId, words);
                 long total = countWords(conn, bookId, null);
                 long beginner = countWords(conn, bookId, "BEGINNER");
                 long advanced = countWords(conn, bookId, "ADVANCED");
-                if (inserted != 400 || total != 400 || beginner != 200 || advanced != 200) {
+                long published = countWordsByStatus(conn, bookId, "PUBLISHED");
+                long pendingAudio = countWordsByAudioStatus(conn, bookId, "PENDING");
+                if (inserted != 1000 || total != 1000 || beginner != 0 || advanced != 1000
+                        || published != 1000 || pendingAudio != 1000) {
                     throw new IllegalStateException("Import verification failed: inserted=" + inserted
-                            + ", total=" + total + ", beginner=" + beginner + ", advanced=" + advanced);
+                            + ", total=" + total
+                            + ", beginner=" + beginner
+                            + ", advanced=" + advanced
+                            + ", published=" + published
+                            + ", pendingAudio=" + pendingAudio);
                 }
                 conn.commit();
                 System.out.println("IMPORT_OK");
@@ -57,6 +65,8 @@ public class import_business_english_wordbook {
                 System.out.println("inserted=" + inserted);
                 System.out.println("beginner=" + beginner);
                 System.out.println("advanced=" + advanced);
+                System.out.println("published=" + published);
+                System.out.println("pendingAudio=" + pendingAudio);
             } catch (Exception e) {
                 conn.rollback();
                 throw e;
@@ -68,7 +78,7 @@ public class import_business_english_wordbook {
         Class.forName("com.mysql.cj.jdbc.Driver");
         try (Connection conn = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD)) {
             try (PreparedStatement ps = conn.prepareStatement(
-                    "select id, name, status, scene from word_books where id = ?")) {
+                    "select id, name, level, status, scene from word_books where id = ?")) {
                 ps.setLong(1, bookId);
                 try (ResultSet rs = ps.executeQuery()) {
                     if (!rs.next()) {
@@ -76,6 +86,7 @@ public class import_business_english_wordbook {
                     }
                     System.out.println("book.id=" + rs.getLong("id"));
                     System.out.println("book.name=" + ascii(rs.getString("name")));
+                    System.out.println("book.level=" + rs.getString("level"));
                     System.out.println("book.status=" + rs.getString("status"));
                     System.out.println("book.scene=" + ascii(rs.getString("scene")));
                 }
@@ -83,7 +94,9 @@ public class import_business_english_wordbook {
             try (PreparedStatement ps = conn.prepareStatement(
                     "select count(*) total, "
                             + "sum(case when difficulty='BEGINNER' then 1 else 0 end) beginner, "
-                            + "sum(case when difficulty='ADVANCED' then 1 else 0 end) advanced "
+                            + "sum(case when difficulty='ADVANCED' then 1 else 0 end) advanced, "
+                            + "sum(case when status='PUBLISHED' then 1 else 0 end) published, "
+                            + "sum(case when audio_status='PENDING' then 1 else 0 end) pending_audio "
                             + "from words where word_book_id = ? and deleted = false")) {
                 ps.setLong(1, bookId);
                 try (ResultSet rs = ps.executeQuery()) {
@@ -91,6 +104,8 @@ public class import_business_english_wordbook {
                     System.out.println("words.total=" + rs.getLong("total"));
                     System.out.println("words.beginner=" + rs.getLong("beginner"));
                     System.out.println("words.advanced=" + rs.getLong("advanced"));
+                    System.out.println("words.published=" + rs.getLong("published"));
+                    System.out.println("words.pendingAudio=" + rs.getLong("pending_audio"));
                 }
             }
             try (PreparedStatement ps = conn.prepareStatement(
@@ -121,15 +136,17 @@ public class import_business_english_wordbook {
         return baseName + " " + LocalDateTime.now().toString().replace('T', ' ').substring(0, 16);
     }
 
-    private static long insertWordBook(Connection conn, String name, String description, String scene, String status) throws SQLException {
+    private static long insertWordBook(Connection conn, String name, String description, String scene,
+                                       String level, String status) throws SQLException {
         String sql = "insert into word_books "
-                + "(name, description, scene, status, deleted, created_by, created_at, updated_at) "
-                + "values (?, ?, ?, ?, false, null, now(), now())";
+                + "(name, description, scene, level, status, deleted, created_by, created_at, updated_at) "
+                + "values (?, ?, ?, ?, ?, false, null, now(), now())";
         try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, name);
             ps.setString(2, description);
             ps.setString(3, scene);
-            ps.setString(4, isBlank(status) ? "DRAFT" : status);
+            ps.setString(4, isBlank(level) ? "ADVANCED" : level);
+            ps.setString(5, isBlank(status) ? "PUBLISHED" : status);
             ps.executeUpdate();
             try (ResultSet keys = ps.getGeneratedKeys()) {
                 if (!keys.next()) {
@@ -207,6 +224,30 @@ public class import_business_english_wordbook {
             if (difficulty != null) {
                 ps.setString(2, difficulty);
             }
+            try (ResultSet rs = ps.executeQuery()) {
+                rs.next();
+                return rs.getLong(1);
+            }
+        }
+    }
+
+    private static long countWordsByStatus(Connection conn, long bookId, String status) throws SQLException {
+        try (PreparedStatement ps = conn.prepareStatement(
+                "select count(*) from words where word_book_id = ? and status = ? and deleted = false")) {
+            ps.setLong(1, bookId);
+            ps.setString(2, status);
+            try (ResultSet rs = ps.executeQuery()) {
+                rs.next();
+                return rs.getLong(1);
+            }
+        }
+    }
+
+    private static long countWordsByAudioStatus(Connection conn, long bookId, String audioStatus) throws SQLException {
+        try (PreparedStatement ps = conn.prepareStatement(
+                "select count(*) from words where word_book_id = ? and audio_status = ? and deleted = false")) {
+            ps.setLong(1, bookId);
+            ps.setString(2, audioStatus);
             try (ResultSet rs = ps.executeQuery()) {
                 rs.next();
                 return rs.getLong(1);

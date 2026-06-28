@@ -18,6 +18,12 @@ public class MembershipRecord {
     @Column(name = "change_type", nullable = false, length = 30)
     private String changeType;
 
+    @Column(length = 30)
+    private String source;
+
+    @Column(name = "source_id", length = 64)
+    private String sourceId;
+
     private Integer days;
 
     @Column(name = "before_expire_at")
@@ -28,6 +34,12 @@ public class MembershipRecord {
 
     @Column(name = "related_code_id")
     private Long relatedCodeId;
+
+    @Column(name = "before_permanent")
+    private Boolean beforePermanent;
+
+    @Column(name = "after_permanent")
+    private Boolean afterPermanent;
 
     @Column(name = "operator_id")
     private Long operatorId;

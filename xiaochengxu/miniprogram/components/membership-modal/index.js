@@ -50,6 +50,13 @@ Component({
       });
     },
 
+    onBuyMembership: function () {
+      this.triggerEvent('close');
+      wx.navigateTo({
+        url: '/pages/membership/index'
+      });
+    },
+
     onCopyContact: function () {
       if (this.data.contactInfo && this.data.contactInfo.contact) {
         wx.setClipboardData({

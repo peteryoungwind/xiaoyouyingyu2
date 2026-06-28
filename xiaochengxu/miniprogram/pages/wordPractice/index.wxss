@@ -9,7 +9,9 @@
 }
 
 .detail-mode {
-  padding-bottom: 210rpx;
+  padding-bottom: 230rpx;
+  background:
+    linear-gradient(138deg, #DBE8FF 0%, #EEF5FF 36%, #FBFDFF 68%, #EEF3F8 100%);
 }
 
 .loading {
@@ -105,21 +107,54 @@
 }
 
 .word-hero.compact {
-  padding-top: 44rpx;
-  padding-bottom: 44rpx;
+  padding-top: 40rpx;
+  padding-bottom: 42rpx;
+}
+
+.word-main-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 22rpx;
+}
+
+.dictionary-hero .word-main-row {
+  justify-content: space-between;
+  text-align: left;
 }
 
 .word {
   margin-top: 48rpx;
-  font-size: 106rpx;
+  font-size: 86rpx;
   line-height: 1;
-  font-weight: 800;
+  font-weight: 700;
   color: #172033;
   word-break: break-word;
 }
 
 .word-hero.compact .word {
-  margin-top: 34rpx;
+  margin-top: 30rpx;
+  font-size: 86rpx;
+  color: #111318;
+}
+
+.hero-audio {
+  position: relative;
+  width: 76rpx;
+  height: 76rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.72);
+  border: 2rpx solid rgba(47, 111, 237, 0.2);
+  box-shadow: 0 14rpx 34rpx rgba(47, 111, 237, 0.16);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.hero-audio .audio-icon {
+  width: 38rpx;
+  height: 38rpx;
 }
 
 .phonetic-row {
@@ -129,6 +164,11 @@
   justify-content: center;
   gap: 16rpx;
   flex-wrap: wrap;
+}
+
+.dictionary-hero .phonetic-row {
+  justify-content: flex-start;
+  margin-top: 24rpx;
 }
 
 .pron-chip {
@@ -165,32 +205,29 @@
   color: #667085;
 }
 
-.review-chip {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 52rpx;
-  padding: 0 22rpx;
-  border-radius: 999rpx;
-  background: #EAF1FF;
-  color: #1646A5;
-  font-size: 23rpx;
-  font-weight: 850;
+.meaning-lines {
+  display: grid;
+  gap: 14rpx;
+  margin-top: 34rpx;
+  color: #20212A;
+  text-align: left;
 }
 
-.review-chip.fuzzy-chip {
-  color: #9B6812;
-  background: #FFF6DF;
+.meaning-line {
+  font-size: 35rpx;
+  line-height: 1.5;
+  word-break: break-word;
 }
 
-.review-chip.unknown-chip {
-  color: #B7473D;
-  background: #FFF0ED;
+.meaning-mark {
+  padding-bottom: 5rpx;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.26) 48%, transparent 0) left bottom / 12rpx 2rpx repeat-x;
 }
 
-.review-chip.known-chip {
-  color: #13795B;
-  background: #E9F8F1;
+.meaning-en {
+  font-size: 26rpx;
+  line-height: 1.58;
+  color: #667085;
 }
 
 .recall-tip {
@@ -233,6 +270,14 @@
   box-shadow: 0 12rpx 34rpx rgba(28, 43, 74, 0.07);
 }
 
+.dictionary-detail {
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
 .eyebrow {
   color: #667085;
   font-size: 20rpx;
@@ -242,90 +287,57 @@
   text-transform: uppercase;
 }
 
-.definition-block {
-  margin-top: 18rpx;
-  font-size: 34rpx;
-  line-height: 1.55;
-  color: #1D1D1F;
-  word-break: break-word;
-}
-
-.pos {
-  display: inline-flex;
-  margin-right: 14rpx;
-  padding: 6rpx 14rpx;
-  border-radius: 999rpx;
-  background: #EAF1FF;
-  color: #1646A5;
-  font-size: 24rpx;
-  font-weight: 850;
-}
-
-.definition-text {
-  font-weight: 750;
-}
-
-.definition-en {
-  margin-top: 18rpx;
-  font-size: 26rpx;
-  line-height: 1.6;
-  color: #667085;
-}
-
 .example-card,
 .pattern-card {
   margin-top: 22rpx;
   border-radius: 26rpx;
-  background: rgba(246, 248, 251, 0.94);
+  background: rgba(255, 255, 255, 0.58);
+  border: 2rpx solid rgba(255, 255, 255, 0.72);
+  box-shadow: 0 18rpx 44rpx rgba(47, 111, 237, 0.1);
 }
 
 .example-card {
-  padding: 24rpx;
-}
-
-.example-sentence {
-  display: flex;
-  align-items: flex-start;
-  gap: 18rpx;
-  font-size: 30rpx;
-  line-height: 1.45;
-  color: #172033;
-  word-break: break-word;
+  position: relative;
+  padding: 34rpx 88rpx 34rpx 34rpx;
 }
 
 .sentence-audio {
-  width: 58rpx;
-  height: 58rpx;
+  position: absolute;
+  top: 30rpx;
+  right: 30rpx;
+  width: 62rpx;
+  height: 62rpx;
   border-radius: 50%;
-  background: linear-gradient(135deg, #2F6FED, #7464FF);
+  background: rgba(245, 247, 251, 0.76);
+  border: 2rpx solid rgba(47, 111, 237, 0.22);
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
 }
 
 .sentence-audio .audio-icon {
-  width: 28rpx;
-  height: 28rpx;
-  filter: brightness(0) invert(1);
+  width: 34rpx;
+  height: 34rpx;
 }
 
 .example-en {
-  flex: 1;
-  min-width: 0;
+  font-size: 36rpx;
+  line-height: 1.5;
+  color: #20212A;
   font-weight: 800;
+  word-break: break-word;
 }
 
 .example-zh {
-  margin-top: 14rpx;
-  padding-left: 76rpx;
-  font-size: 26rpx;
+  margin-top: 22rpx;
+  padding-left: 0;
+  font-size: 32rpx;
   line-height: 1.55;
-  color: #6E6E73;
+  color: rgba(32, 33, 42, 0.76);
 }
 
 .pattern-card {
-  padding: 24rpx;
+  padding: 30rpx 34rpx;
 }
 
 .pattern-content {

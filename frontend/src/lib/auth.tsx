@@ -8,6 +8,7 @@ interface AuthUser {
   token: string;
   membershipExpireAt?: string;
   membershipActive?: boolean;
+  membershipPermanent?: boolean;
   hasPassword?: boolean;
 }
 
@@ -20,11 +21,12 @@ interface AuthContextType {
   isPremium: boolean;
   membershipExpireAt: string;
   membershipActive: boolean;
+  membershipPermanent: boolean;
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null, login: () => {}, logout: () => {}, refreshMembership: () => {},
-  isAdmin: false, isPremium: false, membershipExpireAt: '', membershipActive: false,
+  isAdmin: false, isPremium: false, membershipExpireAt: '', membershipActive: false, membershipPermanent: false,
 });
 
 const STORAGE_KEYS = {
@@ -33,6 +35,7 @@ const STORAGE_KEYS = {
   role: 'role',
   membershipExpireAt: 'membershipExpireAt',
   membershipActive: 'membershipActive',
+  membershipPermanent: 'membershipPermanent',
   hasPassword: 'hasPassword',
 } as const;
 
@@ -47,6 +50,7 @@ function loadStoredUser(): AuthUser | null {
     role,
     membershipExpireAt: localStorage.getItem(STORAGE_KEYS.membershipExpireAt) || '',
     membershipActive: localStorage.getItem(STORAGE_KEYS.membershipActive) === 'true',
+    membershipPermanent: localStorage.getItem(STORAGE_KEYS.membershipPermanent) === 'true',
     hasPassword: localStorage.getItem(STORAGE_KEYS.hasPassword) === 'true',
   };
 }
@@ -57,6 +61,7 @@ function persistUser(data: AuthUser) {
   localStorage.setItem(STORAGE_KEYS.role, data.role);
   localStorage.setItem(STORAGE_KEYS.membershipExpireAt, data.membershipExpireAt || '');
   localStorage.setItem(STORAGE_KEYS.membershipActive, String(data.membershipActive || false));
+  localStorage.setItem(STORAGE_KEYS.membershipPermanent, String(data.membershipPermanent || false));
   localStorage.setItem(STORAGE_KEYS.hasPassword, String(data.hasPassword || false));
 }
 
@@ -100,7 +105,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const { api } = await import('@/lib/api');
       const data = await api.getMembership();
-      const updated = { ...user, membershipExpireAt: data.membershipExpireAt, membershipActive: data.membershipActive };
+      const updated = { ...user, membershipExpireAt: data.membershipExpireAt, membershipActive: data.membershipActive, membershipPermanent: data.membershipPermanent };
       persistUser(updated);
       setUser(updated);
     } catch {}
@@ -108,6 +113,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const isAdmin = user?.role === 'ADMIN';
   const membershipActive = user?.membershipActive || false;
+  const membershipPermanent = user?.membershipPermanent || false;
   const isPremium = isAdmin || membershipActive;
 
   return (
@@ -116,6 +122,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isAdmin, isPremium,
       membershipExpireAt: user?.membershipExpireAt || '',
       membershipActive,
+      membershipPermanent,
     }}>
       {children}
     </AuthContext.Provider>

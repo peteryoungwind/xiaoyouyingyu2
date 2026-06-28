@@ -1,0 +1,48 @@
+<view class="page-container safe-bottom">
+  <view class="card status-card">
+    <view class="status-title">会员状态</view>
+    <view class="status-value" wx:if="{{membershipPermanent}}">永久会员</view>
+    <view class="status-value" wx:elif="{{membershipActive}}">有效期至 {{membershipExpireAt}}</view>
+    <view class="status-value muted" wx:else>未开通</view>
+  </view>
+
+  <view wx:if="{{loading}}" class="empty-state">
+    <view class="empty-title">加载中...</view>
+  </view>
+
+  <view wx:elif="{{error}}" class="empty-state">
+    <view class="empty-title">加载失败</view>
+    <view class="empty-desc">{{error}}</view>
+    <button class="btn btn-primary btn-block mt-32" bindtap="loadData">重试</button>
+  </view>
+
+  <view wx:elif="{{plans.length === 0}}" class="empty-state">
+    <view class="empty-title">暂无可购买套餐</view>
+    <view class="empty-desc">请稍后再试，或使用卡密兑换。</view>
+  </view>
+
+  <view wx:else class="plans">
+    <view class="plan-card" wx:for="{{plans}}" wx:key="id">
+      <view class="plan-main">
+        <view>
+          <view class="plan-name">{{item.name}}</view>
+          <view class="plan-desc">{{item.description || item.durationText}}</view>
+        </view>
+        <view class="plan-duration">{{item.durationText}}</view>
+      </view>
+      <view class="plan-bottom">
+        <view class="price">
+          <text class="price-unit">¥</text>{{item.priceText}}
+          <text class="origin-price" wx:if="{{item.originalPriceCents > item.effectivePriceCents}}">¥{{item.originalPriceText}}</text>
+        </view>
+        <button class="buy-btn" data-id="{{item.id}}" bindtap="buyPlan" loading="{{payingPlanId === item.id}}">
+          {{payingPlanId === item.id ? '处理中' : '立即开通'}}
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <view class="confirming" wx:if="{{confirmingOrderNo}}">
+    <text>支付确认中...</text>
+  </view>
+</view>

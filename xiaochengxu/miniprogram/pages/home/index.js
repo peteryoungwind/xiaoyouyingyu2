@@ -28,7 +28,8 @@ Page({
     latestTopics: [],
     tagCategories: [],
     loading: true,
-    greetingText: ''
+    greetingText: '',
+    heroCurrent: 0
   },
 
   onLoad() {
@@ -120,6 +121,18 @@ Page({
       return;
     }
     wx.switchTab({ url: '/pages/learning/index' });
+  },
+
+  onHeroSwiperChange(e) {
+    this.setData({ heroCurrent: e.detail.current || 0 });
+  },
+
+  goToTopicSubmit() {
+    if (!app.checkLogin()) {
+      wx.navigateTo({ url: '/pages/login/index' });
+      return;
+    }
+    wx.navigateTo({ url: '/pages/topicSubmit/index' });
   },
 
   goToWordPractice() {

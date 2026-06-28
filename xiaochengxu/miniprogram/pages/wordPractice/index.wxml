@@ -58,9 +58,13 @@
       <view style="width: {{progressPercent}}%;"></view>
     </view>
 
-    <view class="word-hero {{detailVisible ? 'compact' : ''}}">
-      <view class="review-chip {{lastResultClass}}">{{wordChipText}}</view>
-      <view class="word">{{word.word}}</view>
+    <view class="word-hero {{detailVisible ? 'compact dictionary-hero' : ''}}">
+      <view class="word-main-row">
+        <view class="word">{{word.word}}</view>
+        <view wx:if="{{detailVisible && (word.audioUsUrl || word.audioUkUrl)}}" class="hero-audio" bindtap="playAudio" data-url="{{word.audioUsUrl || word.audioUkUrl}}">
+          <image class="audio-icon" src="/images/icons/volume.svg" mode="aspectFit" />
+        </view>
+      </view>
       <view class="phonetic-row" wx:if="{{word.phonetic || word.audioUkUrl || word.audioUsUrl}}">
         <view class="pron-chip" wx:if="{{word.audioUsUrl}}" bindtap="playAudio" data-url="{{word.audioUsUrl}}">
           <text>美音</text>
@@ -72,6 +76,12 @@
         </view>
         <text wx:if="{{word.phonetic}}" class="phonetic">{{word.phonetic}}</text>
       </view>
+      <view wx:if="{{detailVisible && (word.definitionZh || word.definitionEn)}}" class="meaning-lines">
+        <view class="meaning-line" wx:if="{{word.definitionZh}}">
+          <text wx:if="{{word.definitionZh}}" class="meaning-mark">{{word.definitionZh}}</text>
+        </view>
+        <view class="meaning-en" wx:if="{{word.definitionEn}}">{{word.definitionEn}}</view>
+      </view>
       <view wx:if="{{!detailVisible}}" class="recall-tip">先在心里说出中文含义和一个使用场景，再选择记忆状态。</view>
     </view>
 
@@ -81,26 +91,16 @@
       <view class="hint-line tiny"></view>
     </view>
 
-    <view class="inline-detail" wx:if="{{detailVisible}}">
-      <view class="eyebrow">Meaning</view>
-      <view class="definition-block" wx:if="{{word.definitionZh || word.partOfSpeech}}">
-        <text wx:if="{{word.partOfSpeech}}" class="pos">{{word.partOfSpeech}}</text>
-        <text class="definition-text">{{word.definitionZh}}</text>
-      </view>
-      <view class="definition-en" wx:if="{{word.definitionEn}}">{{word.definitionEn}}</view>
-
+    <view class="inline-detail dictionary-detail" wx:if="{{detailVisible}}">
       <view class="example-card" wx:if="{{word.exampleEn || word.exampleZh}}">
-        <view class="example-sentence" wx:if="{{word.exampleEn}}">
-          <view class="sentence-audio" bindtap="playAudio" data-url="{{word.exampleAudioUsUrl || word.exampleAudioUkUrl}}">
-            <image class="audio-icon" src="/images/icons/volume.svg" mode="aspectFit" />
-          </view>
-          <text class="example-en">{{word.exampleEn}}</text>
+        <view wx:if="{{word.exampleAudioUsUrl || word.exampleAudioUkUrl}}" class="sentence-audio" bindtap="playAudio" data-url="{{word.exampleAudioUsUrl || word.exampleAudioUkUrl}}">
+          <image class="audio-icon" src="/images/icons/volume.svg" mode="aspectFit" />
         </view>
+        <view class="example-en" wx:if="{{word.exampleEn}}">{{word.exampleEn}}</view>
         <view class="example-zh" wx:if="{{word.exampleZh}}">{{word.exampleZh}}</view>
       </view>
 
       <view class="pattern-card" wx:if="{{word.commonPatterns || word.sourceScene || word.sourceTopicTitle}}">
-        <view class="eyebrow" wx:if="{{word.commonPatterns}}">Pattern</view>
         <view class="pattern-content" wx:if="{{word.commonPatterns}}">{{word.commonPatterns}}</view>
         <view class="source-line" wx:if="{{word.sourceScene || word.sourceTopicTitle}}">
           来源：{{word.sourceScene || word.sourceTopicTitle}}

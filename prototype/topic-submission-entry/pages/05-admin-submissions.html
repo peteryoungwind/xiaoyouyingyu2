@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>管理员处理台原型</title>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <main class="canvas">
+      <section class="admin-shell" aria-label="PC 管理后台">
+        <aside class="admin-sidebar">
+          <div class="admin-brand">小柚英语 Admin</div>
+          <div class="admin-nav-item">⌂ 仪表盘</div>
+          <div class="admin-nav-item">◎ 主题管理</div>
+          <div class="admin-nav-item active">＋ 用户提交话题</div>
+          <div class="admin-nav-item">◌ 用户管理</div>
+          <div class="admin-nav-item">⚙ 设置</div>
+        </aside>
+
+        <section class="admin-main">
+          <div class="admin-top">
+            <div>
+              <span class="eyebrow">Topic Requests</span>
+              <h1>用户提交话题</h1>
+              <p class="lead">查看小程序用户提交的口语练习需求，并决定是否采纳为正式主题。</p>
+            </div>
+            <button class="primary-btn">批量生成主题</button>
+          </div>
+
+          <div class="admin-stats">
+            <div class="stat-card"><span>待处理</span><strong>12</strong></div>
+            <div class="stat-card"><span>本周采纳</span><strong>5</strong></div>
+            <div class="stat-card"><span>高频分类</span><strong>职场</strong></div>
+          </div>
+
+          <section class="admin-table" aria-label="提交话题列表">
+            <div class="admin-row header">
+              <div>话题</div>
+              <div>用户</div>
+              <div>分类 / 状态</div>
+              <div>提交原因</div>
+              <div>操作</div>
+            </div>
+            <article class="admin-row">
+              <div>
+                <strong>面试时介绍自己的项目经历</strong>
+                <div class="row-meta">2026-06-27 09:12</div>
+              </div>
+              <div>Yuki</div>
+              <div><span class="tag">职场</span> <span class="status pending">待处理</span></div>
+              <div class="row-meta">准备英文面试，想练项目背景、问题和贡献。</div>
+              <div class="admin-actions">
+                <button class="tiny-btn primary">采纳</button>
+                <button class="tiny-btn neutral">查看</button>
+                <button class="tiny-btn neutral">驳回</button>
+              </div>
+            </article>
+            <article class="admin-row">
+              <div>
+                <strong>旅行时处理酒店房间问题</strong>
+                <div class="row-meta">2026-06-21 18:44</div>
+              </div>
+              <div>Leo</div>
+              <div><span class="tag">旅行</span> <span class="status accepted">已采纳</span></div>
+              <div class="row-meta">入住时发现房间不对，想练沟通换房。</div>
+              <div class="admin-actions">
+                <button class="tiny-btn neutral">查看主题</button>
+              </div>
+            </article>
+            <article class="admin-row">
+              <div>
+                <strong>和外国同事闲聊天气之外的话题</strong>
+                <div class="row-meta">2026-06-20 14:25</div>
+              </div>
+              <div>Mia</div>
+              <div><span class="tag">社交</span> <span class="status pending">待处理</span></div>
+              <div class="row-meta">想避免只会说 weather is nice。</div>
+              <div class="admin-actions">
+                <button class="tiny-btn primary">采纳</button>
+                <button class="tiny-btn neutral">查看</button>
+                <button class="tiny-btn neutral">驳回</button>
+              </div>
+            </article>
+          </section>
+        </section>
+      </section>
+
+      <aside class="notes-panel">
+        <h2>设计说明</h2>
+        <ul>
+          <li>后台导航新增“用户提交话题”，待处理数量也可在仪表盘展示。</li>
+          <li>采纳动作建议进入“创建正式主题”流程，预填标题、分类和用户原因。</li>
+          <li>管理员可以备注驳回原因，但小程序端默认只展示简单状态。</li>
+        </ul>
+      </aside>
+    </main>
+  </body>
+</html>

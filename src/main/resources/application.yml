@@ -29,8 +29,26 @@ wechat:
   secret: ce05db971bee9a6b2a87693881bf9b87
 
 app:
+  wechat-pay:
+    enabled: ${WECHAT_PAY_ENABLED:false}
+    mock-enabled: ${WECHAT_PAY_MOCK_ENABLED:false}
+    app-id: ${WECHAT_PAY_APP_ID:}
+    mch-id: ${WECHAT_PAY_MCH_ID:}
+    api-v3-key: ${WECHAT_PAY_API_V3_KEY:}
+    merchant-serial-no: ${WECHAT_PAY_MERCHANT_SERIAL_NO:}
+    merchant-private-key-path: ${WECHAT_PAY_MERCHANT_PRIVATE_KEY_PATH:}
+    platform-certificate-path: ${WECHAT_PAY_PLATFORM_CERTIFICATE_PATH:}
+    notify-url: ${WECHAT_PAY_NOTIFY_URL:}
+    order-expire-minutes: ${WECHAT_PAY_ORDER_EXPIRE_MINUTES:15}
   upload:
     dir: uploads
+  word-audio:
+    public-source:
+      enabled: true
+      initial-delay-ms: 30000
+      delay-ms: 5000
+      wiktionary-backoff-ms: 600000
+      user-agent: xiaoyouyingyu-public-dictionary-audio/1.0
   jwt:
     secret: n7Qv2Kp9Xc4mL8tR1yF6uD3sW0zH5jNqB2eG9aV4rT7kM1pC
     expiration-ms: 2592000000

@@ -13,6 +13,7 @@ Page({
     role: '',
     roleLabel: '',
     membershipActive: false,
+    membershipPermanent: false,
     membershipExpireAt: '',
     remainingDays: 0,
     membershipStatus: '', // active | expired | none
@@ -66,13 +67,14 @@ Page({
       const membership = util.resolveMembershipResponse(res);
       const active = membership.active;
       const expireAt = membership.formattedExpireAt;
+      const permanent = !!res.membershipPermanent;
       const remaining = membership.remainingDays;
 
       let status = 'none';
       let statusLabel = '未开通';
       if (active) {
         status = 'active';
-        statusLabel = '会员中';
+        statusLabel = permanent ? '永久会员' : '会员中';
       } else if (expireAt) {
         status = 'expired';
         statusLabel = '已过期';
@@ -80,6 +82,7 @@ Page({
 
       this.setData({
         membershipActive: active,
+        membershipPermanent: permanent,
         membershipExpireAt: expireAt,
         remainingDays: remaining,
         membershipStatus: status,
@@ -87,12 +90,14 @@ Page({
       });
 
       app.globalData.membershipActive = active;
+      app.globalData.membershipPermanent = permanent;
       app.globalData.membershipExpireAt = membership.expireAt;
       if (app.globalData.token && app.globalData.userInfo) {
         app.setLogin(app.globalData.token, {
           username: app.globalData.userInfo.username,
           role: app.globalData.role || app.globalData.userInfo.role || 'USER',
           membershipActive: active,
+          membershipPermanent: permanent,
           membershipExpireAt: membership.expireAt,
           hasPassword: app.globalData.hasPassword
         });
@@ -119,6 +124,10 @@ Page({
 
   goToRedeem() {
     wx.navigateTo({ url: '/pages/redeem/index' });
+  },
+
+  goToMembership() {
+    wx.navigateTo({ url: '/pages/membership/index' });
   },
 
   goToCalendar() {

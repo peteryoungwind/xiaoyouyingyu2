@@ -35,7 +35,7 @@
       <view wx:if="{{membershipActive}}" class="membership-detail mt-16">
         <view class="membership-expire">
           <text class="detail-label">到期时间</text>
-          <text class="detail-value">{{membershipExpireAt}}</text>
+          <text class="detail-value">{{membershipPermanent ? '永久会员' : membershipExpireAt}}</text>
         </view>
         <view class="membership-remain" wx:if="{{remainingDays > 0}}">
           <text class="detail-label">剩余天数</text>
@@ -49,6 +49,10 @@
           <text class="detail-value expired-text">{{membershipExpireAt}}</text>
         </view>
       </view>
+
+      <button class="btn btn-primary btn-block mt-16" bindtap="goToMembership">
+        {{membershipActive ? '续费会员' : '开通会员'}}
+      </button>
     </view>
 
     <!-- Function entries -->
@@ -62,6 +66,12 @@
       <view class="menu-item" bindtap="goToRedeem">
         <view class="menu-icon">🎫</view>
         <view class="menu-text">卡密兑换</view>
+        <view class="menu-arrow">›</view>
+      </view>
+
+      <view class="menu-item" bindtap="goToMembership">
+        <view class="menu-icon">💎</view>
+        <view class="menu-text">会员套餐</view>
         <view class="menu-arrow">›</view>
       </view>
 

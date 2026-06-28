@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>主题列表入口原型</title>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <main class="canvas">
+      <section class="phone" aria-label="小程序主题列表">
+        <div class="phone-status"><span>9:41</span><span>5G 100%</span></div>
+        <div class="mini-nav">主题</div>
+        <div class="phone-page">
+          <section class="topics-hero">
+            <h1>主题</h1>
+            <p class="lead">搜索、筛选、按日期浏览全部练习主题</p>
+            <div class="search-box">⌕ 搜索主题关键词</div>
+            <div class="tag-line">
+              <span class="tag" style="background: #1f7ae0; color: #fff">全部</span>
+              <span class="tag">travel</span>
+              <span class="tag">work</span>
+              <span class="tag">daily</span>
+              <span class="tag">culture</span>
+            </div>
+            <div class="inline-submit-banner">
+              <div>
+                <strong>没有找到想练的话题？</strong>
+                <span>告诉我们你想聊什么，我们会优先整理高频需求。</span>
+              </div>
+              <button class="secondary-btn">提交</button>
+            </div>
+          </section>
+
+          <section class="section">
+            <article class="topic-row">
+              <div>
+                <strong>Work-Life Balance</strong>
+                <span>工作和生活平衡 · 2026-06-25</span>
+                <div class="tag-line"><span class="tag">work</span><span class="tag">life</span></div>
+              </div>
+              <button class="secondary-btn">详情</button>
+            </article>
+            <article class="topic-row">
+              <div>
+                <strong>Ordering Coffee</strong>
+                <span>点咖啡 · 2026-06-23</span>
+                <div class="tag-line"><span class="tag">daily</span><span class="tag">food</span></div>
+              </div>
+              <button class="secondary-btn">详情</button>
+            </article>
+            <article class="topic-row">
+              <div>
+                <strong>Talking About Movies</strong>
+                <span>聊电影 · 2026-06-20</span>
+                <div class="tag-line"><span class="tag">hobby</span></div>
+              </div>
+              <button class="secondary-btn">详情</button>
+            </article>
+          </section>
+        </div>
+        <nav class="tabbar" aria-label="底部导航">
+          <div class="tab">⌂<span>首页</span></div>
+          <div class="tab active">◎<span>主题</span></div>
+          <div class="tab">▣<span>学习</span></div>
+          <div class="tab">◌<span>我的</span></div>
+        </nav>
+      </section>
+
+      <aside class="notes-panel">
+        <h2>设计说明</h2>
+        <ul>
+          <li>主题页入口更贴近“搜索后没找到”的场景，点击意图会更强。</li>
+          <li>横幅不替代首页主入口，只作为辅助入口。</li>
+          <li>如果搜索结果为空，可把这条横幅升级成空状态主按钮。</li>
+        </ul>
+      </aside>
+    </main>
+  </body>
+</html>

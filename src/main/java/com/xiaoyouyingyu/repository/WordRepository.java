@@ -36,6 +36,12 @@ public interface WordRepository extends JpaRepository<Word, Long> {
     List<Word> findByIdInAndDeletedFalse(Collection<Long> ids);
     List<Word> findByIdInAndDeletedFalseOrderByIdAsc(Collection<Long> ids);
 
+    @Query("SELECT w FROM Word w JOIN w.wordBook b WHERE w.deleted = false AND b.deleted = false " +
+            "AND (w.audioUsUrl IS NULL OR w.audioUsUrl = '' OR w.audioUkUrl IS NULL OR w.audioUkUrl = '') " +
+            "AND (w.audioError IS NULL OR w.audioError NOT IN ('PUBLIC_DICTIONARY_AUDIO_PARTIAL', 'PUBLIC_DICTIONARY_AUDIO_MISSING')) " +
+            "ORDER BY w.wordBook.id ASC, w.sortOrder ASC, w.id ASC")
+    List<Word> findMissingPublicAudio(Pageable pageable);
+
     @Query("SELECT w FROM Word w WHERE w.wordBook.id = :bookId AND w.deleted = false AND w.status = :status " +
             "AND w.difficulty = :difficulty AND w.id NOT IN :excludedIds ORDER BY w.sortOrder ASC, w.id ASC")
     List<Word> findNewPracticeWords(@Param("bookId") Long bookId,

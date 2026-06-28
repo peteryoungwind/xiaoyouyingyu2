@@ -16,9 +16,6 @@ Page({
     progressPercent: 0,
     wordTypeLabel: '准备练习',
     answerLabel: '',
-    answerChip: '',
-    wordChipText: '准备练习',
-    lastResultClass: '',
     reviewSummary: '初级 · 待复习 0 · 掌握 0',
     sessionStats: {
       total: 0,
@@ -77,9 +74,6 @@ Page({
         progressPercent: total > 0 ? Math.min(100, Math.round((learned / total) * 100)) : 0,
         wordTypeLabel: hasWord && words[0].progress ? '到期复习' : '新词练习',
         answerLabel: '',
-        answerChip: '',
-        wordChipText: hasWord && words[0].progress ? '到期复习' : '新词练习',
-        lastResultClass: '',
         headerSubtitle: this.data.difficultyLabel + ' · 第 ' + ((hasWord ? nextIndex : this.data.stepIndex) + '/' + stepTotal) + ' 个',
         reviewSummary: this.data.difficultyLabel + ' · 待复习 ' + (progress.dueReview || 0) + ' · 掌握 ' + (progress.mastered || 0)
       });
@@ -105,9 +99,6 @@ Page({
           detailVisible: true,
           sessionStats: nextStats,
           answerLabel: answerMeta.label,
-          answerChip: answerMeta.chip,
-          wordChipText: answerMeta.chip,
-          lastResultClass: answerMeta.className,
           headerSubtitle: answerMeta.label,
           progressPercent: this.progressPercentFrom(res.bookProgress || this.data.progress),
           reviewSummary: this.data.difficultyLabel + ' · 待复习 ' + ((res.bookProgress || this.data.progress || {}).dueReview || 0) + ' · 掌握 ' + ((res.bookProgress || this.data.progress || {}).mastered || 0)
@@ -162,12 +153,12 @@ Page({
 
   answerMeta(result) {
     if (result === 'FUZZY') {
-      return { label: '你选择了“模糊”', chip: '需要再看一眼', className: 'fuzzy-chip' };
+      return { label: '你选择了“模糊”' };
     }
     if (result === 'UNKNOWN') {
-      return { label: '你选择了“不认识”', chip: '重点记忆', className: 'unknown-chip' };
+      return { label: '你选择了“不认识”' };
     }
-    return { label: '你选择了“认识”', chip: '答对了', className: 'known-chip' };
+    return { label: '你选择了“认识”' };
   },
 
   progressPercentFrom(progress) {

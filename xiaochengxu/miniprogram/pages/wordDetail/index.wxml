@@ -6,11 +6,18 @@
       <view class="book-meta">
         <view class="page-title">单词详情</view>
       </view>
-      <view class="round-icon" bindtap="playAudio" data-url="{{word.audioUsUrl || word.audioUkUrl}}">▶</view>
+      <view class="round-icon sound-round" bindtap="playAudio" data-url="{{word.audioUsUrl || word.audioUkUrl}}">
+        <image class="audio-icon" src="/images/icons/volume.svg" mode="aspectFit" />
+      </view>
     </view>
 
-    <view class="word-hero">
-      <view class="word-title">{{word.word}}</view>
+    <view class="word-hero dictionary-hero">
+      <view class="word-main-row">
+        <view class="word-title">{{word.word}}</view>
+        <view wx:if="{{word.audioUsUrl || word.audioUkUrl}}" class="hero-audio" bindtap="playAudio" data-url="{{word.audioUsUrl || word.audioUkUrl}}">
+          <image class="audio-icon" src="/images/icons/volume.svg" mode="aspectFit" />
+        </view>
+      </view>
       <view class="phonetic-row" wx:if="{{word.phonetic || word.audioUkUrl || word.audioUsUrl}}">
         <view class="pron-chip" wx:if="{{word.audioUsUrl}}" bindtap="playAudio" data-url="{{word.audioUsUrl}}">
           <text>美</text>
@@ -22,24 +29,21 @@
         </view>
         <text wx:if="{{word.phonetic}}" class="phonetic">{{word.phonetic}}</text>
       </view>
-    </view>
 
-    <view class="detail-card" wx:if="{{word.definitionZh || word.partOfSpeech || word.definitionEn}}">
-      <view class="definition-block" wx:if="{{word.definitionZh || word.partOfSpeech}}">
-        <text wx:if="{{word.partOfSpeech}}" class="pos">{{word.partOfSpeech}}</text>
-        <text class="definition-text">{{word.definitionZh}}</text>
+      <view wx:if="{{word.definitionZh || word.definitionEn}}" class="meaning-lines">
+        <view class="meaning-line" wx:if="{{word.definitionZh}}">
+          <text wx:if="{{word.definitionZh}}" class="meaning-mark">{{word.definitionZh}}</text>
+        </view>
+        <view class="meaning-en" wx:if="{{word.definitionEn}}">{{word.definitionEn}}</view>
       </view>
-      <view class="definition-en" wx:if="{{word.definitionEn}}">{{word.definitionEn}}</view>
     </view>
 
     <view class="detail-card" wx:if="{{word.exampleEn || word.exampleZh}}">
       <view class="example-card">
-        <view class="example-sentence" wx:if="{{word.exampleEn}}">
-          <view class="sentence-audio" bindtap="playAudio" data-url="{{word.exampleAudioUsUrl || word.exampleAudioUkUrl}}">
-            <image class="audio-icon" src="/images/icons/volume.svg" mode="aspectFit" />
-          </view>
-          <text class="example-en">{{word.exampleEn}}</text>
+        <view wx:if="{{word.exampleAudioUsUrl || word.exampleAudioUkUrl}}" class="sentence-audio" bindtap="playAudio" data-url="{{word.exampleAudioUsUrl || word.exampleAudioUkUrl}}">
+          <image class="audio-icon" src="/images/icons/volume.svg" mode="aspectFit" />
         </view>
+        <view class="example-en" wx:if="{{word.exampleEn}}">{{word.exampleEn}}</view>
         <view class="example-zh" wx:if="{{word.exampleZh}}">{{word.exampleZh}}</view>
       </view>
     </view>

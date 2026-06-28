@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `topics` (
   `creator_id` BIGINT,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   INDEX `idx_event_date` (`event_date`),
-  FULLTEXT INDEX `idx_search` (`title`, `title_zh`)_search` (`title`)
+  FULLTEXT INDEX `idx_search` (`title`, `title_zh`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `ai_dialog_config` (
@@ -50,6 +50,21 @@ CREATE TABLE IF NOT EXISTS `ai_dialog_usage` (
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   UNIQUE KEY `uk_ai_dialog_usage_user_date` (`user_id`, `usage_date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `topic_submissions` (
+  `id` BIGINT PRIMARY KEY AUTO_INCREMENT,
+  `user_id` BIGINT NOT NULL COMMENT '提交用户ID',
+  `username` VARCHAR(50) NOT NULL COMMENT '提交时用户名快照',
+  `title` VARCHAR(100) NOT NULL COMMENT '用户想练的话题',
+  `reason` VARCHAR(500) COMMENT '想练原因',
+  `category` VARCHAR(50) COMMENT '分类',
+  `extra_info` VARCHAR(500) COMMENT '补充说明',
+  `status` VARCHAR(20) NOT NULL DEFAULT 'PENDING' COMMENT 'PENDING/ACCEPTED/REJECTED',
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX `idx_topic_submission_status_created_at` (`status`, `created_at`),
+  INDEX `idx_topic_submission_user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Default admin user (password: admin123)

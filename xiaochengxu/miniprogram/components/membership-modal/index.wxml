@@ -31,6 +31,7 @@
 
     <!-- Footer -->
     <view class="modal-footer">
+      <button class="btn btn-primary btn-block" bindtap="onBuyMembership">购买会员套餐</button>
       <button class="btn btn-gold btn-block" bindtap="onRedeem">兑换卡密</button>
       <button class="btn btn-secondary btn-block mt-16" bindtap="onClose">关闭</button>
     </view>

@@ -34,7 +34,7 @@ Authorization: Bearer <token>
 | --- | --- |
 | 公开 | 不需要 token |
 | 登录用户 | 需要有效 JWT |
-| 会员 | 管理员、`PREMIUM_USER`，或会员未过期用户 |
+| 会员 | 管理员、永久会员，或会员有效期未过期用户 |
 | 管理员 | `ADMIN` |
 
 ## 认证接口
@@ -73,6 +73,7 @@ Authorization: Bearer <token>
   "role": "USER",
   "membershipExpireAt": "2026-05-28T10:00:00",
   "membershipActive": true,
+  "membershipPermanent": false,
   "hasPassword": true
 }
 ```
@@ -115,6 +116,79 @@ Authorization: Bearer <token>
 }
 ```
 
+## 用户提交话题接口
+
+### 小程序用户提交
+
+路径前缀：`/api/topic-submissions`
+
+| 方法 | 路径 | 权限 | 说明 |
+| --- | --- | --- | --- |
+| POST | `` | 登录用户 | 提交自己感兴趣的口语练习话题 |
+
+请求：
+
+```json
+{
+  "title": "面试时介绍自己的项目经历",
+  "reason": "最近准备英文面试，想练习怎么自然地讲项目背景、遇到的问题和自己的贡献。",
+  "category": "职场",
+  "extraInfo": "希望有初级和进阶两个版本。"
+}
+```
+
+响应：
+
+```json
+{
+  "id": 1,
+  "title": "面试时介绍自己的项目经历",
+  "status": "PENDING",
+  "createdAt": "2026-06-27T10:00:00"
+}
+```
+
+规则：
+
+- `title` 必填，trim 后长度需为 2-100。
+- `reason` 和 `extraInfo` 最多 500 个字符。
+- 新提交默认状态为 `PENDING`。
+- V1 不限制提交频率，不提供用户侧提交记录。
+
+### 管理员处理用户提交
+
+路径前缀：`/api/admin/topic-submissions`
+
+| 方法 | 路径 | 权限 | 说明 |
+| --- | --- | --- | --- |
+| GET | `` | 管理员 | 分页查询提交列表 |
+| GET | `/{id}` | 管理员 | 查询提交详情 |
+| PUT | `/{id}/status` | 管理员 | 更新提交状态 |
+
+列表参数：
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `page` | number | 页码，从 0 开始，默认 0 |
+| `size` | number | 每页数量，默认 20，最大 100 |
+| `status` | string | 可选：`PENDING`、`ACCEPTED`、`REJECTED` |
+| `keyword` | string | 可选，匹配标题、想练原因、补充说明 |
+
+状态更新请求：
+
+```json
+{
+  "status": "ACCEPTED"
+}
+```
+
+允许更新为：
+
+- `ACCEPTED`：已采纳
+- `REJECTED`：未采纳
+
+V1 中管理员采纳只更新提交状态，不自动创建正式 `topics` 记录。
+
 ## 学习接口
 
 路径前缀：`/api/learning`
@@ -127,6 +201,109 @@ Authorization: Bearer <token>
 | POST | `/expressions` | 会员 | 生成表达模板 |
 | POST | `/tasks` | 会员 | 生成练习任务 |
 | POST | `/review` | 会员 | 点评用户回答 |
+
+会员权限说明：`PREMIUM_USER` 角色不再单独代表有效会员；后端动态判断 `ADMIN`、`membershipPermanent=true` 或 `membershipExpireAt > now()`。
+
+## 会员与支付接口
+
+路径前缀：`/api/membership`
+
+| 方法 | 路径 | 权限 | 说明 |
+| --- | --- | --- | --- |
+| GET | `/status` | 登录用户 | 当前用户会员状态 |
+| GET | `/plans` | 登录用户 | 小程序获取上架会员套餐 |
+| POST | `/orders` | 登录用户 | 创建会员支付订单 |
+| GET | `/orders/{orderNo}` | 登录用户且本人订单 | 查询订单状态 |
+
+### 会员状态响应
+
+```json
+{
+  "role": "USER",
+  "membershipActive": true,
+  "membershipExpireAt": "2026-07-27T12:00:00",
+  "membershipPermanent": false,
+  "remainingDays": 29,
+  "membershipSource": "WECHAT_PAY",
+  "isAdmin": false
+}
+```
+
+### 套餐响应项
+
+```json
+{
+  "id": 1,
+  "name": "月度会员",
+  "description": "30 天高级功能",
+  "originalPriceCents": 1990,
+  "salePriceCents": 990,
+  "effectivePriceCents": 990,
+  "durationDays": 30,
+  "permanent": false,
+  "discountActive": true,
+  "status": "ACTIVE",
+  "sortOrder": 10
+}
+```
+
+### 创建订单请求与响应
+
+```json
+{
+  "planId": 1
+}
+```
+
+```json
+{
+  "orderNo": "M202606271230001234",
+  "expiresAt": "2026-06-27T12:45:00",
+  "paymentParams": {
+    "timeStamp": "1782544200",
+    "nonceStr": "random",
+    "package": "prepay_id=...",
+    "signType": "RSA",
+    "paySign": "..."
+  }
+}
+```
+
+订单 15 分钟未支付会自动关闭。
+
+### 微信支付回调
+
+| 方法 | 路径 | 权限 | 说明 |
+| --- | --- | --- | --- |
+| POST | `/api/payment/wechat/notify` | 微信支付签名校验 | 微信支付结果通知 |
+
+本接口不要求 JWT。mock 模式下可解析模拟通知；真实支付模式由 `WechatPayService` 使用微信支付平台证书验签，并使用 API v3 密钥解密回调资源。
+
+## 管理端会员接口
+
+路径前缀：`/api/admin/membership`
+
+| 方法 | 路径 | 权限 | 说明 |
+| --- | --- | --- | --- |
+| GET | `/plans` | 管理员 | 套餐列表 |
+| POST | `/plans` | 管理员 | 新增套餐 |
+| PUT | `/plans/{id}` | 管理员 | 更新套餐 |
+| PUT | `/plans/{id}/status` | 管理员 | 上架或下架套餐 |
+| GET | `/orders` | 管理员 | 订单列表 |
+| GET | `/orders/{id}` | 管理员 | 订单详情 |
+| POST | `/users/{id}/grant` | 管理员 | 手动延长、设置到期时间或设置永久会员 |
+
+手动开通请求：
+
+```json
+{
+  "operation": "EXTEND_DAYS",
+  "days": 30,
+  "reason": "客服补偿"
+}
+```
+
+`operation` 可选：`EXTEND_DAYS`、`SET_EXPIRE_AT`、`PERMANENT`。
 
 ### 学习生成请求
 
@@ -764,6 +941,101 @@ Authorization: Bearer <token>
 AI 对话回复音频会复用 `tts_models` 中的可用模型，生成到 `/uploads/ai-dialog/`。该音频为即时播放辅助，不保存会话内容。
 
 AI 创建单词本走后台任务：接口先创建单词本和 `word_generation_tasks` 记录，再异步执行“生成单词、保存单词、生成音频”。前端刷新页面不影响任务执行，可通过任务查询接口展示阶段、百分比、已保存单词数和音频生成进度。
+
+除本地 TTS 外，后端还提供公共词典发音 URL 后台补全任务。该任务按 `app.word-audio.public-source.*` 配置慢速执行，扫描缺少 `audio_us_url` 或 `audio_uk_url` 的单词，从 Free Dictionary API、Wiktionary 和 Wikimedia Commons 补充可播放的公开媒体 URL。任务只补空字段，不覆盖已有 `/uploads/word-audio/...` 本地音频；英美音只在来源明确标注口音时写入。只补到一侧发音时，`audio_error` 会标记为 `PUBLIC_DICTIONARY_AUDIO_PARTIAL`；公共来源没有可用音频时标记为 `PUBLIC_DICTIONARY_AUDIO_MISSING`；两侧都补齐时，`audio_status` 可置为 `READY`。后台任务会跳过 `PUBLIC_DICTIONARY_AUDIO_PARTIAL` 和 `PUBLIC_DICTIONARY_AUDIO_MISSING`，如需重新尝试可清空对应单词的 `audio_error`。
+
+公共来源的音频许可需要在产品侧注明来源和许可。当前 `words` 表只存播放 URL，批量脚本 `scripts/backfill_public_dictionary_word_audio.java` 会额外生成 `logs/public-dictionary-word-audio-backfill.tsv` 作为来源/许可审计记录；若前端需要逐条展示署名，应扩展数据模型保存 Commons 文件页、作者和 license 信息。
+
+### 已导入单词本记录
+
+#### 商务英语
+
+- 导入日期：2026-06-27
+- 数据库单词本 ID：`6`
+- 单词本等级：`ADVANCED`
+- 单词本状态：`PUBLISHED`
+- 词条规模：1000 个单个英文单词，全部为 `ADVANCED`
+- 词条状态：全部为 `PUBLISHED`
+- 音频状态：全部为 `PENDING`，本次未生成音频，后续可用批量音频回填脚本补齐
+- 源数据：`doc/generated/business-english-wordbook.json`
+- 封面资产：`doc/generated/business-english-cover.svg`、`doc/generated/business-english-cover.png`
+- 导入记录：`doc/generated/business-english-wordbook-import-record.md`
+
+#### 职场英语
+
+- 导入日期：2026-06-27
+- 数据库单词本 ID：`7`
+- 单词本等级：`BEGINNER`
+- 单词本状态：`PUBLISHED`
+- 词条规模：1000 个单个英文单词，全部为 `BEGINNER`
+- 词条状态：全部为 `PUBLISHED`
+- 音频状态：全部为 `PENDING`，本次未生成音频，后续可用批量音频回填脚本补齐
+- 中文释义：只保留词义，不包含“初级”“职场英语”等等级或来源标签
+- 源数据：`doc/generated/workplace-english-wordbook.json`
+- 封面资产：`doc/generated/workplace-english-cover.svg`、`doc/generated/workplace-english-cover.png`
+- 导入记录：`doc/generated/workplace-english-wordbook-import-record.md`
+
+#### 日常生活
+
+- 导入日期：2026-06-27
+- 数据库单词本 ID：`8`
+- 单词本等级：`BEGINNER`
+- 单词本状态：`PUBLISHED`
+- 词条规模：1000 个单个英文单词，全部为 `BEGINNER`
+- 词条状态：全部为 `PUBLISHED`
+- 音频状态：全部为 `PENDING`，本次未生成音频，后续可用批量音频回填脚本补齐
+- 中文释义：只保留词义，不包含“初级”“日常生活”等等级或来源标签
+- 源数据：`doc/generated/daily-life-wordbook.json`
+- 封面资产：`doc/generated/daily-life-cover.svg`、`doc/generated/daily-life-cover.png`
+- 导入记录：`doc/generated/daily-life-wordbook-import-record.md`
+
+#### 雅思托福
+
+- 导入日期：2026-06-27
+- 数据库单词本 ID：`9`
+- 单词本等级：`ADVANCED`
+- 单词本状态：`PUBLISHED`
+- 词条规模：1000 个单个英文单词，全部为 `ADVANCED`
+- 词条状态：全部为 `PUBLISHED`
+- 音频状态：全部为 `PENDING`，本次未生成音频，后续可用批量音频回填脚本补齐
+- 中文释义：只保留词义，不包含“进阶”“雅思托福”等等级或来源标签
+- 源数据：`doc/generated/ielts-toefl-wordbook.json`
+- 封面资产：`doc/generated/ielts-toefl-cover.svg`、`doc/generated/ielts-toefl-cover.png`
+- 导入记录：`doc/generated/ielts-toefl-wordbook-import-record.md`
+
+#### 小柚口语进阶
+
+- 导入日期：2026-06-27
+- 数据库单词本 ID：`10`
+- 单词本等级：`ADVANCED`
+- 单词本状态：`PUBLISHED`
+- 词条规模：1000 个不重复的单个英文单词，全部为 `ADVANCED`
+- 主题覆盖：基于当前导出的 263 个口语主题，每个主题分配 3 到 4 个词条，同一主题词条连续排列
+- 主题关联：`word_book_topics` 写入 263 条，`word_topics` 写入 1000 条
+- 词条状态：全部为 `PUBLISHED`
+- 音频状态：全部为 `PENDING`，本次未生成音频，后续可用批量音频回填脚本补齐
+- 中文释义：只保留词义，不包含“小柚口语进阶”“进阶”等等级或来源标签
+- 源数据：`doc/generated/xiaoyou-speaking-advanced-wordbook.json`
+- 主题快照：`doc/generated/xiaoyou-topic-snapshot.json`
+- 封面资产：`doc/generated/xiaoyou-speaking-advanced-cover.svg`、`doc/generated/xiaoyou-speaking-advanced-cover.png`
+- 导入记录：`doc/generated/xiaoyou-speaking-advanced-wordbook-import-record.md`
+
+#### 小柚口语初级
+
+- 导入日期：2026-06-27
+- 数据库单词本 ID：`11`
+- 单词本等级：`BEGINNER`
+- 单词本状态：`PUBLISHED`
+- 词条规模：1000 个不重复的单个英文单词，全部为 `BEGINNER`
+- 主题覆盖：基于当前导出的 263 个口语主题，每个主题分配 3 到 4 个词条，同一主题词条连续排列
+- 主题关联：`word_book_topics` 写入 263 条，`word_topics` 写入 1000 条
+- 词条状态：全部为 `PUBLISHED`
+- 音频状态：全部为 `PENDING`，本次未生成音频，后续可用批量音频回填脚本补齐
+- 中文释义：只保留词义，不包含“小柚口语初级”“初级”等等级或来源标签
+- 源数据：`doc/generated/xiaoyou-speaking-beginner-wordbook.json`
+- 主题快照：`doc/generated/xiaoyou-topic-snapshot.json`
+- 封面资产：`doc/generated/xiaoyou-speaking-beginner-cover.svg`、`doc/generated/xiaoyou-speaking-beginner-cover.png`
+- 导入记录：`doc/generated/xiaoyou-speaking-beginner-wordbook-import-record.md`
 
 ## 会员接口
 

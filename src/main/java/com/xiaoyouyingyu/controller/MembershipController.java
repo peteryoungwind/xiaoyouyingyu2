@@ -1,15 +1,17 @@
 package com.xiaoyouyingyu.controller;
 
+import com.xiaoyouyingyu.dto.membership.CreateMembershipOrderRequest;
+import com.xiaoyouyingyu.dto.membership.MembershipStatusResponse;
 import com.xiaoyouyingyu.entity.User;
 import com.xiaoyouyingyu.repository.UserRepository;
+import com.xiaoyouyingyu.service.MembershipOrderService;
+import com.xiaoyouyingyu.service.MembershipPlanService;
 import com.xiaoyouyingyu.service.MembershipService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Map;
 
 @RestController
@@ -18,27 +20,45 @@ import java.util.Map;
 public class MembershipController {
     private final UserRepository userRepository;
     private final MembershipService membershipService;
+    private final MembershipPlanService membershipPlanService;
+    private final MembershipOrderService membershipOrderService;
 
     @GetMapping("/user/membership")
     public ResponseEntity<?> getMembership(Authentication auth) {
         return userRepository.findByUsername((String) auth.getPrincipal())
-                .map(user -> {
-                    boolean isAdmin = user.getRole() == User.Role.ADMIN;
-                    boolean active = user.isMembershipActive();
-                    long remainingDays = 0;
-                    if (user.getMembershipExpireAt() != null && user.getMembershipExpireAt().isAfter(LocalDateTime.now())) {
-                        remainingDays = ChronoUnit.DAYS.between(LocalDateTime.now(), user.getMembershipExpireAt());
-                    }
-                    return ResponseEntity.ok(Map.of(
-                            "role", user.getRole().name(),
-                            "membershipActive", active,
-                            "membershipExpireAt", user.getMembershipExpireAt() != null ? user.getMembershipExpireAt().toString() : "",
-                            "remainingDays", remainingDays,
-                            "membershipSource", user.getMembershipSource() != null ? user.getMembershipSource() : "",
-                            "isAdmin", isAdmin
-                    ));
-                })
+                .map(user -> ResponseEntity.ok(MembershipStatusResponse.from(user)))
                 .orElse(ResponseEntity.badRequest().body(null));
+    }
+
+    @GetMapping("/membership/status")
+    public ResponseEntity<?> getMembershipStatus(Authentication auth) {
+        return getMembership(auth);
+    }
+
+    @GetMapping("/membership/plans")
+    public ResponseEntity<?> getMembershipPlans() {
+        return ResponseEntity.ok(membershipPlanService.listActivePlans());
+    }
+
+    @PostMapping("/membership/orders")
+    public ResponseEntity<?> createMembershipOrder(@RequestBody CreateMembershipOrderRequest request, Authentication auth) {
+        if (request.getPlanId() == null) {
+            return ResponseEntity.badRequest().body(Map.of("error", "请选择会员套餐"));
+        }
+        try {
+            return ResponseEntity.ok(membershipOrderService.createOrder((String) auth.getPrincipal(), request.getPlanId()));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @GetMapping("/membership/orders/{orderNo}")
+    public ResponseEntity<?> getMembershipOrder(@PathVariable String orderNo, Authentication auth) {
+        try {
+            return ResponseEntity.ok(membershipOrderService.getUserOrder((String) auth.getPrincipal(), orderNo));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
     }
 
     @GetMapping("/user/membership-contact")

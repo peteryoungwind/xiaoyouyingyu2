@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/lib/auth';
-import { LayoutDashboard, BookOpen, CalendarDays, Users, Settings, ShieldCheck, GraduationCap, Ticket, Library, BookOpenText } from 'lucide-react';
+import { LayoutDashboard, BookOpen, CalendarDays, Users, Settings, ShieldCheck, GraduationCap, Ticket, Library, BookOpenText, CreditCard, ReceiptText, Inbox } from 'lucide-react';
 
 const navItems = [
   { href: '/', label: '主页', icon: LayoutDashboard },
@@ -10,8 +10,11 @@ const navItems = [
   { href: '/calendar', label: '日历', icon: CalendarDays },
   { href: '/learning-center', label: '学习中心', icon: GraduationCap },
   { href: '/admin', label: '管理后台', icon: ShieldCheck, adminOnly: true },
+  { href: '/admin/topic-submissions', label: '话题提交', icon: Inbox, adminOnly: true },
   { href: '/admin/word-books', label: '单词训练', icon: Library, adminOnly: true },
   { href: '/admin/daily-articles', label: '外刊管理', icon: BookOpenText, adminOnly: true },
+  { href: '/admin/membership-plans', label: '会员套餐', icon: CreditCard, adminOnly: true },
+  { href: '/admin/membership-orders', label: '会员订单', icon: ReceiptText, adminOnly: true },
   { href: '/users', label: '用户管理', icon: Users, adminOnly: true },
   { href: '/redeem-codes', label: '卡密管理', icon: Ticket, adminOnly: true },
 ];

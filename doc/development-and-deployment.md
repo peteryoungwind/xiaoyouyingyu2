@@ -94,6 +94,17 @@ wechat:
   secret: ${WECHAT_SECRET}
 
 app:
+  wechat-pay:
+    enabled: ${WECHAT_PAY_ENABLED:false}
+    mock-enabled: ${WECHAT_PAY_MOCK_ENABLED:false}
+    app-id: ${WECHAT_PAY_APP_ID:}
+    mch-id: ${WECHAT_PAY_MCH_ID:}
+    api-v3-key: ${WECHAT_PAY_API_V3_KEY:}
+    merchant-serial-no: ${WECHAT_PAY_MERCHANT_SERIAL_NO:}
+    merchant-private-key-path: ${WECHAT_PAY_MERCHANT_PRIVATE_KEY_PATH:}
+    platform-certificate-path: ${WECHAT_PAY_PLATFORM_CERTIFICATE_PATH:}
+    notify-url: ${WECHAT_PAY_NOTIFY_URL:}
+    order-expire-minutes: ${WECHAT_PAY_ORDER_EXPIRE_MINUTES:15}
   jwt:
     secret: ${APP_JWT_SECRET}
     expiration-ms: ${APP_JWT_EXPIRATION_MS:86400000}
@@ -102,6 +113,45 @@ app:
     api-url: ${APP_AI_API_URL}
     model: ${APP_AI_MODEL:gpt-4o}
 ```
+
+## 微信支付配置
+
+会员套餐购买使用微信小程序支付。生产环境需要准备：
+
+- 小程序 AppID。
+- 微信支付商户号。
+- API v3 密钥。
+- 商户 API 证书序列号。
+- 商户私钥文件 `apiclient_key.pem`。
+- 微信支付平台证书文件，用于回调验签。
+- HTTPS 支付回调地址。
+
+生产环境变量示例：
+
+```bash
+export WECHAT_PAY_ENABLED=true
+export WECHAT_PAY_APP_ID=wx_xxx
+export WECHAT_PAY_MCH_ID=1900000001
+export WECHAT_PAY_API_V3_KEY=your_api_v3_key
+export WECHAT_PAY_MERCHANT_SERIAL_NO=your_certificate_serial_no
+export WECHAT_PAY_MERCHANT_PRIVATE_KEY_PATH=/secure/wechat-pay/apiclient_key.pem
+export WECHAT_PAY_PLATFORM_CERTIFICATE_PATH=/secure/wechat-pay/wechatpay_platform.pem
+export WECHAT_PAY_NOTIFY_URL=https://xiaoyou-ky.top/api/payment/wechat/notify
+export WECHAT_PAY_ORDER_EXPIRE_MINUTES=15
+```
+
+本地开发可使用：
+
+```bash
+export WECHAT_PAY_ENABLED=false
+export WECHAT_PAY_MOCK_ENABLED=true
+```
+
+注意：
+
+- 商户私钥文件不要提交到仓库。
+- 当前代码已提供微信支付 API v3 JSAPI 下单、RSA 签名、小程序支付参数签名、平台证书验签和回调 AES-GCM 解密。生产上线前必须配置平台证书路径并完成真实低金额支付验收。
+- 小程序端只调用后端返回的 `wx.requestPayment` 参数，不保存任何商户密钥。
 
 ## 构建命令
 
@@ -198,13 +248,14 @@ Nginx 80/443
 
 学习中心权限由两部分组成：
 
-- 静态角色：`ADMIN`、`PREMIUM_USER`。
-- 动态角色：用户 `membershipExpireAt` 未过期时，`JwtFilter` 添加 `ROLE_MEMBER`。
+- 静态角色：`ADMIN`。
+- 动态角色：用户为永久会员，或 `membershipExpireAt` 未过期时，`JwtFilter` 添加 `ROLE_MEMBER`。
 
 当用户兑换卡密后：
 
 - 客户端应刷新会员状态。
 - 如果旧 token 中 role 仍是 `USER`，动态会员判断会在每次请求时查库并添加 `ROLE_MEMBER`。
+- `PREMIUM_USER` 角色仅为兼容旧数据保留，不再单独代表有效会员。
 
 ### PC 扫码登录
 

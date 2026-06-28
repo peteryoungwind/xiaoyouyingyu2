@@ -87,6 +87,36 @@ src/main/java/com/xiaoyouyingyu/
 - 游客不允许关键词搜索，搜索会返回 401。
 - 列表默认按 `eventDate` 倒序排列。
 
+### `TopicSubmissionController`
+
+路径前缀：`/api/topic-submissions`
+
+负责小程序用户提交感兴趣的话题：
+
+- 登录用户提交话题标题、想练原因、分类和补充说明。
+- 新提交默认保存为 `PENDING` 状态。
+- 提交记录只作为运营参考数据，不会自动写入正式 `topics` 表。
+
+权限：
+
+- 登录用户即可提交。
+- 游客点击小程序提交入口时应先进入登录引导。
+
+### `AdminTopicSubmissionController`
+
+路径前缀：`/api/admin/topic-submissions`
+
+负责管理员处理用户提交的话题：
+
+- 分页查询提交列表，支持状态筛选和关键词搜索。
+- 查看提交详情。
+- 将提交标记为 `ACCEPTED`（已采纳）或 `REJECTED`（未采纳）。
+
+权限：
+
+- 继承 `/api/admin/**` 规则，仅管理员可访问。
+- 列表和详情只展示提交用户名，不返回用户密码、token 等敏感信息。
+
 ### `LearningController`
 
 路径前缀：`/api/learning`
@@ -102,8 +132,8 @@ src/main/java/com/xiaoyouyingyu/
 
 权限：
 
-- `SecurityConfig` 中限制为 `PREMIUM_USER`、`ADMIN` 或动态会员角色 `MEMBER`。
-- 后端会员判定统一由 `User.isMembershipActive()` 提供，`ADMIN`、`PREMIUM_USER` 和未过期会员都会被视为会员。
+- `SecurityConfig` 中限制为 `ADMIN` 或动态会员角色 `MEMBER`。
+- 后端会员判定统一由 `User.isMembershipActive()` 提供，`ADMIN`、永久会员和未过期会员都会被视为会员。
 
 ### `SpokenWarmupController`
 
@@ -167,8 +197,41 @@ src/main/java/com/xiaoyouyingyu/
 负责：
 
 - 查询当前用户会员状态。
+- 查询小程序可购买会员套餐。
+- 创建小程序会员支付订单。
+- 查询当前用户自己的会员订单状态。
 - 返回开通会员联系信息。
 - 用户兑换卡密。
+
+新增会员支付接口：
+
+- `GET /api/membership/status`：当前用户会员状态，返回 `membershipActive`、`membershipPermanent`、`membershipExpireAt`。
+- `GET /api/membership/plans`：返回上架会员套餐。
+- `POST /api/membership/orders`：根据套餐创建微信小程序支付订单，返回 `wx.requestPayment` 参数。
+- `GET /api/membership/orders/{orderNo}`：查询本人订单状态。
+
+### `AdminMembershipController`
+
+路径前缀：`/api/admin/membership`
+
+负责：
+
+- 会员套餐列表、新增、编辑、上架/下架。
+- 会员订单列表和详情。
+- 管理员手动延长会员、设置指定到期时间、设置永久会员。
+
+权限：
+
+- 继承 `/api/admin/**` 规则，仅管理员可访问。
+
+### `WechatPayController`
+
+路径前缀：`/api`
+
+负责：
+
+- `POST /api/payment/wechat/notify`：微信支付回调入口。该接口不要求 JWT，但业务处理必须由 `WechatPayService` 做微信支付签名校验或 mock 校验。
+- `POST /api/dev/membership/orders/{orderNo}/mock-paid`：开发环境模拟支付成功接口，仅在 `WECHAT_PAY_MOCK_ENABLED=true` 时可用。
 
 ### `AdminController`
 
@@ -182,7 +245,7 @@ src/main/java/com/xiaoyouyingyu/
 - AI 标题生成、问题生成。
 - AI 模型增删改查。
 - 卡密生成、列表、禁用。
-- 设置用户会员到期时间、追加会员天数、查看会员记录。
+- 兼容旧版设置用户会员到期时间、追加会员天数、查看会员记录。新版会员手动开通建议使用 `AdminMembershipController` 的统一接口。
 
 权限：
 
@@ -310,11 +373,20 @@ src/main/java/com/xiaoyouyingyu/
 负责会员与卡密：
 
 - `grantRegistrationGift`：新用户注册赠送 3 天会员。
+- `isActiveMember`：统一动态会员判断，管理员或永久会员或会员有效期未过期即为有效会员。
+- `grantMembership`：统一会员授予入口，供卡密、微信支付、管理员手动开通复用。
 - `redeemCode`：校验卡密状态并给用户延长会员。
 - `setMembershipExpireAt`：管理员直接设置到期时间。
 - `addMembershipDays`：管理员追加会员天数。
+- `setMembershipPermanent`：管理员设置永久会员。
 - `generateCodes`：批量生成卡密。
 - `getUserRecords`：查看会员变更记录。
+
+会员有效性：
+
+- `ADMIN` 永远有效。
+- 非管理员用户仅当 `membershipPermanent=true` 或 `membershipExpireAt` 晚于当前时间时有效。
+- `PREMIUM_USER` 仅作为兼容角色保留，不再单独代表永久会员。
 
 卡密状态：
 
@@ -322,6 +394,35 @@ src/main/java/com/xiaoyouyingyu/
 - `USED`：已使用。
 - `DISABLED`：已禁用。
 - 过期判断通过 `expireAt` 动态判断。
+
+### `MembershipPlanService`
+
+负责会员套餐：
+
+- 管理端套餐增删改查。
+- 用户端只返回上架套餐。
+- 校验金额、普通套餐天数、永久套餐、折扣时间。
+- 创建订单时生成套餐快照，避免后续编辑影响历史订单。
+
+### `MembershipOrderService`
+
+负责会员订单：
+
+- 创建 15 分钟有效的待支付订单。
+- 调用 `WechatPayService` 创建小程序支付参数。
+- 查询用户订单和管理端订单。
+- 处理支付成功、幂等开通会员、记录微信交易号。
+- 定时关闭超时未支付订单。
+
+### `WechatPayService`
+
+负责微信支付集成边界：
+
+- mock 模式下返回模拟 `wx.requestPayment` 参数，并支持模拟支付通知。
+- 真实微信支付模式下调用微信支付 API v3 JSAPI/小程序下单。
+- 使用商户私钥生成微信支付 API 请求签名和小程序 `wx.requestPayment` 的 `paySign`。
+- 使用微信支付平台证书校验回调签名。
+- 使用 API v3 密钥解密回调资源数据。
 
 ### `PcWechatLoginService`
 
@@ -490,6 +591,28 @@ src/main/java/com/xiaoyouyingyu/
 | `app.upload.dir` | 本地上传/音频保存目录，默认 `uploads` |
 
 单词音频保存路径以单词本为维度组织：`{app.upload.dir}/word-audio/{wordBookId}/{wordId}/`，对外 URL 为 `/uploads/word-audio/{wordBookId}/{wordId}/...`。
+
+单词表还支持公共词典发音 URL 后台补全任务。`PublicDictionaryWordAudioBackfillScheduler` 会在服务启动后按配置慢速扫描 `words` 表中缺少 `audio_us_url` 或 `audio_uk_url` 的单词，每次只处理一个词：
+
+- 优先查询 Free Dictionary API 返回的公开发音 URL。
+- 未命中时查询 Wiktionary 原页中的英文发音模板，并通过 Wikimedia Commons API 获取实际媒体 URL。
+- 只写入当前为空的 `audio_us_url` / `audio_uk_url`，不会覆盖已有本地 TTS 音频。
+- 英美音只在来源明确标记 `US`、`GA`、`UK`、`RP`、`GB` 或文件名明确包含 `en-us` / `en-uk` 时写入。
+- 两侧发音都补齐后将 `audio_status` 置为 `READY`；只补到一侧时保留现有状态并把 `audio_error` 标记为 `PUBLIC_DICTIONARY_AUDIO_PARTIAL`；公共来源没有可用音频时标记为 `PUBLIC_DICTIONARY_AUDIO_MISSING`。
+- 后台任务会跳过 `PUBLIC_DICTIONARY_AUDIO_PARTIAL` 和 `PUBLIC_DICTIONARY_AUDIO_MISSING`，避免反复请求同一个词；如需重新尝试，清空对应单词的 `audio_error` 后任务会再次扫描。
+- 遇到 Wiktionary / Commons 429 限流时按 `app.word-audio.public-source.wiktionary-backoff-ms` 暂停后续 Wiktionary 补抓，避免高频请求公共服务。
+
+相关配置：
+
+| 配置 | 默认值 | 说明 |
+| --- | --- | --- |
+| `app.word-audio.public-source.enabled` | `true` | 是否启用公共词典发音 URL 后台补全 |
+| `app.word-audio.public-source.initial-delay-ms` | `30000` | 服务启动后首次执行延迟 |
+| `app.word-audio.public-source.delay-ms` | `5000` | 每次处理一个单词后的固定延迟 |
+| `app.word-audio.public-source.wiktionary-backoff-ms` | `600000` | Wiktionary / Commons 限流后的退避时长 |
+| `app.word-audio.public-source.user-agent` | `xiaoyouyingyu-public-dictionary-audio/1.0` | 访问公共 API 的 User-Agent |
+
+公共发音 URL 来自 Free Dictionary API、Wiktionary 和 Wikimedia Commons，使用时应在产品或关于页面注明来源，并按 Commons 文件页面的许可要求保留署名和 license 信息。当前 `words` 表只保存播放 URL；如需逐条展示署名和许可证，应新增来源/许可字段或单独的音频来源表。
 
 每日外刊音频保存路径为 `{app.upload.dir}/daily-articles/`，对外 URL 为 `/uploads/daily-articles/...`。
 
