@@ -30,15 +30,15 @@ wechat:
 
 app:
   wechat-pay:
-    enabled: ${WECHAT_PAY_ENABLED:false}
-    mock-enabled: ${WECHAT_PAY_MOCK_ENABLED:false}
-    app-id: ${WECHAT_PAY_APP_ID:}
-    mch-id: ${WECHAT_PAY_MCH_ID:}
-    api-v3-key: ${WECHAT_PAY_API_V3_KEY:}
-    merchant-serial-no: ${WECHAT_PAY_MERCHANT_SERIAL_NO:}
-    merchant-private-key-path: ${WECHAT_PAY_MERCHANT_PRIVATE_KEY_PATH:}
-    platform-certificate-path: ${WECHAT_PAY_PLATFORM_CERTIFICATE_PATH:}
-    notify-url: ${WECHAT_PAY_NOTIFY_URL:}
+    enabled: true
+    mock-enabled: false
+    app-id: wxe44039d85e17c3d5
+    mch-id: 1706319428
+    api-v3-key: 0DqGaAzh5MOprRUyWdK2ePPfWyLzh9V7
+    merchant-serial-no: 5AC6749F0B3511A8AD34144AD8587DEDDFB405A7
+    merchant-private-key-path: /Users/admin/cert/apiclient_key.pem
+    platform-certificate-path: /Users/admin/cert/wechatpay_7353C4A914E5C70677A9DD6F72E8D2CAABA08787.pem
+    notify-url: https://xiaoyou-ky.top/api/payment/wechat/notify
     order-expire-minutes: ${WECHAT_PAY_ORDER_EXPIRE_MINUTES:15}
   upload:
     dir: uploads

@@ -36,10 +36,14 @@ When proposing topics:
 - Give exactly 5 candidate topics.
 - For each topic, include English title, Chinese title, one existing category tag, and a short reason.
 - Avoid topics highly similar to any topic from the past year. Compare against both English and Chinese titles and the typical question angle.
-- Keep topics broad enough that most adult learners can speak from personal experience.
+- Match the style of existing topic data: a familiar adult-life situation or inner experience that can expand into attitudes, relationships, pressure, emotions, choices, communication, self-understanding, or growth.
+- Keep topics broad enough that most adult learners can speak from personal experience for several minutes, not just answer with a quick anecdote.
 - Avoid topics that target only a narrow identity, job, location, relationship status, spending level, or life stage.
-- Avoid topics that are too abstract (`life meaning`, `the future of humanity`) or too tiny (`which app button do you press first in the morning`).
-- Match the style of the existing topic data: practical daily-life entry points with room for light reflection.
+- Avoid topics that are too abstract (`life meaning`, `the future of humanity`, `how we choose what to pay attention to`) or too tiny (`which app button do you press first in the morning`, `waiting in line`, `taking photos in daily life`).
+- Avoid topics that are only a concrete activity or social custom unless the title clearly opens a larger discussion. Weak examples: `ordering takeout`, `grocery shopping`, `eating with other people`, `living with other people`, `gift giving and receiving`.
+- Prefer topics that sound like natural English-corner discussion themes in the current database, such as `How We Deal With Criticism`, `When Plans Get Disrupted`, `Talking About Money in Daily Life`, `What Makes a Good Conversation`, or `The Way We Spend Our Evenings`.
+- Before finalizing each candidate, run a quick discussion-depth check: can it naturally produce at least 8 open-ended questions that move from daily experience to emotions, relationships, values, and self-growth? If not, replace it.
+- Favor titles shaped as "How/When/What makes..." or a broad daily-life theme with tension, rather than isolated nouns or single actions.
 - Stop after the 5 candidates and ask the user to choose one topic before generating questions.
 
 ## Question Generation Workflow
