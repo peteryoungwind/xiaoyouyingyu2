@@ -454,6 +454,7 @@ V1 中管理员采纳只更新提交状态，不自动创建正式 `topics` 记�
       "index": 0,
       "startSec": 0.3,
       "endSec": 4.4,
+      "audioUrl": "https://cdn.example.com/audio/episodes/EP1-sentence-1.mp3",
       "en": "I just got out of the shower.",
       "zh": "我刚洗完澡。",
       "phonetic": "/.../",
@@ -476,6 +477,10 @@ V1 中管理员采纳只更新提交状态，不自动创建正式 `topics` 记�
   }
 }
 ```
+
+`content.sentences[*].audioUrl`、`startSec`、`endSec` 等句级音频和时间轴字段仍可保留在数据模型中，兼容历史导入和后续恢复单句播放的可能；当前小程序逐句跟读区已移除“播放”按钮，不再消费这些字段播放单句音频、视频片段或 TTS。
+
+导入脚本 `scripts/import-shadowing-lessons/import_shadowing_lessons.js` 会解析 `0.0s - 3.5s`、`0.0 - 3.5`、`00:00 - 00:03.5` 等时间格式，也会读取 `单句音频`、`音频`、`audioUrl`、`sentenceAudioUrl` 行。对于 `- 时间： -` 且无单句音频的素材，脚本会写入 `estimatedTimeRange: true` 和估算的 `startSec/endSec`，作为上线前的兜底时间轴；后续获取到真实时间轴后应重新导入覆盖。
 
 ### 句级点评请求
 
@@ -778,6 +783,7 @@ Authorization: Bearer <token>
 | GET | `/config` | 获取启用状态、单次最大轮数、每日轮数限制和当天剩余额度 |
 | POST | `/message` | 发送一轮用户消息并获取 AI 回复 |
 | POST | `/speech-to-text` | 上传真实录音文件并返回 ASR 识别文本 |
+| POST | `/speech-to-text-base64` | 上传 base64 录音并返回 ASR 识别文本，用于小程序 `wx.uploadFile` 网络层失败时兜底 |
 
 ### 配置摘要响应
 
@@ -839,6 +845,50 @@ Authorization: Bearer <token>
 - `audioUrl` 可能为空，表示 TTS 未配置或生成失败，客户端应降级展示文字。
 - 每日额度用尽返回 `429`，响应包含 `remainingToday: 0`。
 - AI 对话关闭或模型响应异常返回 `503`。
+
+### 语音转文字请求
+
+```http
+POST /api/ai-dialog/speech-to-text
+Content-Type: multipart/form-data
+Authorization: Bearer <token>
+```
+
+表单字段：
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `audioFile` | file | 小程序本次录制的音频文件 |
+
+响应：
+
+```json
+{
+  "text": "I usually take a walk after work."
+}
+```
+
+小程序 `pages/aiDialogChat/index` 录音结束后会调用该接口，识别成功后将结果回填到文字输入框，用户可编辑后再发送；空识别结果、ASR 配置缺失或第三方错误会返回错误响应。
+
+### 语音转文字 base64 兜底请求
+
+```http
+POST /api/ai-dialog/speech-to-text-base64
+Content-Type: application/json
+Authorization: Bearer <token>
+```
+
+请求：
+
+```json
+{
+  "audioBase64": "base64-audio-content",
+  "filename": "recording.mp3",
+  "contentType": "audio/mpeg"
+}
+```
+
+响应同 `/speech-to-text`。小程序仅在 `wx.uploadFile` 进入网络层 `fail` 回调时使用该兜底接口；如果 multipart 接口已经返回后端业务错误，则直接展示原错误。
 
 ## AI 对话管理接口
 
@@ -1457,7 +1507,7 @@ AI 创建单词本走后台任务：接口先创建单词本和 `word_generation
 | `published_date` | DATE | 发布日期 |
 | `sentence_count` | INT | 句子数 |
 | `expression_count` | INT | 表达数 |
-| `content_json` | LONGTEXT | 精听挑战、原文、句子、表达、填空 JSON |
+| `content_json` | LONGTEXT | 精听挑战、原文、句子、表达、填空 JSON；句子可包含 `audioUrl`、`startSec`、`endSec`、`estimatedTimeRange` |
 | `status` | VARCHAR(20) | `DRAFT`、`PUBLISHED`、`DISABLED` |
 | `created_at` | DATETIME | 创建时间 |
 | `updated_at` | DATETIME | 更新时间 |

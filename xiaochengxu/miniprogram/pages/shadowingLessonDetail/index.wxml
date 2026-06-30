@@ -105,7 +105,6 @@
               <view class="sentence-zh" wx:if="{{item.zh}}">{{item.zh}}</view>
               <view class="phonetic" wx:if="{{item.phonetic}}">{{item.phonetic}}</view>
               <view class="compact-actions">
-                <button class="round-action primary" bindtap="playSentence" data-index="{{index}}">播放</button>
                 <button wx:if="{{!item.recording}}" class="round-action recording" bindtap="startRecord" data-index="{{index}}">{{item.recorded ? '重录' : '录音'}}</button>
                 <button wx:else class="round-action recording active" bindtap="stopRecord" data-index="{{index}}">停止</button>
                 <button class="round-action {{item.recorded ? '' : 'disabled'}}" bindtap="playbackRecord" data-index="{{index}}">回放</button>

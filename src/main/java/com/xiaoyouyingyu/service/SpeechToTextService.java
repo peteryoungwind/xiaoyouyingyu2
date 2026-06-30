@@ -48,9 +48,24 @@ public class SpeechToTextService {
             throw new IllegalArgumentException("请上传录音文件");
         }
         try {
+            String filename = audioFile.getOriginalFilename();
+            String contentType = audioFile.getContentType();
+            return transcribe(audioFile.getBytes(), filename, contentType);
+        } catch (ResponseStatusException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "语音识别失败，请重试");
+        }
+    }
+
+    public String transcribe(byte[] audioBytes, String filename, String contentType) {
+        if (audioBytes == null || audioBytes.length == 0) {
+            throw new IllegalArgumentException("请上传录音文件");
+        }
+        try {
             ResolvedAsrConfig config = resolveConfig();
             String boundary = "----xiaoyou-asr-" + UUID.randomUUID();
-            byte[] body = multipartBody(boundary, audioFile, config.model());
+            byte[] body = multipartBody(boundary, audioBytes, filename, contentType, config.model());
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(config.apiUrl()))
@@ -116,15 +131,17 @@ public class SpeechToTextService {
     }
 
     private static byte[] multipartBody(String boundary, MultipartFile file, String model) throws Exception {
+        return multipartBody(boundary, file.getBytes(), file.getOriginalFilename(), file.getContentType(), model);
+    }
+
+    private static byte[] multipartBody(String boundary, byte[] fileBytes, String filename, String contentType, String model) throws Exception {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         writeField(out, boundary, "model", model);
         writeField(out, boundary, "language", "en");
 
-        String filename = file.getOriginalFilename();
         if (filename == null || filename.isBlank()) {
             filename = "recording.mp3";
         }
-        String contentType = file.getContentType();
         if (contentType == null || contentType.isBlank()) {
             contentType = "audio/mpeg";
         }
@@ -132,7 +149,7 @@ public class SpeechToTextService {
         out.write(("--" + boundary + CRLF).getBytes(StandardCharsets.UTF_8));
         out.write(("Content-Disposition: form-data; name=\"file\"; filename=\"" + safeFilename(filename) + "\"" + CRLF).getBytes(StandardCharsets.UTF_8));
         out.write(("Content-Type: " + contentType + CRLF + CRLF).getBytes(StandardCharsets.UTF_8));
-        out.write(file.getBytes());
+        out.write(fileBytes);
         out.write(CRLF.getBytes(StandardCharsets.UTF_8));
         out.write(("--" + boundary + "--" + CRLF).getBytes(StandardCharsets.UTF_8));
         return out.toByteArray();

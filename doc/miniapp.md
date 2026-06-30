@@ -32,7 +32,7 @@ xiaochengxu/
 flowchart LR
   Page["小程序页面"] --> Api["utils/api.js"]
   Api --> Request["utils/request.js"]
-  Request --> Backend["develop: https://xiaoyou-ky.top/api (临时调试); trial/release: https://xiaoyou-ky.top/api"]
+  Request --> Backend["develop: http://localhost:8080/api; trial/release: https://xiaoyou-ky.top/api"]
 ```
 
 `cloudfunctions/api` 中存在一套历史/可选云函数业务实现，包含 MySQL、JWT、AI 调用等重复逻辑。若后续继续采用直连 REST API，应考虑归档或删除云函数重复业务，避免双写维护。
@@ -91,8 +91,9 @@ flowchart LR
 
 环境 API 地址：
 
-- `develop` 当前临时配置为 `https://xiaoyou-ky.top/api`，用于微信开发者工具本地调试时直接请求线上真实后端；调试完成后应改回 `http://localhost:8080/api`。
-- `trial`、`release` 配置为 `https://xiaoyou-ky.top/api`。
+- `develop` 配置为 `http://localhost:8080/api`，用于微信开发者工具本地联调后端。
+- `trial`、`release` 配置为 `https://xiaoyou-ky.top/api`，用于体验版和正式版访问线上后端。
+- 真机调试时，`localhost` 通常指手机或模拟器自身；如需连接电脑本机后端，应改为同一局域网内电脑 IP，例如 `http://192.168.x.x:8080/api`。
 - 启动时通过 `wx.getAccountInfoSync()` 识别小程序环境并设置 `globalData.baseUrl`。
 
 全局方法：
@@ -193,6 +194,7 @@ flowchart LR
 - 来源字段 `sourceName` 为通用导入标记 `Lingohow`、栏目字段 `category` 为通用栏目名 `300期油管地道口语` 时，后端返回空值，避免列表页和详情页展示这些导入来源标记。
 - 小程序副标题继续按 `sourceName -> category -> title` 兜底展示；主题标签继续按 `topic -> category -> 原声素材` 兜底展示。
 - 详情页顶部音频使用页面级 `InnerAudioContext` 复用同一个播放实例，点击音频按钮在播放和暂停之间切换，避免重复创建播放器导致同一音频叠加播放；切换到视频或播放逐句片段时会暂停/停止顶部音频。
+- 逐句跟读区当前不展示“播放”按钮，也不启用句级音频、视频时间轴片段或小程序 TTS 朗读；用户通过顶部视频/音频完成输入，通过逐句录音、回放和 AI 点评完成跟读练习。
 
 ## 首页学习入口
 
@@ -411,7 +413,7 @@ sequenceDiagram
 - 游客只展示视频/音频、标题、简介和登录引导，不渲染完整原文、逐句跟读、表达或翻译练习。
 - 登录用户打开详情后，后端自动写入学习记录；资源会从未学习列表移动到已学习列表。
 - 页面采用媒体区 + 连续学习流：对照原文、逐句跟读、地道表达、中文翻译练习；不再展示单独的“先听一遍”模块。
-- 视频和音频独立播放；逐句播放优先按当前媒体模式定位视频或音频时间段。
+- 视频和音频独立播放；逐句跟读区已暂停单句播放入口，不再定位视频时间轴、播放句级音频或调用小程序 TTS。录音、回放录音和 AI 点评链路保持可用。
 - 逐句跟读使用 `wx.getRecorderManager()` 录音，录完后保存本地临时文件，可在当前页面回放。
 - 点击点评上传本次录音到 `POST /api/shadowing-lessons/{id}/sentences/{sentenceIndex}/review`，后端完成 ASR + AI 综合评分后返回点评抽屉数据。
 - 最后一段“根据中文自己翻译”默认展示可编辑英文输入框，输入框下方提供“切换为语音输入”按钮；语音上传到 `POST /api/shadowing-lessons/speech-to-text` 识别成功后回填输入框。底部只保留“查看参考英文”和“AI点评”两个操作按钮并同一行展示。
@@ -479,8 +481,11 @@ sequenceDiagram
 - 教学模式展示中文点评、优化表达和解释；练习模式默认只展示英文对话内容。
 - 如果后端返回 `audioUrl`，小程序会自动播放 AI 英文回复并支持重播；如果 TTS 生成失败，则降级为文字展示。
 - 页面视觉采用更有色彩的练习场样式：顶部主题卡使用蓝紫青渐变并展示进度条，空会话展示 AI 开口引导和通用提示 chip，用户消息使用渐变气泡，AI 播放/隐藏文字按钮和教学点评使用彩色轻卡片。
-- 语音输入按钮已接入录音状态与权限反馈；后端 `/api/ai-dialog/speech-to-text` 复用真实 ASR 能力，可上传本次录音并返回识别文本。
-- 底部输入栏默认是语音输入，一个输入区域内通过左侧系统风格图标在语音和文字输入间切换；语音录制结束后应展示可编辑识别文本后发送。
+- 语音输入按钮会先申请 `scope.record` 录音权限；未授权时弹出权限引导，也可直接切换为文字输入。
+- 语音录制结束后，小程序优先通过 `multipart/form-data` 上传本次录音到 `/api/ai-dialog/speech-to-text`，字段名为 `audioFile`；如果微信 `wx.uploadFile` 在网络层失败，会读取本地录音为 base64 并通过普通 `wx.request` 调用 `/api/ai-dialog/speech-to-text-base64` 兜底。
+- AI 对话录音使用 16kHz、单声道、48kbps MP3，兼顾 ASR 识别和 base64 兜底请求体大小。
+- 识别成功后自动切换到文字输入并回填可编辑文本，用户确认后再发送。
+- 底部输入栏默认是语音输入，一个输入区域内通过左侧系统风格图标在语音和文字输入间切换；录音、识别或发送中会阻止重复触发，避免状态冲突。
 
 ## 单词练习流程
 
@@ -579,7 +584,7 @@ sequenceDiagram
 
 ## 维护建议
 
-- `app.js` 中 API 域名建议按 develop/trial/release 区分，开发环境可指向测试后端；当前 `develop` 指向生产域名仅用于临时调试，完成后需恢复为本地或测试后端地址。
+- 当前小程序仅 `develop` 指向本地 `http://localhost:8080/api`；`trial` 和 `release` 保持线上域名，切换测试环境时需同步调整 `app.js` 的 `apiBaseUrlMap`。
 - 微信登录依赖后端 `wechat.appid` 和 `wechat.secret`，上线前需确认与小程序 AppID 一致。
 - 小程序端不要保存敏感密钥，所有密钥应仅在后端或云函数中使用。
 - 学习详情页的 AI 返回 JSON 建议增加解析容错与重试提示。

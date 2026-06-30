@@ -241,8 +241,49 @@ function sendAiDialogMessage(data) {
   return http.post('/ai-dialog/message', data);
 }
 
-function speechToText(data) {
-  return http.post('/ai-dialog/speech-to-text', data || {});
+function speechToText(filePath, data) {
+  return http.upload('/ai-dialog/speech-to-text', filePath, 'audioFile', data || {}).catch(function (err) {
+    if (!err || err.code !== -1) {
+      return Promise.reject(err);
+    }
+    console.warn('AI dialog uploadFile failed, fallback to base64 request:', err);
+    return speechToTextBase64(filePath, data || {});
+  });
+}
+
+function speechToTextBase64(filePath, data) {
+  return new Promise(function (resolve, reject) {
+    wx.getFileSystemManager().readFile({
+      filePath: filePath,
+      encoding: 'base64',
+      success: function (res) {
+        var payload = Object.assign({}, data || {}, {
+          audioBase64: res.data || '',
+          filename: audioFilename(filePath),
+          contentType: audioContentType(filePath)
+        });
+        http.post('/ai-dialog/speech-to-text-base64', payload).then(resolve).catch(reject);
+      },
+      fail: function (err) {
+        reject({ code: -1, message: '读取录音失败，请重试或使用文字输入', detail: err });
+      }
+    });
+  });
+}
+
+function audioFilename(filePath) {
+  if (!filePath) return 'recording.mp3';
+  var parts = String(filePath).split('/');
+  var name = parts[parts.length - 1] || 'recording.mp3';
+  return name.indexOf('.') >= 0 ? name : name + '.mp3';
+}
+
+function audioContentType(filePath) {
+  var lower = String(filePath || '').toLowerCase();
+  if (lower.endsWith('.wav')) return 'audio/wav';
+  if (lower.endsWith('.m4a')) return 'audio/mp4';
+  if (lower.endsWith('.aac')) return 'audio/aac';
+  return 'audio/mpeg';
 }
 
 // ==================== Membership ====================

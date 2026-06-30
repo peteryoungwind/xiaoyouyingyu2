@@ -29,6 +29,7 @@ Page({
     inputMode: 'voice',
     sending: false,
     recording: false,
+    transcribing: false,
     error: ''
   },
 
@@ -38,15 +39,7 @@ Page({
       return;
     }
     this.audio = wx.createInnerAudioContext();
-    this.recorder = wx.getRecorderManager();
-    this.recorder.onStop(() => {
-      this.setData({ recording: false, inputMode: 'text' });
-      wx.showToast({ title: '录音完成，请编辑文本发送', icon: 'none' });
-    });
-    this.recorder.onError(() => {
-      this.setData({ recording: false });
-      wx.showToast({ title: '录音失败，请使用文字输入', icon: 'none' });
-    });
+    this.setupRecorder();
     this.setData({
       sessionId: uuid(),
       mode: options.mode || 'TEACHING',
@@ -61,7 +54,27 @@ Page({
   },
 
   onUnload() {
+    if (this.data.recording && this.recorder) {
+      this.unloading = true;
+      this.recorder.stop();
+    }
     if (this.audio) this.audio.destroy();
+  },
+
+  setupRecorder() {
+    this.recorder = wx.getRecorderManager();
+    this.recorder.onStop((res) => {
+      this.setData({ recording: false });
+      if (this.unloading) return;
+      if (res && res.tempFilePath) {
+        this.transcribeAudio(res.tempFilePath);
+      }
+    });
+    this.recorder.onError((err) => {
+      console.error('AI dialog record failed:', err);
+      this.setData({ recording: false });
+      wx.showToast({ title: '录音失败，请重试或切换文字', icon: 'none' });
+    });
   },
 
   loadConfig() {
@@ -82,6 +95,7 @@ Page({
   },
 
   toggleInputMode() {
+    if (this.data.recording || this.data.transcribing) return;
     this.setData({
       inputMode: this.data.inputMode === 'voice' ? 'text' : 'voice'
     });
@@ -95,14 +109,65 @@ Page({
   },
 
   startRecord() {
-    if (this.data.recording) return;
-    this.setData({ recording: true });
-    this.recorder.start({ duration: 60000, format: 'mp3' });
+    if (this.data.recording || this.data.transcribing || this.data.sending) return;
+    wx.authorize({
+      scope: 'scope.record',
+      success: () => {
+        this.setData({ recording: true });
+        this.recorder.start({
+          duration: 60000,
+          sampleRate: 16000,
+          numberOfChannels: 1,
+          encodeBitRate: 48000,
+          format: 'mp3'
+        });
+      },
+      fail: () => {
+        wx.showModal({
+          title: '需要录音权限',
+          content: '语音输入需要录音权限，你也可以切换为文字输入。',
+          confirmText: '去设置',
+          cancelText: '文字输入',
+          success: (res) => {
+            if (res.confirm) wx.openSetting();
+            else this.setData({ inputMode: 'text' });
+          }
+        });
+      }
+    });
   },
 
   stopRecord() {
     if (!this.data.recording) return;
     this.recorder.stop();
+  },
+
+  transcribeAudio(filePath) {
+    this.setData({ transcribing: true });
+    wx.showLoading({ title: '识别语音中...', mask: true });
+    api.speechToText(filePath, {
+      sessionId: this.data.sessionId,
+      topicSource: this.data.topicSource,
+      topicId: this.data.topicId ? String(this.data.topicId) : '',
+      mode: this.data.mode,
+      difficulty: this.data.difficulty
+    }).then(res => {
+      var text = res && res.text ? res.text : '';
+      if (!text.trim()) {
+        throw new Error('未识别到内容，请重录');
+      }
+      this.setData({
+        inputText: text,
+        inputMode: 'text',
+        transcribing: false
+      });
+      wx.hideLoading();
+    }).catch(err => {
+      console.error('AI dialog speech to text failed:', err);
+      this.setData({ transcribing: false, inputMode: 'text' });
+      wx.hideLoading();
+      wx.showToast({ title: err.message || '识别失败，请使用文字输入', icon: 'none' });
+    });
   },
 
   sendMessage() {

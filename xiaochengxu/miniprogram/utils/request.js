@@ -132,6 +132,7 @@ function upload(url, filePath, name, formData) {
         reject({ code: res.statusCode, message: errMsg, data: data });
       },
       fail: function (err) {
+        console.error('Upload request failed:', url, err);
         reject({ code: -1, message: '上传失败，请检查网络', detail: err });
       }
     });

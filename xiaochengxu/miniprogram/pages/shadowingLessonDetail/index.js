@@ -5,8 +5,14 @@ const app = getApp();
 function secondsText(value) {
   if (value === undefined || value === null || value === '') return '';
   var num = Number(value);
-  if (Number.isNaN(num)) return '';
+  if (isNaN(num)) return '';
   return num.toFixed(num % 1 === 0 ? 0 : 1) + 's';
+}
+
+function numericValue(value) {
+  if (value === undefined || value === null || value === '') return null;
+  var num = Number(value);
+  return isNaN(num) ? null : num;
 }
 
 function normalizeContent(content) {
@@ -144,8 +150,8 @@ Page({
       const sentences = content.sentences.map((item, index) => ({
         index: item.index !== undefined ? item.index : index,
         displayIndex: index + 1,
-        startSec: item.startSec,
-        endSec: item.endSec,
+        startSec: numericValue(item.startSec),
+        endSec: numericValue(item.endSec),
         timeText: [secondsText(item.startSec), secondsText(item.endSec)].filter(Boolean).join(' - '),
         en: item.en || '',
         zh: item.zh || '',
@@ -303,50 +309,8 @@ Page({
     });
   },
 
-  playSentence(e) {
-    const index = Number(e.currentTarget.dataset.index);
-    const sentence = this.data.sentences[index];
-    const lesson = this.data.lesson || {};
-    if (!sentence) return;
-    this.pauseMainAudio();
-    if (this.data.mediaMode === 'video' && lesson.videoUrl) {
-      const video = wx.createVideoContext('shadowingVideo', this);
-      if (sentence.startSec !== undefined && sentence.startSec !== null) {
-        video.seek(Number(sentence.startSec));
-      }
-      video.play();
-      if (this.segmentTimer) clearTimeout(this.segmentTimer);
-      if (sentence.startSec !== undefined && sentence.endSec !== undefined && Number(sentence.endSec) > Number(sentence.startSec)) {
-        this.segmentTimer = setTimeout(function () {
-          video.pause();
-        }, Math.max(800, (Number(sentence.endSec) - Number(sentence.startSec)) * 1000));
-      }
-      return;
-    }
-    if (!lesson.audioUrl) {
-      wx.showToast({ title: '暂无音频', icon: 'none' });
-      return;
-    }
-    this.stopSegmentAudio();
-    this.segmentAudio = wx.createInnerAudioContext();
-    this.segmentAudio.src = media.resolveAudioUrl(lesson.audioUrl);
-    this.segmentAudio.onCanplay(() => {
-      if (sentence.startSec !== undefined && sentence.startSec !== null) {
-        this.segmentAudio.seek(Number(sentence.startSec));
-      }
-      this.segmentAudio.play();
-    });
-    this.segmentAudio.onError(err => {
-      console.error('Play sentence audio failed:', err);
-      wx.showToast({ title: '音频播放失败', icon: 'none' });
-    });
-    if (this.segmentTimer) clearTimeout(this.segmentTimer);
-    if (sentence.startSec !== undefined && sentence.endSec !== undefined && Number(sentence.endSec) > Number(sentence.startSec)) {
-      this.segmentTimer = setTimeout(() => {
-        if (this.segmentAudio) this.segmentAudio.stop();
-      }, Math.max(800, (Number(sentence.endSec) - Number(sentence.startSec)) * 1000));
-    }
-  },
+  // 逐句跟读的单句播放能力已暂停：页面不再展示“播放”按钮，也不再调用句级音频、
+  // 视频时间轴片段或 WechatSI TTS。保留顶部视频/音频播放以及录音、回放、点评链路。
 
   startRecord(e) {
     const index = Number(e.currentTarget.dataset.index);

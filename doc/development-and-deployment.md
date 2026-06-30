@@ -47,8 +47,8 @@ npm run dev
 
 1. 使用微信开发者工具打开 `xiaochengxu` 目录。
 2. 确认 `project.config.json` 中的 AppID 与实际小程序一致。
-3. `miniprogram/app.js` 中 `develop` 当前临时指向 `https://xiaoyou-ky.top/api`，用于微信开发者工具本地调试时直接请求线上真实后端；调试完成后应恢复为 `http://localhost:8080/api`。
-4. `trial` 和 `release` 指向生产 API；如需真机调试本地后端，需改成手机可访问的局域网地址或测试域名。
+3. `miniprogram/app.js` 中 `develop` 指向 `http://localhost:8080/api`，用于本地后端联调；`trial` 和 `release` 保持线上 API。
+4. 真机调试时，`localhost` 通常指手机自身；如需访问电脑本机后端，需改成手机可访问的局域网地址或测试域名。
 
 ## 本地话题生成上下文脚本
 

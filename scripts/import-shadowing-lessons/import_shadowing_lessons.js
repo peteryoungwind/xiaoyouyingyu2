@@ -110,11 +110,17 @@ function parseSentences(text) {
   const chunks = block.split(/^###\s+句子\s+\d+/m).slice(1);
   return chunks.map((chunk, index) => {
     const time = matchLine(chunk, /^- 时间：(.+)$/m);
-    const timeMatch = time.match(/([\d.]+)s\s*-\s*([\d.]+)s/);
+    const timeRange = parseTimeRange(time);
     return {
       index,
-      startSec: timeMatch ? Number(timeMatch[1]) : null,
-      endSec: timeMatch ? Number(timeMatch[2]) : null,
+      startSec: timeRange ? timeRange.startSec : null,
+      endSec: timeRange ? timeRange.endSec : null,
+      audioUrl: firstNonEmpty(
+        matchLine(chunk, /^- 单句音频：(.+)$/m),
+        matchLine(chunk, /^- 音频：(.+)$/m),
+        matchLine(chunk, /^- audioUrl：(.+)$/m),
+        matchLine(chunk, /^- sentenceAudioUrl：(.+)$/m)
+      ),
       en: matchLine(chunk, /^- 英文：(.+)$/m),
       zh: matchLine(chunk, /^- 中文：(.+)$/m),
       phonetic: matchLine(chunk, /^- 音标：(.+)$/m),
@@ -122,6 +128,66 @@ function parseSentences(text) {
       videoId: matchLine(chunk, /^- video_id：(.+)$/m)
     };
   }).filter(item => item.en);
+}
+
+function parseTimeRange(value) {
+  if (!value) return null;
+  const text = String(value).trim();
+  const secondMatch = text.match(/([\d.]+)\s*s?\s*[-~–—至到]\s*([\d.]+)\s*s?/i);
+  if (secondMatch) {
+    const secondRange = normalizeTimeRange(Number(secondMatch[1]), Number(secondMatch[2]));
+    if (secondRange) return secondRange;
+  }
+  const clockMatch = text.match(/(\d{1,2}:\d{1,2}(?:\.\d+)?)\s*[-~–—至到]\s*(\d{1,2}:\d{1,2}(?:\.\d+)?)/);
+  if (clockMatch) {
+    return normalizeTimeRange(clockToSeconds(clockMatch[1]), clockToSeconds(clockMatch[2]));
+  }
+  return null;
+}
+
+function normalizeTimeRange(startSec, endSec) {
+  if (!Number.isFinite(startSec) || !Number.isFinite(endSec) || endSec <= startSec) return null;
+  return { startSec, endSec };
+}
+
+function clockToSeconds(value) {
+  const parts = String(value).split(':').map(Number);
+  if (parts.length !== 2 || parts.some(part => !Number.isFinite(part))) return NaN;
+  return parts[0] * 60 + parts[1];
+}
+
+function estimateSentenceDuration(text) {
+  const normalized = String(text || '').trim();
+  if (!normalized) return 2.2;
+  const words = normalized.match(/[A-Za-z0-9']+/g) || [];
+  const punctuation = normalized.match(/[,.!?;:]/g) || [];
+  const duration = (words.length / 2.45) + (punctuation.length * 0.16) + 0.55;
+  return Math.max(1.4, Math.min(12, duration));
+}
+
+function fillEstimatedSentenceRanges(sentences) {
+  const hasPlayableSentence = sentences.some(item => item.audioUrl || (item.startSec !== null && item.endSec !== null && item.endSec > item.startSec));
+  if (hasPlayableSentence) return sentences;
+  let cursor = 0.2;
+  return sentences.map(item => {
+    const duration = estimateSentenceDuration(item.en);
+    const startSec = Number(cursor.toFixed(2));
+    const endSec = Number((cursor + duration).toFixed(2));
+    cursor = endSec + 0.28;
+    return Object.assign({}, item, {
+      startSec,
+      endSec,
+      estimatedTimeRange: true
+    });
+  });
+}
+
+function firstNonEmpty() {
+  for (let i = 0; i < arguments.length; i += 1) {
+    const value = arguments[i];
+    if (value !== undefined && value !== null && String(value).trim()) return String(value).trim();
+  }
+  return '';
 }
 
 function parseCloze(text) {
@@ -167,10 +233,11 @@ function parseLesson(filePath) {
   const sourceUrl = (text.match(/来源：(https?:\/\/\S+)/) || [])[1] || meta(text, '原视频链接');
   const videoUrl = meta(text, '视频/音频资源');
   const episodeMatch = (meta(text, '站内标题') || meta(text, '页面标题')).match(/Episode\s+(\d+)/i);
+  const sentences = fillEstimatedSentenceRanges(parseSentences(text));
   const content = {
     challenge: parseChallenge(text),
     transcript: parseTranscript(text),
-    sentences: parseSentences(text),
+    sentences,
     expressions: parseExpressions(text),
     cloze: parseCloze(text)
   };

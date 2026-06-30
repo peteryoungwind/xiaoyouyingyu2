@@ -12,9 +12,7 @@ App({
     wordPracticeRefreshTimer: null,
     wordPracticePreloadInFlight: false,
     apiBaseUrlMap: {
-      // Temporary local debugging: use the production backend in WeChat DevTools.
-      // Restore to http://localhost:8080/api after this debug pass.
-      develop: 'https://xiaoyou-ky.top/api',
+      develop: 'http://localhost:8080/api',
       trial: 'https://xiaoyou-ky.top/api',
       release: 'https://xiaoyou-ky.top/api'
     }

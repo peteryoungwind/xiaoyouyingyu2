@@ -81,7 +81,7 @@
       </view>
 
       <textarea wx:if="{{inputMode === 'text'}}" class="input" value="{{inputText}}" bindinput="onInput" auto-height maxlength="1000" placeholder="输入你想说的话..." placeholder-class="placeholder" />
-      <view wx:else class="voice-input {{recording ? 'recording' : ''}}" bindtouchstart="startRecord" bindtouchend="stopRecord">{{recording ? '松开结束' : '按住说话'}}</view>
+      <view wx:else class="voice-input {{recording ? 'recording' : ''}}" bindtouchstart="startRecord" bindtouchend="stopRecord" bindtouchcancel="stopRecord">{{transcribing ? '识别中...' : (recording ? '松开结束' : '按住说话')}}</view>
 
       <view class="send-btn {{!inputText || sending ? 'disabled' : ''}}" bindtap="sendMessage">{{sending ? '…' : '↑'}}</view>
     </view>
