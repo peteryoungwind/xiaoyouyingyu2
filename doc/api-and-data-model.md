@@ -269,7 +269,12 @@ V1 中管理员采纳只更新提交状态，不自动创建正式 `topics` 记�
 }
 ```
 
-订单 15 分钟未支付会自动关闭。
+规则：
+
+- 真实支付模式下，`paymentParams` 可直接传给小程序 `wx.requestPayment`。
+- 开发 mock 支付模式下，`paymentParams` 会额外返回 `mockPayment=true`，且 `package` 为 `prepay_id=mock_...`；小程序应调用 `/api/dev/membership/orders/{orderNo}/mock-paid` 模拟支付完成，不应把 mock 参数传入 `wx.requestPayment`。
+- 若调用微信支付下单失败，订单会保存为 `FAILED`，`failureReason` 记录失败原因，创建订单接口返回错误信息。
+- 订单 15 分钟未支付会自动关闭。
 
 ### 微信支付回调
 
@@ -292,6 +297,33 @@ V1 中管理员采纳只更新提交状态，不自动创建正式 `topics` 记�
 | GET | `/orders` | 管理员 | 订单列表 |
 | GET | `/orders/{id}` | 管理员 | 订单详情 |
 | POST | `/users/{id}/grant` | 管理员 | 手动延长、设置到期时间或设置永久会员 |
+
+新增/更新套餐请求：
+
+```json
+{
+  "name": "周会员",
+  "description": "7 天高级学习功能",
+  "originalPriceCents": 990,
+  "salePriceCents": 690,
+  "durationDays": 7,
+  "permanent": false,
+  "discountStartAt": "2026-06-30T10:00:00",
+  "discountEndAt": "2026-07-07T10:00:00",
+  "status": "ACTIVE",
+  "sortOrder": 0
+}
+```
+
+字段规则：
+
+- 必填：`name`、`originalPriceCents`、`salePriceCents`、`permanent`、`status`。
+- 普通时长套餐：`permanent=false` 时 `durationDays` 必填且必须大于 0。
+- 永久会员套餐：`permanent=true` 时后端忽略 `durationDays`。
+- 可选：`description`、`discountStartAt`、`discountEndAt`、`sortOrder`。
+- 金额单位为整数分；PC 前端以元输入并在提交时换算为分。
+- `originalPriceCents` 不能小于 `salePriceCents`；折扣结束时间必须晚于开始时间。
+- `status` 可选：`ACTIVE`（上架）、`INACTIVE`（下架）。只有上架套餐会在用户端套餐列表展示。
 
 手动开通请求：
 
@@ -897,7 +929,7 @@ Authorization: Bearer <token>
 | GET | `/words/{wordId}` | 查询已发布单词详情 |
 | POST | `/words/{wordId}/answer` | 提交认识/不认识 |
 | GET | `/books/{bookId}/progress` | 查询指定难度进度 |
-| GET | `/books/{bookId}/words` | 查询当前用户已学单词 |
+| GET | `/books/{bookId}/words` | 查询当前词书全部已发布单词和当前用户在每个词上的进度，用于小程序整本词书本地缓存 |
 
 提交练习结果：
 
@@ -909,12 +941,46 @@ Authorization: Bearer <token>
 
 `result` 可取 `KNOWN`、`FUZZY` 或 `UNKNOWN`。
 
+整本词书缓存响应：
+
+```json
+{
+  "words": [
+    {
+      "id": 1,
+      "wordBookId": 7,
+      "word": "routine",
+      "difficulty": "BEGINNER",
+      "definitionZh": "日常安排；惯例",
+      "definitionEn": "a usual way of doing things",
+      "exampleEn": "My morning routine starts with coffee.",
+      "progress": {
+        "status": "REVIEWING",
+        "studyCount": 1,
+        "nextReviewAt": "2026-06-30T09:00:00"
+      }
+    }
+  ],
+  "progress": {
+    "difficulty": "BEGINNER",
+    "total": 120,
+    "learned": 36,
+    "mastered": 8,
+    "dueReview": 4,
+    "remainingNew": 84
+  }
+}
+```
+
 单词本等级规则：
 
 - `word_books.level` 取值为 `BEGINNER` 或 `ADVANCED`。
 - 一个单词本只能属于一个等级，用户端接口返回的 `progress.difficulty` 与词书 `level` 保持一致。
 - 用户端接口仍兼容 `difficulty` 查询参数，但后端会以词书 `level` 为准查询练习词和进度。
 - 新增、编辑、AI 生成单词时，单词 `difficulty` 会被强制设置为所属词书等级，避免同一本词书混入初级和进阶单词。
+- 用户端进度中的 `learned` 只统计真正提交过练习结果的记录，即 `studyCount > 0`；`status=NEW` 或 `studyCount=0` 的预创建进度仍视为未学新词。
+- `/books/{bookId}/next` 查询新词时只排除真正练过的单词，避免预创建 `NEW` 进度导致用户还没学习就没有下一词。
+- 到期复习词同样要求 `studyCount > 0`，仅存在 `nextReviewAt` 的预创建记录不会被当作复习词。
 
 复习规则：
 

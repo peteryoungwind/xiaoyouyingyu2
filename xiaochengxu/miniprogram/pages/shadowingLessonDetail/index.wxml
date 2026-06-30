@@ -26,7 +26,7 @@
         <view wx:else class="audio-panel" bindtap="playAudio">
           <image wx:if="{{lesson.thumbnailUrl}}" class="audio-cover" src="{{lesson.thumbnailUrl}}" mode="aspectFill" />
           <view wx:else class="audio-cover placeholder">▶</view>
-          <view class="audio-play">播放音频</view>
+          <view class="audio-play">{{audioLoading ? '加载中...' : (audioPlaying ? '暂停音频' : '播放音频')}}</view>
         </view>
         <view class="media-tags">
           <text class="media-tag">{{lesson.topic || lesson.category || '原声素材'}}</text>

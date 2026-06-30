@@ -49,4 +49,8 @@ public interface WordRepository extends JpaRepository<Word, Long> {
                                     @Param("status") WordStatus status,
                                     @Param("excludedIds") Collection<Long> excludedIds,
                                     Pageable pageable);
+
+    List<Word> findByWordBookIdAndDeletedFalseAndDifficultyAndStatusOrderBySortOrderAscIdAsc(Long bookId,
+                                                                                              WordDifficulty difficulty,
+                                                                                              WordStatus status);
 }

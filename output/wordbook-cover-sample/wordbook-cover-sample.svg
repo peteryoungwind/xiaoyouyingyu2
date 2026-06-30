@@ -1,0 +1,190 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1800" viewBox="0 0 1400 1800">
+  <defs>
+    <linearGradient id="pageBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F8FBFF"/>
+      <stop offset="0.52" stop-color="#F4F8F4"/>
+      <stop offset="1" stop-color="#FFF7EC"/>
+    </linearGradient>
+    <linearGradient id="life" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#24A667"/>
+      <stop offset="1" stop-color="#85DDBA"/>
+    </linearGradient>
+    <linearGradient id="workplace" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2F6FED"/>
+      <stop offset="1" stop-color="#77B7FF"/>
+    </linearGradient>
+    <linearGradient id="speakingBeginner" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0E9A9A"/>
+      <stop offset="1" stop-color="#7DD3D3"/>
+    </linearGradient>
+    <linearGradient id="business" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1C2738"/>
+      <stop offset="1" stop-color="#54708F"/>
+    </linearGradient>
+    <linearGradient id="ielts" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2155D9"/>
+      <stop offset="1" stop-color="#0E9F6E"/>
+    </linearGradient>
+    <linearGradient id="speakingAdvanced" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F08B3E"/>
+      <stop offset="1" stop-color="#F6C06D"/>
+    </linearGradient>
+    <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#1C2B4A" flood-opacity="0.11"/>
+    </filter>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#172033" flood-opacity="0.12"/>
+    </filter>
+    <style>
+      .cn { font-family: "PingFang SC", "Hiragino Sans GB", "STHeiti", "Microsoft YaHei", sans-serif; }
+      .en { font-family: "Helvetica Neue", Arial, sans-serif; }
+      .title { font-size: 44px; font-weight: 900; fill: #172033; }
+      .desc { font-size: 25px; font-weight: 650; fill: #667085; }
+      .sectionKicker { font-size: 24px; font-weight: 900; fill: #2F6FED; letter-spacing: 2px; }
+      .sectionTitle { font-size: 42px; font-weight: 900; fill: #172033; }
+      .bookTitle { font-size: 35px; font-weight: 900; fill: #FFFFFF; }
+      .bookSub { font-size: 18px; font-weight: 800; fill: rgba(255,255,255,0.78); letter-spacing: 1.1px; }
+      .bookHint { font-size: 18px; font-weight: 700; fill: rgba(255,255,255,0.86); }
+      .pillText { font-size: 19px; font-weight: 900; fill: #FFFFFF; }
+      .meta { font-size: 24px; font-weight: 750; fill: #667085; }
+      .name { font-size: 30px; font-weight: 900; fill: #172033; }
+    </style>
+  </defs>
+
+  <rect width="1400" height="1800" fill="url(#pageBg)"/>
+  <path d="M0 1290 C210 1198 390 1355 650 1258 C880 1172 1098 1334 1400 1190 L1400 1800 L0 1800 Z" fill="#2F6FED" opacity="0.05"/>
+  <path d="M0 1426 C255 1332 450 1484 720 1388 C946 1306 1168 1460 1400 1362 L1400 1800 L0 1800 Z" fill="#22A876" opacity="0.08"/>
+
+  <g transform="translate(92 78)">
+    <text class="en sectionKicker" x="0" y="0">WORD PRACTICE</text>
+    <text class="cn title" x="0" y="72">单词本封面样例</text>
+    <text class="cn desc" x="0" y="118">方向：封面内直接展示书名、英文主题、等级和轻量图形，小程序里可用 WXML/WXSS 稳定实现。</text>
+  </g>
+
+  <g transform="translate(92 250)">
+    <text class="en sectionKicker" x="0" y="0">BEGINNER</text>
+    <text class="cn sectionTitle" x="0" y="58">初级词书</text>
+  </g>
+
+  <g transform="translate(92 342)" filter="url(#cardShadow)">
+    <rect width="372" height="466" rx="28" fill="#FFFFFF" stroke="#D7E0EA" stroke-width="2"/>
+    <rect width="372" height="248" rx="28" fill="url(#life)"/>
+    <path d="M0 174 C62 146 116 196 182 166 C250 136 306 180 372 148 L372 248 L0 248 Z" fill="#FFFFFF" opacity="0.14"/>
+    <circle cx="302" cy="74" r="44" fill="#FFFFFF" opacity="0.18"/>
+    <rect x="238" y="154" width="82" height="62" rx="16" fill="#FFFFFF" opacity="0.22"/>
+    <path d="M260 194 L278 170 L304 197" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity="0.78"/>
+    <rect x="26" y="24" width="82" height="34" rx="17" fill="#172033" opacity="0.22"/>
+    <text class="cn pillText" x="49" y="48">初级</text>
+    <text class="cn bookTitle" x="26" y="112">日常生活</text>
+    <text class="en bookSub" x="28" y="148">DAILY LIFE</text>
+    <text class="cn bookHint" x="28" y="188">作息 / 饮食 / 出行 / 社交</text>
+    <text class="cn name" x="26" y="310">日常生活</text>
+    <text class="cn meta" x="26" y="354">1000 词 · 未开始</text>
+    <rect x="26" y="390" width="212" height="28" rx="14" fill="#E8F5EF"/>
+    <rect x="26" y="390" width="70" height="28" rx="14" fill="#24A667"/>
+  </g>
+
+  <g transform="translate(514 342)" filter="url(#cardShadow)">
+    <rect width="372" height="466" rx="28" fill="#FFFFFF" stroke="#D7E0EA" stroke-width="2"/>
+    <rect width="372" height="248" rx="28" fill="url(#workplace)"/>
+    <path d="M0 172 C74 126 134 196 206 160 C268 130 312 168 372 130 L372 248 L0 248 Z" fill="#FFFFFF" opacity="0.13"/>
+    <rect x="248" y="70" width="76" height="92" rx="18" fill="#FFFFFF" opacity="0.22"/>
+    <rect x="268" y="94" width="36" height="8" rx="4" fill="#FFFFFF" opacity="0.85"/>
+    <rect x="268" y="118" width="42" height="8" rx="4" fill="#FFFFFF" opacity="0.72"/>
+    <path d="M246 190 L274 164 L310 196" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity="0.78"/>
+    <rect x="26" y="24" width="82" height="34" rx="17" fill="#172033" opacity="0.22"/>
+    <text class="cn pillText" x="49" y="48">初级</text>
+    <text class="cn bookTitle" x="26" y="112">职场英语</text>
+    <text class="en bookSub" x="28" y="148">WORKPLACE</text>
+    <text class="cn bookHint" x="28" y="188">会议 / 协作 / 邮件 / 任务</text>
+    <text class="cn name" x="26" y="310">职场英语</text>
+    <text class="cn meta" x="26" y="354">1000 词 · 未开始</text>
+    <rect x="26" y="390" width="212" height="28" rx="14" fill="#EAF1FF"/>
+    <rect x="26" y="390" width="70" height="28" rx="14" fill="#2F6FED"/>
+  </g>
+
+  <g transform="translate(936 342)" filter="url(#cardShadow)">
+    <rect width="372" height="466" rx="28" fill="#FFFFFF" stroke="#D7E0EA" stroke-width="2"/>
+    <rect width="372" height="248" rx="28" fill="url(#speakingBeginner)"/>
+    <path d="M0 170 C76 132 140 194 210 160 C276 128 318 174 372 142 L372 248 L0 248 Z" fill="#FFFFFF" opacity="0.13"/>
+    <circle cx="286" cy="88" r="40" fill="#FFFFFF" opacity="0.2"/>
+    <path d="M236 176 C254 136 318 136 336 176" fill="none" stroke="#FFFFFF" stroke-width="12" stroke-linecap="round" opacity="0.76"/>
+    <circle cx="262" cy="112" r="10" fill="#FFFFFF" opacity="0.84"/>
+    <circle cx="310" cy="112" r="10" fill="#FFFFFF" opacity="0.84"/>
+    <rect x="26" y="24" width="82" height="34" rx="17" fill="#172033" opacity="0.22"/>
+    <text class="cn pillText" x="49" y="48">初级</text>
+    <text class="cn bookTitle" x="26" y="112">小柚口语初级</text>
+    <text class="en bookSub" x="28" y="148">SPEAKING STARTER</text>
+    <text class="cn bookHint" x="28" y="188">主题 / 高频 / 开口表达</text>
+    <text class="cn name" x="26" y="310">小柚口语初级</text>
+    <text class="cn meta" x="26" y="354">1000 词 · 未开始</text>
+    <rect x="26" y="390" width="212" height="28" rx="14" fill="#E7FAFA"/>
+    <rect x="26" y="390" width="70" height="28" rx="14" fill="#0E9A9A"/>
+  </g>
+
+  <g transform="translate(92 900)">
+    <text class="en sectionKicker" x="0" y="0" fill="#F08B3E">ADVANCED</text>
+    <text class="cn sectionTitle" x="0" y="58">进阶词书</text>
+  </g>
+
+  <g transform="translate(92 992)" filter="url(#cardShadow)">
+    <rect width="372" height="466" rx="28" fill="#FFFFFF" stroke="#D7E0EA" stroke-width="2"/>
+    <rect width="372" height="248" rx="28" fill="url(#business)"/>
+    <path d="M0 178 C76 128 136 194 208 158 C280 122 314 174 372 138 L372 248 L0 248 Z" fill="#32C7A6" opacity="0.18"/>
+    <rect x="238" y="62" width="90" height="116" rx="18" fill="#FFFFFF" opacity="0.18"/>
+    <polyline points="254,148 274,122 292,134 314,96" fill="none" stroke="#32C7A6" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="26" y="24" width="82" height="34" rx="17" fill="#FFFFFF" opacity="0.16"/>
+    <text class="cn pillText" x="49" y="48">进阶</text>
+    <text class="cn bookTitle" x="26" y="112">商务英语</text>
+    <text class="en bookSub" x="28" y="148">BUSINESS</text>
+    <text class="cn bookHint" x="28" y="188">谈判 / 财务 / 市场 / 合规</text>
+    <text class="cn name" x="26" y="310">商务英语</text>
+    <text class="cn meta" x="26" y="354">1000 词 · 未开始</text>
+    <rect x="26" y="390" width="212" height="28" rx="14" fill="#EEF2F6"/>
+    <rect x="26" y="390" width="70" height="28" rx="14" fill="#54708F"/>
+  </g>
+
+  <g transform="translate(514 992)" filter="url(#cardShadow)">
+    <rect width="372" height="466" rx="28" fill="#FFFFFF" stroke="#D7E0EA" stroke-width="2"/>
+    <rect width="372" height="248" rx="28" fill="url(#ielts)"/>
+    <path d="M0 176 C68 128 128 190 202 158 C274 126 312 174 372 140 L372 248 L0 248 Z" fill="#FFFFFF" opacity="0.13"/>
+    <rect x="226" y="70" width="52" height="52" rx="14" fill="#FFFFFF" opacity="0.22"/>
+    <rect x="292" y="70" width="52" height="52" rx="14" fill="#FFFFFF" opacity="0.22"/>
+    <text class="en" x="237" y="104" font-size="18" font-weight="900" fill="#FFFFFF">I</text>
+    <text class="en" x="308" y="104" font-size="18" font-weight="900" fill="#FFFFFF">T</text>
+    <path d="M230 184 L256 150 L286 182 L326 126" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity="0.78"/>
+    <rect x="26" y="24" width="82" height="34" rx="17" fill="#172033" opacity="0.22"/>
+    <text class="cn pillText" x="49" y="48">进阶</text>
+    <text class="cn bookTitle" x="26" y="112">雅思托福</text>
+    <text class="en bookSub" x="28" y="148">IELTS &amp; TOEFL</text>
+    <text class="cn bookHint" x="28" y="188">学术 / 论证 / 写作 / 科研</text>
+    <text class="cn name" x="26" y="310">雅思托福</text>
+    <text class="cn meta" x="26" y="354">1000 词 · 未开始</text>
+    <rect x="26" y="390" width="212" height="28" rx="14" fill="#EAF1FF"/>
+    <rect x="26" y="390" width="70" height="28" rx="14" fill="#2155D9"/>
+  </g>
+
+  <g transform="translate(936 992)" filter="url(#cardShadow)">
+    <rect width="372" height="466" rx="28" fill="#FFFFFF" stroke="#D7E0EA" stroke-width="2"/>
+    <rect width="372" height="248" rx="28" fill="url(#speakingAdvanced)"/>
+    <path d="M0 176 C76 134 136 194 210 158 C278 126 318 176 372 142 L372 248 L0 248 Z" fill="#FFFFFF" opacity="0.16"/>
+    <circle cx="282" cy="86" r="44" fill="#FFFFFF" opacity="0.2"/>
+    <rect x="238" y="150" width="96" height="48" rx="24" fill="#FFFFFF" opacity="0.18"/>
+    <path d="M250 174 L270 154 L290 174 L312 146" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity="0.78"/>
+    <rect x="26" y="24" width="82" height="34" rx="17" fill="#172033" opacity="0.2"/>
+    <text class="cn pillText" x="49" y="48">进阶</text>
+    <text class="cn bookTitle" x="26" y="112">小柚口语进阶</text>
+    <text class="en bookSub" x="28" y="148">SPEAKING PLUS</text>
+    <text class="cn bookHint" x="28" y="188">观点 / 叙述 / 立场 / 深聊</text>
+    <text class="cn name" x="26" y="310">小柚口语进阶</text>
+    <text class="cn meta" x="26" y="354">1000 词 · 未开始</text>
+    <rect x="26" y="390" width="212" height="28" rx="14" fill="#FFF0E5"/>
+    <rect x="26" y="390" width="70" height="28" rx="14" fill="#F08B3E"/>
+  </g>
+
+  <g transform="translate(92 1600)">
+    <rect width="1216" height="104" rx="26" fill="#FFFFFF" opacity="0.78" stroke="#D7E0EA" stroke-width="2"/>
+    <text class="cn desc" x="32" y="42">落代码时：卡片封面区域加入 title/subtitle/keywords/装饰图层，按词书名称映射 6 套文案和颜色。</text>
+    <text class="cn desc" x="32" y="78">不依赖图片资源加载；即使后端封面字段为空，也不会再出现“空白封面”。</text>
+  </g>
+</svg>

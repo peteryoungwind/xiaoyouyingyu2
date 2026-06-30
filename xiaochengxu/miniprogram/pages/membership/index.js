@@ -5,6 +5,17 @@ function centsToYuan(cents) {
   return ((cents || 0) / 100).toFixed(2);
 }
 
+function normalizePayError(err) {
+  var errMsg = (err && err.errMsg) || '';
+  if (errMsg.indexOf('cancel') >= 0) {
+    return '未完成支付';
+  }
+  if (errMsg) {
+    return errMsg.replace(/^requestPayment:fail\s*/i, '') || '支付失败，请稍后重试';
+  }
+  return '支付失败，请稍后重试';
+}
+
 Page({
   data: {
     loading: true,
@@ -66,6 +77,15 @@ Page({
     api.createMembershipOrder(planId).then(function (res) {
       var params = res.paymentParams || {};
       that.setData({ confirmingOrderNo: res.orderNo });
+      if (params.mockPayment || (params.package && params.package.indexOf('prepay_id=mock_') === 0)) {
+        that.completeMockPayment(res.orderNo);
+        return;
+      }
+      if (!params.timeStamp || !params.nonceStr || !params.package || !params.paySign) {
+        wx.showToast({ title: '支付参数不完整，请稍后重试', icon: 'none' });
+        that.setData({ payingPlanId: null, confirmingOrderNo: '' });
+        return;
+      }
       wx.requestPayment({
         timeStamp: params.timeStamp,
         nonceStr: params.nonceStr,
@@ -76,14 +96,23 @@ Page({
           that.confirmOrder(res.orderNo, 0);
         },
         fail: function (err) {
-          var msg = err && err.errMsg && err.errMsg.indexOf('cancel') >= 0 ? '未完成支付' : '支付失败，请稍后重试';
-          wx.showToast({ title: msg, icon: 'none' });
-          that.setData({ payingPlanId: null });
+          wx.showToast({ title: normalizePayError(err), icon: 'none' });
+          that.setData({ payingPlanId: null, confirmingOrderNo: '' });
         }
       });
     }).catch(function (err) {
       wx.showToast({ title: err.message || '创建订单失败', icon: 'none' });
       that.setData({ payingPlanId: null });
+    });
+  },
+
+  completeMockPayment: function (orderNo) {
+    var that = this;
+    api.mockPaidMembershipOrder(orderNo).then(function () {
+      that.confirmOrder(orderNo, 0);
+    }).catch(function (err) {
+      wx.showToast({ title: err.message || '模拟支付失败', icon: 'none' });
+      that.setData({ payingPlanId: null, confirmingOrderNo: '' });
     });
   },
 

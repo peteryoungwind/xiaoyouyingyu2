@@ -32,8 +32,18 @@
 
       <view wx:if="{{beginnerBooks.length > 0}}" class="book-grid">
         <view wx:for="{{beginnerBooks}}" wx:key="id" class="book-card" bindtap="goToBook" data-id="{{item.id}}" data-level="{{item.level}}">
-          <view class="book-cover {{item.coverClass}}">
+          <view class="book-cover {{item.cover.className}}">
+            <view class="cover-wave"></view>
+            <view class="cover-shape shape-sun"></view>
+            <view class="cover-icon {{item.cover.iconClass}}">
+              <view></view>
+              <view></view>
+              <view></view>
+            </view>
             <view class="cover-mark">{{item.levelLabel}}</view>
+            <view class="cover-title">{{item.cover.title}}</view>
+            <view class="cover-subtitle">{{item.cover.subtitle}}</view>
+            <view class="cover-hint">{{item.cover.hint}}</view>
           </view>
           <view class="book-info">
             <view class="book-name">{{item.name}}</view>
@@ -55,8 +65,18 @@
 
       <view wx:if="{{advancedBooks.length > 0}}" class="book-grid">
         <view wx:for="{{advancedBooks}}" wx:key="id" class="book-card" bindtap="goToBook" data-id="{{item.id}}" data-level="{{item.level}}">
-          <view class="book-cover {{item.coverClass}}">
+          <view class="book-cover {{item.cover.className}}">
+            <view class="cover-wave"></view>
+            <view class="cover-shape shape-sun"></view>
+            <view class="cover-icon {{item.cover.iconClass}}">
+              <view></view>
+              <view></view>
+              <view></view>
+            </view>
             <view class="cover-mark">{{item.levelLabel}}</view>
+            <view class="cover-title">{{item.cover.title}}</view>
+            <view class="cover-subtitle">{{item.cover.subtitle}}</view>
+            <view class="cover-hint">{{item.cover.hint}}</view>
           </view>
           <view class="book-info">
             <view class="book-name">{{item.name}}</view>

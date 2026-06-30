@@ -52,7 +52,15 @@ public class MembershipOrderService {
         order.setExpiresAt(LocalDateTime.now().plusMinutes(wechatPayProperties.getOrderExpireMinutes()));
         membershipOrderRepository.save(order);
 
-        Map<String, String> paymentParams = wechatPayService.createPaymentParams(order, user.getWechatOpenid(), "小柚英语会员-" + plan.getName());
+        Map<String, String> paymentParams;
+        try {
+            paymentParams = wechatPayService.createPaymentParams(order, user.getWechatOpenid(), "小柚英语会员-" + plan.getName());
+        } catch (RuntimeException e) {
+            order.setStatus(MembershipOrderStatus.FAILED);
+            order.setFailureReason(e.getMessage());
+            membershipOrderRepository.save(order);
+            throw e;
+        }
         String pkg = paymentParams.getOrDefault("package", "");
         if (pkg.startsWith("prepay_id=")) {
             order.setWechatPrepayId(pkg.substring("prepay_id=".length()));

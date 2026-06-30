@@ -19,9 +19,18 @@ const navItems = [
   { href: '/redeem-codes', label: '卡密管理', icon: Ticket, adminOnly: true },
 ];
 
+function isPathMatch(pathname: string, href: string) {
+  if (href === '/') return pathname === '/';
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 export function Sidebar() {
   const pathname = usePathname();
-  const { isAdmin, isPremium } = useAuth();
+  const { isAdmin } = useAuth();
+  const visibleNavItems = navItems.filter(item => !item.adminOnly || isAdmin);
+  const activeHref = visibleNavItems
+    .filter(item => isPathMatch(pathname, item.href))
+    .sort((a, b) => b.href.length - a.href.length)[0]?.href;
 
   return (
     <>
@@ -34,9 +43,8 @@ export function Sidebar() {
         </div>
 
         <nav className="flex-1 space-y-1 px-3 py-2">
-          {navItems.map(item => {
-            if (item.adminOnly && !isAdmin) return null;
-            const active = item.href === '/' ? pathname === '/' : pathname.startsWith(item.href);
+          {visibleNavItems.map(item => {
+            const active = item.href === activeHref;
             return (
               <Link key={item.href} href={item.href}
                 className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors
@@ -60,9 +68,8 @@ export function Sidebar() {
 
       <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-gray-200 bg-white/95 px-2 py-2 pb-[calc(env(safe-area-inset-bottom)+0.5rem)] backdrop-blur md:hidden">
         <div className="flex items-center justify-around gap-1">
-          {navItems.map(item => {
-            if (item.adminOnly && !isAdmin) return null;
-            const active = item.href === '/' ? pathname === '/' : pathname.startsWith(item.href);
+          {visibleNavItems.map(item => {
+            const active = item.href === activeHref;
             return (
               <Link
                 key={item.href}

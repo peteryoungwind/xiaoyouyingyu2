@@ -269,6 +269,10 @@ function getMembershipOrder(orderNo) {
   return http.get('/membership/orders/' + encodeURIComponent(orderNo));
 }
 
+function mockPaidMembershipOrder(orderNo) {
+  return http.post('/dev/membership/orders/' + encodeURIComponent(orderNo) + '/mock-paid', {});
+}
+
 function getMembershipContact() {
   return http.get('/user/membership-contact');
 }
@@ -378,6 +382,7 @@ module.exports = {
   getMembershipPlans: getMembershipPlans,
   createMembershipOrder: createMembershipOrder,
   getMembershipOrder: getMembershipOrder,
+  mockPaidMembershipOrder: mockPaidMembershipOrder,
   getMembershipContact: getMembershipContact,
   redeemCode: redeemCode,
   // Word Practice

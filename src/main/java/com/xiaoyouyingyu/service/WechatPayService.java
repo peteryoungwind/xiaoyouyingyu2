@@ -103,6 +103,7 @@ public class WechatPayService {
         params.put("package", "prepay_id=mock_" + order.getOrderNo());
         params.put("signType", "RSA");
         params.put("paySign", "MOCK_PAY_SIGN_" + randomToken(8));
+        params.put("mockPayment", "true");
         return params;
     }
 

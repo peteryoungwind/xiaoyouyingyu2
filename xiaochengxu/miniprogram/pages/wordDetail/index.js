@@ -1,6 +1,7 @@
 const api = require('../../utils/api');
 const auth = require('../../utils/auth');
 const audio = require('../../utils/audio');
+const wordPractice = require('../../utils/wordPractice');
 
 Page({
   data: {
@@ -23,6 +24,11 @@ Page({
   },
 
   loadWord() {
+    const cachedWord = wordPractice.findCachedWord(this.data.id);
+    if (cachedWord) {
+      this.setData({ word: cachedWord, loading: false });
+      return;
+    }
     this.setData({ loading: true });
     api.getWordDetail(this.data.id).then(res => {
       this.setData({ word: res, loading: false });
@@ -41,7 +47,8 @@ Page({
     if (!this.data.word || this.data.submitting) return;
     const result = e.currentTarget.dataset.result;
     this.setData({ submitting: true });
-    api.submitWordAnswer(this.data.word.id, result).then(() => {
+    api.submitWordAnswer(this.data.word.id, result).then(res => {
+      wordPractice.updateCachedWordProgress(this.data.word.wordBookId, this.data.word.difficulty, this.data.word.id, res.progress, res.bookProgress);
       this.setData({ submitting: false });
       wx.showToast({ title: '已记录', icon: 'success' });
     }).catch(err => {

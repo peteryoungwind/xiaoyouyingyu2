@@ -74,10 +74,10 @@ public class WordPracticeController {
     }
 
     @GetMapping("/books/{bookId}/words")
-    public ResponseEntity<?> learnedWords(@PathVariable Long bookId,
-                                          @RequestParam(defaultValue = "BEGINNER") WordDifficulty difficulty,
-                                          Authentication auth) {
+    public ResponseEntity<?> wordBookWords(@PathVariable Long bookId,
+                                           @RequestParam(defaultValue = "BEGINNER") WordDifficulty difficulty,
+                                           Authentication auth) {
         String username = requireUsername(auth);
-        return ResponseEntity.ok(wordPracticeService.learnedWords(bookId, username, difficulty));
+        return ResponseEntity.ok(wordPracticeService.wordBookWords(bookId, username, difficulty));
     }
 }

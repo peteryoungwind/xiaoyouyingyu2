@@ -9,8 +9,12 @@ App({
     hasPassword: true,
     membershipExpireAt: '',
     baseUrl: '',
+    wordPracticeRefreshTimer: null,
+    wordPracticePreloadInFlight: false,
     apiBaseUrlMap: {
-      develop: 'http://localhost:8080/api',
+      // Temporary local debugging: use the production backend in WeChat DevTools.
+      // Restore to http://localhost:8080/api after this debug pass.
+      develop: 'https://xiaoyou-ky.top/api',
       trial: 'https://xiaoyou-ky.top/api',
       release: 'https://xiaoyou-ky.top/api'
     }
@@ -19,6 +23,11 @@ App({
   onLaunch() {
     this.initBaseUrlByEnv();
     this.loadUserFromStorage();
+    this.startWordPracticeCacheRefresh();
+  },
+
+  onShow() {
+    this.startWordPracticeCacheRefresh();
   },
 
   initBaseUrlByEnv() {
@@ -88,9 +97,13 @@ App({
     wx.setStorageSync('membershipPermanent', userInfo.membershipPermanent || false);
     wx.setStorageSync('membershipExpireAt', userInfo.membershipExpireAt || '');
     wx.setStorageSync('hasPassword', userInfo.hasPassword !== undefined ? !!userInfo.hasPassword : true);
+
+    this.startWordPracticeCacheRefresh();
+    this.preloadRecentWordPractice(true);
   },
 
   logout() {
+    this.stopWordPracticeCacheRefresh();
     this.globalData.token = null;
     this.globalData.isLoggedIn = false;
     this.globalData.role = '';
@@ -108,6 +121,16 @@ App({
     wx.removeStorageSync('membershipExpireAt');
     wx.removeStorageSync('hasPassword');
     wx.removeStorageSync('recentWordPracticeBook');
+    try {
+      const info = wx.getStorageInfoSync();
+      (info.keys || []).forEach(function (key) {
+        if (key.indexOf('wordPracticeBookCache:') === 0) {
+          wx.removeStorageSync(key);
+        }
+      });
+    } catch (e) {
+      console.warn('Clear word practice caches failed:', e);
+    }
   },
 
   checkLogin() {
@@ -120,5 +143,65 @@ App({
 
   isAdmin() {
     return this.globalData.role === 'ADMIN';
+  },
+
+  startWordPracticeCacheRefresh() {
+    if (!this.checkLogin()) {
+      this.stopWordPracticeCacheRefresh();
+      return;
+    }
+
+    this.preloadRecentWordPractice(false);
+    if (this.globalData.wordPracticeRefreshTimer) {
+      return;
+    }
+
+    this.globalData.wordPracticeRefreshTimer = setInterval(() => {
+      this.preloadRecentWordPractice(true);
+    }, 10 * 60 * 1000);
+  },
+
+  stopWordPracticeCacheRefresh() {
+    if (this.globalData.wordPracticeRefreshTimer) {
+      clearInterval(this.globalData.wordPracticeRefreshTimer);
+      this.globalData.wordPracticeRefreshTimer = null;
+    }
+    this.globalData.wordPracticePreloadInFlight = false;
+  },
+
+  preloadRecentWordPractice(force) {
+    if (!this.checkLogin() || this.globalData.wordPracticePreloadInFlight) {
+      return;
+    }
+
+    const wordPractice = require('./utils/wordPractice');
+    const recent = wordPractice.getRecentBook();
+    if (!recent) {
+      return;
+    }
+    if (!force && wordPractice.readBookCache(recent.bookId, recent.difficulty)) {
+      return;
+    }
+
+    const usernameAtStart = wx.getStorageSync('username') || '';
+    const api = require('./utils/api');
+    this.globalData.wordPracticePreloadInFlight = true;
+
+    const finish = () => {
+      this.globalData.wordPracticePreloadInFlight = false;
+    };
+
+    api.getWordBookWords(recent.bookId, recent.difficulty).then(res => {
+      const currentUsername = wx.getStorageSync('username') || '';
+      if (!this.checkLogin() || currentUsername !== usernameAtStart) {
+        finish();
+        return;
+      }
+      wordPractice.saveBookCache(recent.bookId, recent.difficulty, res || {});
+      finish();
+    }).catch(err => {
+      console.warn('Preload recent word practice cache failed:', err);
+      finish();
+    });
   }
 });

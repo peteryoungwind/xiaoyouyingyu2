@@ -9,7 +9,7 @@ Page({
     difficulty: 'BEGINNER',
     bookTitle: '单词练习',
     difficultyLabel: '初级',
-    headerSubtitle: '初级 · 第 1/1 个',
+    headerSubtitle: '初级 · 已学 0/0 个',
     stepIndex: 0,
     stepTotal: 0,
     stepLabel: '1/1',
@@ -37,7 +37,7 @@ Page({
       bookId: options.bookId,
       difficulty: options.difficulty || 'BEGINNER',
       difficultyLabel: (options.difficulty || 'BEGINNER') === 'BEGINNER' ? '初级' : '进阶',
-      headerSubtitle: ((options.difficulty || 'BEGINNER') === 'BEGINNER' ? '初级' : '进阶') + ' · 第 1/1 个'
+      headerSubtitle: ((options.difficulty || 'BEGINNER') === 'BEGINNER' ? '初级' : '进阶') + ' · 已学 0/0 个'
     });
     this.ensureAccess();
   },
@@ -47,36 +47,84 @@ Page({
       return;
     }
     wordPractice.saveRecentBook(this.data.bookId, this.data.difficulty);
-    this.loadNext();
+    this.prepareWordCache();
     this.loadBookTitle();
   },
 
+  prepareWordCache() {
+    const cached = wordPractice.readBookCache(this.data.bookId, this.data.difficulty);
+    if (cached) {
+      this.loadNext();
+      this.refreshWordCache(false);
+      return;
+    }
+    this.setData({ loading: true, completed: false });
+    this.loadNextFromApi();
+    this.refreshWordCache(false);
+  },
+
+  refreshWordCache(showLoading) {
+    const refreshStartedAt = Date.now();
+    if (showLoading) {
+      this.setData({ loading: true, completed: false });
+    }
+    api.getWordBookWords(this.data.bookId, this.data.difficulty).then(res => {
+      const currentCache = wordPractice.readBookCache(this.data.bookId, this.data.difficulty, { allowExpired: true });
+      if (currentCache && currentCache.updatedAt > refreshStartedAt) {
+        if (showLoading) {
+          this.loadNext();
+        }
+        return;
+      }
+      wordPractice.saveBookCache(this.data.bookId, this.data.difficulty, res || {});
+      if (showLoading) {
+        this.loadNext();
+      }
+    }).catch(err => {
+      console.error('Load word book cache failed:', err);
+      if (showLoading) {
+        this.loadNextFromApi();
+      }
+    });
+  },
+
+  continuePractice() {
+    if (this.data.loading || this.data.submitting) {
+      return;
+    }
+    this.loadNextFromApi({
+      onCompleted: () => {
+        wx.showToast({
+          title: '今天这本词书已完成',
+          icon: 'none'
+        });
+      }
+    });
+    this.refreshWordCache(false);
+  },
+
   loadNext() {
+    const selected = wordPractice.selectNextWord(this.data.bookId, this.data.difficulty);
+    if (!selected) {
+      this.loadNextFromApi();
+      return;
+    }
+    if (!selected.word && this.hasPendingPractice(selected.progress)) {
+      this.loadNextFromApi();
+      return;
+    }
+    this.applyNextWord(selected.word, selected.progress, selected.remainingCount);
+  },
+
+  loadNextFromApi(options) {
     const nextIndex = this.data.stepIndex + 1;
     this.setData({ loading: true, completed: false });
     api.getNextWords(this.data.bookId, this.data.difficulty, 1).then(res => {
       const words = res.words || [];
-      const progress = res.progress || {};
-      const total = progress.total || 0;
-      const learned = progress.learned || 0;
-      const stepTotal = Math.max(1, Math.min(26, (progress.dueReview || 0) + (progress.remainingNew || 0) || 1));
-      const hasWord = words.length > 0;
-      this.setData({
-        word: hasWord ? words[0] : null,
-        progress,
-        completed: !hasWord,
-        loading: false,
-        submitting: false,
-        detailVisible: false,
-        stepIndex: hasWord ? nextIndex : this.data.stepIndex,
-        stepTotal,
-        stepLabel: (hasWord ? nextIndex : this.data.stepIndex) + '/' + stepTotal,
-        progressPercent: total > 0 ? Math.min(100, Math.round((learned / total) * 100)) : 0,
-        wordTypeLabel: hasWord && words[0].progress ? '到期复习' : '新词练习',
-        answerLabel: '',
-        headerSubtitle: this.data.difficultyLabel + ' · 第 ' + ((hasWord ? nextIndex : this.data.stepIndex) + '/' + stepTotal) + ' 个',
-        reviewSummary: this.data.difficultyLabel + ' · 待复习 ' + (progress.dueReview || 0) + ' · 掌握 ' + (progress.mastered || 0)
-      });
+      this.applyNextWord(words[0] || null, res.progress || {}, null, nextIndex);
+      if (words.length === 0 && options && typeof options.onCompleted === 'function') {
+        options.onCompleted();
+      }
     }).catch(err => {
       console.error('Load next word failed:', err);
       this.setData({ loading: false, submitting: false });
@@ -85,11 +133,44 @@ Page({
     });
   },
 
+  applyNextWord(word, progress, remainingCount, forcedNextIndex) {
+    const nextIndex = forcedNextIndex || this.data.stepIndex + 1;
+    const total = progress.total || 0;
+    const learned = progress.learned || 0;
+    const pendingCount = remainingCount !== null && remainingCount !== undefined
+      ? remainingCount
+      : ((progress.dueReview || 0) + (progress.remainingNew || 0));
+    const stepTotal = Math.max(1, pendingCount || 1);
+    const hasWord = !!word;
+    this.setData({
+      word: hasWord ? word : null,
+      progress,
+      completed: !hasWord,
+      loading: false,
+      submitting: false,
+      detailVisible: false,
+      stepIndex: hasWord ? nextIndex : this.data.stepIndex,
+      stepTotal,
+      stepLabel: (hasWord ? nextIndex : this.data.stepIndex) + '/' + stepTotal,
+      progressPercent: total > 0 ? Math.min(100, Math.round((learned / total) * 100)) : 0,
+      wordTypeLabel: hasWord && wordPractice.hasStartedProgress(word.progress) ? '到期复习' : '新词练习',
+      answerLabel: '',
+      headerSubtitle: this.wordCountSubtitle(progress),
+      reviewSummary: this.data.difficultyLabel + ' · 待复习 ' + (progress.dueReview || 0) + ' · 掌握 ' + (progress.mastered || 0)
+    });
+  },
+
+  hasPendingPractice(progress) {
+    const source = progress || {};
+    return ((source.dueReview || 0) + (source.remainingNew || 0)) > 0;
+  },
+
   answer(e) {
     if (!this.data.word || this.data.submitting) return;
     const result = e.currentTarget.dataset.result;
     this.setData({ submitting: true });
     api.submitWordAnswer(this.data.word.id, result).then(res => {
+      wordPractice.updateCachedWordProgress(this.data.bookId, this.data.difficulty, this.data.word.id, res.progress, res.bookProgress);
       const nextStats = this.nextSessionStats(result);
       const answerMeta = this.answerMeta(result);
       if (result !== 'KNOWN') {
@@ -166,6 +247,13 @@ Page({
     const total = source.total || 0;
     const learned = source.learned || 0;
     return total > 0 ? Math.min(100, Math.round((learned / total) * 100)) : 0;
+  },
+
+  wordCountSubtitle(progress) {
+    const source = progress || {};
+    const total = source.total || 0;
+    const learned = source.learned || 0;
+    return this.data.difficultyLabel + ' · 已学 ' + learned + '/' + total + ' 个';
   },
 
   markFocus() {

@@ -127,11 +127,13 @@ npm run start
 | `ToastProvider` | `components/toast-provider.tsx` | Toast 通知上下文 |
 | `Navbar` | `components/navbar.tsx` | 旧版/辅助导航组件 |
 
+`Sidebar` 的选中态按可见导航项做路径边界匹配，并选择最长匹配路径作为唯一高亮项。这样 `/admin`、`/admin/membership-plans`、`/admin/membership-orders` 等管理入口在侧边栏中保持同层级互斥高亮，同时详情类子路由仍归属到对应父入口。
+
 ## 会员支付管理
 
 PC 后台新增两个管理员页面：
 
-- `/admin/membership-plans`：维护会员套餐。金额输入以元展示，提交时转为整数分；支持普通天数套餐、永久会员套餐、限时折扣、排序和上下架。
+- `/admin/membership-plans`：维护会员套餐。金额输入以元展示，提交时转为整数分；支持普通天数套餐、永久会员套餐、限时折扣、排序和上下架。新增/编辑弹窗按“基础信息、价格与时长、折扣与上架”分组展示字段，必填项包含套餐名称、原价、现价、套餐类型、套餐状态；普通时长套餐还必须填写会员天数。页面会在提交前校验金额格式、现价不能高于原价、普通套餐天数大于 0、折扣结束时间晚于开始时间。
 - `/admin/membership-orders`：查看小程序支付订单，展示订单号、用户、金额、状态、微信交易号、创建时间和套餐快照。
 
 `/users` 用户管理页保留原有会员追加和设置到期时间能力，并新增“设置为永久会员”。新版操作调用 `/api/admin/membership/users/{id}/grant`，要求填写操作原因。

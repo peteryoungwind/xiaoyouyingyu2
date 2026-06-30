@@ -40,7 +40,7 @@
 
     <view class="review-actions">
       <view class="secondary-btn" bindtap="goBack">回到总览</view>
-      <view class="next-btn" bindtap="loadNext">继续练习</view>
+      <view class="next-btn" bindtap="continuePractice">继续练习</view>
     </view>
   </view>
 

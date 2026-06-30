@@ -46,6 +46,8 @@ Page({
     error: '',
     isLoggedIn: false,
     mediaMode: 'video',
+    audioPlaying: false,
+    audioLoading: false,
     transcriptMode: 'both',
     showClozeAnswer: false,
     translationInputMode: 'text',
@@ -79,6 +81,7 @@ Page({
     if (this.segmentAudio) {
       this.segmentAudio.destroy();
     }
+    this.destroyMainAudio();
     if (this.segmentTimer) {
       clearTimeout(this.segmentTimer);
     }
@@ -191,7 +194,11 @@ Page({
   },
 
   switchMedia(e) {
-    this.setData({ mediaMode: e.currentTarget.dataset.mode });
+    const mode = e.currentTarget.dataset.mode;
+    if (mode === 'video') {
+      this.pauseMainAudio();
+    }
+    this.setData({ mediaMode: mode });
   },
 
   playAudio() {
@@ -200,7 +207,79 @@ Page({
       wx.showToast({ title: '暂无音频', icon: 'none' });
       return;
     }
-    media.play(lesson.audioUrl);
+    const audioUrl = media.resolveAudioUrl(lesson.audioUrl);
+    if (!audioUrl) {
+      wx.showToast({ title: '暂无音频', icon: 'none' });
+      return;
+    }
+    if (this.mainAudio && this.mainAudioUrl === audioUrl && this.data.audioPlaying) {
+      this.mainAudio.pause();
+      return;
+    }
+    this.stopSegmentAudio();
+    if (this.localAudio) {
+      this.localAudio.destroy();
+      this.localAudio = null;
+    }
+    if (!this.mainAudio || this.mainAudioUrl !== audioUrl) {
+      this.initMainAudio(audioUrl);
+    }
+    this.setData({ audioLoading: true });
+    this.mainAudio.play();
+  },
+
+  initMainAudio(audioUrl) {
+    this.destroyMainAudio();
+    const audio = wx.createInnerAudioContext();
+    this.mainAudio = audio;
+    this.mainAudioUrl = audioUrl;
+    audio.src = audioUrl;
+    audio.obeyMuteSwitch = false;
+    audio.onPlay(() => {
+      this.setData({ audioPlaying: true, audioLoading: false });
+    });
+    audio.onPause(() => {
+      this.setData({ audioPlaying: false, audioLoading: false });
+    });
+    audio.onStop(() => {
+      this.setData({ audioPlaying: false, audioLoading: false });
+    });
+    audio.onEnded(() => {
+      this.setData({ audioPlaying: false, audioLoading: false });
+    });
+    audio.onError(err => {
+      console.error('Play shadowing audio failed:', err, audioUrl);
+      wx.showToast({ title: '音频播放失败', icon: 'none' });
+      this.destroyMainAudio();
+    });
+  },
+
+  pauseMainAudio() {
+    if (this.mainAudio && this.data.audioPlaying) {
+      this.mainAudio.pause();
+    }
+  },
+
+  destroyMainAudio() {
+    if (this.mainAudio) {
+      this.mainAudio.stop();
+      this.mainAudio.destroy();
+      this.mainAudio = null;
+    }
+    this.mainAudioUrl = '';
+    this.setData({ audioPlaying: false, audioLoading: false });
+  },
+
+  stopSegmentAudio() {
+    if (this.segmentTimer) {
+      clearTimeout(this.segmentTimer);
+      this.segmentTimer = null;
+    }
+    if (this.segmentAudio) {
+      this.segmentAudio.stop();
+      this.segmentAudio.destroy();
+      this.segmentAudio = null;
+    }
   },
 
   switchTranscriptMode(e) {
@@ -229,6 +308,7 @@ Page({
     const sentence = this.data.sentences[index];
     const lesson = this.data.lesson || {};
     if (!sentence) return;
+    this.pauseMainAudio();
     if (this.data.mediaMode === 'video' && lesson.videoUrl) {
       const video = wx.createVideoContext('shadowingVideo', this);
       if (sentence.startSec !== undefined && sentence.startSec !== null) {
@@ -247,7 +327,7 @@ Page({
       wx.showToast({ title: '暂无音频', icon: 'none' });
       return;
     }
-    if (this.segmentAudio) this.segmentAudio.destroy();
+    this.stopSegmentAudio();
     this.segmentAudio = wx.createInnerAudioContext();
     this.segmentAudio.src = media.resolveAudioUrl(lesson.audioUrl);
     this.segmentAudio.onCanplay(() => {

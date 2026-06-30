@@ -210,6 +210,11 @@ src/main/java/com/xiaoyouyingyu/
 - `POST /api/membership/orders`：根据套餐创建微信小程序支付订单，返回 `wx.requestPayment` 参数。
 - `GET /api/membership/orders/{orderNo}`：查询本人订单状态。
 
+支付失败处理：
+
+- 真实微信支付下单失败时，订单会从 `PENDING` 更新为 `FAILED`，并在 `failureReason` 保存微信支付返回或配置校验错误，便于后台订单页排查。
+- 开发 mock 支付模式会在支付参数中返回 `mockPayment=true` 和 `prepay_id=mock_...`，由小程序调用开发接口模拟支付成功，不进入真实微信收银台。
+
 ### `AdminMembershipController`
 
 路径前缀：`/api/admin/membership`
@@ -290,6 +295,8 @@ src/main/java/com/xiaoyouyingyu/
 - 查询已发布单词本和个人进度。
 - 查询单词本详情、下一批练习词、单词详情。
 - 提交“认识/不认识”并更新复习计划。
+- 进度统计和到期复习只计算 `studyCount > 0` 的真实练习记录；`NEW` 或 `studyCount=0` 的预创建记录仍按未学新词处理。
+- 获取下一批练习词时只排除真正练过的单词，避免预创建进度记录导致用户还未学习就进入完成态。
 
 权限由 `SecurityConfig` 要求有效登录态，控制器内统一读取并校验用户名；登录用户均可访问，不限制会员状态。
 

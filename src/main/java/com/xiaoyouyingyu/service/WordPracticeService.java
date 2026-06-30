@@ -58,7 +58,7 @@ public class WordPracticeService {
         List<Word> words = due.stream().map(UserWordProgress::getWord).collect(Collectors.toCollection(ArrayList::new));
 
         if (words.size() < limit) {
-            List<Long> seenIds = progressRepository.findWordIdsByUserAndBook(user.getId(), bookId);
+            List<Long> seenIds = progressRepository.findStudiedWordIdsByUserAndBookAndDifficulty(user.getId(), bookId, bookDifficulty);
             if (seenIds.isEmpty()) {
                 seenIds = List.of(-1L);
             }
@@ -122,6 +122,31 @@ public class WordPracticeService {
                 .toList();
     }
 
+    public Map<String, Object> wordBookWords(Long bookId, String username, WordDifficulty difficulty) {
+        User user = getUser(username);
+        WordBook book = wordBookService.getRequired(bookId);
+        if (book.getStatus() != WordBookStatus.PUBLISHED) {
+            throw new IllegalArgumentException("单词本未发布");
+        }
+        WordDifficulty bookDifficulty = difficultyForBook(book);
+        List<Word> words = wordRepository.findByWordBookIdAndDeletedFalseAndDifficultyAndStatusOrderBySortOrderAscIdAsc(
+                bookId,
+                bookDifficulty,
+                WordStatus.PUBLISHED
+        );
+        Map<Long, UserWordProgress> progressByWord = progressRepository
+                .findByUserAndBookAndDifficultyAndWordStatus(user.getId(), bookId, bookDifficulty, WordStatus.PUBLISHED)
+                .stream()
+                .collect(Collectors.toMap(p -> p.getWord().getId(), Function.identity()));
+
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("words", words.stream()
+                .map(word -> wordWithProgress(word, progressByWord.get(word.getId())))
+                .toList());
+        response.put("progress", progressResponse(user.getId(), bookId, bookDifficulty));
+        return response;
+    }
+
     private WordDifficulty difficultyForBook(WordBook book) {
         return book.getLevel() == WordBookLevel.ADVANCED ? WordDifficulty.ADVANCED : WordDifficulty.BEGINNER;
     }
@@ -135,7 +160,7 @@ public class WordPracticeService {
     private Map<String, Object> progressResponse(Long userId, Long bookId, WordDifficulty difficulty) {
         LocalDateTime now = LocalDateTime.now();
         long total = wordRepository.countByWordBookIdAndDeletedFalseAndDifficultyAndStatus(bookId, difficulty, WordStatus.PUBLISHED);
-        long learned = progressRepository.countByUserIdAndWordBookIdAndWordDifficulty(userId, bookId, difficulty);
+        long learned = progressRepository.countStudiedByUserIdAndWordBookIdAndWordDifficulty(userId, bookId, difficulty);
         long mastered = progressRepository.countByUserIdAndWordBookIdAndWordDifficultyAndStatus(userId, bookId, difficulty, UserWordStatus.MASTERED);
         long due = progressRepository.countDueReviews(userId, bookId, difficulty, UserWordStatus.MASTERED, now);
         Map<String, Object> response = new LinkedHashMap<>();
