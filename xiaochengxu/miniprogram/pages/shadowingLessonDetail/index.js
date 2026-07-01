@@ -82,7 +82,7 @@ Page({
       this.recorder.stop();
     }
     if (this.localAudio) {
-      this.localAudio.destroy();
+      this.stopLocalAudio();
     }
     if (this.segmentAudio) {
       this.segmentAudio.destroy();
@@ -160,6 +160,7 @@ Page({
         recording: false,
         recorded: false,
         reviewing: false,
+        playingBack: false,
         audioFilePath: '',
         durationMs: 0,
         score: null
@@ -222,11 +223,9 @@ Page({
       this.mainAudio.pause();
       return;
     }
+    this.pauseVideo();
     this.stopSegmentAudio();
-    if (this.localAudio) {
-      this.localAudio.destroy();
-      this.localAudio = null;
-    }
+    this.stopLocalAudio();
     if (!this.mainAudio || this.mainAudioUrl !== audioUrl) {
       this.initMainAudio(audioUrl);
     }
@@ -264,6 +263,12 @@ Page({
     if (this.mainAudio && this.data.audioPlaying) {
       this.mainAudio.pause();
     }
+  },
+
+  pauseVideo() {
+    try {
+      wx.createVideoContext('shadowingVideo', this).pause();
+    } catch (e) {}
   },
 
   destroyMainAudio() {
@@ -405,16 +410,47 @@ Page({
       wx.showToast({ title: '请先录音', icon: 'none' });
       return;
     }
-    if (this.localAudio) this.localAudio.destroy();
-    this.localAudio = wx.createInnerAudioContext();
-    this.localAudio.src = sentence.audioFilePath;
-    this.localAudio.onEnded(() => this.localAudio.destroy());
-    this.localAudio.onError(err => {
+    if (this.localAudio && this.localAudioIndex === index) {
+      this.stopLocalAudio();
+      return;
+    }
+    this.pauseMainAudio();
+    this.pauseVideo();
+    this.stopSegmentAudio();
+    this.stopLocalAudio();
+    const audio = wx.createInnerAudioContext();
+    this.localAudio = audio;
+    this.localAudioIndex = index;
+    audio.src = sentence.audioFilePath;
+    audio.obeyMuteSwitch = false;
+    audio.onPlay(() => {
+      this.setData({ ['sentences[' + index + '].playingBack']: true });
+    });
+    audio.onEnded(() => this.stopLocalAudio());
+    audio.onStop(() => this.stopLocalAudio());
+    audio.onError(err => {
       console.error('Playback record failed:', err);
       wx.showToast({ title: '回放失败', icon: 'none' });
-      this.localAudio.destroy();
+      this.stopLocalAudio();
     });
-    this.localAudio.play();
+    audio.play();
+  },
+
+  stopLocalAudio() {
+    const audio = this.localAudio;
+    const index = this.localAudioIndex;
+    this.localAudio = null;
+    this.localAudioIndex = null;
+    if (audio) {
+      audio.onEnded(function () {});
+      audio.onStop(function () {});
+      audio.onError(function () {});
+      audio.stop();
+      audio.destroy();
+    }
+    if (index !== undefined && index !== null && index >= 0 && this.data.sentences[index]) {
+      this.setData({ ['sentences[' + index + '].playingBack']: false });
+    }
   },
 
   submitReview(e) {
@@ -429,6 +465,7 @@ Page({
       return;
     }
     if (sentence.reviewing) return;
+    this.stopLocalAudio();
     this.setData({
       ['sentences[' + index + '].reviewing']: true,
       activeSentenceIndex: index

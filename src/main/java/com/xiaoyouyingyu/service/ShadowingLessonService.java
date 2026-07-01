@@ -70,6 +70,36 @@ public class ShadowingLessonService {
         if (audioFile == null || audioFile.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "请先完成录音");
         }
+        try {
+            return reviewSentenceAudioBytes(
+                    id,
+                    sentenceIndex,
+                    referenceText,
+                    durationMs,
+                    audioFile.getBytes(),
+                    audioFile.getOriginalFilename(),
+                    audioFile.getContentType(),
+                    user
+            );
+        } catch (ResponseStatusException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "录音读取失败，请重录后再试");
+        }
+    }
+
+    @Transactional
+    public ShadowingReviewResponse reviewSentenceAudioBytes(Long id,
+                                                            int sentenceIndex,
+                                                            String referenceText,
+                                                            Long durationMs,
+                                                            byte[] audioBytes,
+                                                            String filename,
+                                                            String contentType,
+                                                            User user) {
+        if (audioBytes == null || audioBytes.length == 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "请先完成录音");
+        }
         ShadowingLesson lesson = lessonRepository.findByIdAndStatus(id, ShadowingLessonStatus.PUBLISHED)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "跟读精听内容不存在"));
         JsonNode sentence = findSentence(lesson, sentenceIndex);
@@ -81,7 +111,7 @@ public class ShadowingLessonService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "句子原文缺失，无法点评");
         }
 
-        String recognizedText = speechToTextService.transcribe(audioFile);
+        String recognizedText = speechToTextService.transcribe(audioBytes, filename, contentType);
         String aiJson = aiService.reviewShadowingSentence(null,
                 lesson.getTitle(),
                 lesson.getTitleZh(),

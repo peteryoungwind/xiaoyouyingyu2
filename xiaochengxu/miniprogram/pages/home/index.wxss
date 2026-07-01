@@ -203,11 +203,13 @@
   min-width: 152rpx;
   height: 72rpx;
   padding: 0 28rpx;
+  box-sizing: border-box;
   border-radius: 22rpx;
   background: #007AFF;
   color: #FFFFFF;
   font-size: 26rpx;
   font-weight: 700;
+  line-height: 1;
   display: flex;
   align-items: center;
   justify-content: center;

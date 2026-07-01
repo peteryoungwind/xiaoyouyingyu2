@@ -251,6 +251,7 @@ flowchart LR
 - 后端接口为 `POST /api/topic-submissions`，要求登录。
 - 提交成功后展示“提交成功，如被采纳会出现在主题库”，并提供“继续浏览主题”和“返回首页”。
 - V1 不提供“我的提交记录”，不限制提交频率，不向用户发送采纳通知。
+- 提交按钮与成功态操作按钮使用固定高度、零纵向 padding 和 flex 居中，避免微信小程序原生 `button` 默认行高导致中文文字不垂直居中。
 
 ## 单词练习流程
 
@@ -414,9 +415,9 @@ sequenceDiagram
 - 登录用户打开详情后，后端自动写入学习记录；资源会从未学习列表移动到已学习列表。
 - 页面采用媒体区 + 连续学习流：对照原文、逐句跟读、地道表达、中文翻译练习；不再展示单独的“先听一遍”模块。
 - 视频和音频独立播放；逐句跟读区已暂停单句播放入口，不再定位视频时间轴、播放句级音频或调用小程序 TTS。录音、回放录音和 AI 点评链路保持可用。
-- 逐句跟读使用 `wx.getRecorderManager()` 录音，录完后保存本地临时文件，可在当前页面回放。
-- 点击点评上传本次录音到 `POST /api/shadowing-lessons/{id}/sentences/{sentenceIndex}/review`，后端完成 ASR + AI 综合评分后返回点评抽屉数据。
-- 最后一段“根据中文自己翻译”默认展示可编辑英文输入框，输入框下方提供“切换为语音输入”按钮；语音上传到 `POST /api/shadowing-lessons/speech-to-text` 识别成功后回填输入框。底部只保留“查看参考英文”和“AI点评”两个操作按钮并同一行展示。
+- 逐句跟读使用 `wx.getRecorderManager()` 录音，录完后保存本地临时文件，可在当前页面回放；回放用户录音前会暂停顶部视频/音频，并在按钮上切换为“停止”状态。
+- 点击点评优先通过 `wx.uploadFile` 上传本次录音到 `POST /api/shadowing-lessons/{id}/sentences/{sentenceIndex}/review`；如果上传网络层失败，小程序读取本地录音为 base64 并调用 `/review-base64` 兜底。后端完成 ASR + AI 综合评分后返回点评抽屉数据。
+- 最后一段“根据中文自己翻译”默认展示可编辑英文输入框，输入框下方提供“切换为语音输入”按钮；语音优先上传到 `POST /api/shadowing-lessons/speech-to-text`，上传网络层失败时调用 `/speech-to-text-base64` 兜底，识别成功后回填输入框。底部只保留“查看参考英文”和“AI点评”两个操作按钮并同一行展示。
 - 录音只作为本次上传临时文件使用，小程序不长期保存；后端也不保存长期录音 URL。
 
 接口：
@@ -424,7 +425,9 @@ sequenceDiagram
 - `GET /api/shadowing-lessons?learned=false&page=0&size=10`：跟读精听列表。
 - `GET /api/shadowing-lessons/{id}`：详情；游客返回试看数据，登录用户返回完整内容并标记已学习。
 - `POST /api/shadowing-lessons/{id}/sentences/{sentenceIndex}/review`：上传 `audioFile`、`referenceText`、`durationMs` 获取句级点评。
+- `POST /api/shadowing-lessons/{id}/sentences/{sentenceIndex}/review-base64`：上传 base64 录音、`referenceText`、`durationMs` 获取句级点评，作为小程序上传失败兜底。
 - `POST /api/shadowing-lessons/speech-to-text`：上传翻译练习录音并返回识别文本。
+- `POST /api/shadowing-lessons/speech-to-text-base64`：上传 base64 翻译练习录音并返回识别文本，作为小程序上传失败兜底。
 - `POST /api/shadowing-lessons/{id}/translation-review`：提交英文翻译文本并返回 AI 点评与改进。
 
 ## 口语热身流程

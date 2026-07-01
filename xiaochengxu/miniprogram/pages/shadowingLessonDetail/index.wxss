@@ -464,6 +464,12 @@
   border-color: #FF3B30;
 }
 
+.round-action.playing {
+  background: #E8F7F2;
+  color: #0F9D70;
+  border-color: #B7E5D4;
+}
+
 .round-action.disabled {
   opacity: 0.45;
 }

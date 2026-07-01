@@ -166,12 +166,14 @@ src/main/java/com/xiaoyouyingyu/
 - 列表和详情响应会清理展示字段：标题移除 `Episode + 序号`，通用 `Lingohow` 来源和 `300期油管地道口语` 栏目不返回给用户端展示。
 - 登录用户打开详情时自动创建或更新 `user_shadowing_lesson_records`，同一用户同一资源只保留一条学习记录。
 - 接收单句跟读录音并调用真实 ASR 获取识别文本，再调用 `AiService.reviewShadowingSentence` 生成综合点评。
+- 句级点评和语音转文字均提供 multipart 主入口与 base64 兜底入口；小程序仅在 `wx.uploadFile` 网络层失败时使用 base64 入口。
 - 成功点评后保存识别文本、评分和反馈 JSON 到 `shadowing_review_records`，不保存长期录音文件 URL。
 
 权限：
 
 - `GET /api/shadowing-lessons` 和 `GET /api/shadowing-lessons/{id}` 公开可访问。
 - `POST /api/shadowing-lessons/{id}/sentences/{sentenceIndex}/review` 要求登录用户。
+- `POST /api/shadowing-lessons/{id}/sentences/{sentenceIndex}/review-base64`、`POST /api/shadowing-lessons/speech-to-text`、`POST /api/shadowing-lessons/speech-to-text-base64` 要求登录用户。
 - 跟读精听不要求会员权限；完整详情只要求登录。
 
 ### `AiDialogController`
@@ -577,7 +579,7 @@ src/main/java/com/xiaoyouyingyu/
 - `/api/word-practice/**`：要求登录，由控制器读取并校验用户名；登录用户可用，不限制会员状态。
 - `/api/daily-articles/**`：要求登录；用户端只能读取已推送外刊，管理员可通过管理接口查看未推送内容。
 - `GET /api/shadowing-lessons`、`GET /api/shadowing-lessons/{id}`：公开；游客只能拿到试看详情。
-- `POST /api/shadowing-lessons/{id}/sentences/{sentenceIndex}/review`：要求登录。
+- `POST /api/shadowing-lessons/{id}/sentences/{sentenceIndex}/review`、`POST /api/shadowing-lessons/{id}/sentences/{sentenceIndex}/review-base64`、`POST /api/shadowing-lessons/speech-to-text`、`POST /api/shadowing-lessons/speech-to-text-base64`：要求登录。
 - `/uploads/**`：公开读取，用于小程序和 PC 前端播放本地音频。
 - 其他接口：要求登录。
 

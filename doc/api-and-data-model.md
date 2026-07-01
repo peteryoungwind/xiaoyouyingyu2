@@ -388,8 +388,10 @@ V1 中管理员采纳只更新提交状态，不自动创建正式 `topics` 记�
 | GET | `` | 公开 | 分页查询跟读精听资源，登录用户可按学习状态筛选 |
 | GET | `/{id}` | 公开 | 查询详情；游客试看，登录用户完整内容 |
 | POST | `/{id}/sentences/{sentenceIndex}/review` | 登录用户 | 上传单句录音并返回 ASR + AI 点评 |
+| POST | `/{id}/sentences/{sentenceIndex}/review-base64` | 登录用户 | 上传 base64 单句录音并返回 ASR + AI 点评，用于小程序上传网络层失败兜底 |
 | POST | `/{id}/translation-review` | 登录用户 | 提交中文翻译练习的英文回答并返回 AI 点评与优化 |
 | POST | `/speech-to-text` | 登录用户 | 上传练习录音并返回 ASR 识别文本 |
+| POST | `/speech-to-text-base64` | 登录用户 | 上传 base64 练习录音并返回 ASR 识别文本，用于小程序上传网络层失败兜底 |
 
 ### 列表参数
 
@@ -514,6 +516,26 @@ Authorization: Bearer <token>
 
 后端保存识别文本、分数和反馈 JSON，不保存长期录音文件 URL。
 
+base64 兜底请求：
+
+```http
+POST /api/shadowing-lessons/1/sentences/0/review-base64
+Content-Type: application/json
+Authorization: Bearer <token>
+```
+
+```json
+{
+  "audioBase64": "base64-audio",
+  "filename": "recording.mp3",
+  "contentType": "audio/mpeg",
+  "referenceText": "I just got out of the shower.",
+  "durationMs": 1200
+}
+```
+
+响应同 `/review`。小程序仅在 `wx.uploadFile` 进入网络层 `fail` 回调时使用该兜底接口；如果 multipart 接口已经返回后端业务错误，则直接展示原错误。
+
 ### 翻译练习点评请求
 
 ```http
@@ -562,6 +584,24 @@ Authorization: Bearer <token>
   "text": "I just got out of the shower and dried my hair."
 }
 ```
+
+base64 兜底请求：
+
+```http
+POST /api/shadowing-lessons/speech-to-text-base64
+Content-Type: application/json
+Authorization: Bearer <token>
+```
+
+```json
+{
+  "audioBase64": "base64-audio",
+  "filename": "recording.mp3",
+  "contentType": "audio/mpeg"
+}
+```
+
+响应同 `/speech-to-text`。小程序仅在 `wx.uploadFile` 进入网络层 `fail` 回调时使用该兜底接口。
 
 ## 口语热身接口
 

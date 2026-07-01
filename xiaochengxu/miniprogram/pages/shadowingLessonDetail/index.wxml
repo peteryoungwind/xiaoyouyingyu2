@@ -107,7 +107,7 @@
               <view class="compact-actions">
                 <button wx:if="{{!item.recording}}" class="round-action recording" bindtap="startRecord" data-index="{{index}}">{{item.recorded ? '重录' : '录音'}}</button>
                 <button wx:else class="round-action recording active" bindtap="stopRecord" data-index="{{index}}">停止</button>
-                <button class="round-action {{item.recorded ? '' : 'disabled'}}" bindtap="playbackRecord" data-index="{{index}}">回放</button>
+                <button class="round-action {{item.playingBack ? 'playing' : ''}} {{item.recorded ? '' : 'disabled'}}" bindtap="playbackRecord" data-index="{{index}}">{{item.playingBack ? '停止' : '回放'}}</button>
                 <button class="round-action {{item.recorded && !item.reviewing ? '' : 'disabled'}}" bindtap="submitReview" data-index="{{index}}">{{item.reviewing ? '点评中' : '点评'}}</button>
               </view>
             </view>

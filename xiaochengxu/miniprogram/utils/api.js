@@ -220,7 +220,15 @@ function getShadowingLessonDetail(id) {
 }
 
 function reviewShadowingSentence(id, sentenceIndex, filePath, data) {
-  return http.upload('/shadowing-lessons/' + id + '/sentences/' + sentenceIndex + '/review', filePath, 'audioFile', data || {});
+  var uploadUrl = '/shadowing-lessons/' + id + '/sentences/' + sentenceIndex + '/review';
+  var base64Url = '/shadowing-lessons/' + id + '/sentences/' + sentenceIndex + '/review-base64';
+  return http.upload(uploadUrl, filePath, 'audioFile', data || {}).catch(function (err) {
+    if (!err || err.code !== -1) {
+      return Promise.reject(err);
+    }
+    console.warn('Shadowing review uploadFile failed, fallback to base64 request:', err);
+    return postAudioBase64(base64Url, filePath, data || {});
+  });
 }
 
 function reviewShadowingTranslation(id, data) {
@@ -228,7 +236,13 @@ function reviewShadowingTranslation(id, data) {
 }
 
 function shadowingSpeechToText(filePath, data) {
-  return http.upload('/shadowing-lessons/speech-to-text', filePath, 'audioFile', data || {});
+  return http.upload('/shadowing-lessons/speech-to-text', filePath, 'audioFile', data || {}).catch(function (err) {
+    if (!err || err.code !== -1) {
+      return Promise.reject(err);
+    }
+    console.warn('Shadowing speech uploadFile failed, fallback to base64 request:', err);
+    return postAudioBase64('/shadowing-lessons/speech-to-text-base64', filePath, data || {});
+  });
 }
 
 // ==================== AI Dialog ====================
@@ -252,6 +266,10 @@ function speechToText(filePath, data) {
 }
 
 function speechToTextBase64(filePath, data) {
+  return postAudioBase64('/ai-dialog/speech-to-text-base64', filePath, data || {});
+}
+
+function postAudioBase64(url, filePath, data) {
   return new Promise(function (resolve, reject) {
     wx.getFileSystemManager().readFile({
       filePath: filePath,
@@ -262,7 +280,7 @@ function speechToTextBase64(filePath, data) {
           filename: audioFilename(filePath),
           contentType: audioContentType(filePath)
         });
-        http.post('/ai-dialog/speech-to-text-base64', payload).then(resolve).catch(reject);
+        http.post(url, payload).then(resolve).catch(reject);
       },
       fail: function (err) {
         reject({ code: -1, message: '读取录音失败，请重试或使用文字输入', detail: err });
