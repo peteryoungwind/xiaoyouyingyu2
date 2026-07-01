@@ -150,7 +150,8 @@ Page({
       topicSource: this.data.topicSource,
       topicId: this.data.topicId ? String(this.data.topicId) : '',
       mode: this.data.mode,
-      difficulty: this.data.difficulty
+      difficulty: this.data.difficulty,
+      audioFormat: 'mp3'
     }).then(res => {
       var text = res && res.text ? res.text : '';
       if (!text.trim()) {

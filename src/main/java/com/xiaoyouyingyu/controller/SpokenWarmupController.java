@@ -60,8 +60,10 @@ public class SpokenWarmupController {
     }
 
     @PostMapping(value = "/speech-to-text", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> speechToText(@RequestParam("audioFile") MultipartFile audioFile) {
-        return ResponseEntity.ok(Map.of("text", speechToTextService.transcribe(audioFile)));
+    public ResponseEntity<?> speechToText(@RequestParam("audioFile") MultipartFile audioFile,
+                                          @RequestParam(required = false) String filename,
+                                          @RequestParam(required = false) String contentType) {
+        return ResponseEntity.ok(Map.of("text", speechToTextService.transcribe(audioFile, filename, contentType)));
     }
 
     private static ResponseEntity<?> content(String content) {

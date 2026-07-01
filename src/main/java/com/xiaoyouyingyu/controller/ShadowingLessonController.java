@@ -50,8 +50,19 @@ public class ShadowingLessonController {
                                             @RequestParam("audioFile") MultipartFile audioFile,
                                             @RequestParam(required = false) String referenceText,
                                             @RequestParam(required = false) Long durationMs,
+                                            @RequestParam(required = false) String filename,
+                                            @RequestParam(required = false) String contentType,
                                             Authentication auth) {
-        return ResponseEntity.ok(shadowingLessonService.reviewSentence(id, sentenceIndex, referenceText, durationMs, audioFile, currentUser(auth)));
+        return ResponseEntity.ok(shadowingLessonService.reviewSentence(
+                id,
+                sentenceIndex,
+                referenceText,
+                durationMs,
+                audioFile,
+                filename,
+                contentType,
+                currentUser(auth)
+        ));
     }
 
     @PostMapping("/{id}/sentences/{sentenceIndex}/review-base64")
@@ -80,9 +91,11 @@ public class ShadowingLessonController {
 
     @PostMapping(value = "/speech-to-text", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> speechToText(@RequestParam("audioFile") MultipartFile audioFile,
+                                          @RequestParam(required = false) String filename,
+                                          @RequestParam(required = false) String contentType,
                                           Authentication auth) {
         currentUser(auth);
-        return ResponseEntity.ok(Map.of("text", speechToTextService.transcribe(audioFile)));
+        return ResponseEntity.ok(Map.of("text", speechToTextService.transcribe(audioFile, filename, contentType)));
     }
 
     @PostMapping("/speech-to-text-base64")

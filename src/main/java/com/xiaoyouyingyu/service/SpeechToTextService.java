@@ -2,9 +2,12 @@ package com.xiaoyouyingyu.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xiaoyouyingyu.entity.AiDialogConfig;
 import com.xiaoyouyingyu.entity.AiModel;
+import com.xiaoyouyingyu.repository.AiDialogConfigRepository;
 import com.xiaoyouyingyu.repository.AiModelRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -22,9 +25,11 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SpeechToTextService {
     private static final String CRLF = "\r\n";
 
+    private final AiDialogConfigRepository aiDialogConfigRepository;
     private final AiModelRepository aiModelRepository;
     private final ObjectMapper objectMapper;
     private final HttpClient httpClient = HttpClient.newBuilder()
@@ -44,12 +49,16 @@ public class SpeechToTextService {
     private String asrModel;
 
     public String transcribe(MultipartFile audioFile) {
+        return transcribe(audioFile, null, null);
+    }
+
+    public String transcribe(MultipartFile audioFile, String filenameHint, String contentTypeHint) {
         if (audioFile == null || audioFile.isEmpty()) {
             throw new IllegalArgumentException("请上传录音文件");
         }
         try {
-            String filename = audioFile.getOriginalFilename();
-            String contentType = audioFile.getContentType();
+            String filename = normalizeFilename(firstText(filenameHint, audioFile.getOriginalFilename()));
+            String contentType = normalizeContentType(firstText(contentTypeHint, audioFile.getContentType()), filename);
             return transcribe(audioFile.getBytes(), filename, contentType);
         } catch (ResponseStatusException e) {
             throw e;
@@ -64,8 +73,10 @@ public class SpeechToTextService {
         }
         try {
             ResolvedAsrConfig config = resolveConfig();
+            String effectiveFilename = normalizeFilename(filename);
+            String effectiveContentType = normalizeContentType(contentType, effectiveFilename);
             String boundary = "----xiaoyou-asr-" + UUID.randomUUID();
-            byte[] body = multipartBody(boundary, audioBytes, filename, contentType, config.model());
+            byte[] body = multipartBody(boundary, audioBytes, effectiveFilename, effectiveContentType, config.model());
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(config.apiUrl()))
@@ -77,6 +88,8 @@ public class SpeechToTextService {
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() < 200 || response.statusCode() >= 300) {
+                log.warn("ASR request failed: status={}, url={}, model={}, body={}",
+                        response.statusCode(), config.apiUrl(), config.model(), abbreviate(response.body()));
                 throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "语音识别失败，请重试");
             }
 
@@ -94,14 +107,27 @@ public class SpeechToTextService {
         } catch (ResponseStatusException e) {
             throw e;
         } catch (Exception e) {
+            log.warn("ASR request failed before receiving a valid response", e);
             throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "语音识别失败，请重试");
         }
     }
 
     private ResolvedAsrConfig resolveConfig() {
-        AiModel defaultModelConfig = aiModelRepository.findByIsDefaultTrue().orElse(null);
-        String apiKey = defaultModelConfig != null ? defaultModelConfig.getApiKey() : defaultApiKey;
-        String chatUrl = defaultModelConfig != null ? defaultModelConfig.getApiUrl() : defaultApiUrl;
+        AiModel configuredAsrModel = aiDialogConfigRepository.findTopByOrderByIdAsc()
+                .map(AiDialogConfig::getAsrModelId)
+                .flatMap(aiModelRepository::findById)
+                .orElse(null);
+        boolean configuredModelLooksLikeAsr = isAsrModel(configuredAsrModel);
+        AiModel defaultModelConfig = configuredAsrModel != null
+                ? null
+                : aiModelRepository.findByIsDefaultTrue().orElse(null);
+
+        String apiKey = configuredAsrModel != null
+                ? configuredAsrModel.getApiKey()
+                : defaultModelConfig != null ? defaultModelConfig.getApiKey() : defaultApiKey;
+        String chatUrl = configuredAsrModel != null
+                ? configuredAsrModel.getApiUrl()
+                : defaultModelConfig != null ? defaultModelConfig.getApiUrl() : defaultApiUrl;
         String url = asrApiUrl == null || asrApiUrl.isBlank() ? inferTranscriptionUrl(chatUrl) : asrApiUrl.trim();
         if (apiKey == null || apiKey.isBlank()) {
             throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "语音识别配置缺少 API Key");
@@ -109,7 +135,10 @@ public class SpeechToTextService {
         if (url == null || url.isBlank()) {
             throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "语音识别配置缺少 API 地址");
         }
-        String model = asrModel == null || asrModel.isBlank() ? "whisper-1" : asrModel.trim();
+        String configuredModelName = configuredAsrModel == null ? null : configuredAsrModel.getModelName();
+        String model = configuredModelLooksLikeAsr
+                ? configuredModelName.trim()
+                : configuredAsrModelName();
         return new ResolvedAsrConfig(url, apiKey, model);
     }
 
@@ -139,13 +168,6 @@ public class SpeechToTextService {
         writeField(out, boundary, "model", model);
         writeField(out, boundary, "language", "en");
 
-        if (filename == null || filename.isBlank()) {
-            filename = "recording.mp3";
-        }
-        if (contentType == null || contentType.isBlank()) {
-            contentType = "audio/mpeg";
-        }
-
         out.write(("--" + boundary + CRLF).getBytes(StandardCharsets.UTF_8));
         out.write(("Content-Disposition: form-data; name=\"file\"; filename=\"" + safeFilename(filename) + "\"" + CRLF).getBytes(StandardCharsets.UTF_8));
         out.write(("Content-Type: " + contentType + CRLF + CRLF).getBytes(StandardCharsets.UTF_8));
@@ -153,6 +175,57 @@ public class SpeechToTextService {
         out.write(CRLF.getBytes(StandardCharsets.UTF_8));
         out.write(("--" + boundary + "--" + CRLF).getBytes(StandardCharsets.UTF_8));
         return out.toByteArray();
+    }
+
+    private static String normalizeFilename(String filename) {
+        if (filename == null || filename.isBlank()) {
+            return "recording.mp3";
+        }
+        String safe = safeFilename(filename.trim());
+        String lower = safe.toLowerCase();
+        if (lower.endsWith(".mp3") || lower.endsWith(".wav") || lower.endsWith(".m4a")
+                || lower.endsWith(".aac") || lower.endsWith(".mp4") || lower.endsWith(".mpeg")
+                || lower.endsWith(".mpga") || lower.endsWith(".webm")) {
+            return safe;
+        }
+        return safe + ".mp3";
+    }
+
+    private static String normalizeContentType(String contentType, String filename) {
+        if (contentType != null && !contentType.isBlank() && !"application/octet-stream".equalsIgnoreCase(contentType.trim())) {
+            return contentType.trim();
+        }
+        String lower = filename == null ? "" : filename.toLowerCase();
+        if (lower.endsWith(".wav")) return "audio/wav";
+        if (lower.endsWith(".m4a") || lower.endsWith(".mp4")) return "audio/mp4";
+        if (lower.endsWith(".aac")) return "audio/aac";
+        if (lower.endsWith(".webm")) return "audio/webm";
+        return "audio/mpeg";
+    }
+
+    private String configuredAsrModelName() {
+        return asrModel == null || asrModel.isBlank() ? "whisper-1" : asrModel.trim();
+    }
+
+    private static boolean isAsrModel(AiModel model) {
+        if (model == null || model.getModelName() == null || model.getModelName().isBlank()) {
+            return false;
+        }
+        String modelName = model.getModelName().trim().toLowerCase();
+        return modelName.contains("whisper")
+                || modelName.contains("transcribe")
+                || modelName.contains("transcription")
+                || modelName.contains("asr")
+                || modelName.startsWith("gpt-4o-transcribe")
+                || modelName.startsWith("gpt-4o-mini-transcribe");
+    }
+
+    private static String abbreviate(String value) {
+        if (value == null) {
+            return "";
+        }
+        String compact = value.replace("\r", " ").replace("\n", " ");
+        return compact.length() <= 500 ? compact : compact.substring(0, 500) + "...";
     }
 
     private static void writeField(ByteArrayOutputStream out, String boundary, String name, String value) throws Exception {
@@ -164,6 +237,10 @@ public class SpeechToTextService {
 
     private static String safeFilename(String filename) {
         return filename.replace("\"", "").replace("\r", "").replace("\n", "");
+    }
+
+    private static String firstText(String preferred, String fallback) {
+        return preferred == null || preferred.isBlank() ? fallback : preferred;
     }
 
     private record ResolvedAsrConfig(String apiUrl, String apiKey, String model) {}

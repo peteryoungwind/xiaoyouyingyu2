@@ -98,12 +98,17 @@ flowchart LR
 
 全局方法：
 
-- `loadUserFromStorage()`：从本地缓存恢复登录态。
+- `loadUserFromStorage()`：从本地缓存恢复登录态；只要本地存在 token，就会恢复为可尝试登录状态，用户名缺失不应阻断后续带 token 请求。
 - `setLogin(token, userInfo)`：写入全局状态和本地缓存。
 - `logout()`：清除登录态。
-- `checkLogin()`：是否已登录。
+- `checkLogin()`：是否已登录；当 `globalData` 登录态丢失但本地缓存仍有 token 时，会先调用 `loadUserFromStorage()` 兜底恢复，避免页面误判用户未登录。token 是否真正有效以后端 401 为准。
 - `isMember()`：管理员或会员。
 - `isAdmin()`：是否管理员。
+
+实现要求：
+
+- `miniprogram/app.js` 必须使用微信小程序全局构造器 `App({...})` 注册实例；页面和工具模块通过 `getApp()` 访问 `globalData` 与全局方法。
+- 如果误写成裸对象表达式，`getApp()` 会返回空值，页面生命周期中调用 `app.checkLogin()` 或请求封装读取 `app.globalData` 会直接抛出 `Cannot read property ... of undefined`。
 
 ## 请求封装
 
@@ -112,11 +117,14 @@ flowchart LR
 统一封装 `wx.request`：
 
 - 从 `app.globalData.baseUrl` 拼接请求地址。
+- 请求和上传在实际调用时通过 `getApp()` 懒获取全局实例，避免模块加载阶段缓存到未初始化的 app。
+- 如果 `baseUrl` 尚未初始化，会调用 `app.initBaseUrlByEnv()` 兜底初始化；如果全局实例仍不可用，则返回“小程序尚未完成初始化，请稍后重试”的错误。
 - 自动附加 `Authorization: Bearer <token>`。
 - 2xx 返回 `res.data`。
 - 401 自动退出登录并跳转登录页。
 - 403 仅作为权限不足返回调用页处理，不清除本地登录态；会员权限场景会引导到学习中心开通/兑换。
 - 非 2xx 统一包装错误信息。
+- `upload()` 目前用于语音识别相关接口，会在 `formData` 中自动补充录音 `filename` 和 `contentType`，让后端转发 ASR 时能获得稳定的文件扩展名和 MIME 类型；若后续复用 `upload()` 上传图片或普通附件，应按业务类型调整该元信息补充逻辑。
 
 ### `utils/api.js`
 
@@ -126,7 +134,7 @@ flowchart LR
 - 话题：列表、详情、标签、统计、日历。
 - 学习：主题详情、热身、词汇、表达、任务、点评。
 - 口语热身：主题详情、热身介绍、核心词汇、句型模板、地道表达、模拟任务、AI 点评、真实语音转文字。
-- 跟读精听：资源列表、详情、句级录音点评。
+- 跟读精听：资源列表、详情、句级录音点评、翻译练习语音转文字。
 - 会员：会员状态、联系方式、卡密兑换。
 - 会员支付：套餐列表、创建会员订单、查询订单状态并调用 `wx.requestPayment`；开发 mock 支付参数会走后端模拟支付确认，不直接传给微信支付 SDK。
 - 单词练习：已发布单词本、单词本详情、下一词、单词详情、提交认识/模糊/不认识、进度。
@@ -143,7 +151,7 @@ flowchart LR
 | 学习列表 | `pages/learning/index` | 会员学习入口、主题筛选、非会员开通提示 |
 | 学习详情 | `pages/learningTopic/index` | AI 热身、词汇、表达、任务、回答点评 |
 | AI 对话准备 | `pages/aiDialogSetup/index` | 登录用户选择教学/练习模式、初级/进阶难度、系统主题或自定义主题 |
-| AI 对话 | `pages/aiDialogChat/index` | 当前页面内存中保持上下文，发送文字消息，播放 AI 音频，默认显示 AI 回复文字和教学点评，并支持手动隐藏文字 |
+| AI 对话 | `pages/aiDialogChat/index` | 当前页面内存中保持上下文，支持文字和语音输入，语音输入会先上传录音做真实 ASR，识别后填入文本再发送；页面播放 AI 音频，默认显示 AI 回复文字和教学点评，并支持手动隐藏文字 |
 | 单词本列表 | `pages/wordBooks/index` | 作为换词书/词书选择页，按初级/进阶两块展示已发布单词本封面卡片、词数和个人进度 |
 | 单词本详情 | `pages/wordBookDetail/index` | 单词练习总览页，展示当前词书所属等级、今日复习/新词计划、进度和开始练习入口 |
 | 单词练习 | `pages/wordPractice/index` | 两段式练习：回忆态先展示英文单词和发音，主单词使用克制字号和中等加粗，用户选择认识/模糊/不认识；模糊和不认识进入答后展开态，使用蓝色词典卡样式展示释义、例句和句型；本轮结束后展示复盘和换词书入口 |
@@ -151,7 +159,7 @@ flowchart LR
 | 每日外刊列表 | `pages/dailyArticles/index` | 未读/已读 tab、封面卡片、下拉刷新、触底分页、跳转详情 |
 | 每日外刊详情 | `pages/dailyArticleDetail/index` | 迷你播放器、逐段中英对照、总结、重点词汇、长难句解析和表达句型 |
 | 跟读精听列表 | `pages/shadowingLessons/index` | 未学习/已学习 tab、游客可浏览资源卡片、登录用户按学习记录筛选 |
-| 跟读精听详情 | `pages/shadowingLessonDetail/index` | 游客试看媒体和简介；登录用户查看完整连续学习流、逐句跟读、录音回放和 AI 点评 |
+| 跟读精听详情 | `pages/shadowingLessonDetail/index` | 游客试看媒体和简介；登录用户查看完整连续学习流、逐句跟读、录音回放和 AI 点评；句级点评和翻译练习语音识别都会上传真实录音给后端 ASR |
 | 口语热身列表 | `pages/spokenWarmup/index` | 登录用户搜索、标签筛选、日期筛选系统主题并进入口语热身 |
 | 口语热身详情 | `pages/spokenWarmupDetail/index` | 初级/进阶切换，按模块实时生成热身、词汇、句型、表达、任务，支持语音/文字回答和 AI 点评 |
 | 提交话题 | `pages/topicSubmit/index` | 登录用户提交自己感兴趣的口语练习话题，成功后提示如被采纳会出现在主题库 |
@@ -195,6 +203,8 @@ flowchart LR
 - 小程序副标题继续按 `sourceName -> category -> title` 兜底展示；主题标签继续按 `topic -> category -> 原声素材` 兜底展示。
 - 详情页顶部音频使用页面级 `InnerAudioContext` 复用同一个播放实例，点击音频按钮在播放和暂停之间切换，避免重复创建播放器导致同一音频叠加播放；切换到视频或播放逐句片段时会暂停/停止顶部音频。
 - 逐句跟读区当前不展示“播放”按钮，也不启用句级音频、视频时间轴片段或小程序 TTS 朗读；用户通过顶部视频/音频完成输入，通过逐句录音、回放和 AI 点评完成跟读练习。
+- 详情页离开时只在页面确实存在进行中的句子录音或翻译录音时调用 `recorder.stop()`；由页面卸载触发的录音停止或错误回调会被静默清理，避免用户从详情返回列表时误弹“录音失败，请重试”。
+- “点评”和“翻译点评”按钮在提交前只以前端本地 token 是否存在决定是否拦截；存在 token 时允许发起上传或点评请求，由后端鉴权决定是否 401，避免游客可访问详情页导致 `globalData` 不完整时误跳登录页。
 
 ## 首页学习入口
 
@@ -485,7 +495,7 @@ sequenceDiagram
 - 如果后端返回 `audioUrl`，小程序会自动播放 AI 英文回复并支持重播；如果 TTS 生成失败，则降级为文字展示。
 - 页面视觉采用更有色彩的练习场样式：顶部主题卡使用蓝紫青渐变并展示进度条，空会话展示 AI 开口引导和通用提示 chip，用户消息使用渐变气泡，AI 播放/隐藏文字按钮和教学点评使用彩色轻卡片。
 - 语音输入按钮会先申请 `scope.record` 录音权限；未授权时弹出权限引导，也可直接切换为文字输入。
-- 语音录制结束后，小程序优先通过 `multipart/form-data` 上传本次录音到 `/api/ai-dialog/speech-to-text`，字段名为 `audioFile`；如果微信 `wx.uploadFile` 在网络层失败，会读取本地录音为 base64 并通过普通 `wx.request` 调用 `/api/ai-dialog/speech-to-text-base64` 兜底。
+- 语音录制结束后，小程序优先通过 `multipart/form-data` 上传本次录音到 `/api/ai-dialog/speech-to-text`，字段名为 `audioFile`；上传时会随表单传递录音格式提示、文件名和 MIME 类型，避免微信临时文件路径没有扩展名时后端误判音频格式；如果微信 `wx.uploadFile` 在网络层失败，会读取本地录音为 base64 并通过普通 `wx.request` 调用 `/api/ai-dialog/speech-to-text-base64` 兜底。
 - AI 对话录音使用 16kHz、单声道、48kbps MP3，兼顾 ASR 识别和 base64 兜底请求体大小。
 - 识别成功后自动切换到文字输入并回填可编辑文本，用户确认后再发送。
 - 底部输入栏默认是语音输入，一个输入区域内通过左侧系统风格图标在语音和文字输入间切换；录音、识别或发送中会阻止重复触发，避免状态冲突。

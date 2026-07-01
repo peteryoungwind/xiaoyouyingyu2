@@ -1037,6 +1037,15 @@ export default function AdminPage() {
                 </select>
               </div>
               <div>
+                <label className="mb-1 block text-xs text-gray-500">语音识别模型</label>
+                <select value={aiDialogForm.asrModelId || ''}
+                  onChange={e => setAiDialogForm(f => ({ ...f, asrModelId: e.target.value ? Number(e.target.value) : null }))}
+                  className="w-full rounded-apple bg-gray-100 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-200">
+                  <option value="">默认 ASR</option>
+                  {(aiModels || []).map((model: AiModelType) => <option key={model.id} value={model.id}>{model.name}</option>)}
+                </select>
+              </div>
+              <div>
                 <label className="mb-1 block text-xs text-gray-500">TTS 模型</label>
                 <select value={aiDialogForm.ttsModelId || ''}
                   onChange={e => setAiDialogForm(f => ({ ...f, ttsModelId: e.target.value ? Number(e.target.value) : null }))}

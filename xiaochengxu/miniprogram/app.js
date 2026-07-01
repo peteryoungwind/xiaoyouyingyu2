@@ -59,7 +59,7 @@ App({
       const membershipPermanent = wx.getStorageSync('membershipPermanent');
       const membershipExpireAt = wx.getStorageSync('membershipExpireAt');
       const hasPassword = wx.getStorageSync('hasPassword');
-      if (token && username) {
+      if (token) {
         this.globalData.token = token;
         this.globalData.isLoggedIn = true;
         this.globalData.role = role || 'USER';
@@ -67,7 +67,7 @@ App({
         this.globalData.membershipPermanent = membershipPermanent || false;
         this.globalData.membershipExpireAt = membershipExpireAt || '';
         this.globalData.hasPassword = hasPassword !== '' ? !!hasPassword : true;
-        this.globalData.userInfo = { username, role: role || 'USER', hasPassword: hasPassword !== '' ? !!hasPassword : true };
+        this.globalData.userInfo = { username: username || '', role: role || 'USER', hasPassword: hasPassword !== '' ? !!hasPassword : true };
       }
     } catch (e) {
       console.error('Load user from storage failed:', e);
@@ -132,7 +132,15 @@ App({
   },
 
   checkLogin() {
-    return this.globalData.isLoggedIn;
+    if (this.globalData.token || wx.getStorageSync('token')) {
+      if (!this.globalData.token) {
+        this.loadUserFromStorage();
+      }
+      this.globalData.isLoggedIn = true;
+      return true;
+    }
+    this.loadUserFromStorage();
+    return !!this.globalData.token;
   },
 
   isMember() {

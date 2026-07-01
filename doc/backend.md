@@ -371,9 +371,11 @@ src/main/java/com/xiaoyouyingyu/
 负责真实语音转文字：
 
 - 接收 `MultipartFile` 录音文件。
-- 优先读取后台默认 AI 模型的 API Key 和 API 地址。
+- 优先读取 AI 对话配置 `asrModelId` 指向的 `ai_models` 配置；未配置时读取后台默认 AI 模型的 API Key 和 API 地址。
 - 若未配置 `app.asr.api-url`，会从 OpenAI 兼容 Chat Completions 地址推导 `/audio/transcriptions`。
-- 默认 ASR 模型为 `app.asr.model`，未配置时使用 `whisper-1`。
+- ASR 模型名优先使用 `asrModelId` 对应模型的 `modelName`；未配置 `asrModelId` 时使用 `app.asr.model`，再兜底为 `whisper-1`。
+- Multipart 主入口可接收可选表单字段 `filename`、`contentType`，用于修正微信小程序上传时文件 part 缺少扩展名或 MIME 类型的问题；后端也会按扩展名兜底规范化为 `audio/mpeg`、`audio/wav`、`audio/mp4` 等常见音频类型。
+- 第三方 ASR 返回非 2xx 时，用户侧仍返回“语音识别失败，请重试”，服务端日志会记录状态码、接口地址、模型名和响应摘要，方便排查供应商配置或格式兼容问题。
 - 识别结果必须来自本次录音；空结果、第三方错误或配置缺失会返回明确错误。
 - 不保存录音文件。
 
@@ -582,6 +584,29 @@ src/main/java/com/xiaoyouyingyu/
 - `POST /api/shadowing-lessons/{id}/sentences/{sentenceIndex}/review`、`POST /api/shadowing-lessons/{id}/sentences/{sentenceIndex}/review-base64`、`POST /api/shadowing-lessons/speech-to-text`、`POST /api/shadowing-lessons/speech-to-text-base64`：要求登录。
 - `/uploads/**`：公开读取，用于小程序和 PC 前端播放本地音频。
 - 其他接口：要求登录。
+
+## 语音识别配置与上传约定
+
+跟读精听、AI 对话和口语热身的语音转文字统一复用 `SpeechToTextService`。
+
+配置优先级：
+
+1. AI 对话配置 `asrModelId` 指向的 `ai_models` 记录，使用该记录的 `apiKey` 和 `apiUrl`；只有模型名明显是 ASR/转写模型时才使用该记录的 `modelName`，避免误选普通聊天模型后把 `gpt-4o` 等文本模型名发送给语音转写接口。
+2. 后台默认 AI 模型，使用其 `apiKey` 和 `apiUrl`，模型名使用 `app.asr.model` 或 `whisper-1`。
+3. `application.yml` 中的 `app.ai.*` 默认配置。
+
+接口地址规则：
+
+- 显式配置 `app.asr.api-url` 时，所有 ASR 请求使用该地址。
+- 未配置时，后端会从所选模型的 Chat Completions 地址推导 `/audio/transcriptions`。
+- 如果第三方供应商使用独立 ASR 地址，优先在 `app.asr.api-url` 或 ASR 专用模型的 `apiUrl` 中配置兼容地址。
+
+上传约定：
+
+- 小程序 multipart 语音入口会随表单传递 `filename` 和 `contentType`，避免微信上传文件 part 缺少扩展名或 MIME 类型导致第三方 ASR 拒绝。
+- AI 对话页会额外传递录音格式提示，当前为 `mp3`；小程序临时路径没有扩展名时，上传封装会按该格式补齐文件名和 MIME 类型。
+- 后端仍兼容未传这两个字段的旧客户端，会按文件名扩展名兜底推断常见音频 MIME 类型。
+- Base64 兜底入口继续只在 `wx.uploadFile` 网络层失败时使用；multipart 已返回业务错误时，前端直接展示后端错误。
 
 ## 配置说明
 

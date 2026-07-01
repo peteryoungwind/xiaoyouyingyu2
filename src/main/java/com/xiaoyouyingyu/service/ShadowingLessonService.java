@@ -67,6 +67,18 @@ public class ShadowingLessonService {
 
     @Transactional
     public ShadowingReviewResponse reviewSentence(Long id, int sentenceIndex, String referenceText, Long durationMs, MultipartFile audioFile, User user) {
+        return reviewSentence(id, sentenceIndex, referenceText, durationMs, audioFile, null, null, user);
+    }
+
+    @Transactional
+    public ShadowingReviewResponse reviewSentence(Long id,
+                                                  int sentenceIndex,
+                                                  String referenceText,
+                                                  Long durationMs,
+                                                  MultipartFile audioFile,
+                                                  String filenameHint,
+                                                  String contentTypeHint,
+                                                  User user) {
         if (audioFile == null || audioFile.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "请先完成录音");
         }
@@ -77,8 +89,8 @@ public class ShadowingLessonService {
                     referenceText,
                     durationMs,
                     audioFile.getBytes(),
-                    audioFile.getOriginalFilename(),
-                    audioFile.getContentType(),
+                    firstText(filenameHint, audioFile.getOriginalFilename()),
+                    firstText(contentTypeHint, audioFile.getContentType()),
                     user
             );
         } catch (ResponseStatusException e) {
@@ -300,6 +312,10 @@ public class ShadowingLessonService {
 
     private static String safe(String value) {
         return value == null ? "" : value.trim();
+    }
+
+    private static String firstText(String preferred, String fallback) {
+        return preferred == null || preferred.isBlank() ? fallback : preferred;
     }
 
     private static String displayTitle(String value) {

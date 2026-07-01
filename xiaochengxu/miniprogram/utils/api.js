@@ -277,8 +277,8 @@ function postAudioBase64(url, filePath, data) {
       success: function (res) {
         var payload = Object.assign({}, data || {}, {
           audioBase64: res.data || '',
-          filename: audioFilename(filePath),
-          contentType: audioContentType(filePath)
+          filename: audioFilename(filePath, data && data.audioFormat),
+          contentType: audioContentType(filePath, data && data.audioFormat)
         });
         http.post(url, payload).then(resolve).catch(reject);
       },
@@ -289,19 +289,35 @@ function postAudioBase64(url, filePath, data) {
   });
 }
 
-function audioFilename(filePath) {
-  if (!filePath) return 'recording.mp3';
+function audioFilename(filePath, formatHint) {
+  var normalizedHint = normalizeAudioFormat(formatHint);
+  if (!filePath) return 'recording.' + (normalizedHint || 'mp3');
   var parts = String(filePath).split('/');
-  var name = parts[parts.length - 1] || 'recording.mp3';
-  return name.indexOf('.') >= 0 ? name : name + '.mp3';
+  var name = parts[parts.length - 1] || 'recording.' + (normalizedHint || 'mp3');
+  return name.indexOf('.') >= 0 ? name : name + '.' + (normalizedHint || 'mp3');
 }
 
-function audioContentType(filePath) {
+function audioContentType(filePath, formatHint) {
+  var normalizedHint = normalizeAudioFormat(formatHint);
+  if (normalizedHint === 'wav') return 'audio/wav';
+  if (normalizedHint === 'm4a' || normalizedHint === 'mp4') return 'audio/mp4';
+  if (normalizedHint === 'aac') return 'audio/aac';
+  if (normalizedHint === 'webm') return 'audio/webm';
   var lower = String(filePath || '').toLowerCase();
   if (lower.endsWith('.wav')) return 'audio/wav';
   if (lower.endsWith('.m4a')) return 'audio/mp4';
   if (lower.endsWith('.aac')) return 'audio/aac';
   return 'audio/mpeg';
+}
+
+function normalizeAudioFormat(formatHint) {
+  var value = String(formatHint || '').trim().toLowerCase();
+  if (!value) return '';
+  if (value === 'mpeg') return 'mp3';
+  if (value === 'mp3' || value === 'wav' || value === 'm4a' || value === 'mp4' || value === 'aac' || value === 'webm') {
+    return value;
+  }
+  return '';
 }
 
 // ==================== Membership ====================

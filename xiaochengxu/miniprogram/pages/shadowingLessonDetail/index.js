@@ -41,6 +41,10 @@ function parseAiContent(value) {
   }
 }
 
+function hasStoredToken() {
+  return !!(app.globalData && app.globalData.token) || !!wx.getStorageSync('token');
+}
+
 Page({
   data: {
     id: null,
@@ -78,7 +82,9 @@ Page({
   },
 
   onUnload() {
-    if (this.recorder) {
+    this.pageUnloading = true;
+    if (this.recorder && this.hasActiveRecording()) {
+      this.ignoreNextRecorderCallback = true;
       this.recorder.stop();
     }
     if (this.localAudio) {
@@ -96,6 +102,11 @@ Page({
   setupRecorder() {
     this.recorder = wx.getRecorderManager();
     this.recorder.onStop((res) => {
+      if (this.pageUnloading || this.ignoreNextRecorderCallback) {
+        this.clearCurrentRecording();
+        this.ignoreNextRecorderCallback = false;
+        return;
+      }
       if (this.currentRecordingType === 'translation') {
         this.currentRecordingType = null;
         const path = res && res.tempFilePath ? res.tempFilePath : '';
@@ -122,6 +133,11 @@ Page({
       }
     });
     this.recorder.onError((err) => {
+      if (this.pageUnloading || this.ignoreNextRecorderCallback || !this.hasActiveRecording()) {
+        this.clearCurrentRecording();
+        this.ignoreNextRecorderCallback = false;
+        return;
+      }
       if (this.currentRecordingType === 'translation') {
         this.currentRecordingType = null;
         this.setData({ translationRecording: false, translationSpeechLoading: false });
@@ -137,6 +153,16 @@ Page({
       }
       wx.showToast({ title: '录音失败，请重试', icon: 'none' });
     });
+  },
+
+  hasActiveRecording() {
+    return this.currentRecordingType === 'translation' ||
+      (this.currentRecordingIndex !== undefined && this.currentRecordingIndex !== null && this.currentRecordingIndex >= 0);
+  },
+
+  clearCurrentRecording() {
+    this.currentRecordingType = null;
+    this.currentRecordingIndex = null;
   },
 
   loadDetail(id) {
@@ -456,10 +482,12 @@ Page({
   submitReview(e) {
     const index = Number(e.currentTarget.dataset.index);
     const sentence = this.data.sentences[index];
-    if (!app.checkLogin()) {
+    if (!hasStoredToken()) {
+      this.setData({ isLoggedIn: false });
       wx.navigateTo({ url: '/pages/login/index' });
       return;
     }
+    app.checkLogin();
     if (!sentence || !sentence.audioFilePath) {
       wx.showToast({ title: '请先录音', icon: 'none' });
       return;
@@ -512,10 +540,12 @@ Page({
     const answer = (this.data.translationAnswer || '').trim();
     const cloze = (this.data.content && this.data.content.cloze) || {};
     const promptZh = cloze.zhPromptText || cloze.promptText || '';
-    if (!app.checkLogin()) {
+    if (!hasStoredToken()) {
+      this.setData({ isLoggedIn: false });
       wx.navigateTo({ url: '/pages/login/index' });
       return;
     }
+    app.checkLogin();
     if (!answer) {
       wx.showToast({ title: '请先输入或识别英文翻译', icon: 'none' });
       return;
